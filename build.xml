@@ -174,7 +174,7 @@
         <mkdir dir="${test.reports.pmd}" />
         <pmd shortFilenames="true">
             <ruleset>basic</ruleset>
-            <formatter type="html" toFile="${test.reports.pmd}/pmd_report.html" />
+            <formatter type="xml" toFile="${test.reports.pmd}/pmd.xml" />
             <fileset dir="${src}">
                 <include name="**/*.java"/>
             </fileset>
