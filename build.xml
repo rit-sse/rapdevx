@@ -17,7 +17,7 @@
     <property name="test.reports.junit" value="reports/junit" />
     <property name="test.reports.pmd" value="reports/pmd" />
     <property name="lib" value="lib" />
-    <property name="javadoc" value="doc" />
+    <property name="javadoc" value="${client}/doc" />
     <property name="instruments" value="instruments" />
     
     <!-- Special Task homes -->

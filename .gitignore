@@ -8,3 +8,4 @@ bin/*
 *.class
 
 reports/*
+client/doc/*
