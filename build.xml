@@ -4,15 +4,18 @@
     <property name="verbose" value="no" />
     
     <!-- directory definitions -->
-    <property name="src" location="src"/>
-    <property name="build" location="bin"/>
+    <property name="client" location="client" />
+    <property name="server" location="server" />
+
+    <property name="src" location="${client}/src"/>
+    <property name="build" location="${client}/bin"/>
     <property name="build.classes" value="${build}/classes" />
-    <property name="test.build" location="bin-test" />
+    <property name="test.src" location="${client}/test" />
+    <property name="test.build" location="${client}/bin-test" />
     <property name="test.build.classes" value="${test.build}/classes" />
     <property name="test.reports" value="reports" />
     <property name="test.reports.junit" value="reports/junit" />
     <property name="test.reports.pmd" value="reports/pmd" />
-    <property name="test.src" location="test" />
     <property name="lib" value="lib" />
     <property name="javadoc" value="doc" />
     <property name="instruments" value="instruments" />
@@ -35,7 +38,7 @@
     </path>
     
     <path id="test.classpath">
-        <fileset>
+        <fileset dir="${lib}">
             <include name="**/*.jar" />
         </fileset>
         <pathelement path="${build.classes}" />
