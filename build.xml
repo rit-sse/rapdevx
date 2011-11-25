@@ -228,7 +228,7 @@
     </target>
     
     <target name="coverage" depends="coverage-test">
-     <cobertura-report srcdir="${src}" destdir="${test.reports}"/>
+     <cobertura-report format="xml" srcdir="${src}" destdir="${test.reports}/cobertura"/>
     </target>
     
     <target name="hourly" depends="build, test, findbugs, pmd, coverage, javadoc" />

@@ -9,3 +9,4 @@ bin/*
 
 reports/*
 client/doc/*
+cobertura.ser
