@@ -14,8 +14,9 @@ public class Main {
 		// TODO Auto-generated method stub
 
 		while( true ){
-			
+			main( args );
 		}
+	
 		
 	}
 
