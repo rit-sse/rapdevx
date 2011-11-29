@@ -4,9 +4,19 @@
   %head
     %title {{ page.title }}
     %meta{ charset: "utf-8" }
-    %link{ rel: "stylesheet", href: "stylesheets/default.css" }
+    %link{ rel: "stylesheet", href: "stylesheets/style.css" }
+    %link{ rel: "shortcut icon", href: "favicon.ico" }
 
   %body
 
-    {{ content }}
+    %header
+      SSE Rapid Development Weekend X
 
+    %nav
+      %ul
+        %li
+          %a{ href: "index.html" } Home
+        %li
+          %a{ href: "crash-courses.html" } Epic Week of Crash Courses
+
+    {{ content }}
