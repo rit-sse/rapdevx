@@ -1,3 +1,4 @@
 markdown: rdiscount
 haml_folder: **/*.haml
 sass_folder: **/*.sass
+scss_folder: **/*.scss
