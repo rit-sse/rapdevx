@@ -1,3 +1,5 @@
+exclude: Gemfile, Gemfile.lock, README.markdown
+
 markdown: rdiscount
 haml_folder: **/*.haml
 sass_folder: **/*.sass
