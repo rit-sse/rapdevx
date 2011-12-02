@@ -101,8 +101,10 @@
             <classpath refid="test.classpath" />
         </javac>
     </target>
+
+    <target name="test" depends="client.test, server.test" />
     
-    <target name="test" depends="build-test" 
+    <target name="client.test" depends="build-test" 
         description="Run unit test suite">
         <mkdir dir="${test.reports}" />
         <junit fork="yes" haltonfailure="no">
@@ -125,6 +127,14 @@
             </fileset>
             <report todir="${test.reports}"/>
         </junitreport>
+    </target>
+
+    <target name="server.test" description="Run Python unit tests">
+        <mkdir dir="${test.reports}" />
+        <exec dir="server" executable="python">
+            <arg value="-m" />
+            <arg value="unittest" />
+        </exec>
     </target>
     
     <target name="javadoc" description="Create Documentation">
