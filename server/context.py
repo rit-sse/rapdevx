@@ -19,7 +19,7 @@ class GamePhase:
     def __init__(self, context):
         self.context = context
     
-    def addPlayerMove(self, movement_order):
+    def addPlayerMove(self, action_order):
         Exception("Unimplemented")
         
     def getPlayerMoveList(self):
@@ -27,11 +27,14 @@ class GamePhase:
         
     def getPlayerMove(self, move_id):
         Exception("Unimplemented")
-        
-    def setShipPlacement(self, move_id):
+    
+    def deletePlayerMove(self, move_id):
         Exception("Unimplemented")
         
-    def getGameProgress(self):
+    def setShipPlacement(self, ship_place_list):
+        Exception("Unimplemented")
+        
+    def getGameProgress(self, calling_player):
         Exception("Unimplemented")
     
     def setReady(self):
@@ -41,6 +44,7 @@ class GamePhase:
         return GamePhase()
         
 class WaitingPhase(GamePhase):
+    #wait for all players to send ready, then move on
     def __init__(self, context, playerlist):
         self.playerlist = playerlist
         self.ready = [False for x in playerlist]
@@ -52,4 +56,16 @@ class WaitingPhase(GamePhase):
             return self
         else:
             return ShipPlacementPhase(playerlist)
-        
+    
+class PlacementPhase(GamePhase):
+    pass
+
+class MovementPhase(GamePhase):
+    pass
+    
+class AttackPhase(GamePhase):
+    pass
+    
+class WonPhase(GamePhase):
+    pass
+    
