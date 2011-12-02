@@ -15,19 +15,59 @@ import edu.rit.se.sse.rapdevx.api.dataclasses.ShipLocation;
  * @author Ben Nichoals
  */
 public class GameApi {
-	public List<Game> listGames() {
+	public static List<Game> listGames() {
 		return null;
 	}
 
-	public List<Asset> getAssets(Game inputGame, Session userSession) {
+	public static List<Asset> getAssets(Game inputGame, Session userSession) {
 		return null;
 	}
 
-	public GameStatus getStatus(Game inputGame) {
+	public static GameStatus getStatus(Game inputGame) {
 		return null;
 	}
 
-	public boolean setShipPlacement(Game inputGame, Session userSession, List<ShipLocation> ships) {
+	public static boolean setShipPlacement(Game inputGame, Session userSession, List<ShipLocation> ships) {
 		return false;
+	}
+
+	// Unit Move contents
+	
+	public static boolean submitUnitMove(Game inputGame, Session userSession, int currentTurn, UnitMove move) {
+		return false;
+	}
+
+	public static List<UnitMove> getCurrentMoves(Game inputGame, Session userSession, int currentTurn) {
+		return null;
+	}
+
+	public static boolean removeUnitMove(Game inputGame, Session userSession, int currentTurn, UnitMove move) {
+		return false;
+	}
+
+	// Unit Attack contents
+	
+	public static boolean submitUnitAttack(Game inputGame, Session userSession, UnitAttack attack) {
+		return false;
+	}
+
+	public static List<UnitAttack> getCurrentAttacks(Game inputGame, Session userSession, int currentTurn) {
+		return null;
+	}
+
+	public static boolean removeUnitMove(Game inputGame, Session userSession, int currentTurn, UnitMove move) {
+		return false;
+	}
+
+	public static boolean finishedWithTurn(Game inputGame, Session userSession, int currentTurn) {
+		return false;
+	}
+
+	public static List<UnitMove> getResultMoves(Game inputGame, Session userSession, int currentTurn) {
+		return null;
+	}
+
+	public static List<UnitAttack> getResultAttacks(Game inputGame, Session userSession, int currentTurn) {
+		return null;
 	}
 }
