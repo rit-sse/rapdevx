@@ -19,10 +19,16 @@ public class Player {
 		return ships;
 	}
 
+	/**
+	 * @param s
+	 */
 	public void addShip(Ship s) {
 		ships.add(s);
 	}
 
+	/**
+	 * @param s
+	 */
 	public void removeShip(Ship s) {
 		ships.remove(s);
 	}
