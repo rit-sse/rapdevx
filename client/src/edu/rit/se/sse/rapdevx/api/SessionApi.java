@@ -1,4 +1,4 @@
-package edu.rit.se.sse.rapdevx.api
+package edu.rit.se.sse.rapdevx.api;
 
 // TODO: add Exceptions for unexpected situations, like the session being not found.
 
@@ -53,6 +53,6 @@ public class SessionApi {
 	 * successful.
 	 */
 	public boolean destroySession(Session sessionToDestroy) {
-		return null;
+		return false;
 	}
 }
