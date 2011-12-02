@@ -1,17 +1,29 @@
 # Data Transfer Objects - Primarily used to communicate between API team 
 # and the Server Objects. Any class in here is to be exclusively as a struct
+import json
+
+class DTOEncoder(json.JSONEncoder):
+    def default(self, obj):
+        r = {}
+        if isinstance(obj, AssetImage):
+            r['file'] = obj.file
+            r['name'] = obj.name
+            r['id'] = obj.id
+                
+        return json.JSONEncoder.encode(r)
 
 class AssetImage:
     def __init__(self, file, name, registry):
         self.file = file
         self.name = name
         self.id = None #set by registering it
-    def jsonEncode(self):
+    
+    def encode(self):
         r = {}
         r['file'] = self.file
         r['name'] = self.name
         r['id'] = self.id
-        return r
+        return json.dumps(r)
 
 class ShipClass:
     def __init__(self, types, abilities, maxhp, radius, placement_cost):
