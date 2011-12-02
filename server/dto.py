@@ -7,7 +7,7 @@ class AssetImage:
 		self.name = name
 		self.id = None #set by registering it
 
-class ShipClass:
+class DTO_ShipClass:
 	def __init__(self, types, abilities, maxhp, radius, placement_cost):
         self.types = types
         self.abilities = abilities
@@ -16,7 +16,7 @@ class ShipClass:
         self.placement_cost = placement_cost
         self.id = None #set by registering it
 
-class Ability:
+class DTO_Ability:
     #default_damage is int
     #special_damage map from string to int
     def __init__(self, radius, name, default_damage, special_damages):
