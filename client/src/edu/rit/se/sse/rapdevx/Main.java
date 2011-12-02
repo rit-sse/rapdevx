@@ -2,17 +2,27 @@ package edu.rit.se.sse.rapdevx;
 
 /**
  * Stand-in Java source file
- * @author Derek Erdmann
+ * 
+ * @author Sean Congden
  */
 public class Main {
 
 	/**
-	 * Sample main method
+	 * The main game loop. Creates a GUI window, updates objects on screen, and
+	 * renders the screen.
+	 */
+	public void run() {
+
+	}
+
+	/**
+	 * Sample main method.  Starts the game.
+	 * 
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		
+		Main main = new Main();
+		main.run();
 	}
 
 }
