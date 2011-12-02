@@ -11,6 +11,9 @@ public class Ship /* this will eventually inherit from the API's Unit class */{
 	private int	X;
 	private int	Y;
 
+	public Ship() {
+	}
+
 	public Ship(/* Unit ship , */int X, int Y) {
 		this.X = X;
 		this.Y = Y;
