@@ -25,7 +25,7 @@ public class SessionApi {
 	 * If no game_id is provided, periodically check for updates until the 
 	 * session has been given a game.
 	 */
-	public Session createSession(Game requestedGame) {
+	public static Session createSession(Game requestedGame) {
 		return null;
 	}
 
@@ -39,7 +39,7 @@ public class SessionApi {
 	 * @return A newly allocated session object, with the server's current view 
 	 * of the provided session.
 	 */
-	public Session updateSession(Session sessionToCheck) {
+	public static Session updateSession(Session sessionToCheck) {
 		return null;
 	}
 
@@ -52,7 +52,7 @@ public class SessionApi {
 	 * @return A boolean representing whether or not the destroy operation was 
 	 * successful.
 	 */
-	public boolean destroySession(Session sessionToDestroy) {
+	public static boolean destroySession(Session sessionToDestroy) {
 		return false;
 	}
 }
