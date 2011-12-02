@@ -67,3 +67,16 @@ class AbilityUseOrder:
         self.ability = ability
         self.id = None #set by registering it
         
+class DTO_Ship:
+    def __init__(self, player_num, hp, classid):
+        self.player_num = player_num
+        self.hp = hp
+        self.classid = classid
+        
+class Status:
+    #turn, phase, me = ints - me is the playerid of the asking player
+    def __init__(self, turn, phase, player_list, me):
+        self.turn = turn
+        self.phase = phase
+        self.player_list = player_list
+        self.me = me
