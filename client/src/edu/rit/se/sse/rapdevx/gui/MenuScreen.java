@@ -23,7 +23,12 @@ public class MenuScreen extends Screen{
 	 * 	top to bottom
 	 */
 	public MenuScreen(int initx, int inity, List<MenuButton> menuButtons){
+		//DUMMY SUPER, THIS WILL BE BASED ON BUTTONS
+		super(5,5);
 		this.menuButtons = menuButtons;
+		
+		
+		
 	}
 	
 	@Override
