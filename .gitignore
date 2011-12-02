@@ -10,3 +10,5 @@ bin/*
 reports/*
 client/doc/*
 cobertura.ser
+
+__pycache__/
