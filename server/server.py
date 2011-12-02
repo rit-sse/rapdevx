@@ -44,7 +44,6 @@ def p_game_turns_attacks(game_id=None, turn_id=None):
 def g_game_turns_attacks(game_id=None, turn_id=None):
     return "GET /game/" + str(game_id) + "/turns/" + str(turn_id) + "/attacks"
 
-
 @delete('/game/:game_id/turns/:turn_id/attacks/:attack_id')
 def d_game_turns_attacks(game_id=None, turn_id=None, attack_id=None):
     return "DELETE /game/" + str(game_id) + "/turns/" + str(turn_id) + "/attacks/" + attack_id
