@@ -16,9 +16,9 @@ def g_sessions(session_id=None):
 def d_sessions(i=None):
     return "DELETE /session/" + str(session_id)
 
-@get('/game/:game_id/assests')
+@get('/game/:game_id/assets')
 def g_game_assests(game_id=None):
-    return "GET /game/" + str(game_id) + "/assests"
+    return "GET /game/" + str(game_id) + "/assets"
 
 @get('/game/:game_id')
 def g_game(game_id=None):
@@ -61,4 +61,3 @@ def g_game_turns_attacks_results(game_id=None, turn_id=None):
     return "GET /game" + str(game_id) + "/turns/" + str(turn_id) + "/attacks/results"
 
 run(host='localhost', port=8080)
-
