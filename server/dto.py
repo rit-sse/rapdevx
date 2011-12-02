@@ -2,29 +2,29 @@
 # and the Server Objects. Any class in here is to be exclusively as a struct
 
 class AssetImage:
-	def __init__(self, file, name, registry):
+	def __init__(self, file, name, registry, id):
 		self.file = file
 		self.name = name
-		self.id = None #set by registering it
+		self.id = id
 
 class DTO_ShipClass:
-	def __init__(self, types, abilities, maxhp, radius, placement_cost):
+	def __init__(self, types, abilities, maxhp, radius, placement_cost, id):
         self.types = types
         self.abilities = abilities
         self.maxhp = maxhp
         self.radius = radius
-        self.placement_cost = placement_cost
-        self.id = None #set by registering it
+        self.placement_cost = placement_cost  
+        self.id = id
 
 class DTO_Ability:
     #default_damage is int
     #special_damage map from string to int
-    def __init__(self, radius, name, default_damage, special_damages):
+    def __init__(self, radius, name, default_damage, special_damages, id):
         self.radius = radius
         self.name = name
         self.default_damage = default_damage
         self.special_damages = special_damages
-        self.id = None #set by registering it
+        self.id = id
 		
 class Assets:
     #width, height are ints
@@ -53,25 +53,26 @@ class Results:
 class MovementOrder:
     #unitid = int
     #PATH = list of x,y tuples
-    def __init__(self, unitid, path):
+    def __init__(self, unitid, path, id):
         self.unitid = unitid
         self.path = path
-        self.id = None #set by registering it
+        self.id = id
 
 class AbilityUseOrder:
     #srcid,targetid = int
     #ability = string
-    def __init__(self, srcid, targetid, ability, path):
+    def __init__(self, srcid, targetid, ability, path, id):
         self.srcid = srcid
         self.targetid = targetid
         self.ability = ability
-        self.id = None #set by registering it
+        self.id = id
         
 class DTO_Ship:
-    def __init__(self, player_num, hp, classid):
+    def __init__(self, player_num, hp, classid, id):
         self.player_num = player_num
         self.hp = hp
         self.classid = classid
+        self.id = id
         
 class Status:
     #turn, phase, me = ints - me is the playerid of the asking player
