@@ -8,8 +8,11 @@ import java.awt.event.MouseListener;
 
 public abstract class Screen implements KeyListener, MouseListener {
 	
-	public Screen() {
-		
+	protected int screenWidth, screenHeight;
+	
+	public Screen(int width, int height) {
+		this.screenWidth = width;
+		this.screenHeight = height;
 	}
 	
 	public abstract void update(boolean hasFocus, boolean isVisible);
@@ -28,7 +31,8 @@ public abstract class Screen implements KeyListener, MouseListener {
 	public void mouseEntered(MouseEvent arg0) {		
 	}
 
-	public void mouseExited(MouseEvent arg0) {		
+	public void mouseExited(MouseEvent arg0) {
+		
 	}
 
 	public void mousePressed(MouseEvent arg0) {
