@@ -11,10 +11,12 @@ class GameRegistry:
     def getAllByType(self, type):
         pass
     
-    
     def getById(self, id):
         pass
-        
+    
+    def removeById(self, id):
+        pass
+    
     #for now, list all ships - this can be made into a filter for
     #effency reasons
     def getRelevantShips(self, path):
@@ -27,3 +29,5 @@ class GameRegistry:
     #gets the turn registered to a number
     def getTurn(self, turn_number):
         pass
+
+    
