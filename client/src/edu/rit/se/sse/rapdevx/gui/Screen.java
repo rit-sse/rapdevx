@@ -8,7 +8,20 @@ import java.awt.event.MouseListener;
 
 public abstract class Screen implements KeyListener, MouseListener {
 	
+	enum State {
+		ACTIVE,
+		TRANSITION_ON,
+		TRANSITION_OFF,
+		HIDDEN
+	}
+	
+	protected State currentState;
 	protected int screenWidth, screenHeight;
+	protected boolean isPopup;
+	
+	protected int transitionTimeOn;
+	protected int transitionTimeOff;
+	protected double transitionPosition;
 	
 	public Screen(int width, int height) {
 		this.screenWidth = width;
@@ -19,8 +32,19 @@ public abstract class Screen implements KeyListener, MouseListener {
 	
 	public abstract void updateTransition(double position, int direction);
 	
-	public abstract void draw(Graphics2D gPen);
-
+	public abstract void draw(Graphics2D gPen); 
+	
+	public void exit() {
+		///TODO
+	}
+	
+	public boolean isPopup() {
+		return isPopup;
+	}
+	
+	public State getState() {
+		return currentState;
+	}
 	
 	/**** User Input ****/
 	

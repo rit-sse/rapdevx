@@ -10,8 +10,8 @@ import edu.rit.se.sse.rapdevx.gui.Window;
 public class Main {
 
 	public static final int UPDATES_PER_SECOND = 25;
-	public static final int SKIP_TICKS = 1000 / UPDATES_PER_SECOND;
-	public static final int MAX_FRAMESKIP = 5;
+	public static final int UDATE_TICKS = 1000 / UPDATES_PER_SECOND;
+	public static final int MAX_UPDATE_SKIP = 5;
 	
 	private boolean done = false;
 	
@@ -37,16 +37,20 @@ public class Main {
 		// The main game loop
 		while (!done) {
 			int loops = 0;
-			while (System.currentTimeMillis() > nextUpdate && loops < MAX_FRAMESKIP) {
+			while (System.currentTimeMillis() > nextUpdate && loops < MAX_UPDATE_SKIP) {
 				// Update any movements and animations
 				window.update();
 				
-				nextUpdate += SKIP_TICKS;
+				nextUpdate += UDATE_TICKS;
 				loops++;
 			}
 			
-			// Draw the window
+			// Update any movements and animations
 			window.render();
+			
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {}
 		}
 	}
 
