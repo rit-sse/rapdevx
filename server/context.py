@@ -15,25 +15,41 @@ class GameContext:
         pass
     
 class GamePhase:
+    #abstract superclass for all phases
     def __init__(self, context):
         self.context = context
     
     def addPlayerMove(self, movement_order):
-        pass
+        Exception("Unimplemented")
         
     def getPlayerMoveList(self):
-        pass
+        Exception("Unimplemented")
         
     def getPlayerMove(self, move_id):
-        pass
+        Exception("Unimplemented")
         
     def setShipPlacement(self, move_id):
-        pass
+        Exception("Unimplemented")
         
     def getGameProgress(self):
-        pass
+        Exception("Unimplemented")
     
     def setReady(self):
-        pass
+        Exception("Unimplemented")
         
+    def getNextPhase(self):
+        return GamePhase()
+        
+class WaitingPhase(GamePhase):
+    def __init__(self, context, playerlist):
+        self.playerlist = playerlist
+        self.ready = [False for x in playerlist]
+    def setReady(self, player_num, val):
+        self.ready[player_num] = val
     
+    def getNextPhase(self):
+        if(self.ready.contains(False)):
+            return self
+        else:
+            return ShipPlacementPhase(playerlist)
+        
