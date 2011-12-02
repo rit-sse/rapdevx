@@ -6,6 +6,8 @@ import edu.rit.se.sse.rapdevx.api.dataclasses.Asset;
 import edu.rit.se.sse.rapdevx.api.dataclasses.Session;
 import edu.rit.se.sse.rapdevx.api.dataclasses.GameStatus;
 import edu.rit.se.sse.rapdevx.api.dataclasses.ShipLocation;
+import edu.rit.se.sse.rapdevx.api.dataclasses.UnitMove;
+import edu.rit.se.sse.rapdevx.api.dataclasses.UnitAttack;
 
 /**
  * API access to the Game object on the server side
@@ -55,7 +57,7 @@ public class GameApi {
 		return null;
 	}
 
-	public static boolean removeUnitMove(Game inputGame, Session userSession, int currentTurn, UnitMove move) {
+	public static boolean removeUnitAttack(Game inputGame, Session userSession, int currentTurn, UnitMove move) {
 		return false;
 	}
 
