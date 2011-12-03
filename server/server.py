@@ -24,6 +24,14 @@ def g_game_assests(game_id=None):
 def g_game(game_id=None):
     return "GET /game/" + str(game_id)
 
+@post('/game/:game_id/ships')
+def p_game_ships(game_id=None):
+	return "POST /game/" + str(game_id) + "/ships"
+
+@get('/game/:game_id/ships')
+def g_game_ships(game_id=None):
+	return "GET /game/" + str(game_id) + "/ships"
+
 @post('/game/:game_id/turns/:turn_id/moves')
 def p_game_turns_moves(game_id=None, turn_id=None):
     return "POST /game/" + str(game_id) + "/turns/" + str(turn_id) + "/moves"
@@ -61,4 +69,3 @@ def g_game_turns_attacks_results(game_id=None, turn_id=None):
     return "GET /game" + str(game_id) + "/turns/" + str(turn_id) + "/attacks/results"
 
 run(host='localhost', port=8080)
-
