@@ -1,7 +1,6 @@
 from dto import *
 
 def swizzle(lists):
-		i = i % len(lists)
     lists = [x[:] for x in lists]
     results = []
     i = 0
