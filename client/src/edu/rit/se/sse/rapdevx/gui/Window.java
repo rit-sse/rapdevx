@@ -47,7 +47,13 @@ public class Window {
 		/**** Create the panel to draw on ****/
 		screenStack = new ScreenStack();
 		screenStack.setSize(window.getWidth(), window.getHeight());
-		screenStack.addScreen(new MapScreen(window.getWidth(), window.getHeight()));
+		
+		// Add a map screen on startup
+		MapScreen mapScreen = new MapScreen(window.getWidth(), window.getHeight());
+		screenStack.addScreen(mapScreen);
+		
+		// Start with the move phase on the map
+		screenStack.addScreen(new MoveScreen(mapScreen.getCamera(), window.getWidth(), window.getHeight()));
 		
 		//TODO remove after testing
 		Menu testMenu = new Menu(300, 300);
