@@ -178,19 +178,19 @@ class AttackPhase(GamePhase):
         self.ready = [False for x in context.playerlist]
         self.turn = turn
 
-    def addPlayerMove(self, action_order, calling_player):
+    def addPlayerAttack(self, action_order, calling_player):
         if (isinstance(action_order, AbilityUseOrder)):
             self.turn.addAttackOrder(action_order,self.registry)
         else:
             Exception("Attack phase is in order, move orders not allowed")
         
-    def getPlayerMoveList(self, calling_player):
+    def getPlayerAttackList(self, calling_player):
         return self.turn.getPlayerMoveList(calling_player,self.registry)
         
-    def getPlayerMove(self, move_id, calling_player):
+    def getPlayerAttack(self, move_id, calling_player):
         return self.turn.getPlayerMoveList(calling_player, move_id, self.registry)
     
-    def deletePlayerMove(self, move_id, calling_player):
+    def deletePlayerAttack(self, move_id, calling_player):
         if (isinstance(action_order, AbilityUseOrder)):
             self.turn.deleteAttackOrder(move_id, action_order, self.registry)
         else:

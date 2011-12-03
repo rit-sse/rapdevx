@@ -36,7 +36,10 @@ class GameRegistry:
     def getById(self, game_id):
         '''
         '''
-        return self.registry[game_id]
+        if game_id in self.registry:
+            return self.registry[game_id]
+        else:
+            return None
     
     def removeById(self, game_id):
         '''
