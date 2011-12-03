@@ -13,3 +13,4 @@ client/doc/*
 cobertura.ser
 
 __pycache__/
+*.pyc
