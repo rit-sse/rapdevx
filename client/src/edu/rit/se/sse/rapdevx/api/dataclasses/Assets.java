@@ -14,62 +14,68 @@ import org.codehaus.jackson.map.ObjectMapper;
  * To and from JSON for the Assets.
  * 
  * @author Paul Cassidy
- *
+ * 
  */
 public class Assets {
 
-	private int width;
-	private int height;
-	private List<String> ship_classes;
-	//needs to be changed to AssetImage once the object exists.
-	private List<String> images;
-	private List<String> abilities;
-	private ObjectMapper mapper = new ObjectMapper();
+	private int					width;
+	private int					height;
+	private List<ShipClass>		ship_classes;
+	// needs to be changed to AssetImage once the object exists.
+	private List<AssetImage>	images;
+	private List<String>		abilities;
+	private ObjectMapper		mapper	= new ObjectMapper();
 
-	public int getWidth(){
+	public int getWidth() {
 		return width;
 	}
-	public void setWidth(int width){
+
+	public void setWidth(int width) {
 		this.width = width;
 	}
-	
-	public int getHeight(){
+
+	public int getHeight() {
 		return height;
 	}
-	public void setHeight(int height){
+
+	public void setHeight(int height) {
 		this.height = height;
 	}
-	
-	public List<String> getShipClasses(){
+
+	public List<ShipClass> getShipClasses() {
 		return ship_classes;
 	}
-	public void setShipClasses(List<String> shipClasses){
+
+	public void setShipClasses(List<ShipClass> shipClasses) {
 		this.ship_classes = shipClasses;
 	}
-	
-	public List<String> getImages(){
+
+	public List<AssetImage> getImages() {
 		return images;
 	}
-	public void setImages(List<String> images){
+
+	public void setImages(List<AssetImage> images) {
 		this.images = images;
 	}
-	
-	public List<String> getAbilities(){
+
+	public List<String> getAbilities() {
 		return abilities;
 	}
-	public void setAbilities(List<String> abilities){
+
+	public void setAbilities(List<String> abilities) {
 		this.abilities = abilities;
 	}
-	
+
 	/**
 	 * Creates and mapps to an assets object.
 	 * 
 	 * @return The mapped Assets as an Assets object. or null if error.
 	 */
-	public Assets fromJSON(){
+	public Assets fromJSON() {
 
 		try {
-			Assets assets = mapper.readValue(new File("AssetsToJava.json"), Assets.class);
+			Assets assets = mapper.readValue(new File("AssetsToJava.json"),
+					Assets.class);
 			return assets;
 		} catch (JsonParseException e) {
 			// TODO Auto-generated catch block
@@ -82,15 +88,15 @@ public class Assets {
 			e.printStackTrace();
 		}
 		return null;
-		
+
 	}
-	
+
 	/**
 	 * Creates a JSON file from an Assets object.
 	 * 
 	 * @param assets
 	 */
-	public void toJSON(Assets assets){
+	public void toJSON(Assets assets) {
 		try {
 			mapper.writeValue(new File("AssetsFromJava.json"), assets);
 		} catch (JsonGenerationException e) {
@@ -104,27 +110,27 @@ public class Assets {
 			e.printStackTrace();
 		}
 	}
-	
-	public Assets(){
-		ship_classes = new LinkedList<String>();
-		images = new LinkedList<String>();
+
+	public Assets() {
+		ship_classes = new LinkedList<ShipClass>();
+		images = new LinkedList<AssetImage>();
 		abilities = new LinkedList<String>();
 	}
-	
-	public static void main(String args[]){
+
+	public static void main(String args[]) {
 		Assets assets = new Assets();
 		assets.width = 123;
-		assets.height= 321;
-		assets.ship_classes.add("rawr");
-		assets.ship_classes.add("nyan");
-		assets.ship_classes.add("qwerty");
-		assets.images.add("etry");
-		assets.images.add("';lj");
-		assets.images.add("/.,m");
+		assets.height = 321;
+		assets.ship_classes.add(new ShipClass());
+		assets.ship_classes.add(new ShipClass());
+		assets.ship_classes.add(new ShipClass());
+		assets.images.add(new AssetImage());
+		assets.images.add(new AssetImage());
+		assets.images.add(new AssetImage());
 		assets.abilities.add("dfgh");
 		assets.abilities.add("cvnnb");
 		assets.abilities.add("hgfd");
 		assets.toJSON(assets);
 	}
-	
+
 }
