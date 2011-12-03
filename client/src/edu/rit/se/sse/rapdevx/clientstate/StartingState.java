@@ -4,22 +4,43 @@
 package edu.rit.se.sse.rapdevx.clientstate;
 
 import java.util.Timer;
+import java.util.TimerTask;
 
 import edu.rit.se.sse.rapdevx.api.GameApi;
 import edu.rit.se.sse.rapdevx.api.SessionApi;
+import edu.rit.se.sse.rapdevx.clientmodels.AssetLibrary;
 
 /**
  * @author Cody Krieger
  * 
  */
 public class StartingState extends StateBase {
-	Timer	timer	= new Timer();
+	private Timer	timer	= new Timer();
 
 	public StartingState() {
 		this.nextState = UnitPlacementState.class;
 
 		GameSession.get().setSession(SessionApi.createSession("nickname", null));
-		Object assets = GameApi.getAssets(/* get the game from where? */null,
-				GameSession.get().getSession());
+		AssetLibrary.setAssets(GameApi.getAssets(
+		/* get the game from where? */null, GameSession.get().getSession()));
+
+		// TODO set ready here
+
+		timer.scheduleAtFixedRate(new TimerTask() {
+
+			@Override
+			public void run() {
+				// TODO poll for phase # change
+
+				// once phase # has changed, we're ready to change states
+				this.cancel();
+				ready();
+			}
+
+		}, 0, 1);
+	}
+
+	private void ready() {
+		GameSession.get().advanceState();
 	}
 }

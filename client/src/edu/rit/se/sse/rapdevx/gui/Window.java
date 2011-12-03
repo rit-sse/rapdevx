@@ -59,6 +59,10 @@ public class Window {
 		testMenu.addButton(helpButton);
 		//screenStack.addScreen(testMenu);
 		
+		//Testing a ship screen
+		StatsScreen testStatsScreen = new StatsScreen(300, 200, window.getWidth(), window.getHeight(), null);
+		screenStack.addScreen(testStatsScreen);
+		
 		// Add the panel to the window
 		window.getContentPane().add(screenStack);
 		window.addKeyListener(screenStack);

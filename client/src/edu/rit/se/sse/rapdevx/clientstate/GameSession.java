@@ -17,17 +17,23 @@ public class GameSession {
 	
 	private static GameSession instance = new GameSession();
 
-	private StateBase	currentState	= new StartingState();
+	private StateBase	currentState;
+
 	private Session		session;
 	
-	private ArrayList<StateListener> listeners = new ArrayList<StateListener>();
+	private ArrayList<StateListener> listeners;
 	
 	private GameSession() {
-		
+		listeners = new ArrayList<StateListener>();
 	}
 	
 	public static GameSession get() {
 		return instance;
+	}
+
+	public void init() {
+		currentState = new StartingState();
+		notifyStateListeners();
 	}
 
 	/**

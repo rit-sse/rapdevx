@@ -9,48 +9,56 @@ import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
 /**
- * POJO representing the status of a Game on the server side of 
- * things. Will be annotated in order to have Jackson data bindings.
+ * POJO representing an instance of a unit/ship.
  *
  * @author Ben Nicholas
+ * @author Paul Cassidy
  */
-public class Status {
+public class Unit {
 	
 	private ObjectMapper mapper = new ObjectMapper();
 	
-	private int turn;
-	private int phase;
-	private int me;
+	private int player_num;
+	private int hp;
+	private String classID;
+	private String gID;
 	
-	public int getTurn() {
-		return turn;
+	public int getPlayer_num() {
+		return player_num;
 	}
-	public void setTurn(int turn) {
-		this.turn = turn;
+	public void setPlayer_num(int player_num) {
+		this.player_num = player_num;
 	}
-	public int getPhase() {
-		return phase;
+	public int getHp() {
+		return hp;
 	}
-	public void setPhase(int phase) {
-		this.phase = phase;
+	public void setHp(int hp) {
+		this.hp = hp;
 	}
-	public int getMe() {
-		return me;
+	public String getClassID() {
+		return classID;
 	}
-	public void setMe(int me) {
-		this.me = me;
+	public void setClassID(String classID) {
+		this.classID = classID;
+	}
+	public String getgID() {
+		return gID;
+	}
+	public void setgID(String gID) {
+		this.gID = gID;
 	}
 	
+
 	/**
-	 * Creates and maps to an Status object.
+	 * Creates and maps to an Unit object.
 	 * 
-	 * @return The mapped Status as an Status object. or null if error.
+	 * @return The mapped Unit as an Unit object. or null if error.
 	 */
-	public Status fromJSON(){
+	public Unit fromJSON(){
 
 		try {
-			Status status = mapper.readValue(new File("StatusToJava.json"), Status.class);
-			return status;
+			Unit unit = mapper.readValue(new File("UnitToJava.json"), Unit.class);
+			return unit;
 		} catch (JsonParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -65,13 +73,13 @@ public class Status {
 	}
 	
 	/**
-	 * Creates a JSON file from an Status object.
+	 * Creates a JSON file from an Unit object.
 	 * 
-	 * @param Status
+	 * @param Unit
 	 */
-	public void toJSON(Status status){
+	public void toJSON(Unit unit){
 		try {
-			mapper.writeValue(new File("StatusFromJava.json"), status);
+			mapper.writeValue(new File("UnitFromJava.json"), unit);
 		} catch (JsonGenerationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -84,7 +92,7 @@ public class Status {
 		}
 	}
 	
-	public Status(){
+	public Unit(){
 		
 	}
 	
