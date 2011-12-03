@@ -17,7 +17,7 @@ import edu.rit.se.sse.rapdevx.events.StateListener;
  */
 public class GameSession {
 
-	private static GameSession	instance	= new GameSession();
+	private static GameSession	instance;
 	private List<StateListener>	listeners	= new Vector<StateListener>();
 
 	private StateBase			currentState;
@@ -26,15 +26,14 @@ public class GameSession {
 	private List<ShipClass>		shipClasses	= new Vector<ShipClass>();
 
 	private GameSession() {
+		currentState = new StartingState();
+		notifyStateListeners();
 	}
 
 	public static GameSession get() {
+		if (instance == null)
+			instance = new GameSession();
 		return instance;
-	}
-
-	public void init() {
-		currentState = new StartingState();
-		notifyStateListeners();
 	}
 
 	/**
