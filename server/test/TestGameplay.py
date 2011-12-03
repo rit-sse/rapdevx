@@ -20,9 +20,9 @@ class TestGameplay( unittest.TestCase ):
         assertBool = [True,True,False,False]
         for i in range(4):
             print("TEST_CASE_NUMBER_"+str(i))
-            ship1 = gameplay.Unit( [], 1, 0, None, locations1[i] )
-            ship2 = gameplay.Unit( [], 1, 0, None, locations2[i] )
-            self.assertTrue( moveTurnObject.collisionCheck(ship1, ship2, radius1[i], radius2[i], endingLocation[i]) == assertBool[i] )
+            ship1 = gameplay.Unit( [], 1, 0, None, locations1[i], radius1[i] )
+            ship2 = gameplay.Unit( [], 1, 0, None, locations2[i], radius2[i] )
+            self.assertTrue( moveTurnObject.collisionCheck(ship1, ship2, endingLocation[i]) == assertBool[i] )
 
 
     def testStart( self ):
