@@ -27,6 +27,23 @@ public abstract class Screen {
 		this.screenHeight = height;
 	}
 	
+	/**
+	 * Adjusts this screen's dimensions
+	 * @param width Increaes this screen's width by this amount (negative numbers will decrease the width)
+	 * @param height Increases this screen's height by this amount (negative numbers will decrease the height)
+	 */
+	protected void adjustSize(int width, int height) {
+		screenWidth += width;
+		screenHeight += height;
+	}
+	
+	/**
+	 * @return The dimensions of this screen
+	 */
+	protected Dimension getSize() {
+		return new Dimension(screenWidth, screenHeight);
+	}
+	
 	public abstract void update(boolean hasFocus, boolean isVisible);
 	public abstract void updateTransition(double position, int direction);
 	public abstract void draw(Graphics2D gPen); 
@@ -66,17 +83,4 @@ public abstract class Screen {
 	public boolean mouseReleased(MouseEvent e) {
 		return true;
 	}
-
-	public boolean keyPressed(KeyEvent e) {
-		return true;
-	}
-
-	public boolean keyReleased(KeyEvent e) {
-		return true;
-	}
-
-	public boolean keyTyped(KeyEvent e) {
-		return true;
-	}
-
 }
