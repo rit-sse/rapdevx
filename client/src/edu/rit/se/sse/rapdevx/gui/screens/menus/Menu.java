@@ -246,5 +246,12 @@ public class Menu extends Screen {
 		return !(x < cornerX || x > (cornerX+size.width) ||
 				y < cornerY || y > (cornerY+size.height));
 	}
+
+	/**
+	 * @return the isHidden
+	 */
+	public boolean isHidden() {
+		return isHidden;
+	}
 	
 }

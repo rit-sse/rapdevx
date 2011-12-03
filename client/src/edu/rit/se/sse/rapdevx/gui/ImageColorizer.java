@@ -2,7 +2,6 @@ package edu.rit.se.sse.rapdevx.gui;
 
 import java.awt.Point;
 import java.awt.image.BufferedImage;
-import java.awt.image.ColorModel;
 import java.util.ArrayList;
 
 /**

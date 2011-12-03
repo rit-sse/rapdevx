@@ -1,89 +1,13 @@
 from bottle import run, get, post, delete, request
+import session
+import gamemanager
+import sessionmanager
 
 games = []
 
 class NotImplementedException:
 	def __init__(self):
 		super(NotImplementedException, self).__init__()
-		
-class Session:
-	# Previously assigned session id, for use in unique ids
-	last_id = 0
-
-	def __init__(self, nickname="LazyPlayer"):
-		self.nickname = nickname
-		self.active = true
-		self.session_id = Session.nextID()
-
-	def nextID():
-		last_id += 1
-		return "s" + last_id
-
-	def to_json(self):
-		"""Convert to json representation"""
-		json_dict = {}
-		json_dict['session_id'] = self.session_id
-		json_dict['nickname'] = self.nickname
-		json_dict['game_id'] = self.game_id
-		json_dict['active'] = self.active
-
-		return json.dumps(json_dict)
-
-class SessionManager:	
-	"""Currently unmatched sessions"""
-	player_pool = []
-	"""All known sessions"""
-	sessions = {}
-
-	""" Start a matchmaking session for the given session.  Currently
-		this just means to match them with the next available session """
-	def begin_matchmaking(session):
-			match = SessionManager.match(session)
-
-			if match != None:
-                # TODO: replace this with a new GameManager
-				games.append(GameContext())
-
-				session.game_id = games.length - 1
-				match.game_id = games.length - 1
-			else:
-				SessionManager.add_session_to_pool(self)
-
-    """ Find a matching session from the currently available pool
-        of connected sessions. """
-	def match(session):
-		# TODO: do matchmaking here
-		if player_pool.size >= 1:
-			return player_pool.pop(0)
-		else:
-			return None
-
-    """ Add a session to the matchmaking pool for future connections."""
-	def add_session_to_pool(session)
-		player_pool.append(session)
-
-    """ Register a new session as being ready to participate in a game
-        and attempt to connect to a game. """
-	def register_session(session, game_id=None):
-		sessions[session.session_id] = session
-
-		if game_id != None:
-			raise NotImplementedException
-
-			# Get selected game
-			# Check game player status
-			# Add player to game
-		else:
-			begin_matchmaking(session)
-	
-    """ Find the session object for the given session ID. """
-	def find_session(session_id):
-		session = sessions[session_id]
-
-		if session == None or session.active == false:
-			return None
-		else:
-			return session
 
 # Gets a list of all games as json
 @get('/games')
