@@ -4,10 +4,10 @@ import gamemanager
 import sessionmanager
 
 class NotImplementedException:
-	def __init__(self):
-		super(NotImplementedException, self).__init__()
+    def __init__(self):
+        super(NotImplementedException, self).__init__()
 
-def get_game(game_id)
+def get_game(game_id):
     game = GameManager.find_game(game_id)
 
     if game == None:
@@ -34,41 +34,37 @@ def list_active_games():
 # Create a new session given posted data
 @post('/sessions')
 def create_session():
-	# pull data out of request
-	nickname = request.forms.nickname
-	game_id = request.forms.game_id
+    # pull data out of request
+    nickname = request.forms.nickname
+    game_id = request.forms.game_id
 
-	# scrub data from forms
-	if game_id == '':
-		game_id = None
-	
-	session = Session(nickname, game_id)
+    # scrub data from forms
+    if game_id == '':
+        game_id = None
+    
+    session = Session(nickname, game_id)
 
-	SessionManager.register_session(session, game_id)
+    SessionManager.register_session(session, game_id)
 
-	return session.to_json
+    return session.to_json
 
 # Return session itself as json
 @get('/session/:session_id')
 def get_session_info(session_id=None):
-	session = SessionManager.find_session(session_id)
+    session = SessionManager.find_session(session_id)
 
-	if session == None:
-		# Do we need to return after this?
-		abort(404, "No session with that ID found")
+    if session == None:
+        # Do we need to return after this?
+        abort(404, "No session with that ID found")
 
-	return session.to_json
+    return session.to_json
 
 # Mark a session as closed
 @delete('/session/:session_id')
 def delete_session(session_id=None):
-	session = SessionManager.find_session(session_id)
+    session = find_session(session_id)
 
-	if session == None:
-		# Do we need to return after this?
-		abort(404, "No session with that ID found")
-
-    session.active = false
+    session.active = False
 
 # Get assets from game as json
 @get('/game/:game_id/assets')
@@ -104,7 +100,7 @@ def g_game(game_id=None):
 @post('/game/:game_id/ships')
 def p_game_ships(game_id=None):
     game = get_game(game_id)
-	return "POST /game/" + str(game_id) + "/ships"
+    return "POST /game/" + str(game_id) + "/ships"
 
 # Return the location and type of all ships as json
 # { # Example
@@ -115,7 +111,7 @@ def p_game_ships(game_id=None):
 def g_game_ships(game_id=None):
     game = get_game(game_id)
 
-	return "GET /game/" + str(game_id) + "/ships"
+    return "GET /game/" + str(game_id) + "/ships"
 
 # Create a new movement order from POST data
 @post('/game/:game_id/turns/:turn_id/moves')

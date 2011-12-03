@@ -15,13 +15,14 @@ class Session:
         Session.last_id += 1
         return "s" + str(Session.last_id)
 
-def to_json(self):
-    """Convert to json representation"""
-    json_dict = {}
-    json_dict['session_id'] = self.session_id
-    json_dict['nickname'] = self.nickname
-    json_dict['game_id'] = self.game_id
-    json_dict['player_num'] = self.player_num
-    json_dict['active'] = self.active
+    def to_json(self):
+        """Convert to json representation"""
+        json_dict = {}
+        json_dict['session_id'] = self.session_id
+        json_dict['nickname'] = self.nickname
+        json_dict['game_id'] = self.game_id
+        json_dict['player_num'] = self.player_num
+        json_dict['active'] = self.active
 
-    return json.dumps(json_dict)
+        return json.dumps(json_dict)
+
