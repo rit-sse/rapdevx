@@ -55,11 +55,48 @@ public class StatsScreen extends Screen {
 	 * It says awesome Ship!!!!
 	 */
 	public void draw(Graphics2D gPen) {
-		gPen.setColor(Color.gray);
+
+		gPen.setColor(new Color(85, 85, 85));
 		gPen.fill(new Rectangle(x, y, screenWidth, screenHeight));
-		gPen.setColor(Color.black);
+		gPen.setColor(Color.BLACK);
+
+		// sample name
 		gPen.drawString("Awesome Ship", x + 10, y + 20);
 
+		// gPen.drawString(ship.getgID(), x + 10, y+ 20);
+
+		drawHPBar(gPen);
+		gPen.setColor(Color.BLACK);
+
+		// sample move radius
+		gPen.drawString("Move Radius: 5", x + 10, y + 80);
+		// gPen.drawString("Move Radius: " + ship.get)
+		drawAbilities(gPen);
+	}
+
+	public void drawHPBar(Graphics2D gPen) {
+		gPen.drawString("HP:", x + 35, y + 50);
+
+		// sample value
+		double scale = 18.0 / 20.0 * 195.0;
+		scale = 5.0 / 20.0 * 195.0;
+		gPen.setColor(Color.WHITE);
+		gPen.fill(new Rectangle(x + 65, y + 35, 195, 20));
+		if (scale < 1.0 / 3.0 * 195.0) {
+			gPen.setColor(Color.RED);
+		} else if (scale < 2.0 / 3.0 * 195.0) {
+			gPen.setColor(Color.YELLOW);
+		} else {
+			gPen.setColor(Color.GREEN);
+		}
+		gPen.fill(new Rectangle(x + 65, y + 35, (int) scale, 20));
+	}
+
+	public void drawAbilities(Graphics2D gPen) {
+		gPen.drawString("Abilities: ", x + 10, y + 110);
+		// sample abilities
+		gPen.drawString("Ability 1: 5    Ability 2: 6   Ability3: 7",
+				x + 35, y + 130);
 	}
 
 }
