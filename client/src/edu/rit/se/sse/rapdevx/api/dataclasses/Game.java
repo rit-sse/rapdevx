@@ -8,5 +8,14 @@ package edu.rit.se.sse.rapdevx.api.dataclasses;
  */
 public class Game {
 
+	private String name;
+	private int id;
+	
+	public Game() {
+		
+	}
+	
+	public int getID() {
+		return 1; // Ha. Implementation awaits.
+	}
 }
-
