@@ -18,8 +18,8 @@ public class StartingState extends StateBase {
 	public StartingState() {
 		this.nextState = UnitPlacementState.class;
 
-		GameSession.setSession(SessionApi.createSession("nickname", null));
+		GameSession.get().setSession(SessionApi.createSession("nickname", null));
 		Object assets = GameApi.getAssets(/* get the game from where? */null,
-				GameSession.getSession());
+				GameSession.get().getSession());
 	}
 }

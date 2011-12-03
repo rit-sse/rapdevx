@@ -3,29 +3,45 @@
  */
 package edu.rit.se.sse.rapdevx.clientstate;
 
+import java.util.ArrayList;
+
 import edu.rit.se.sse.rapdevx.api.dataclasses.Session;
+import edu.rit.se.sse.rapdevx.events.StateEvent;
+import edu.rit.se.sse.rapdevx.events.StateListener;
 
 /**
  * @author Cody Krieger
  * 
  */
 public class GameSession {
+	
+	private static GameSession instance = new GameSession();
 
-	private static StateBase	currentState	= new StartingState();
-
-	private static Session		session;
+	private StateBase	currentState	= new StartingState();
+	private Session		session;
+	
+	private ArrayList<StateListener> listeners = new ArrayList<StateListener>();
+	
+	private GameSession() {
+		
+	}
+	
+	public static GameSession get() {
+		return instance;
+	}
 
 	/**
 	 * Advance the state!
 	 */
-	public static void advanceState() {
+	public void advanceState() {
 		currentState = currentState.advance();
+		notifyStateListeners();
 	}
 
 	/**
 	 * @return the session
 	 */
-	public static Session getSession() {
+	public Session getSession() {
 		return session;
 	}
 
@@ -33,7 +49,28 @@ public class GameSession {
 	 * @param session
 	 *            the session to set
 	 */
-	public static void setSession(Session newSession) {
+	public void setSession(Session newSession) {
 		session = newSession;
+	}
+
+	/**
+	 * @param observer
+	 *            the observer to add
+	 */
+	public void addStateListener(StateListener listener) {
+		listeners.add(listener);
+	}
+
+	/**
+	 * @param observer
+	 *            the observer to remove
+	 */
+	public void removeStateListener(StateListener listener) {
+		listeners.add(listener);
+	}
+	
+	private void notifyStateListeners() {
+		for (StateListener listener : listeners)
+			listener.stateChanged(new StateEvent(this));
 	}
 }
