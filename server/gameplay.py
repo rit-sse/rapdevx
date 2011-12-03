@@ -155,21 +155,30 @@ class MoveTurn:
     def __init__(self, turn_num):
         self.gid = None #set on registry
         self.turn_num = turn_num
+        self.player_move_list = {}
         
     def addMoveOrder(self, move_order, calling_player, registry):
         '''
         '''
-        pass
+        if calling_player not in self.player_move_list:
+            self.player_move_list[calling_player] = []
+
+        moveOrderObj = MoveOrder(move_order.unitid, move_order.path) 
+        self.player_move_list[calling_player].append( moveOrderObj )
+        registry.register(moveOrderObj)
     
     def deleteMoveOrder(self, move_order_gid, calling_player, registry):
         '''
         '''
-        pass
+        move_order = registry.getById(move_order_gid)
+        registry.removeById(move_order_gid)
+        
+        self.player_attack_lists[calling_player].remove(move_order)
 
     def getPlayerMoveList(self, calling_player, registry):
         '''
         '''
-        pass
+        return [x.to_dto() for x in self.player_move_lists[calling_player]]
         
     #any existing move orders should be evaluated
     #(going round robin on submitting players, in order)
