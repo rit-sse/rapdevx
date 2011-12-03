@@ -141,20 +141,19 @@ class MovementPhase(GamePhase):
 
     def addPlayerMove(self, action_order, calling_player):
         if (isinstance(action_order, MovementOrder)):
-            self.turn.addMoveOrder(action_order)
+            self.turn.addMoveOrder(action_order,self.registry)
         else:
             Exception("Movement phase is in order, attack orders not allowed")
         
     def getPlayerMoveList(self, calling_player):
-        return self.turn.getPlayerMoveList(calling_player)
+        return self.turn.getPlayerMoveList(calling_player,self.registry)
         
     def getPlayerMove(self, move_id, calling_player):
-        # todo is move_id an index?
-        return self.turn.getPlayerMoveList(calling_player)[move_id]
+        return self.turn.getPlayerMoveList(calling_player, move_id, self.registry)
     
     def deletePlayerMove(self, move_id, calling_player):
         if (isinstance(action_order, MovementOrder)):
-            self.turn.deleteMoveOrder(move_id, action_order)
+            self.turn.deleteMoveOrder(move_id, action_order,self.registry)
         else:
             Exception("Movement phase is in order, attack orders not allowed")
 
@@ -181,20 +180,19 @@ class AttackPhase(GamePhase):
 
     def addPlayerMove(self, action_order, calling_player):
         if (isinstance(action_order, AbilityUseOrder)):
-            self.turn.addAttackOrder(action_order)
+            self.turn.addAttackOrder(action_order,self.registry)
         else:
             Exception("Attack phase is in order, move orders not allowed")
         
     def getPlayerMoveList(self, calling_player):
-        return self.turn.getPlayerMoveList(calling_player)
+        return self.turn.getPlayerMoveList(calling_player,self.registry)
         
     def getPlayerMove(self, move_id, calling_player):
-        # todo is move_id an index?
-        return self.turn.getPlayerMoveList(calling_player)[move_id]
+        return self.turn.getPlayerMoveList(calling_player, move_id, self.registry)
     
     def deletePlayerMove(self, move_id, calling_player):
         if (isinstance(action_order, AbilityUseOrder)):
-            self.turn.deleteAttackOrder(move_id, action_order)
+            self.turn.deleteAttackOrder(move_id, action_order, self.registry)
         else:
             Exception("Attack phase is in order, move orders not allowed")
 
