@@ -46,10 +46,13 @@ class SessionManager:
 	
     """ Find the session object for the given session ID. """
 	def find_session(session_id):
-		session = sessions[session_id]
+        if session_id in sessions:
+            session = sessions[session_id]
 
-		if session == None or session.active == false:
-			return None
-		else:
-			return session
+            if sessions.active == false:
+                return None
+            else:
+                return session
+        else:
+            return None
 
