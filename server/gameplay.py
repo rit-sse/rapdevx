@@ -219,7 +219,11 @@ class AttackTurn:
         '''
         Constructor.
 
+        gid - 
         turn_num - integer referencing the turn where this attack occured.
+        player_attack_lists - A dictionary mapping player ids to a list
+                              containing their attack orders.
+        results - 
         '''
         self.gid = None #set on registry
         self.turn_num = turn_num
@@ -233,7 +237,6 @@ class AttackTurn:
 
         attack_order - AbilityUseOrder object for the ability user by the attacker.
         calling_player - integer referencing the attacker's player id.
-        
         registry - the ID registry to add the move to for later reference
         '''
         #setup a list of attacks for a player if there isn't one yet
@@ -280,6 +283,8 @@ class AttackTurn:
 
     def getResults(self):
         '''
+        Get the list of moves that actually happened during the turn
+        (remember that some ships might be destroyed during a turn).
         '''
         pass
 
