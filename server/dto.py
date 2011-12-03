@@ -8,13 +8,13 @@ class AssetImage:
         self.gid = id
 
 class DTO_ShipClass:
-    def __init__(self, types, abilities, maxhp, radius, placement_cost, id):
+    def __init__(self, types, abilities, maxhp, radius, placement_cost, gid):
         self.types = types
         self.abilities = abilities
         self.maxhp = maxhp
         self.radius = radius
         self.placement_cost = placement_cost  
-        self.gid = id
+        self.gid = gid
 
 class DTO_Ability:
     #default_damage is int
