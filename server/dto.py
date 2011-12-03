@@ -178,7 +178,7 @@ class DTO_Unit:
         
 class DTO_Status:
     #turn is an int
-    #phase is an int
+    #phase is a string
     #player_list is list of strings
     #me is an int
     #   me is the playerid of the asking player
