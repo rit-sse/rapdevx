@@ -7,6 +7,10 @@ class Session:
 		self.active = true
 		self.session_id = Session.nextID()
 
+        # empty inits
+        self.game_id = None
+        self.player_num = None
+
 	def nextID():
 		last_id += 1
 		return "s" + last_id
@@ -17,6 +21,7 @@ class Session:
 		json_dict['session_id'] = self.session_id
 		json_dict['nickname'] = self.nickname
 		json_dict['game_id'] = self.game_id
+        json_dict['player_num'] = self.player_num
 		json_dict['active'] = self.active
 
 		return json.dumps(json_dict)
