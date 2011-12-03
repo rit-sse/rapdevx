@@ -101,7 +101,7 @@ public class StatsScreen extends Screen {
 		double scale = hp / maxHp * 195.0;
 		gPen.setColor(Color.WHITE);
 		gPen.fill(new Rectangle(x + 65, y + 35, 195, 20));
-		new Text(5 + "/" + 20, x + 65 + 145, y + 20).draw(gPen);
+		new Text(hp + "/" + maxHp, x + 65 + 145, y + 20).draw(gPen);
 		if (scale < 1.0 / 3.0 * 195.0) {
 			gPen.setColor(Color.RED);
 		} else if (scale < 2.0 / 3.0 * 195.0) {
