@@ -36,16 +36,14 @@ public class AssetLibrary {
 	 * @return images for the current game
 	 */
 	public static List<AssetImage> getImages() {
-		// return AssetLibrary.assets.getImages();
-		return null;
+		return AssetLibrary.assets.getImages();
 	}
 
 	/**
 	 * @return a list of possible ship classes
 	 */
 	public static List<ShipClass> getShipClasses() {
-		// return AssetLibrary.assets.getShipClasses();
-		return null;
+		return AssetLibrary.assets.getShipClasses();
 	}
 
 }
