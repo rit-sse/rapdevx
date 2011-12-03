@@ -6,9 +6,6 @@ from dto import *
 class GameContext:
     def __init__(self,playerlist):
         self.playerlist = playerlist
-
-        print(playerlist)
-
         self.registry = GameRegistry()
         #todo real asset loading
         atk = Ability(100,"attack", 10,{})
