@@ -253,7 +253,7 @@ class AttackTurn:
         self.player_attack_lists = {}
         self.results = None
 
-    def addAttackOrder(self, attack_order, calling_player, registry):
+    def addAttackOrder(self, dto_attack_order, calling_player, registry):
         '''
         Submit a player's attack. This method assumes that the move order has
         already been registered.
@@ -266,6 +266,9 @@ class AttackTurn:
         #setup a list of attacks for a player if there isn't one yet
         if calling_player not in self.player_attack_lists:
             self.player_attack_lists[calling_player]=[]
+        
+        order = AttackOrder(dto_attack_order.srcid,dto_attack_order.targetid, dto_attack_order.ability)
+        registry.register(order)
         
         self.player_attack_lists.append(order)
         
@@ -283,7 +286,7 @@ class AttackTurn:
         
         self.player_attack_lists[calling_player].remove(move_order)
 
-    def getPlayerMoveList(self, calling_player, registry):
+    def getPlayerAttackList(self, calling_player, registry):
         '''
         Get a list of the specified player's moves' ID's.
 
@@ -291,7 +294,7 @@ class AttackTurn:
         
         registry - the ID registry that the moves are in
         '''
-        return [x.to_dto for x in self.player_attack_lists[calling_player]]
+        return [x.to_dto() for x in self.player_attack_lists[calling_player]]
     
     def execute(self, registry):
         '''
