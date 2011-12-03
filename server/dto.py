@@ -85,13 +85,16 @@ class DTO_Assets:
         r = {}
         r['width'] = self.width
         r['height'] = self.height
-        r['ship_classes'] = self.ship_classes
+        r['ship_classes'] = []
+        for sc in self.ship_classes:
+            r['ship_classes'].append(sc.encode())
         r['images'] = []
         for im in self.images:
-            r.push(im.encode())
+            r['images'].append(im.encode())
         r['abilities'] = []
         for ab in self.abilities:
-            r.push(ab.encode())
+            r['abilities'].append(ab.encode())
+        print(r)
         return json.dumps(r)
 
 class DTO_ShipPlacement:
@@ -132,6 +135,7 @@ class DTO_MovementOrder:
 
     def encode(self):
         r = {}
+        r['unitid'] = self.unitid
         r['path'] = self.path
         r['gid'] = self.gid
         return json.dumps(r)
@@ -201,7 +205,7 @@ def JSON_Construct_DTO_ShipClass(jsonstring):
 
 def JSON_Construct_DTO_Ability(jsonstring):
     attribute_dictionary = json.loads(jsonstring)
-    return DTO_Ability(attribute_dictionary.pop('radius'), attribute_dictionary.pop('name'), attribute_dictionary.pop('default_damage'), attribute_dictionary.pop('special_damage'), attribute_dictionary.pop('gid'))
+    return DTO_Ability(attribute_dictionary.pop('radius'), attribute_dictionary.pop('name'), attribute_dictionary.pop('default_damage'), attribute_dictionary.pop('special_damages'), attribute_dictionary.pop('gid'))
 
 def JSON_Construct_DTO_Assets(jsonstring):
     attribute_dictionary = json.loads(jsonstring)
