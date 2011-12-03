@@ -86,8 +86,12 @@ class DTO_Assets:
         r['width'] = self.width
         r['height'] = self.height
         r['ship_classes'] = self.ship_classes
-        r['images'] = self.images
-        r['abilities'] = abilities
+        r['images'] = []
+        for im in self.images:
+            r.push(im.encode())
+        r['abilities'] = []
+        for ab in self.abilities:
+            r.push(ab.encode())
         return json.dumps(r)
 
 class DTO_ShipPlacement:
