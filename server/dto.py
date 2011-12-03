@@ -79,7 +79,8 @@ class DTO_Assets:
         self.height = height
         self.ship_classes = ship_classes
         self.images = images
-      
+        self.abilities = abilities
+
     def encode(self):
         r = {}
         r['width'] = self.width
@@ -166,42 +167,42 @@ class DTO_Status:
         self.me = me
 
 #WARNING/TO-DO: Some of the attributes which are not basic python objects may be junk    
-def JSON_Construct_DTO_AssetImage(jsonstring)
+def JSON_Construct_DTO_AssetImage(jsonstring):
     attribute_dictionary = json.loads(jsonstring)
     return DTO_AssetImage(attribute_dictionary.pop('file'), attribute_dictionary.pop('name'), attribute_dictionary.pop('gid'))
 
-def JSON_Construct_DTO_ShipClass(jsonstring)
+def JSON_Construct_DTO_ShipClass(jsonstring):
     attribute_dictionary = json.loads(jsonstring)
     return DTO_ShipClass(attribute_dictionary.pop('types'), attribute_dictionary.pop('abilities'), attribute_dictionary.pop('maxhp'), attribute_dictionary.pop('radius'), attribute_dictionary.pop('placement_cost'), attribute_dictionary.pop('gid'))
 
-def JSON_Construct_DTO_Ability(jsonstring)   
+def JSON_Construct_DTO_Ability(jsonstring):
     attribute_dictionary = json.loads(jsonstring)
     return DTO_Ability(attribute_dictionary.pop('radius'), attribute_dictionary.pop('name'), attribute_dictionary.pop('default_damage'), attribute_dictionary.pop('special_damage'), attribute_dictionary.pop('gid'))
 
-def JSON_Construct_DTO_Assets(jsonstring)
+def JSON_Construct_DTO_Assets(jsonstring):
     attribute_dictionary = json.loads(jsonstring)
     return DTO_Assets(attribute_dictionary.pop('width'),attribute_dictionary.pop('height'),attribute_dictionary.pop('ship_classes'),attribute_dictionary.pop('images'), attribute_dictionary.pop('abilities'))
 
-def JSON_Construct_DTO_ShipPlacement(jsonstring)
+def JSON_Construct_DTO_ShipPlacement(jsonstring):
     attribute_dictionary = json.loads(jsonstring)
     return DTO_ShipPlacement(attribute_dictionary.pop('x'),attribute_dictionary.pop('y'),attribute_dictionary.pop('classid'))
 
-def JSON_Construct_DTO_Results(jsonstring)
+def JSON_Construct_DTO_Results(jsonstring):
     attribute_dictionary = json.loads(jsonstring)
     return DTO_Results(attribute_dictionary.pop('results'))
 
-def JSON_Construct_DTO_MovementOrder(jsonstring)
+def JSON_Construct_DTO_MovementOrder(jsonstring):
     attribute_dictionary = json.loads(jsonstring)
     return DTO_MovementOrder(attribute_dictionary.pop('unitid'), attribute_dictionary.pop('path'), attribute_dictionary.pop('gid'))
 
-def JSON_Construct_DTO_AbilityUseOrder(jsonstring)
+def JSON_Construct_DTO_AbilityUseOrder(jsonstring):
     attribute_dictionary = json.loads(jsonstring)
     return DTO_AbilityUseOrder(attribute_dictionary.pop('srcid'),attribute_dictionary.pop('targetid'),attribute_dictionary.pop('ability'),attribute_dictionary.pop('gid'))
 
-def JSON_Construct_DTO_Ship(jsonstring)
+def JSON_Construct_DTO_Ship(jsonstring):
     attribute_dictionary = json.loads(jsonstring)
     return DTO_SHIP(attribute_dictionary.pop('player_num'),attribute_dictionary.pop('hp'),attribute_dictionary.pop('classid'),attribute_dictionary.pop('gid'))
 
-def JSON_Construct_DTO_Status(jsonstring)
+def JSON_Construct_DTO_Status(jsonstring):
     attribute_dictionary = json.loads(jsonstring)
     return DTO_Status(attribute_dictionary.pop('turn'), attribute_dictionary.pop('phase'), attribute_dictionary.pop('player_list'), attribute_dictionary.pop('me'))
