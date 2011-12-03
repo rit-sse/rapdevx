@@ -155,6 +155,13 @@ class DTO_Ship:
         self.hp = hp
         self.classid = classid
         self.gid = gid
+    def encode(self):
+        r = {}
+        r['player_num'] = self.player_num
+        r['hp'] = self.hp
+        r['classid'] = self.classid
+        r['gid'] = self.gid
+        return json.dumps(r)
         
 class DTO_Status:
     #turn is an int
@@ -166,6 +173,13 @@ class DTO_Status:
         self.phase = phase
         self.player_list = player_list
         self.me = me
+    def encode(self):
+        r = {}
+        r['turn'] = self.turn
+        r['phase'] = self.phase
+        r['player_list'] = self.player_list
+        r['me'] = self.me
+        return json.dumps(r)
 
 #WARNING/TO-DO: Some of the attributes which are not basic python objects may be junk    
 def JSON_Construct_DTO_AssetImage(jsonstring):
