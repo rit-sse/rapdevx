@@ -57,8 +57,8 @@ public class Background {
 		
 		// backgrounds can only be drawn at integer multiples
 		// of the with and height.
-		int drawAtX = (int)( cameraX / backgroundWidth ) * backgroundWidth *2;
-		int drawAtY = (int)( cameraY / backgroundHeight ) * backgroundHeight *2;
+		int drawAtX = (int)( cameraX / backgroundWidth ) * backgroundWidth;
+		int drawAtY = (int)( cameraY / backgroundHeight ) * backgroundHeight;
 		
 		// if the camera is in the negative coordinate space
 		// on the map, adjust the draw positions.
