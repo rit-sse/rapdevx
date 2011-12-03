@@ -416,34 +416,46 @@ class MoveTurn:
         
 class AttackTurn:
     '''
+    Represents a player's turn if they choose to attack. 
     '''
 
     def __init__(self, turn_num):
         '''
+        Constructor.
+
         turn_num - integer referencing the turn where this attack occured.
         '''
         self.gid = None #set on registry
         self.turn_num = turn_num
+        self.attack_list = []
 
-    def addAttackOrder(self, move_order, calling_player):
+
+    def addAttackOrder(self, attack_order, calling_player):
         '''
         Submit a player's attack. This method assumes that the move order has
         already been registered.
 
-        move_order - AbilityUseOrder object for the ability user by the attacker.
+        attack_order - AbilityUseOrder object for the ability user by the attacker.
         calling_player - integer referencing the attacker's player id.
         '''
-        # Keep track of player's attack list
-        # add code/data structures to support keeping track of adding/deleting
+        # Associate an attack order with the player who made the attack
+        playerAttack = { attack_order, calling_player }
+
+        # TODO: Validate that the client is actually in range/not lying
+        self.attack_list.append( playerAttack )
     
     def deleteAttackOrder(self, move_order_gid, calling_player):
         '''
+        Remove the specified player's move from the attack list.
+
+        move_order_gid - The id of the move order.
+        calling_player - An integer reference to the player who made the move. 
         '''
         pass
 
     def getPlayerMoveList(self, calling_player):
         '''
-        Get a list containing a player's moves.
+        Get a list of the specified player's moves.
 
         calling_player - an integer referencing a player id.
         '''
@@ -455,8 +467,10 @@ class AttackTurn:
         submitting players, in order) remove ships that are destroyed, if not
         then set their health lower.
 
-        registry - The game's Registry object. THis has all of the unit data.
+        registry - The game's Registry object. This has all of the unit data.
         '''
+
+        #move the 
         pass
 
     def getResults(self):
