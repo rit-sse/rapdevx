@@ -1,9 +1,8 @@
 package edu.rit.se.sse.rapdevx.gui;
 
 import java.awt.Graphics2D;
-import java.awt.event.KeyEvent;
+import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
 import edu.rit.se.sse.rapdevx.events.StateEvent;
@@ -11,18 +10,16 @@ import edu.rit.se.sse.rapdevx.events.StateListener;
 
 public class AttackScreen extends Screen implements StateListener {
 	
-	public static final int CAMERA_SPEED = 25;
-	
-	/** A reference to the base map containing the grid and camera **/
-	private MapScreen mapScreen;
+	/** A reference to the map camera for positioning objects in world space */
+	private Camera camera;
 	
 	/** A list of ships currently on the field **/
 	private ArrayList<DrawableShip> shipList;
 	
 	
-	public AttackScreen(MapScreen mapScreen, int width, int height) {
+	public AttackScreen(Camera camera, int width, int height) {
 		super(width, height);
-		this.mapScreen = mapScreen;
+		this.camera = camera;
 		
 		shipList = new ArrayList<DrawableShip>();
 		shipList.add(new DrawableShip(300, 300));
@@ -36,7 +33,7 @@ public class AttackScreen extends Screen implements StateListener {
 	
 	public void draw(Graphics2D gPen) {
 		// Translate the coordinates based on the camera
-		Rectangle2D cameraBounds = mapScreen.getCamera().getBounds();
+		Rectangle cameraBounds = camera.getBounds();
 		gPen.translate(-cameraBounds.getX(), -cameraBounds.getY());
 		
 		/** Draw things based on the camera here **/
@@ -50,16 +47,8 @@ public class AttackScreen extends Screen implements StateListener {
 		gPen.translate(cameraBounds.getX(), cameraBounds.getY());
 	}
 	
-	public void keyPressed(KeyEvent e) {
-		
-	}
-	
-	public void keyReleased(KeyEvent e) {
-		
-	}
-	
 	public void mouseClicked(MouseEvent e) {
-		shipList.get(0).setCenter(e.getX(), e.getY());
+		shipList.get(0).setCenter(e.getX() + camera.getX(), e.getY() + camera.getY());
 		e.consume();
 	}
 	
