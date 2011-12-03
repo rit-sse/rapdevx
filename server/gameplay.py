@@ -24,7 +24,6 @@ class Unit:
     def getLocation(self):
         pass
         
-    def 
 class Ability:
     def __init__(self, radius, name, default_damage, special_damages):
         self.radius = radius
@@ -53,10 +52,13 @@ class MoveTurn:
         self.id = None #set on registry
         self.turn_num = turn_num
         
-    def addMoveOrder(self, move_order):
+    def addMoveOrder(self, move_order, calling_player):
         pass
     
-    def deleteMoveOrder(self, move_order_id):
+    def deleteMoveOrder(self, move_order_id, calling_player):
+        pass
+
+    def getPlayerMoveList(self, calling_player):
         pass
         
     #any existing move orders should be evaluated
@@ -76,10 +78,13 @@ class AttackTurn:
         self.id = None #set on registry
         self.turn_num = turn_num
         
-    def addAttackOrder(self, move_order):
+    def addAttackOrder(self, move_order, calling_player):
         pass
     
-    def deleteAttackOrder(self, move_order_id):
+    def deleteAttackOrder(self, move_order_id, calling_player):
+        pass
+
+    def getPlayerMoveList(self, calling_player):
         pass
     
     #any existing ability order should be evaluated
