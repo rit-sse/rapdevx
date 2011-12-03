@@ -6,6 +6,7 @@ package edu.rit.se.sse.rapdevx.gui.screens.menus;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -21,7 +22,7 @@ public class Menu extends Screen {
 	private final Color BackgroundColor = Color.gray.darker().darker();
 	
 	//Holds all of this menu's buttons
-	private final Collection<MenuButton> buttons = new ArrayList<MenuButton>();
+	private final ArrayList<MenuButton> buttons = new ArrayList<MenuButton>();
 	
 	//spacing vars
 	private static final int Border = 5;	//space between menu and button edges
@@ -135,6 +136,21 @@ public class Menu extends Screen {
 		}
 		
 		//TODO if we don't have focus, draw transparent, light gray myst over ourself
+	}
+	
+	/* (non-Javadoc)
+	 * @see edu.rit.se.sse.rapdevx.gui.Screen#keyTyped(java.awt.event.KeyEvent)
+	 */
+	@Override
+	public void keyTyped(KeyEvent e) {
+		//TODO switch this to keyPressed() and keyReleased() so user can see which button will be pressed
+		int number = Character.getNumericValue(e.getKeyChar()) - 1;	//doing -1 as buttons index starts at 0
+		if(number < 0 || number >= buttons.size()) {
+			return;
+		}
+		
+		MenuButton button = buttons.get(number);
+		button.clicked();
 	}
 	
 	/* (non-Javadoc)

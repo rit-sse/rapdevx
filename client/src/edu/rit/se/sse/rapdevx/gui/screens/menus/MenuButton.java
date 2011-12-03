@@ -53,8 +53,6 @@ public class MenuButton {
 	private int lastDrawnWidth = 0;
 	private int lastDrawnHeight = 0;
 	
-	//TODO add support for shortcut keys?
-	
 	//--------------------------------------------------------------------------
 	// Constructors
 	//--------------------------------------------------------------------------
@@ -325,6 +323,7 @@ public class MenuButton {
 	}
 	
 	public void clicked() {
+		//TODO make some visual or audio changes to show that we were clicked
 		System.out.println("MenuButton: clicked: " + getText());
 	}
 	

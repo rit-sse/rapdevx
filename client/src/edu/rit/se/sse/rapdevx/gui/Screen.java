@@ -3,10 +3,9 @@ package edu.rit.se.sse.rapdevx.gui;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 
-public abstract class Screen implements KeyListener, MouseEvents {
+public abstract class Screen implements MouseEvents {
 	
 	enum State {
 		ACTIVE,
@@ -67,15 +66,32 @@ public abstract class Screen implements KeyListener, MouseEvents {
 	
 	/**** User Input ****/
 	
-	public void keyPressed(KeyEvent arg0) {
+	/* (non-Javadoc)
+	 * @see edu.rit.se.sse.rapdevx.gui.MouseEvents#keyPressed(java.awt.event.KeyEvent)
+	 */
+	public void keyPressed(KeyEvent e) {
 		
 	}
 	
-	public void keyReleased(KeyEvent arg0) {
+	/* (non-Javadoc)
+	 * @see edu.rit.se.sse.rapdevx.gui.MouseEvents#keyReleased(java.awt.event.KeyEvent)
+	 */
+	public void keyReleased(KeyEvent e) {
 		
 	}
 	
+	/* (non-Javadoc)
+	 * @see edu.rit.se.sse.rapdevx.gui.MouseEvents#keyTyped(java.awt.event.KeyEvent)
+	 */
+	@Override
 	public void keyTyped(KeyEvent arg0) {
+		
+	}
+	
+	/* (non-Javadoc)
+	 * @see edu.rit.se.sse.rapdevx.gui.MouseEvents#mouseClicked(java.awt.event.MouseEvent)
+	 */
+	public void mouseClicked(MouseEvent e) {
 		
 	}
 	
@@ -98,10 +114,6 @@ public abstract class Screen implements KeyListener, MouseEvents {
 	 */
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		
-	}
-	
-	public void mouseClicked(MouseEvent e) {
 		
 	}
 }
