@@ -224,19 +224,19 @@ class AttackTurn:
 
         order = AttackOrder(dto_attack_order.srcid,dto_attack_order.targetid, dto_attack_order.ability)
 
-    target = registry.getById(dto_attack_order.srcid)
+        target = registry.getById(dto_attack_order.srcid)
 
-    if registry.getById(dto_attack_order.srcid) == None:
-        raise Exception("Attacking ship not in registry")
+        if registry.getById(dto_attack_order.srcid) == None:
+            raise Exception("Attacking ship not in registry")
 
-    if registry.getById(dto_attack_order.targetid) == None:
-        raise Exception("Target Ship not in registry")
-    
-    if registry.getById(dto_attack_order.ability) == None:
-        raise Exception("Ability not in registry")
+        if registry.getById(dto_attack_order.targetid) == None:
+            raise Exception("Target Ship not in registry")
+        
+        if registry.getById(dto_attack_order.ability) == None:
+            raise Exception("Ability not in registry")
 
-    if calling_player != target.getPlayer():
-        raise Exception("Player does not own ship")
+        if calling_player != target.getPlayer():
+            raise Exception("Player does not own ship")
 
         registry.register(order)
         self.player_attack_lists.append(order)
