@@ -54,7 +54,7 @@ public class SessionApi {
 				getResponse("/game/" + requestedGame.getID()));
 		
 		// pull values
-		map.get("magic"); // Don't know what to get
+		json.get("magic"); // Don't know what to get
 		
 		// encode into request
 		
