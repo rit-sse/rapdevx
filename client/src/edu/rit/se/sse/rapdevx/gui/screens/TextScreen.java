@@ -80,7 +80,7 @@ public class TextScreen extends Screen {
 		}
 		
 		title1.drawWhite(gPen);
-		title2.drawColor(gPen, 0xffff00);
+		title2.drawWhite(gPen);
 		title3.drawWhite(gPen);
 		
 	}
