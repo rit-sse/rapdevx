@@ -70,6 +70,12 @@ class Unit:
         '''
         self.hp = hp
     
+    def setLocation(self, location):
+        '''
+        Set the unit's location.
+        '''
+        self.location = location
+
     def getTypes(self):
         '''
         Retrieve the list of type strings associated with this unit.
@@ -173,12 +179,12 @@ class MoveTurn:
         move_order = registry.getById(move_order_gid)
         registry.removeById(move_order_gid)
         
-        self.player_attack_lists[calling_player].remove(move_order)
+        self.player_attack_list[calling_player].remove(move_order)
 
     def getPlayerMoveList(self, calling_player, registry):
         '''
         '''
-        return [x.to_dto() for x in self.player_move_lists[calling_player]]
+        return [x.to_dto() for x in self.player_move_list[calling_player]]
         
     #any existing move orders should be evaluated
     #(going round robin on submitting players, in order)
@@ -186,7 +192,16 @@ class MoveTurn:
     #R2: Stop short of offending segment
     #R3: Stop tangent to offending unit
     def execute(self, registry):
-        pass
+        itera = sorted(self.player_move_list.keys())
+        result = []
+        for i in numOFTurns:
+            for k in itera
+                playerMove = self.player_move_list[k][i]
+                unitShip = registry.getById(playerMove.shipid)
+                unitLoc = playerMove.path[-1]
+                unitShip.setLocation(unitLoc)
+
+
         
     def getResults(self):
         pass
