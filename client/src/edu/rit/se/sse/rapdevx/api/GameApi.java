@@ -21,65 +21,64 @@ public class GameApi {
 		return null;
 	}
 
-	public static Assets getAssets(Status inputGame, Session userSession) {
+	public static Assets getAssets(Session userSession) {
 		return null;
 	}
 
-	public static Status getStatus(Status inputGame) {
+	public static Status getStatus(Session userSession) {
 		return null;
 	}
 
-	public static boolean setShipPlacement(Status inputGame, Session userSession,
+	public static boolean setShipPlacement(Session userSession,
 			List<ShipPlacement> ships) {
 		return false;
 	}
 
 	// Unit Move contents
 
-	public static boolean submitMovementOrder(Status inputGame,
-			Session userSession, int currentTurn, MovementOrder move) {
+	public static boolean submitMovementOrder(Session userSession, 
+            int currentTurn, MovementOrder move) {
 		return false;
 	}
 
-	public static List<MovementOrder> getCurrentMoves(Status inputGame,
-			Session userSession, int currentTurn) {
+	public static List<MovementOrder> getCurrentMoves(Session userSession, 
+            int currentTurn) {
 		return null;
 	}
 
-	public static boolean removeMovementOrder(Status inputGame,
-			Session userSession, int currentTurn, MovementOrder move) {
+	public static boolean removeMovementOrder(Session userSession, 
+            int currentTurn, MovementOrder move) {
 		return false;
 	}
 
 	// Unit Attack contents
 
-	public static boolean submitAbilityUseOrder(Status inputGame,
-			Session userSession, AbilityUseOrder attack) {
+	public static boolean submitAbilityUseOrder(Session userSession, 
+            AbilityUseOrder attack) {
 		return false;
 	}
 
-	public static List<AbilityUseOrder> getCurrentAttacks(Status inputGame,
-			Session userSession, int currentTurn) {
+	public static List<AbilityUseOrder> getCurrentAttacks(Session userSession, 
+            int currentTurn) {
 		return null;
 	}
 
-	public static boolean removeAbilityUseOrder(Status inputGame,
-			Session userSession, int currentTurn, MovementOrder move) {
+	public static boolean removeAbilityUseOrder(Session userSession, 
+            int currentTurn, MovementOrder move) {
 		return false;
 	}
 
-	public static boolean finishedWithTurn(Status inputGame, Session userSession,
-			int currentTurn) {
+	public static boolean finishedWithTurn(Session userSession, int currentTurn) {
 		return false;
 	}
 
-	public static List<MovementOrder> getResultMoves(Status inputGame,
-			Session userSession, int currentTurn) {
+	public static List<MovementOrder> getResultMoves(Session userSession, 
+            int currentTurn) {
 		return null;
 	}
 
-	public static List<AbilityUseOrder> getResultAttacks(Status inputGame,
-			Session userSession, int currentTurn) {
+	public static List<AbilityUseOrder> getResultAttacks(Session userSession, 
+            int currentTurn) {
 		return null;
 	}
 }
