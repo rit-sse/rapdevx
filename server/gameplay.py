@@ -143,7 +143,7 @@ class MoveTurn:
     def getResults(self):
         pass
         
-    def collisionCheck(self, player1Ship, player2Ship, radius1, radius2, endLocation):
+    def collisionCheck(self, playerShip1, playerShip2, radius1, radius2, endLocation):
         #A = playerShip1.location
         #B = playerShip2.location
         A = playerShip1
