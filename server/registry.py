@@ -1,33 +1,53 @@
 class GameRegistry:
-	def __init__(self):
-        pass
-        
-    #add to dictionary so getById(id) returns entry
-    #and set entry.id to id
-    def register(self, entry):
-        pass
-        
-    #return any registered entry that is the given python type
-    def getAllByType(self, type):
-        pass
-    
-    def getById(self, id):
-        pass
-    
-    def removeById(self, id):
-        pass
-    
-    #for now, list all ships - this can be made into a filter for
-    #effency reasons
-    def getRelevantShips(self, path):
-        pass
-    
-    #registers the turn object
-    def registerTurn(self, turn, turn_number):
-        pass
-    
-    #gets the turn registered to a number
-    def getTurn(self, turn_number):
-        pass
+    def __init__(self):
+        '''
+        Constructor.
 
+        registry - A dictionary which contains registered objects.
+        count - 
+        '''
+        self.registry = {}
+        self.count = {}
+        
+    def register(self, entry):
+        '''
+        Adds an entry to the internal dictionary so getById(id) returns entry
+        and set entry.id to id
+        '''
+        prefix = entry.__class__.__name__
+
+        if (prefix not in self.count):
+            self.count[prefix] = 0
+        else:
+            self.count[prefix] += 1
+
+        self.registry[prefix + str(self.count[prefix])] = entry
+        entry.gid = prefix + str(self.count[prefix])
+        
+    def getAllByType(self, game_type):
+        '''
+        Return any registered entry that is the given python type.
+        '''
+        type_list = []
+        for i in self.registry:
+            if(game_type in i): type_list.append(self.registry[i])
+        return type_list
+    
+    def getById(self, game_id):
+        '''
+        '''
+        return self.registry[game_id]
+    
+    def removeById(self, game_id):
+        '''
+        '''
+        if (game_id in self.registry):
+            self.registry.pop(game_id)
+    
+    def getRelevantUnits(self, path):
+        '''
+        For now, list all units - this can be made into a filter for
+        effency reasons
+        '''
+        return self.getAllByType("Unit")
     
