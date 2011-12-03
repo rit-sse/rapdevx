@@ -115,7 +115,8 @@ public class ScreenStack implements KeyListener, MouseListener, MouseMotionListe
 	 */
 	@Override
 	public void keyPressed(KeyEvent e) {
-		for (Screen screen : screenList) {
+		for (int i = screenList.size() - 1; i >= 0; i--) {
+			Screen screen = screenList.get(i);
 			if(e.isConsumed()) {
 				return;	//we're done if someone handled the event
 			}
@@ -129,7 +130,8 @@ public class ScreenStack implements KeyListener, MouseListener, MouseMotionListe
 	 */
 	@Override
 	public void keyReleased(KeyEvent e) {
-		for (Screen screen : screenList) {
+		for (int i = screenList.size() - 1; i >= 0; i--) {
+			Screen screen = screenList.get(i);
 			if(e.isConsumed()) {
 				return;	//we're done if someone handled the event
 			}
@@ -142,7 +144,8 @@ public class ScreenStack implements KeyListener, MouseListener, MouseMotionListe
 	 */
 	@Override
 	public void keyTyped(KeyEvent e) {
-		for(Screen screen: screenList) {
+		for (int i = screenList.size() - 1; i >= 0; i--) {
+			Screen screen = screenList.get(i);
 			if(e.isConsumed()) {
 				return;	//we're done if someone handled the event
 			}
@@ -156,7 +159,8 @@ public class ScreenStack implements KeyListener, MouseListener, MouseMotionListe
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		//tell all the screens about this mouse event
-		for(Screen screen: screenList) {
+		for (int i = screenList.size() - 1; i >= 0; i--) {
+			Screen screen = screenList.get(i);
 			if(e.isConsumed()) {
 				return;	//we're done if someone handled the event
 			}
@@ -176,7 +180,8 @@ public class ScreenStack implements KeyListener, MouseListener, MouseMotionListe
 	@Override
 	public void mousePressed(MouseEvent e) {
 		//tell all the screens about this mouse event
-		for(Screen screen: screenList) {
+		for (int i = screenList.size() - 1; i >= 0; i--) {
+			Screen screen = screenList.get(i);
 			if(e.isConsumed()) {
 				return;	//we're done if someone handled the event
 			}
@@ -190,7 +195,8 @@ public class ScreenStack implements KeyListener, MouseListener, MouseMotionListe
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		//tell all the screens about this mouse event
-		for(Screen screen: screenList) {
+		for (int i = screenList.size() - 1; i >= 0; i--) {
+			Screen screen = screenList.get(i);
 			if(e.isConsumed()) {
 				return;	//we're done if someone handled the event
 			}
@@ -214,7 +220,8 @@ public class ScreenStack implements KeyListener, MouseListener, MouseMotionListe
 		//TODO should we only send this to the screen with focus? (need to make the same choice for all the other events too)
 		
 		//tell all the screens about this mouse event
-		for(Screen screen: screenList) {
+		for (int i = screenList.size() - 1; i >= 0; i--) {
+			Screen screen = screenList.get(i);
 			if(e.isConsumed()) {
 				return;	//we're done if someone handled the event
 			}

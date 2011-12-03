@@ -2,6 +2,7 @@ package edu.rit.se.sse.rapdevx.gui.screens;
 
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.event.MouseEvent;
 
 import edu.rit.se.sse.rapdevx.clientmodels.Path;
 import edu.rit.se.sse.rapdevx.gui.DrawablePath;
@@ -15,9 +16,10 @@ public class PathTestScreen extends Screen {
 		
 		super(width, height);
 		
-		Path path = new Path(new Point(0, 0));
-		path.addPoint(new Point(300, 00));
-		path .addPoint(new Point(800, 400));
+		Path path = new Path(new Point(50, 50));
+		path.addPoint(new Point(100, 50));
+		path.addPoint(new Point(200, 100));
+		path.addPoint(new Point(500, 30));
 		
 		this.path = new DrawablePath(path);
 	}
@@ -33,6 +35,14 @@ public class PathTestScreen extends Screen {
 		
 	}
 	
+	public void mouseMoved(MouseEvent e) {
+		path.setMouseLocation(e.getPoint());
+		
+		e.consume();
+	}
 	
+	public void mouseReleased(MouseEvent e) {
+		path.getPath().addPoint(e.getPoint());
+	}
 
 }
