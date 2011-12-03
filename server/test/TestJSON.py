@@ -24,10 +24,11 @@ class TestJSON(unittest.TestCase):
         obj1 = dto.JSON_Construct_DTO_Ability(obj.encode())
         self.assertEquals(pickle.dumps(obj),pickle.dumps(obj1))
     def test_DTO_Assets(self):
+        strlist = ["One","Two","Three"]
         shipclasslist = [dto.DTO_ShipClass(strlist, strlist, 5, 5, 5, "Four"), dto.DTO_ShipClass(strlist, strlist, 5, 5, 5, "Four"),dto.DTO_ShipClass(strlist, strlist, 5, 5, 5, "Four") ] 
         assetimagelist = [dto.DTO_AssetImage("aGVsbG8gd29ybGQ=", "ship1", "123"),dto.DTO_AssetImage("aGVsbG8gd29ybGQ=", "ship1", "123"),dto.DTO_AssetImage("aGVsbG8gd29ybGQ=", "ship1", "123")]
         abilitylist = [dto.DTO_Ability(5, "One", 5, {"Two":2,"Three":3,"Four":4}, "five"), dto.DTO_Ability(5, "One", 5, {"Two":2,"Three":3,"Four":4}, "five"), dto.DTO_Ability(5, "One", 5, {"Two":2,"Three":3,"Four":4}, "five")]
-        obj = dto.DTO_Ability(5, 5, shipclasslist, assetimagelist, abilitylist)
+        obj = dto.DTO_Assets(5, 5, shipclasslist, assetimagelist, abilitylist)
         obj1 = dto.JSON_Construct_DTO_Assets(obj.encode())
         self.assertEquals(pickle.dumps(obj),pickle.dumps(obj1))
     def test_ShipPlacement(self):
@@ -47,12 +48,12 @@ class TestJSON(unittest.TestCase):
         obj = dto.DTO_AbilityUseOrder("One", "two", "three", "four")
         obj1 = dto.JSON_Construct_DTO_AbilityUseOrder(obj.encode())
         self.assertEquals(pickle.dumps(obj),pickle.dumps(obj1))
-    def test_DTO_Ship(self):
-        obj = dto.DTO_Ship(5, 6, "one", "two")
-        obj1 = dto.JSON_Construct_DTO_Ship(obj.encode())
+    def test_DTO_Unit(self):
+        obj = dto.DTO_Unit(5, 6, "one", "two")
+        obj1 = dto.JSON_Construct_DTO_Unit(obj.encode())
         self.assertEquals(pickle.dumps(obj),pickle.dumps(obj1))
     def test_DTO_Status(self):
-        obj = dto.DTO_Status(5, 6, 7)
+        obj = dto.DTO_Status(5, 6, [1,2,3,4], 7)
         obj1 = dto.JSON_Construct_DTO_Status(obj.encode())
         self.assertEquals(pickle.dumps(obj),pickle.dumps(obj1))
 if __name__ == "__main__":
