@@ -49,7 +49,7 @@ public class MapScreen extends Screen {
 		}
 	}
 	
-	public boolean keyPressed(KeyEvent e) {
+	public void keyPressed(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_UP) {
 			camera.yVel = -CAMERA_SPEED;
 		} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
@@ -59,18 +59,14 @@ public class MapScreen extends Screen {
 		} else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 			camera.xVel = CAMERA_SPEED;
 		}
-		
-		return true;
 	}
 	
-	public boolean keyReleased(KeyEvent e) {
+	public void keyReleased(KeyEvent e) {
 		if ((e.getKeyCode() == KeyEvent.VK_UP) || (e.getKeyCode() == KeyEvent.VK_DOWN)) {
 			camera.yVel = 0;
 		} else if ((e.getKeyCode() == KeyEvent.VK_LEFT) || (e.getKeyCode() == KeyEvent.VK_RIGHT)) {
 			camera.xVel = 0;
 		}
-		
-		return true;
 	}
 
 }
