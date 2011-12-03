@@ -31,8 +31,10 @@ public class ScreenStack extends JPanel implements KeyListener, MouseListener, M
 		boolean otherScreenHasFocus = false;
 		boolean coveredByOtherScreen = false;
 		
-		for (Screen screen : screenList) {
-			screen.update(otherScreenHasFocus, coveredByOtherScreen);
+		for (int i = screenList.size() - 1; i > 0; i--) {
+			Screen screen = screenList.get(i);
+			
+			screen.update(otherScreenHasFocus, !coveredByOtherScreen);
 			
 			if ((screen.getState() == Screen.State.ACTIVE) ||
 					(screen.getState() == Screen.State.TRANSITION_ON))
@@ -58,14 +60,17 @@ public class ScreenStack extends JPanel implements KeyListener, MouseListener, M
 	
 	@Override
 	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
+		for (Screen screen : screenList) {
+			screen.keyPressed(e);
+		}
 		
 	}
 	
 	@Override
 	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
+		for (Screen screen : screenList) {
+			screen.keyReleased(e);
+		}
 	}
 	
 	@Override
