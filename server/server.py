@@ -88,7 +88,7 @@ def g_game(game_id=None):
 
     return status.encode()
 
-# ?? Magic?
+# Indicate that the user is ready to start the gaem
 @post('/game/:game_id')
 def g_game(game_id=None):
     ready = request.forms.ready
@@ -99,8 +99,6 @@ def g_game(game_id=None):
 
     if ready:
         game.setReady(session)
-    pass
-    # TODO help
 
 # Set the initial position of all units from given POST data
 @post('/game/:game_id/ships')
