@@ -18,7 +18,6 @@ import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 
-import edu.rit.se.sse.rapdevx.api.dataclasses.Game;
 import edu.rit.se.sse.rapdevx.api.dataclasses.Session;
 
 /**
@@ -49,7 +48,7 @@ public class SessionApi {
 	 * If no game_id is provided, periodically check for updates until the 
 	 * session has been given a game.
 	 */
-	public static Session createSession(String nickname, Game requestedGame) {
+	public static Session createSession(String nickname, Session requestedGame) {
 		// Connect to session
 		Map<String, String> json = getJsonMap(
 				getResponse("/game/" + requestedGame.getId()));
