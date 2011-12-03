@@ -27,7 +27,7 @@ class GameContext:
     
     def getAllDTOShips(self, my_playernum):
         pass
-    
+
     #Passthrough to phase
     def addPlayerMove(self, action_order, calling_player):
         self.phase.addPlayerMove(action_order, calling_player)
@@ -57,8 +57,7 @@ class GameContext:
         self.phase.setReady(player_num, val)
         self.phase = self.phase.getNextPhase()
     
-    
-    
+
 class GamePhase:
     #abstract superclass for all phases
     def __init__(self, context):
@@ -239,3 +238,7 @@ if __name__ == '__main__':
     c.setShipPlacement([place],0)
     
     print(c.phase)
+    def setReady(self):
+        pass
+        
+    
