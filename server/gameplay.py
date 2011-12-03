@@ -68,34 +68,51 @@ class Unit:
 
 class Ability:
     '''
+    An object containing information about a unit's ability, which can be
+    an "offensive" attack or a "healing" attack.
     '''
 
     def __init__(self, radius, name, default_damage, special_damages):
+        '''
+        Constructor.
+
+        radius - An integer containing the ability's range. In order for an
+                 ability to be usable, a unit must be 
+        name - A string containing the ability's name.
+        default_damage - An integer containing the amount of damage that this
+                         move will normally do.
+        special_damages - A dictionary which maps unit type strings to integer
+                          special damage values.
+        gid - The unit's id.
+        '''
         self.radius = radius
         self.name = name
         self.default_damage = default_damage
         self.special_damages = special_damages
         self.gid = None #set on registry
     
-    # 
     def damageForTypes(self,type_list):
         '''
+        Retrieve the damage value, taking unit types into account.
+
+        type_list - A list of strings indicating the types associated with
+                    a unit.
         '''
         for type in type_list:
-            if type in self.special_damages:
+            if(type in self.special_damages):
                 return self.special_damages[type]
         
         return self.default_damage
-
-    # Get the radius.   
+ 
     def getRadius(self):
         '''
+        Get the radius. 
         '''
         return self.radius
         
-    # Get a DTO object containing Ability data.
     def to_dto(self):
         '''
+        Get a DTO object containing Ability data.
         '''
         dto = DTO_Ability(self.radius, self.name, self.default_damage, self.special_damages, self.gid)
         return dto
