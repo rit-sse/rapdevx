@@ -41,16 +41,12 @@ public class Main {
 				// Update any movements and animations
 				window.update();
 				
+				// Update any movements and animations
+				window.render();
+				
 				nextUpdate += UDATE_TICKS;
 				loops++;
 			}
-			
-			// Update any movements and animations
-			window.render();
-			
-			try {
-				Thread.sleep(500);
-			} catch (InterruptedException e) {}
 		}
 	}
 

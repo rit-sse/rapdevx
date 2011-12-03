@@ -1,5 +1,7 @@
 package edu.rit.se.sse.rapdevx.gui;
 
+import java.awt.Graphics2D;
+
 public abstract class DrawableObject implements Drawable {
 
 	protected int x, y, width, height;
@@ -107,5 +109,9 @@ public abstract class DrawableObject implements Drawable {
 	public void update() {
 		this.x += xVel;
 		this.y += yVel;
+	}
+	
+	public void draw(Graphics2D gPen) {
+		
 	}
 }

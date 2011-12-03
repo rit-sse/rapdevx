@@ -1,26 +1,27 @@
 package edu.rit.se.sse.rapdevx.gui;
 
 import java.awt.Graphics2D;
+import java.awt.geom.Rectangle2D;
 
 public class DrawableShip extends DrawableObject {
 	
 	Sprite shipImage;
 	
-	public DrawableShip() {
-		
+	public DrawableShip(int x, int y) {
+		super(x, y);
+		shipImage = new Sprite("assets/ship.png");
 	}
 
-	@Override
 	public void update() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void draw(Graphics2D gPen) {
-		// TODO Auto-generated method stub
-		
+		this.x += xVel;
+		this.y += yVel;
 	}
 	
+	public void draw(Graphics2D gPen, Rectangle2D bounds) {
+		if (bounds.intersects(x + bounds.getX(), y + bounds.getY(), 64, 64)) {
+			shipImage.draw(gPen, x + (int)bounds.getX(), y + (int)bounds.getY(), 4);
+		}
+		
+	}	
 
 }

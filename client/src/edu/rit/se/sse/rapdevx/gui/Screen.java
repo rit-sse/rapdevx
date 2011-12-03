@@ -2,11 +2,9 @@ package edu.rit.se.sse.rapdevx.gui;
 
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
-public abstract class Screen implements KeyListener, MouseListener {
+public abstract class Screen {
 	
 	enum State {
 		ACTIVE,
@@ -29,9 +27,7 @@ public abstract class Screen implements KeyListener, MouseListener {
 	}
 	
 	public abstract void update(boolean hasFocus, boolean isVisible);
-	
 	public abstract void updateTransition(double position, int direction);
-	
 	public abstract void draw(Graphics2D gPen); 
 	
 	public void exit() {
@@ -46,37 +42,40 @@ public abstract class Screen implements KeyListener, MouseListener {
 		return currentState;
 	}
 	
+	
+	
 	/**** User Input ****/
 	
-	public void mouseClicked(MouseEvent arg0) {
-		
+	public boolean mouseClicked(MouseEvent e) {
+		return true;
 	}
 	
-	public void mouseEntered(MouseEvent arg0) {		
+	public boolean mouseEntered(MouseEvent e) {
+		return true;
 	}
 
-	public void mouseExited(MouseEvent arg0) {
-		
+	public boolean mouseExited(MouseEvent e) {
+		return true;
 	}
 
-	public void mousePressed(MouseEvent arg0) {
-		
+	public boolean mousePressed(MouseEvent e) {
+		return true;
 	}
 
-	public void mouseReleased(MouseEvent arg0) {
-		
+	public boolean mouseReleased(MouseEvent e) {
+		return true;
 	}
 
-	public void keyPressed(KeyEvent arg0) {
-		
+	public boolean keyPressed(KeyEvent e) {
+		return true;
 	}
 
-	public void keyReleased(KeyEvent arg0) {
-		
+	public boolean keyReleased(KeyEvent e) {
+		return true;
 	}
 
-	public void keyTyped(KeyEvent arg0) {
-		
+	public boolean keyTyped(KeyEvent e) {
+		return true;
 	}
 
 }
