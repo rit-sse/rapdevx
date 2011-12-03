@@ -163,7 +163,7 @@ class MoveTurn:
                 return False
 
         else:
-            if distance(Z,B) >= (radius1 + radius2)
+            if distance(Z,B) >= (radius1 + radius2):
                 return False
             else:
                 return True
@@ -221,7 +221,6 @@ class AttackTurn:
         pass
 
     def setTurnNum( self, turn_num ):
-        '''
         '''
         Constructor.
         
@@ -399,7 +398,7 @@ class MoveTurn:
                 return False
 
         else:
-            if distance(Z,B) >= (radius1 + radius2)
+            if distance(Z,B) >= (radius1 + radius2):
                 return False
             else:
                 return True
