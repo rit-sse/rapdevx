@@ -171,7 +171,7 @@ class MoveTurn:
             return ((point1[0] - point2[0])**2 + (point1[1] - point2[1])**2)**0.5
         
         length_ratio = ((distance(unit1_loc,unit2_loc)**2-distance(unit2_loc,end_loc)**2-distance(end_loc,unit1_loc)**2)/(-2*distance(end_loc,unit1_loc))) / distance(unit1_loc,end_loc)
-        test_point = {(unit1_loc[0]+unit2_loc[0])*(length_ratio),(unit1_loc[1]+unit2_loc[1])*(length_ratio)}
+        test_point = ((unit1_loc[0]+unit2_loc[0])*(length_ratio),(unit1_loc[1]+unit2_loc[1])*(length_ratio))
 
         if (distance(unit1_loc,test_point) - distance(unit1_loc,end_loc)) > 0:
             if distance(unit1_loc,unit2_loc) < (radius1 + radius2):
