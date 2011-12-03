@@ -51,13 +51,13 @@ public class Window {
 		
 		//TODO remove after testing
 		Menu testMenu = new Menu(300, 300);
-		MenuButton playButton = new MenuButton("Play Test", "This button does nothing yet");
-		MenuButton settingsButton = new MenuButton("Settings Test", "This button does nothing yet");
-		MenuButton helpButton = new MenuButton("Help Test", "This button does nothing yet");
+		MenuButton playButton = new MenuButton("Play", "This button does nothing yet");
+		MenuButton settingsButton = new MenuButton("Settings", "This button does nothing yet");
+		MenuButton helpButton = new MenuButton("Help", "This button does nothing yet");
 		testMenu.addButton(playButton);
 		testMenu.addButton(settingsButton);
 		testMenu.addButton(helpButton);
-		//screenStack.addScreen(testMenu);
+		screenStack.addScreen(testMenu);
 		
 		//Testing a ship screen
 		StatsScreen testStatsScreen = new StatsScreen(300, 200, window.getWidth(), window.getHeight(), null);
