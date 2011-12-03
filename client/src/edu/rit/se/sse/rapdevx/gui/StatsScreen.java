@@ -42,12 +42,6 @@ public class StatsScreen extends Screen {
 		x = wWidth - screenWidth;
 		y = wHeight - screenHeight;
 		this.ship = ship;
-		try {
-			background = ImageIO
-					.read(new File("assets/stats_screen.png"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 
 	@Override
@@ -62,9 +56,8 @@ public class StatsScreen extends Screen {
 
 	}
 
-
 	public void draw(Graphics2D gPen) {
-		gPen.drawImage(background, x, y, screenWidth, screenHeight, null);
+		new RectangleBackground(x, y, screenWidth, screenHeight).draw(gPen);
 		gPen.setColor(Color.BLACK);
 
 		// sample name
@@ -101,7 +94,7 @@ public class StatsScreen extends Screen {
 		double scale = hp / maxHp * 195.0;
 		gPen.setColor(Color.WHITE);
 		gPen.fill(new Rectangle(x + 65, y + 35, 195, 20));
-		new Text(hp + "/" + maxHp, x + 65 + 145, y + 20).draw(gPen);
+		new Text((int)hp + "/" + (int)maxHp, x + 65 + 145, y + 20).draw(gPen);
 		if (scale < 1.0 / 3.0 * 195.0) {
 			gPen.setColor(Color.RED);
 		} else if (scale < 2.0 / 3.0 * 195.0) {

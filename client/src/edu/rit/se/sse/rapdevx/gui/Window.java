@@ -47,17 +47,23 @@ public class Window {
 		/**** Create the panel to draw on ****/
 		screenStack = new ScreenStack();
 		screenStack.setSize(window.getWidth(), window.getHeight());
-		screenStack.addScreen(new MapScreen(window.getWidth(), window.getHeight()));
+		
+		// Add a map screen on startup
+		MapScreen mapScreen = new MapScreen(window.getWidth(), window.getHeight());
+		screenStack.addScreen(mapScreen);
+		
+		// Start with the move phase on the map
+		screenStack.addScreen(new MoveScreen(mapScreen.getCamera(), window.getWidth(), window.getHeight()));
 		
 		//TODO remove after testing
 		Menu testMenu = new Menu(300, 300);
-		MenuButton playButton = new MenuButton("Play Test", "This button does nothing yet");
-		MenuButton settingsButton = new MenuButton("Settings Test", "This button does nothing yet");
-		MenuButton helpButton = new MenuButton("Help Test", "This button does nothing yet");
+		MenuButton playButton = new MenuButton("Play", "This button does nothing yet");
+		MenuButton settingsButton = new MenuButton("Settings", "This button does nothing yet");
+		MenuButton helpButton = new MenuButton("Help", "This button does nothing yet");
 		testMenu.addButton(playButton);
 		testMenu.addButton(settingsButton);
 		testMenu.addButton(helpButton);
-		//screenStack.addScreen(testMenu);
+		screenStack.addScreen(testMenu);
 		
 		//Testing a ship screen
 		StatsScreen testStatsScreen = new StatsScreen(300, 200, window.getWidth(), window.getHeight(), null);

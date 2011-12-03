@@ -7,11 +7,10 @@ import java.awt.geom.Area;
 import java.util.ArrayList;
 
 import edu.rit.se.sse.rapdevx.clientmodels.Ship;
-import edu.rit.se.sse.rapdevx.clientstate.MoveState;
 import edu.rit.se.sse.rapdevx.events.StateEvent;
 import edu.rit.se.sse.rapdevx.events.StateListener;
 
-public class AttackScreen extends Screen implements StateListener {
+public class MoveScreen extends Screen implements StateListener {
 	
 	/** A reference to the map camera for positioning objects in world space */
 	private Camera camera;
@@ -21,7 +20,7 @@ public class AttackScreen extends Screen implements StateListener {
 	private DrawableShip selectedShip;
 	
 	
-	public AttackScreen(Camera camera, int width, int height) {
+	public MoveScreen(Camera camera, int width, int height) {
 		super(width, height);
 		this.camera = camera;
 		
@@ -58,17 +57,47 @@ public class AttackScreen extends Screen implements StateListener {
 	}
 	
 	public void mouseReleased(MouseEvent e) {
+		// Check to see if one of the ships was clicked
+		for (DrawableShip ship : shipList) {
+			if (new Area(ship.getBounds()).contains(e.getX() + camera.getX(), e.getY() + camera.getY())) {
+				// Select a non-selected ship and deselect a selected ship
+				if (ship == selectedShip) {
+					selectedShip.setSelected(false);
+					selectedShip = null;
+				} else {
+					if (selectedShip != null)
+						selectedShip.setSelected(false);
+					
+					ship.setSelected(true);
+					selectedShip = ship;
+				}
+			// If no ship is clicked, move any selected ship to the mouse coordinates
+			} else if (selectedShip != null) {
+				selectedShip.setCenter(e.getX() + camera.getX(), e.getY() + camera.getY());
+			}
+		}
 		
+		e.consume();
 	}
 	
 	public void mouseMoved(MouseEvent e) {
+		// Check all ships to see if the mouse is hovered over it
+		for (DrawableShip ship : shipList) {
+			//TODO potential bug when a null ship is in the list and selected ship is null?
+			if (ship != selectedShip) {
+				ship.setSelected(false);
+			}
+			
+			if (new Area(ship.getBounds()).contains(e.getX() + camera.getX(), e.getY() + camera.getY())) {
+				ship.setSelected(true);
+			}
+		}
 		
+		e.consume();
 	}
 	
 	public void stateChanged(StateEvent e) {
-		if (e.getNewState() instanceof MoveState) {
-			//TODO add a move screen, remove this one
-		}
+		//TODO Switch to move phase, etc
 	}
 
 }

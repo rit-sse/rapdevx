@@ -46,33 +46,45 @@ public class Background {
 
 	public void drawImage(Graphics2D gPen, Rectangle2D bounds) {
 		
-		// Steve figured it out with Kristen :D AT NIGHT!!! :D
-		// Now we can enjoy Steve's magnificent background :D
-
-		int x1 = 0;
-		int y1 = 0;
+		int cameraX = (int)bounds.getX();
+		int cameraY = (int)bounds.getY();
+		
+		int cameraWidth = (int)bounds.getWidth();
+		int cameraHeight = (int)bounds.getHeight();
 		
 		int backgroundWidth = background.getWidth();
 		int backgroundHeight = background.getHeight();
 		
-		//if ( xOffset > 0 ) {
-		//	x1 =  xOffset - ( backgroundWidth * (int)( xOffset / backgroundWidth + 1 ) );
-		//}
-		//if ( yOffset > 0 ) {
-		//	y1 = yOffset - ( backgroundHeight * (int)( yOffset / backgroundHeight +1 ) );
-		//}
+		// backgrounds can only be drawn at integer multiples
+		// of the with and height.
+		int drawAtX = (int)( cameraX / backgroundWidth ) * backgroundWidth;
+		int drawAtY = (int)( cameraY / backgroundHeight ) * backgroundHeight;
 		
-		int adjustedY1 = y1;
+		// if the camera is in the negative coordinate space
+		// on the map, adjust the draw positions.
+		if ( cameraX < 0 ) {
+			drawAtX = -drawAtX - backgroundWidth;
+		}
+		if ( cameraY < 0 ) {
+			drawAtY = -drawAtY - backgroundHeight;
+		}
 		
-		while (x1 < width) {
-			while (y1 < height) {
-				gPen.drawImage(background, x1, y1,
+		int startDrawAtY = drawAtY;
+		
+		int xPosThatCantBe = cameraX + cameraWidth;
+		int yPosThatCantBe = cameraY + cameraHeight;
+		
+		// draw backgrounds until they would be
+		// drawn totally off screen.
+		while ( drawAtX < xPosThatCantBe ) {
+			while ( drawAtY < yPosThatCantBe ) {
+				gPen.drawImage(background, drawAtX, drawAtY,
 						backgroundWidth,
 						backgroundHeight, null);
-				y1 += backgroundHeight;
+				drawAtY += backgroundHeight;
 			}
-			x1 += backgroundWidth;
-			y1 = adjustedY1;
+			drawAtX += backgroundWidth;
+			drawAtY = startDrawAtY;
 		}
 	}
 

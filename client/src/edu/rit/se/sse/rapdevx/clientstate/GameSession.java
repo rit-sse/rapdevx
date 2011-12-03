@@ -27,7 +27,7 @@ public class GameSession {
 
 	private GameSession() {
 		currentState = new StartingState();
-		notifyStateListeners();
+		notifyStateListeners(null, currentState);
 	}
 
 	public static GameSession get() {
@@ -40,8 +40,9 @@ public class GameSession {
 	 * Advance the state!
 	 */
 	public void advanceState() {
+		StateBase oldState = currentState;
 		currentState = currentState.advance();
-		notifyStateListeners();
+		notifyStateListeners(oldState, currentState);
 	}
 
 	/**
@@ -75,9 +76,9 @@ public class GameSession {
 		listeners.add(listener);
 	}
 
-	private void notifyStateListeners() {
+	private void notifyStateListeners(StateBase oldState, StateBase newState) {
 		for (StateListener listener : listeners)
-			listener.stateChanged(new StateEvent(this));
+			listener.stateChanged(new StateEvent(this, oldState, newState));
 	}
 
 	/**

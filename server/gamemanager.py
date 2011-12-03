@@ -1,7 +1,8 @@
-import session
+from session import *
+from context import *
 
 class GameManager:
-    games = {}
+    games = []
     last_id = 0
 
     def next_game_id():
@@ -10,7 +11,7 @@ class GameManager:
 
     def create_game(session1=None, session2=None):
         """Creates a new game with the provided sessions connected"""
-        game = GameContext()
+        game = GameContext(None)
         game_id = GameManager.next_game_id()
 
         games[game_id] = game
