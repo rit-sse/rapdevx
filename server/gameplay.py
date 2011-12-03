@@ -162,7 +162,7 @@ class MoveTurn:
     def getResults(self):
         pass
         
-    def collisionCheck(self, unit1, unit2, radius1, radius2, end_loc):
+    def collisionCheck(self, unit1, unit2, end_loc):
         '''
         '''
         unit1_loc = unit1.location
@@ -175,13 +175,12 @@ class MoveTurn:
         test_point = ((unit1_loc[0]+unit2_loc[0])*(length_ratio),(unit1_loc[1]+unit2_loc[1])*(length_ratio))
 
         if (distance(unit1_loc,test_point) - distance(unit1_loc,end_loc)) > 0:
-            if distance(unit1_loc,unit2_loc) < (radius1 + radius2):
+            if distance(unit1_loc,unit2_loc) < (unit1.radius + unit2.radius):
                 return True
             else:
                 return False
-
         else:
-            if distance(test_point,unit2_loc) >= (radius1 + radius2):
+            if distance(test_point,unit2_loc) >= (unit1.radius + unit2.radius):
                 return False
             else:
                 return True
