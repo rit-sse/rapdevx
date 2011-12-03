@@ -5,8 +5,6 @@ package edu.rit.se.sse.rapdevx.clientmodels;
 
 import java.util.List;
 
-import edu.rit.se.sse.rapdevx.api.dataclasses.Location;
-
 /**
  * @author Cody Krieger
  * 
@@ -22,8 +20,7 @@ public class ShipFactory {
 	 *            The location of the API Ship.
 	 * @return A client Ship.
 	 */
-	public static Ship makeShip(
-			edu.rit.se.sse.rapdevx.api.dataclasses.Ship ship, Location location) {
+	public static Ship makeShip(edu.rit.se.sse.rapdevx.api.dataclasses.Ship ship) {
 		Ship newShip = new Ship();
 
 		// newShip.setX(location.getX());
