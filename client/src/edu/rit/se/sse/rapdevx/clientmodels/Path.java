@@ -1,38 +1,33 @@
 package edu.rit.se.sse.rapdevx.clientmodels;
 
 import java.awt.Point;
-import java.util.ArrayList;
+import java.util.List;
+import java.util.Stack;
 
 public class Path {
 	
-	private ArrayList<Point> path;
+	private Stack<Point> path;
 	
 	public Path(Point start) {
 		
-		this.path = new ArrayList<Point>();
+		this.path = new Stack<Point>();
 		path.add(start);
 		
 	}
 	
 	public void addPoint(Point point) {
-		
-		this.path.add(point);
-		
+		path.push(point);
 	}
 	
 	public Point getLastPoint() {
-		
-		return this.path.get(path.size()-1);
-		
+		return path.peek();
 	}
 	
 	public void removePoint() {
-		
-		path.remove(path.size()-1);
-		
+		path.pop();
 	}
 
-	public ArrayList<Point> getPath() {
+	public List<Point> getPath() {
 		return path;
 	}
 

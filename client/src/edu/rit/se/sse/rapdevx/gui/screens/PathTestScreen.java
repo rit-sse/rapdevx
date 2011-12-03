@@ -7,7 +7,7 @@ import edu.rit.se.sse.rapdevx.clientmodels.Path;
 import edu.rit.se.sse.rapdevx.gui.DrawablePath;
 import edu.rit.se.sse.rapdevx.gui.Screen;
 
-public class PathTestScreen extends Screen{
+public class PathTestScreen extends Screen {
 	
 	DrawablePath path;
 
@@ -15,18 +15,20 @@ public class PathTestScreen extends Screen{
 		
 		super(width, height);
 		
-		this.path = new DrawablePath(new Path(new Point(10,5)));
+		Path path = new Path(new Point(0, 0));
+		path.addPoint(new Point(300, 00));
+		path .addPoint(new Point(800, 400));
 		
+		this.path = new DrawablePath(path);
 	}
 
 	public void update(boolean hasFocus, boolean isVisible) {
 		
-		
-		
 	}
 
 	public void draw(Graphics2D gPen) {
-		
+		gPen.fillRect(0, 0, screenWidth, screenHeight);
+		path.draw(gPen);
 		
 		
 	}

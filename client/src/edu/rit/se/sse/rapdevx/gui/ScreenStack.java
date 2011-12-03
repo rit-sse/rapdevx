@@ -8,11 +8,8 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.LinkedList;
 
-import javax.swing.JPanel;
-
-public class ScreenStack extends JPanel implements KeyListener, MouseListener, MouseMotionListener {
+public class ScreenStack implements KeyListener, MouseListener, MouseMotionListener {
 	
-	private static final long serialVersionUID = 1L;
 	private LinkedList<Screen> screenList;
 	
 	public ScreenStack() {
