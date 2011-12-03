@@ -6,15 +6,13 @@ class DTO_AssetImage:
     #file is a string that contains contents of file (base64) (may change)
     #name is a string
     #gid is a string
-    def __init__(self, file, name, gid):
+    def __init__(self, file, gid):
         self.file = file
-        self.name = name
         self.gid = gid
     
     def encode(self):
         r = {}
         r['file'] = self.file
-        r['name'] = self.name
         r['gid'] = self.gid
         return json.dumps(r)
 
@@ -80,7 +78,6 @@ class DTO_Assets:
         self.ship_classes = ship_classes
         self.images = images
         self.abilities = abilities
-        self.gid = gid
         
     def encode(self):
         r = {}
@@ -201,7 +198,7 @@ class DTO_Status:
 
 def JSON_Construct_DTO_AssetImage(jsonstring):
     attribute_dictionary = json.loads(jsonstring)
-    return DTO_AssetImage(attribute_dictionary.pop('file'), attribute_dictionary.pop('name'), attribute_dictionary.pop('gid'))
+    return DTO_AssetImage(attribute_dictionary.pop('file'), attribute_dictionary.pop('gid'))
 
 def JSON_Construct_DTO_ShipClass(jsonstring):
     attribute_dictionary = json.loads(jsonstring)
