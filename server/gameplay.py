@@ -277,7 +277,7 @@ class AttackTurn:
         
         self.player_attack_lists[calling_player].remove(move_order)
 
-    def getPlayerMoveList(self, calling_player, registry):
+    def getPlayerAttackList(self, calling_player, registry):
         '''
         Get a list of the specified player's moves' ID's.
 
@@ -285,7 +285,7 @@ class AttackTurn:
         
         registry - the ID registry that the moves are in
         '''
-        return [x.to_dto for x in self.player_attack_lists[calling_player]]
+        return [x.to_dto() for x in self.player_attack_lists[calling_player]]
     
     def execute(self, registry):
         '''
