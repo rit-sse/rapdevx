@@ -8,6 +8,7 @@ import java.util.Map;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -51,10 +52,10 @@ public class SessionApi {
 	public static Session createSession(String nickname, Game requestedGame) {
 		// Connect to session
 		Map<String, String> json = getJsonMap(
-				getResponse("/game/" + requestedGame.getID()));
+				getResponse("/game/" + requestedGame.getId()));
 		
 		// pull values
-		json.get("magic"); // Don't know what to get
+		json.get("id"); // Don't know what to get
 		
 		// encode into request
 		
@@ -87,6 +88,9 @@ public class SessionApi {
 	 * successful.
 	 */
 	public static boolean destroySession(Session sessionToDestroy) {
+		HttpDelete delete =
+				new HttpDelete(SERVER_URL + "/session/" + sessionToDestroy.getId());
+		
 		return false;
 	}
 	
