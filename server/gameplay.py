@@ -378,42 +378,7 @@ class MoveTurn:
         
     def getResults(self):
         pass
-        
-    def collisionCheck(self, player1Ship, player2Ship, radius1, radius2, endLocation):
-        '''
-        Determine if a moving unit is on a crash course with another stationary unit.
-
-        player1Ship - 
-        player2Ship - 
-        radius1 - 
-        radius2 - 
-        endLocation - 
-        '''
-
-        #A = playerShip1.location
-        #B = playerShip2.location
-        A = playerShip1
-        B = playerShip2
-        C = endLocation
-
-        def distance(point1, point2):
-            return ((point1[0] - point2[0])**2 + (point1[1] - point2[1])**2)**0.5
-        
-        K = ((C**2-A**2-B**2)/(-2*B)) / distance(A,C)
-        Z = {(A[0]+B[0])*(K),(A[1]+B[1])*(K)}
-
-        if (distance(A,Z) - distance(A,C)) > 0:
-            if distance(A,B) < (radius1 + radius2):
-                return True
-            else:
-                return False
-
-        else:
-            if distance(Z,B) >= (radius1 + radius2):
-                return False
-            else:
-                return True
-        
+             
 class AttackTurn:
     '''
     '''
