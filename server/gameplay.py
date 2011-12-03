@@ -15,7 +15,7 @@ def swizzle(lists):
 		if len(lists)==0:
 			return results
 		i = i % len(lists)
-    return results
+	return results
         
 class Unit:
     '''
@@ -210,7 +210,7 @@ class MoveTurn:
         def hitCollide():
             if beyondMovement(unit1, unit2, end_loc, bumpSpace):
 # check if hit can be made from the end of the unit1's path
-                if unit1.radius + unit2.radius + bumpSpace > distance(unit1.location, unit2.location)
+                if unit1.radius + unit2.radius + bumpSpace > distance(unit1.location, unit2.location):
                     return True
                 else:
                     return False
@@ -220,10 +220,10 @@ class MoveTurn:
         
         def main(unit1, unit2, end_loc, bumpSpace):
             print("location of unit1 is :", unit1.location, "\n", "location of unit2 is :", unit2.location)
-            print("the distance between is unit1 and unit2 is :", distance(unit1.location, unit2.location)
-            print("the distance between unit1 and the end loaction is :", distance(unit1.location, end_loc)
-            print("the length ratio, (the stopping point) of unit1's movement is :", lengthRatio(unit1.location, unit2.location, end_loc)
-            print("the test point, or the location of collision tests is :", testPoint(unit1.location, unit2.location, end_loc)
+            print("the distance between is unit1 and unit2 is :", distance(unit1.location, unit2.location))
+            print("the distance between unit1 and the end loaction is :", distance(unit1.location, end_loc))
+            print("the length ratio, (the stopping point) of unit1's movement is :", lengthRatio(unit1.location, unit2.location, end_loc))
+            print("the test point, or the location of collision tests is :", testPoint(unit1.location, unit2.location, end_loc))
             print("test if enemy ship is beyond the point of collision :", beyondMovement(unit1, unit2, end_loc, bumpSpace), "\n", "test if enemy ship hits the ship from the testPoint! :", hitFromTestPoint(unit1, unit2, end_loc, bumpSpace))
             print("final test if hit (tests if both hit from end and if hit from testPoint)! :", hitCollide(unit1, unit2, end_loc, bumpSpace)
 
@@ -257,10 +257,25 @@ class AttackTurn:
         #setup a list of attacks for a player if there isn't one yet
         if calling_player not in self.player_attack_lists:
             self.player_attack_lists[calling_player]=[]
-        
+
+
         order = AttackOrder(dto_attack_order.srcid,dto_attack_order.targetid, dto_attack_order.ability)
+
+	target = registry.getById(dto_attack_order.srcid)
+
+	if registry.getById(dto_attack_order.srcid) == None:
+		raise Exception("Attacking ship not in registry")
+
+	if registry.getById(dto_attack_order.targetid) == None:
+		raise Exception("Target Ship not in registry")
+	
+	if registry.getById(dto_attack_order.ability) == None:
+		raise Exception("Ability not in registry")
+
+	if calling_player != target.getPlayer():
+		raise Exception("Player does not own ship")
+
         registry.register(order)
-        
         self.player_attack_lists.append(order)
         
     def deleteAttackOrder(self, move_order_gid, calling_player, registry):
