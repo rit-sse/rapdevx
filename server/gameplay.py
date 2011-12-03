@@ -16,6 +16,7 @@ class Unit:
         owning_player - An integer refering to the player which owns this unit.
         types - List of strings which tell what kind of thing the unit is.
         location - The unit's location.
+        radius - An integer which represents a units size
         '''
 
         self.gid = None #set on registry
@@ -163,29 +164,52 @@ class MoveTurn:
     def getResults(self):
         pass
         
-    def collisionCheck(self, unit1, unit2, end_loc):
+    def collisionCheck(self, unit1, unit2, end_loc, bumpSpace):
         '''
         '''
+# bumpSpace must be a float/ int
         unit1_loc = unit1.location
         unit2_loc = unit2.location
 
         def distance(point1, point2):
             return ((point1[0] - point2[0])**2 + (point1[1] - point2[1])**2)**0.5
         
-        length_ratio = ((distance(unit1_loc,unit2_loc)**2-distance(unit2_loc,end_loc)**2-distance(end_loc,unit1_loc)**2)/(-2*distance(end_loc,unit1_loc))) / distance(unit1_loc,end_loc)
-        test_point = ((unit1_loc[0]+unit2_loc[0])*(length_ratio),(unit1_loc[1]+unit2_loc[1])*(length_ratio))
+        def lengthRatio(unit1_loc, unit2_loc, end_loc):
+            return ((distance(unit1_loc,unit2_loc)**2-distance(unit2_loc,end_loc)**2-distance(end_loc,unit1_loc)**2)/(-2*distance(end_loc,unit1_loc))) / distance(unit1_loc,end_loc)
+        def testPoint(unit1_loc, unit2_loc, end_loc):
+            return (((unit1_loc[0]+unit2_loc[0])*(lengthRatio(unit1_loc, unit2_loc, end_loc_))),((unit1_loc[1]+unit2_loc[1])*(lengthRatio(unit1_loc, unit2_loc, end_loc))))
 
-        if (distance(unit1_loc,test_point) - distance(unit1_loc,end_loc)) > 0:
-            if distance(unit1_loc,unit2_loc) < (unit1.radius + unit2.radius):
+        def beyondMovement(unit1, unit2, end_loc):
+            if (distance(unit1.location, testPoint(unit1.location, unit2.location, end_loc)) - distance(unit1.location,end_loc)) > 0:
                 return True
             else:
                 return False
-        else:
-            if distance(test_point,unit2_loc) >= (unit1.radius + unit2.radius):
-                return False
+        def hitFromTestPoint(unit1, unit2, end_loc, bumpSpace):
+            if distance(testPoint(unit1.location, unit2.location, end_loc),unit2_loc) > (unit1.radius + unit2.radius + bumpSpace):
+                return False   
             else:
                 return True
+        def hitCollide():
+            if beyondMovement(unit1, unit2, end_loc, bumpSpace):
+# check if hit can be made from the end of the unit1's path
+                if unit1.radius + unit2.radius + bumpSpace > distance(unit1.location, unit2.location)
+                    return True
+                else:
+                    return False
+#check if hit can be made from testPoint (mid point of the ships path)
+            else:
+                hitFromTestPoint(unit1, unit2, end_loc, bumpSpace)
         
+        def main(unit1, unit2, end_loc, bumpSpace):
+            print("location of unit1 is :", unit1.location, "\n", "location of unit2 is :", unit2.location)
+            print("the distance between is unit1 and unit2 is :", distance(unit1.location, unit2.location)
+            print("the distance between unit1 and the end loaction is :", distance(unit1.location, end_loc)
+            print("the length ratio, (the stopping point) of unit1's movement is :", lengthRatio(unit1.location, unit2.location, end_loc)
+            print("the test point, or the location of collision tests is :", testPoint(unit1.location, unit2.location, end_loc)
+            print("test if enemy ship is beyond the point of collision :", beyondMovement(unit1, unit2, end_loc, bumpSpace), "\n", "test if enemy ship hits the ship from the testPoint! :", hitFromTestPoint(unit1, unit2, end_loc, bumpSpace))
+            print("final test if hit (tests if both hit from end and if hit from testPoint)! :", hitCollide(unit1, unit2, end_loc, bumpSpace)
+
+
 class AttackTurn:
     '''
     Represents a player's turn if they choose to attack. 
