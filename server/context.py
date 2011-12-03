@@ -10,7 +10,7 @@ class GameContext:
         #todo real asset loading
         atk = Ability(100,"attack", 10,{})
         self.registry.register(atk)
-        klass = ShipClass([],[atk],200,100,10)
+        klass = UnitClass([],[atk],200,100,10)
         self.registry.register(klass)
         
         self.assets = Assets(1000,1000,[klass],[],[atk])
@@ -233,7 +233,9 @@ if __name__ == '__main__':
 
     import dto
 
-    place = dto.ShipPlacement(10,10,'ShipClass0')
+    place = dto.ShipPlacement(10,10,'UnitClass0')
 
     c.setShipPlacement([place],1)
     c.setShipPlacement([place],0)
+    
+    print(c.phase)
