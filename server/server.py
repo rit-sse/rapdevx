@@ -69,4 +69,3 @@ def g_game_turns_attacks_results(game_id=None, turn_id=None):
     return "GET /game" + str(game_id) + "/turns/" + str(turn_id) + "/attacks/results"
 
 run(host='localhost', port=8080)
-

@@ -122,13 +122,6 @@ class MovementOrder:
         self.path = path
         self.id = id
 
-    def encode(self):
-        r = {}
-        r['unitid'] = self.unitid
-        r['path'] = self.path
-        r['id'] = self.id
-        return json.dumps(r)
-
 class AbilityUseOrder:
     #srcid,targetid = int
     #ability = string
