@@ -8,7 +8,7 @@ public class DrawableShip extends DrawableObject {
 	Sprite shipImage;
 	
 	public DrawableShip(int x, int y) {
-		super(x, y);
+		super(x, y, 64, 64);
 		shipImage = new Sprite("assets/ship.png");
 	}
 

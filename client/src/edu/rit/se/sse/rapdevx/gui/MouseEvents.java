@@ -12,6 +12,14 @@ import java.awt.event.MouseEvent;
  */
 public interface MouseEvents {
 	
+	//Note: clicks will be considered pressing and releasing on the same control instead of pressing and releasing on the same pixel
+	
+	public abstract void mousePressed(MouseEvent e);
+	
+	public abstract void mouseReleased(MouseEvent e);
+	
 	public abstract void mouseMoved(MouseEvent e);
+	
+	public abstract void mouseClicked(MouseEvent e);
 	
 }

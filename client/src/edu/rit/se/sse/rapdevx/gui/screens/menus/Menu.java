@@ -102,14 +102,6 @@ public class Menu extends Screen {
 	}
 	
 	/* (non-Javadoc)
-	 * @see edu.rit.se.sse.rapdevx.gui.Screen#updateTransition(double, int)
-	 */
-	@Override
-	public void updateTransition(double position, int direction) {
-		// TODO Auto-generated method stub
-	}
-	
-	/* (non-Javadoc)
 	 * @see edu.rit.se.sse.rapdevx.gui.Screen#draw(java.awt.Graphics2D)
 	 */
 	@Override
@@ -146,6 +138,43 @@ public class Menu extends Screen {
 	}
 	
 	/* (non-Javadoc)
+	 * @see edu.rit.se.sse.rapdevx.gui.Screen#mousePressed(java.awt.event.MouseEvent)
+	 */
+	@Override
+	public void mousePressed(MouseEvent e) {
+		//if the mouse isn't over us, ignore handle the event
+		int x = e.getX();
+		int y = e.getY();
+		if(!includesPoint(x, y)) {
+			return;
+		}
+		
+		for(MenuButton button: getButtonsOver(x, y)) {
+			button.pressed();
+		}
+		e.consume();
+	}
+	
+	/* (non-Javadoc)
+	 * @see edu.rit.se.sse.rapdevx.gui.Screen#mouseReleased(java.awt.event.MouseEvent)
+	 */
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		//if the mouse isn't over us, ignore handle the event
+		int x = e.getX();
+		int y = e.getY();
+		if(!includesPoint(x, y)) {
+			return;
+		}
+		
+		//don't matter what button we've over, release all of them
+		for(MenuButton button: buttons) {
+			button.released(x, y);
+		}
+		e.consume();
+	}
+	
+	/* (non-Javadoc)
 	 * @see edu.rit.se.sse.rapdevx.gui.Screen#mouseMoved(java.awt.event.MouseEvent)
 	 */
 	@Override
@@ -171,12 +200,31 @@ public class Menu extends Screen {
 	//--------------------------------------------------------------------------
 	
 	/**
+	 * Gets a collection of all buttons that include/overlap the both of the points
+	 * @param x A point on the x-axis
+	 * @param y A point on the y-axis
+	 * @return A collection of MenuButtons.  Will may be empty, but will never be null
+	 */
+	private Collection<MenuButton> getButtonsOver(int x, int y) {
+		Collection<MenuButton> overButtons = new ArrayList<MenuButton>();
+		
+		for(MenuButton button: buttons) {
+			if(button.includesPoint(x, y)) {
+				overButtons.add(button);
+			}
+		}
+		
+		assert(overButtons != null);
+		return overButtons;
+	}
+	
+	/**
 	 * Checks to see if the given points are inside this Menu's drawing area
 	 * @param x A point on the x-axis
 	 * @param y A point on the y-axis
 	 * @return true if the given points are inside this Menu
 	 */
-	public boolean includesPoint(int x, int y) {
+	private boolean includesPoint(int x, int y) {
 		//TODO handle when width or height is negative :/
 		Dimension size = getSize();
 		return !(x < cornerX || x > (cornerX+size.width) ||

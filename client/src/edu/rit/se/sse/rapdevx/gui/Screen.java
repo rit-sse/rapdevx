@@ -47,7 +47,9 @@ public abstract class Screen implements KeyListener, MouseEvents {
 	
 	public abstract void update(boolean hasFocus, boolean isVisible);
 	
-	public abstract void updateTransition(double position, int direction);
+	public void updateTransition(double position, int direction) {
+		
+	}
 	
 	public abstract void draw(Graphics2D gPen); 
 	
@@ -78,10 +80,28 @@ public abstract class Screen implements KeyListener, MouseEvents {
 	}
 	
 	/* (non-Javadoc)
+	 * @see edu.rit.se.sse.rapdevx.gui.MouseEvents#mousePressed(java.awt.event.MouseEvent)
+	 */
+	public void mousePressed(MouseEvent e) {
+		
+	}
+	
+	/* (non-Javadoc)
+	 * @see edu.rit.se.sse.rapdevx.gui.MouseEvents#mouseReleased(java.awt.event.MouseEvent)
+	 */
+	public void mouseReleased(MouseEvent e) {
+		
+	}
+	
+	/* (non-Javadoc)
 	 * @see edu.rit.se.sse.rapdevx.gui.MouseEvents#mouseMoved(java.awt.event.MouseEvent)
 	 */
 	@Override
 	public void mouseMoved(MouseEvent e) {
+		
+	}
+	
+	public void mouseClicked(MouseEvent e) {
 		
 	}
 }

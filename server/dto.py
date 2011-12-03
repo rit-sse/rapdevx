@@ -130,6 +130,11 @@ class DTO_MovementOrder:
         self.path = path
         self.gid = gid
 
+    def encode(self):
+        r = {}
+        r['path'] = self.path
+        r['gid'] = self.gid
+        return json.dumps(r)
 class DTO_AbilityUseOrder:
     #srcid is a string
     #targetid is a string
@@ -149,7 +154,7 @@ class DTO_AbilityUseOrder:
         r['gid'] = self.gid
         return json.dumps(r)
 
-class DTO_Ship:
+class DTO_Unit:
     #player_num is an int
     #hp is an int
     #classid is a string
@@ -185,7 +190,6 @@ class DTO_Status:
         r['me'] = self.me
         return json.dumps(r)
 
-#WARNING/TO-DO: Some of the attributes which are not basic python objects may be junk    
 def JSON_Construct_DTO_AssetImage(jsonstring):
     attribute_dictionary = json.loads(jsonstring)
     return DTO_AssetImage(attribute_dictionary.pop('file'), attribute_dictionary.pop('name'), attribute_dictionary.pop('gid'))
@@ -203,17 +207,17 @@ def JSON_Construct_DTO_Assets(jsonstring):
 
     jsonlist = attribute_dictionary.pop('ship_classes')
     shipclasslist = []
-    for v in jsonlist
+    for v in jsonlist:
         shipclasslist.append(json.loads(v))
 
     jsonlist = attribute_dictionary.pop('images')
     imageslist = []
-    for v in jsonlist
+    for v in jsonlist:
         imageslist.append(json.loads(v))
 
     jsonlist = attribute_dictionary.pop('abilities')
     abilitieslist = []
-    for v in jsonlist
+    for v in jsonlist:
         abilitieslist.append(json.loads(v))
 
     return DTO_Assets(attribute_dictionary.pop('width'),attribute_dictionary.pop('height'),shipclasslist,imageslist,abilitieslist)
@@ -226,7 +230,7 @@ def JSON_Construct_DTO_Results(jsonstring):
     attribute_dictionary = json.loads(jsonstring)
     resultslist = attribute_dictionary.pop('results')
     newresultslistoftuples = []
-    for v in resultslist
+    for v in resultslist:
         newresultslistoftuples.append(tuple(v))
     return DTO_Results(newresultslistoftuples)
 
@@ -234,7 +238,7 @@ def JSON_Construct_DTO_MovementOrder(jsonstring):
     attribute_dictionary = json.loads(jsonstring)
     pathlist = attribute_dictionary.pop('path')
     newpathlistoftuples = []
-    for v in pathlist
+    for v in pathlist:
         newpathlistoftuples.append(tuple(v))
     return DTO_MovementOrder(attribute_dictionary.pop('unitid'), newpathlistoftuples, attribute_dictionary.pop('gid'))
 
@@ -242,9 +246,9 @@ def JSON_Construct_DTO_AbilityUseOrder(jsonstring):
     attribute_dictionary = json.loads(jsonstring)
     return DTO_AbilityUseOrder(attribute_dictionary.pop('srcid'),attribute_dictionary.pop('targetid'),attribute_dictionary.pop('ability'),attribute_dictionary.pop('gid'))
 
-def JSON_Construct_DTO_Ship(jsonstring):
+def JSON_Construct_DTO_Unit(jsonstring):
     attribute_dictionary = json.loads(jsonstring)
-    return DTO_SHIP(attribute_dictionary.pop('player_num'),attribute_dictionary.pop('hp'),attribute_dictionary.pop('classid'),attribute_dictionary.pop('gid'))
+    return DTO_Unit(attribute_dictionary.pop('player_num'),attribute_dictionary.pop('hp'),attribute_dictionary.pop('classid'),attribute_dictionary.pop('gid'))
 
 def JSON_Construct_DTO_Status(jsonstring):
     attribute_dictionary = json.loads(jsonstring)
