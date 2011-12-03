@@ -11,7 +11,7 @@ import java.awt.event.MouseEvent;
  * We don't want to recreate stubs for all of Java's input event methods, so this interface will only include the ones we need
  * @author dpk3062
  */
-public interface MouseEvents {
+public interface ScreenEvents {
 	
 	public abstract void keyPressed(KeyEvent e);
 	

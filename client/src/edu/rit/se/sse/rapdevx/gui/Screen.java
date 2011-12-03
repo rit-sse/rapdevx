@@ -5,7 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
-public abstract class Screen implements MouseEvents {
+public abstract class Screen implements ScreenEvents {
 	
 	enum State {
 		ACTIVE,
@@ -67,21 +67,21 @@ public abstract class Screen implements MouseEvents {
 	/**** User Input ****/
 	
 	/* (non-Javadoc)
-	 * @see edu.rit.se.sse.rapdevx.gui.MouseEvents#keyPressed(java.awt.event.KeyEvent)
+	 * @see edu.rit.se.sse.rapdevx.gui.ScreenEvents#keyPressed(java.awt.event.KeyEvent)
 	 */
 	public void keyPressed(KeyEvent e) {
 		
 	}
 	
 	/* (non-Javadoc)
-	 * @see edu.rit.se.sse.rapdevx.gui.MouseEvents#keyReleased(java.awt.event.KeyEvent)
+	 * @see edu.rit.se.sse.rapdevx.gui.ScreenEvents#keyReleased(java.awt.event.KeyEvent)
 	 */
 	public void keyReleased(KeyEvent e) {
 		
 	}
 	
 	/* (non-Javadoc)
-	 * @see edu.rit.se.sse.rapdevx.gui.MouseEvents#keyTyped(java.awt.event.KeyEvent)
+	 * @see edu.rit.se.sse.rapdevx.gui.ScreenEvents#keyTyped(java.awt.event.KeyEvent)
 	 */
 	@Override
 	public void keyTyped(KeyEvent arg0) {
@@ -89,28 +89,28 @@ public abstract class Screen implements MouseEvents {
 	}
 	
 	/* (non-Javadoc)
-	 * @see edu.rit.se.sse.rapdevx.gui.MouseEvents#mouseClicked(java.awt.event.MouseEvent)
+	 * @see edu.rit.se.sse.rapdevx.gui.ScreenEvents#mouseClicked(java.awt.event.MouseEvent)
 	 */
 	public void mouseClicked(MouseEvent e) {
 		
 	}
 	
 	/* (non-Javadoc)
-	 * @see edu.rit.se.sse.rapdevx.gui.MouseEvents#mousePressed(java.awt.event.MouseEvent)
+	 * @see edu.rit.se.sse.rapdevx.gui.ScreenEvents#mousePressed(java.awt.event.MouseEvent)
 	 */
 	public void mousePressed(MouseEvent e) {
 		
 	}
 	
 	/* (non-Javadoc)
-	 * @see edu.rit.se.sse.rapdevx.gui.MouseEvents#mouseReleased(java.awt.event.MouseEvent)
+	 * @see edu.rit.se.sse.rapdevx.gui.ScreenEvents#mouseReleased(java.awt.event.MouseEvent)
 	 */
 	public void mouseReleased(MouseEvent e) {
 		
 	}
 	
 	/* (non-Javadoc)
-	 * @see edu.rit.se.sse.rapdevx.gui.MouseEvents#mouseMoved(java.awt.event.MouseEvent)
+	 * @see edu.rit.se.sse.rapdevx.gui.ScreenEvents#mouseMoved(java.awt.event.MouseEvent)
 	 */
 	@Override
 	public void mouseMoved(MouseEvent e) {
