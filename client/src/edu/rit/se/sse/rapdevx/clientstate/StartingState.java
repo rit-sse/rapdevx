@@ -30,10 +30,9 @@ public class StartingState extends StateBase {
 
 			@Override
 			public void run() {
-				// TODO poll for server state change to 'unit placement'
+				// TODO poll for phase # change
 
-				// once state has changed to unit placement on server, we're
-				// ready to change states
+				// once phase # has changed, we're ready to change states
 				this.cancel();
 				ready();
 			}
