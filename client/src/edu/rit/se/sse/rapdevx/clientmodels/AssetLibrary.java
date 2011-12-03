@@ -13,8 +13,6 @@ public class AssetLibrary {
 
 	private static Assets	assets;
 
-	// private static Vector<ShipClass> shipClasses = new Vector<ShipClass>();
-
 	/**
 	 * @return the assets
 	 */
