@@ -1,4 +1,22 @@
 from dto import *
+
+def swizzle(lists):
+	lists = [x[:] for x in lists]
+	results = []
+	i = 0
+	while lists:
+		print(lists)
+		if lists[i]:
+			results.append(lists[i][0])
+			lists[i] = lists[i][1:]
+			i = (i+1)
+		else:
+			lists.pop(i)
+		if len(lists)==0:
+			return results
+		i = i % len(lists)
+    return results
+        
 class Unit:
     '''
 
@@ -219,11 +237,7 @@ class AttackTurn:
         '''
         Constructor.
 
-        gid - 
         turn_num - integer referencing the turn where this attack occured.
-        player_attack_lists - A dictionary mapping player ids to a list
-                              containing their attack orders.
-        results - 
         '''
         self.gid = None #set on registry
         self.turn_num = turn_num
@@ -235,8 +249,9 @@ class AttackTurn:
         Submit a player's attack. This method assumes that the move order has
         already been registered.
 
-        attack_order - AbilityUseOrder object for the ability user by the attacker.
+        attack_order - DTO_AbilityUseOrder object for the ability user by the attacker.
         calling_player - integer referencing the attacker's player id.
+        
         registry - the ID registry to add the move to for later reference
         '''
         #setup a list of attacks for a player if there isn't one yet
@@ -277,16 +292,30 @@ class AttackTurn:
 
         registry - The game's Registry object. This has all of the unit data.
         '''
-
-        #for now, assume any ability between two real ships worked
-        pass
-
+        
+        player_nums = sorted(self.player_attack_lists.keys())
+        #todo: "rotate" player nums based on the turn number, so 
+        #a different player gets to go "first" every turn
+        
+        lists = [self.player_attack_lists[x] for x in player_nums]
+        combined_list = swizzle(lists)
+        
+        self.results = []
+        
+        for attack_order in combined_list:
+            attacker = registry.getById(attack_order.srcid)
+            target = registry.getById(attack_order.targetid)
+            
+            if None not in [attacker,target]:
+                self.results.append(attack_order)
+                ability = registry.getById(attack_order.ability)
+                damage = ability.damageForTypes(target.types)
+                target.setHP(target.getHP()-damage)
+                if target.getHP()<=0:
+                    registry.removeById(target.gid)
+            
     def getResults(self):
-        '''
-        Get the list of moves that actually happened during the turn
-        (remember that some ships might be destroyed during a turn).
-        '''
-        pass
+        return self.results
 
         
 class UnitClass:
