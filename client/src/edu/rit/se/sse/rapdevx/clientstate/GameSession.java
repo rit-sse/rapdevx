@@ -17,7 +17,7 @@ public class GameSession {
 	
 	private static GameSession instance = new GameSession();
 
-	private StateBase	currentState;
+	private static StateBase	currentState;
 
 	private Session		session;
 	
