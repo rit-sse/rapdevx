@@ -32,6 +32,9 @@ public class AttackScreen extends Screen implements StateListener {
 	}
 
 	public void update(boolean hasFocus, boolean isVisible) {
+		if (selectedShip != null)
+			selectedShip.setSelected(true);
+		
 		for (DrawableShip ship : shipList) {
 			ship.update();
 		}
@@ -53,22 +56,41 @@ public class AttackScreen extends Screen implements StateListener {
 		gPen.translate(cameraBounds.getX(), cameraBounds.getY());
 	}
 	
-	public void mouseClicked(MouseEvent e) {
-		DrawableShip ship = shipList.get(0);
-		
-		if (new Area(ship.getBounds()).contains(e.getX() + camera.getX(), e.getY() + camera.getY())) {
-			if (ship.isSelected()) {
-				selectedShip.setSelected(false);
-				selectedShip = null;
-			} else {
-				if (selectedShip != null)
+	public void mouseReleased(MouseEvent e) {
+		// Check to see if one of the ships was clicked
+		for (DrawableShip ship : shipList) {
+			if (new Area(ship.getBounds()).contains(e.getX() + camera.getX(), e.getY() + camera.getY())) {
+				// Select a non-selected ship and deselect a selected ship
+				if (ship == selectedShip) {
 					selectedShip.setSelected(false);
-				
-				ship.setSelected(true);
-				selectedShip = ship;
+					selectedShip = null;
+				} else {
+					if (selectedShip != null)
+						selectedShip.setSelected(false);
+					
+					ship.setSelected(true);
+					selectedShip = ship;
+				}
+			// If no ship is clicked, move any selected ship to the mouse coordinates
+			} else if (selectedShip != null) {
+				selectedShip.setCenter(e.getX() + camera.getX(), e.getY() + camera.getY());
 			}
-		} else if (selectedShip != null) {
-			selectedShip.setCenter(e.getX() + camera.getX(), e.getY() + camera.getY());
+		}
+		
+		e.consume();
+	}
+	
+	public void mouseMoved(MouseEvent e) {
+		// Check all ships to see if the mouse is hovered over it
+		for (DrawableShip ship : shipList) {
+			//TODO potential bug when a null ship is in the list and selected ship is null?
+			if (ship != selectedShip) {
+				ship.setSelected(false);
+			}
+			
+			if (new Area(ship.getBounds()).contains(e.getX() + camera.getX(), e.getY() + camera.getY())) {
+				ship.setSelected(true);
+			}
 		}
 		
 		e.consume();
