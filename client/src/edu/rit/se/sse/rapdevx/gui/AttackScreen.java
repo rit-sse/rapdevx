@@ -3,8 +3,10 @@ package edu.rit.se.sse.rapdevx.gui;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
+import java.awt.geom.Area;
 import java.util.ArrayList;
 
+import edu.rit.se.sse.rapdevx.clientmodels.Ship;
 import edu.rit.se.sse.rapdevx.events.StateEvent;
 import edu.rit.se.sse.rapdevx.events.StateListener;
 
@@ -15,6 +17,7 @@ public class AttackScreen extends Screen implements StateListener {
 	
 	/** A list of ships currently on the field **/
 	private ArrayList<DrawableShip> shipList;
+	private DrawableShip selectedShip;
 	
 	
 	public AttackScreen(Camera camera, int width, int height) {
@@ -22,7 +25,10 @@ public class AttackScreen extends Screen implements StateListener {
 		this.camera = camera;
 		
 		shipList = new ArrayList<DrawableShip>();
-		shipList.add(new DrawableShip(300, 300));
+		Ship ship = new Ship();
+		ship.setX(150);
+		ship.setY(150);
+		shipList.add(new DrawableShip(ship));
 	}
 
 	public void update(boolean hasFocus, boolean isVisible) {
@@ -48,7 +54,23 @@ public class AttackScreen extends Screen implements StateListener {
 	}
 	
 	public void mouseClicked(MouseEvent e) {
-		shipList.get(0).setCenter(e.getX() + camera.getX(), e.getY() + camera.getY());
+		DrawableShip ship = shipList.get(0);
+		
+		if (new Area(ship.getBounds()).contains(e.getX() + camera.getX(), e.getY() + camera.getY())) {
+			if (ship.isSelected()) {
+				selectedShip.setSelected(false);
+				selectedShip = null;
+			} else {
+				if (selectedShip != null)
+					selectedShip.setSelected(false);
+				
+				ship.setSelected(true);
+				selectedShip = ship;
+			}
+		} else if (selectedShip != null) {
+			selectedShip.setCenter(e.getX() + camera.getX(), e.getY() + camera.getY());
+		}
+		
 		e.consume();
 	}
 	
