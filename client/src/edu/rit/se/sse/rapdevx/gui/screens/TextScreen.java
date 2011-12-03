@@ -8,7 +8,6 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import edu.rit.se.sse.rapdevx.gui.ImageColorizer;
 import edu.rit.se.sse.rapdevx.gui.Screen;
 import edu.rit.se.sse.rapdevx.gui.Text;
 
@@ -79,9 +78,9 @@ public class TextScreen extends Screen {
 			e.printStackTrace();
 		}
 		
-		title1.drawWhite(gPen);
+		title1.drawColor(gPen, 0xffff00);
 		title2.drawColor(gPen, 0xffff00);
-		title3.drawWhite(gPen);
+		title3.drawColor(gPen, 0xffff00);
 		
 	}
 
