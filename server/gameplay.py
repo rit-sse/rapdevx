@@ -437,3 +437,17 @@ class AttackTurn:
     def setTurnNum( self, turn_num ):
         '''
         '''
+        
+class ShipClass:
+    def __init__(self, types, abilities, maxhp, radius, placement_cost):
+        self.types = types
+        self.abilities = abilities
+        self.maxhp = maxhp
+        self.radius = radius
+        self.placement_cost = placement_cost  
+        self.gid = None
+    
+    def makeUnit(self,location):
+        pass
+        #todo: make an instance of Unit at the location, with
+        #full health and default values from the class

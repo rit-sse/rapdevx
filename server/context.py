@@ -1,21 +1,62 @@
 from dto import Status
-from gameplay import Turn
+from gameplay import *
+from registry import GameRegistry
 
 class GameContext:
-    def __init__(self):
-        pass
+    def __init__(self,playerlist):
+        self.phase = WaitingPhase(playerlist)
+        self.registry = GameRegistry()
+        #todo real asset loading
+        atk = Ability(100,"attack", 10,{})
+        self.registry.register(atk)
+        klass = ShipClass([],[atk],200,100,10)
+        self.registry.register(klass)
+        
+        self.assets = Assets(1000,1000,[klass],[],[atk])
+        
     
     def getAssetSet(self):
-        pass
+        return self.assets
     
     def getRegistry(self):
-        pass
+        return self.registry
     
     def getCurrentPhase(self):
         return GamePhase(self)
     
     def getAllDTOShips(self, my_playernum):
         pass
+    
+    #Passthrough to phase
+    def addPlayerMove(self, action_order, calling_player):
+        self.phase.addPlayerMove(action_order, calling_player)
+        self.phase = self.phase.getNextPhase()
+        
+    def getPlayerMoveList(self, calling_player):
+        self.phase.getPlayerMoveList(calling_player)
+        self.phase = self.phase.getNextPhase()
+        
+    def getPlayerMove(self, move_id, calling_player):
+        self.phase.getPlayerMove(move_id, calling_player)
+        self.phase = self.phase.getNextPhase()
+    
+    def deletePlayerMove(self, move_id, calling_player):
+        self.phase.deletePlayerMove(move_id, calling_player)
+        self.phase = self.phase.getNextPhase()
+        
+    def setShipPlacement(self, ship_place_list, calling_player):
+        self.phase.setShipPlacement(ship_place_list, calling_player)
+        self.phase = self.phase.getNextPhase()
+        
+    def getGameProgress(self, calling_player):
+        self.phase.getGameProgress(calling_player)
+        self.phase = self.phase.getNextPhase()
+    
+    def setReady(self, player_num, val):
+        self.phase.setReady(player_num, val)
+        self.phase = self.phase.getNextPhase()
+    
+    
     
 class GamePhase:
     #abstract superclass for all phases
@@ -34,7 +75,7 @@ class GamePhase:
     def deletePlayerMove(self, move_id, calling_player):
         Exception("Unimplemented")
         
-    def setShipPlacement(self, ship_place_list):
+    def setShipPlacement(self, ship_place_list, calling_player):
         Exception("Unimplemented")
         
     def getGameProgress(self, calling_player):
@@ -53,7 +94,7 @@ class WaitingPhase(GamePhase):
         self.ready = [False for x in playerlist]
 
     def getGameProgress(self, calling_player):
-        return Status(None, self, self.playerlist, calling_player)
+        return Status(None, "waiting", self.playerlist, calling_player)
 
     def setReady(self, player_num, val):
         self.ready[player_num] = val
@@ -68,22 +109,20 @@ class PlacementPhase(GamePhase):
     #players can choose ship positions, then ready
     def __init__(self, context, playerlist):
         self.playerlist = playerlist
-        self.ready = [False for x in playerlist]
+        self.assignments = [None for x in playerlist]
 
-    def setShipPlacement(self, ship_place_list):
-        # todo what do?
-        return ship_place_list
-
+    def setShipPlacement(self, ship_place_list, calling_player):
+        self.assignments[calling_player] = ship_place_list
+        
     def getGameProgress(self, calling_player):
-        return Status(None, self, self.playerlist, calling_player)
-
-    def setReady(self, player_num, val):
-        self.ready[player_num] = val
-
+        return Status(None, "placement", self.playerlist, calling_player)
+        
     def getNextPhase(self):
-        if(self.ready.contains(False)):
+        if(self.ready.contains(None)):
             return self
         else:
+            #todo: instantiate all of the ships, and add
+            #them to registry
             return MovementPhase(playerlist)
 
 class MovementPhase(GamePhase):
@@ -113,7 +152,7 @@ class MovementPhase(GamePhase):
             Exception("Movement phase is in order, attack orders not allowed")
 
     def getGameProgress(self, calling_player):
-        return Status(self.turn.turn_num, self, self.playerlist, calling_player)
+        return Status(self.turn.turn_num, "move", self.playerlist, calling_player)
 
     def setReady(self, player_num, val):
         self.ready[player_num] = val
@@ -122,6 +161,7 @@ class MovementPhase(GamePhase):
         if(self.ready.contains(False)):
             return self
         else:
+            self.turn.move.execute()
             return AttackPhase(playerlist, self.turn)
     
 
@@ -153,7 +193,7 @@ class AttackPhase(GamePhase):
 
 
     def getGameProgress(self, calling_player):
-        return Status(self.turn.turn_num, self, self.playerlist, calling_player)
+        return Status(self.turn.turn_num, "attack", self.playerlist, calling_player)
 
     def setReady(self, player_num, val):
         self.ready[player_num] = val
@@ -162,6 +202,9 @@ class AttackPhase(GamePhase):
         if(self.ready.contains(False)):
             return self
         else:
+            self.turn.attack.execute()
+            #todo: check of any player lost all ships, and move to won
+            #if so
             return MovementPhase(playerlist, Turn(self.turn.turn_num + 1))
     
 class WonPhase(GamePhase):
@@ -171,5 +214,5 @@ class WonPhase(GamePhase):
         self.turn = turn
 
     def getGameProgress(self, calling_player):
-        return Status(self.turn, self, self.playerlist, calling_player)
+        return Status(self.turn, "win", self.playerlist, calling_player)
     
