@@ -25,13 +25,34 @@ class DTO_ShipClass:
     #radius is an int
     #placement_cost is an int
     #gid is a string
-    def __init__(self, types, abilities, maxhp, radius, placement_cost, gid):
+    def __init__(self, types, abilities, maxhp, radius, placement_cost, imageid, gid):
         self.types = types
         self.abilities = abilities
         self.maxhp = maxhp
         self.radius = radius
         self.placement_cost = placement_cost  
+        self.imageid = imageid
         self.gid = gid
+    
+    def encode(self):
+        r = {}
+        r['radius'] = self.radius
+        r['name'] = self.name
+        r['default_damage'] = self.default_damage
+        r['special_damages'] = self.special_damages
+        r['gid'] = self.gid
+        return json.dumps(r)
+        
+        
+class DTO_Ability:
+    #default_damage is int
+    #special_damage map from string to int
+    def __init__(self, radius, name, default_damage, special_damages, id):
+        self.radius = radius
+        self.name = name
+        self.default_damage = default_damage
+        self.special_damages = special_damages
+        self.gid = id
 
     def encode(self):
         r = {}
@@ -43,27 +64,6 @@ class DTO_ShipClass:
         r['gid'] = self.gid
         return json.dumps(r)
 
-class DTO_Ability:
-    #radius is an int
-    #name is a string
-    #default_damage is an int
-    #special_damage is a dictionary from string to int
-    #gid is a string
-    def __init__(self, radius, name, default_damage, special_damages, gid):
-        self.radius = radius
-        self.name = name
-        self.default_damage = default_damage
-        self.special_damages = special_damages
-        self.gid = gid
-        
-    def encode(self):
-        r = {}
-        r['radius'] = self.radius
-        r['name'] = self.name
-        r['default_damage'] = self.default_damage
-        r['special_damages'] = self.special_damages
-        r['gid'] = self.gid
-        return json.dumps(r)
     
 class DTO_Assets:
     #width is an int
@@ -80,7 +80,8 @@ class DTO_Assets:
         self.ship_classes = ship_classes
         self.images = images
         self.abilities = abilities
-
+        self.gid = gid
+        
     def encode(self):
         r = {}
         r['width'] = self.width
@@ -96,6 +97,7 @@ class DTO_Assets:
             r['abilities'].append(ab.encode())
         print(r)
         return json.dumps(r)
+    
 
 class DTO_ShipPlacement:
     #x is an int
@@ -118,11 +120,11 @@ class DTO_Results:
     #   PATH = list of x,y tuples
     def __init__(self,results):
         self.results = results
-
+    
     def encode(self):
         r = {}
         r['results'] = self.results
-        return json.dumps(r)
+        return json.dumps(r)    
     
 class DTO_MovementOrder:
     #unitid is a string
@@ -139,6 +141,7 @@ class DTO_MovementOrder:
         r['path'] = self.path
         r['gid'] = self.gid
         return json.dumps(r)
+        
 class DTO_AbilityUseOrder:
     #srcid is a string
     #targetid is a string
@@ -187,6 +190,7 @@ class DTO_Status:
         self.phase = phase
         self.player_list = player_list
         self.me = me
+        
     def encode(self):
         r = {}
         r['turn'] = self.turn
@@ -258,3 +262,4 @@ def JSON_Construct_DTO_Unit(jsonstring):
 def JSON_Construct_DTO_Status(jsonstring):
     attribute_dictionary = json.loads(jsonstring)
     return DTO_Status(attribute_dictionary.pop('turn'), attribute_dictionary.pop('phase'), attribute_dictionary.pop('player_list'), attribute_dictionary.pop('me'))
+
