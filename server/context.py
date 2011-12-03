@@ -223,15 +223,17 @@ class WonPhase(GamePhase):
     def getNextPhase(self):
         return self
 
-c = GameContext(['a','b'])
-c.setReady(1,True)
-c.setReady(0,True)
 
-print(c.phase)
+if __name__ = '__main__':
+    c = GameContext(['a','b'])
+    c.setReady(1,True)
+    c.setReady(0,True)
 
-import dto
+    print(c.phase)
 
-place = dto.ShipPlacement(10,10,'ShipClass0')
+    import dto
 
-c.setShipPlacement([place],1)
-c.setShipPlacement([place],0)
+    place = dto.ShipPlacement(10,10,'ShipClass0')
+
+    c.setShipPlacement([place],1)
+    c.setShipPlacement([place],0)
