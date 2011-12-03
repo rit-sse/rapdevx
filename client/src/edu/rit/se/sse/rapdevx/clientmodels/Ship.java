@@ -7,14 +7,14 @@ package edu.rit.se.sse.rapdevx.clientmodels;
  * @author Cody Krieger
  * 
  */
-public class Ship /* this will eventually inherit from the API's Unit class */{
+public class Ship extends edu.rit.se.sse.rapdevx.api.dataclasses.Ship {
 	private int	X;
 	private int	Y;
 
 	public Ship() {
 	}
 
-	public Ship(/* Unit ship , */int X, int Y) {
+	public Ship(edu.rit.se.sse.rapdevx.api.dataclasses.Ship ship, int X, int Y) {
 		this.X = X;
 		this.Y = Y;
 	}

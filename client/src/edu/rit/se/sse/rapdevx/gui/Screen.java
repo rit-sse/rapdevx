@@ -1,5 +1,6 @@
 package edu.rit.se.sse.rapdevx.gui;
 
+import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;

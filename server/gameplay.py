@@ -25,10 +25,33 @@ class Unit:
         pass
         
     def 
+class Ability:
+    def __init__(self, radius, name, default_damage, special_damages):
+        self.radius = radius
+        self.name = name
+        self.default_damage = default_damage
+        self.special_damages = special_damages
+        self.id = None #set on registry
         
+    def damageForTypes(self,type_list):
+        pass
+        
+    def getRadius(self):
+        pass
+        
+    def to_dto(self):
+        pass
+    
+class Turn:
+    def __init__(self, turn_num):
+        self.attack = AttackTurn(turn_num)
+        self.move = MoveTurn(turn_num)
+        self.id = None #set on registry
+    
 class MoveTurn:
     def __init__(self, turn_num):
-        pass
+        self.id = None #set on registry
+        self.turn_num = turn_num
         
     def addMoveOrder(self, move_order):
         pass
@@ -50,7 +73,8 @@ class MoveTurn:
         
 class AttackTurn:
     def __init__(self, turn_num):
-        pass
+        self.id = None #set on registry
+        self.turn_num = turn_num
         
     def addAttackOrder(self, move_order):
         pass

@@ -11,6 +11,8 @@ class GameContext:
     def getCurrentPhase(self):
         return GamePhase(self)
     
+    def getAllDTOShips(self, my_playernum):
+        pass
     
 class GamePhase:
     def __init__(self, context):
@@ -34,3 +36,4 @@ class GamePhase:
     def setReady(self):
         pass
         
+    
