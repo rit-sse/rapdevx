@@ -47,7 +47,7 @@ public class Window {
 		/**** Create the panel to draw on ****/
 		screenStack = new ScreenStack();
 		screenStack.setSize(window.getWidth(), window.getHeight());
-		screenStack.addScreen(new ExampleScreen(window.getWidth(), window.getHeight()));
+		screenStack.addScreen(new MapScreen(window.getWidth(), window.getHeight()));
 		
 		//TODO remove after testing
 		Menu testMenu = new Menu(300, 300);
@@ -57,7 +57,7 @@ public class Window {
 		testMenu.addButton(playButton);
 		testMenu.addButton(settingsButton);
 		testMenu.addButton(helpButton);
-		screenStack.addScreen(testMenu);
+		//screenStack.addScreen(testMenu);
 		
 		// Add the panel to the window
 		window.getContentPane().add(screenStack);

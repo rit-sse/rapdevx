@@ -14,4 +14,6 @@ public interface MouseEvents {
 	
 	public abstract void mouseMoved(MouseEvent e);
 	
+	public abstract void mouseClicked(MouseEvent e);
+	
 }

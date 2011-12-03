@@ -102,14 +102,6 @@ public class Menu extends Screen {
 	}
 	
 	/* (non-Javadoc)
-	 * @see edu.rit.se.sse.rapdevx.gui.Screen#updateTransition(double, int)
-	 */
-	@Override
-	public void updateTransition(double position, int direction) {
-		// TODO Auto-generated method stub
-	}
-	
-	/* (non-Javadoc)
 	 * @see edu.rit.se.sse.rapdevx.gui.Screen#draw(java.awt.Graphics2D)
 	 */
 	@Override

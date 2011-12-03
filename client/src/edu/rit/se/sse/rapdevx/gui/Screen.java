@@ -47,7 +47,9 @@ public abstract class Screen implements KeyListener, MouseEvents {
 	
 	public abstract void update(boolean hasFocus, boolean isVisible);
 	
-	public abstract void updateTransition(double position, int direction);
+	public void updateTransition(double position, int direction) {
+		
+	}
 	
 	public abstract void draw(Graphics2D gPen); 
 	
@@ -82,6 +84,10 @@ public abstract class Screen implements KeyListener, MouseEvents {
 	 */
 	@Override
 	public void mouseMoved(MouseEvent e) {
+		
+	}
+	
+	public void mouseClicked(MouseEvent e) {
 		
 	}
 }

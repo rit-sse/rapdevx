@@ -3,13 +3,16 @@ package edu.rit.se.sse.rapdevx.gui;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-public class Background implements Drawable {
+public class Background {
+	
+	private static int GRID_SIZE = 64;
 
 	private int x, y, width, height;
 	private BufferedImage background;
@@ -30,9 +33,12 @@ public class Background implements Drawable {
 	public void update() {
 	}
 	
-	public void draw(Graphics2D gPen) {
-		gPen.drawImage(background, x, y, width, height, null);
-		drawGrid(gPen);
+	public void draw(Graphics2D gPen, Rectangle2D bounds) {
+		int xOffset = (int) bounds.getX();
+		int yOffset = (int) bounds.getY();
+		
+		gPen.drawImage(background, x + xOffset, y + yOffset, width, height, null);
+		drawGrid(gPen, xOffset, yOffset);
 	}
 
 	/**
@@ -40,21 +46,23 @@ public class Background implements Drawable {
 	 * 
 	 * @param gPen the graphics2D Pen
 	 */
-	public void drawGrid(Graphics2D gPen) {
-		int x1 = 32;
-		int y1 = 32;
-		gPen.setColor(new Color(18, 18, 19));
+	public void drawGrid(Graphics2D gPen, int xOffset, int yOffset) {
+		int x1 = 32 + xOffset;
+		int y1 = 32 + yOffset;
+		
+		gPen.setColor(getColor(x1));
 		while (x1 < width) {
 			gPen.fill(new Rectangle(x1, 0, 4, height));
-			x1 += 64;
-			swapColor(gPen);
+			x1 += GRID_SIZE;
+			gPen.setColor(getColor(x1));
 		}
+		
+		gPen.setColor(getColor(y1));
 		while (y1 < height) {
 			gPen.fill(new Rectangle(0, y1, width, 4));
-			y1 += 64;
-			swapColor(gPen);
+			y1 += GRID_SIZE;
+			gPen.setColor(getColor(y1));
 		}
-
 	}
 
 	/**
@@ -69,6 +77,22 @@ public class Background implements Drawable {
 			gPen.setColor(color2);
 		} else {
 			gPen.setColor(color1);
+		}
+	}
+	
+	/**
+	 * Swaps the color from gray to other gray
+	 * 
+	 * @param gPen the graphics2D Pen
+	 */
+	public Color getColor(int coordinate) {
+		Color color1 = new Color(18, 18, 19);
+		Color color2 = new Color(26, 24, 29);
+		
+		if ((coordinate / GRID_SIZE) % 2 == 0) {
+			return color1;
+		} else {
+			return color2;
 		}
 	}
 
