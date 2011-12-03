@@ -23,9 +23,6 @@ class TestServer( unittest.TestCase ):
             ship2 = gameplay.Unit( [], 1, 0, None, locations2[i] )
             self.assertTrue( moveTurnObject.collisionCheck(ship1, ship2, radius1[i], radius2[i], endingLocation[i]) == assertBool[i] )
 
-            print(moveTurnObject.collisionCheck(ship1, ship2, radius1[i], radius2[i], endingLocation[i]) == assertBool[i])
-
-
 
     def testStart( self ):
         pass
