@@ -1,3 +1,4 @@
+from dto import *
 class Unit:
     '''
 
@@ -260,14 +261,29 @@ class AttackTurn:
         '''
         
 class UnitClass:
-    def __init__(self, types, abilities, maxhp, radius, placement_cost):
+    def __init__(self, types, abilities, maxhp, radius, placement_cost, image, name):
         self.types = types
         self.abilities = abilities
         self.maxhp = maxhp
         self.radius = radius
         self.placement_cost = placement_cost  
+        self.name = name
         self.gid = None
+        self.image = image
     
     def makeUnit(self,location,player_id):
         unit = Unit(self.abilities[:],self.maxhp,player_id, self.types, location, self.radius)
         return unit
+    
+    def to_dto(self):
+    #types, abilities, maxhp, radius, placement_cost, imageid, gid):
+        return DTO_ShipClass(self.types, [x.to_dto() for x in self.abilities], 
+            self.maxhp, self.radius, self.placement_cost, self.image.gid, self.gid)
+            
+class Image:
+    def __init__(self, filename):
+        self.contents = open(filename).read()
+        self.gid = None
+    
+    def to_dto(self):
+        return DTO_AssetImage(self.contents,self.gid)
