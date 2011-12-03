@@ -1,5 +1,6 @@
 class Unit:
     '''
+
     '''
 
     def __init__(self, abilities, maxhp, owning_player, types, location):
@@ -161,6 +162,16 @@ class MoveTurn:
         pass
         
     def collisionCheck(self, player1Ship, player2Ship, radius1, radius2, endLocation):
+        '''
+        Determine if a moving unit is on a crash course with another stationary unit.
+
+        player1Ship - 
+        player2Ship - 
+        radius1 - 
+        radius2 - 
+        endLocation - 
+        '''
+
         #A = playerShip1.location
         #B = playerShip2.location
         A = playerShip1
@@ -208,22 +219,25 @@ class AttackTurn:
         # add code/data structures to support keeping track of adding/deleting
     
     def deleteAttackOrder(self, move_order_gid, calling_player):
+        '''
+        '''
         pass
 
     def getPlayerMoveList(self, calling_player):
         '''
         Get a list containing a player's moves.
 
-        calling_player - integer referencing a player id.
+        calling_player - an integer referencing a player id.
         '''
         pass
     
-    #any existing ability order should be evaluated
-    #(going round robin on submitting players, in order)
-    #remove ships that are destroyed, if not then set their health
-    #lower
     def execute(self, registry):
         '''
+        Any existing ability order should be evaluated (going round robin on
+        submitting players, in order) remove ships that are destroyed, if not
+        then set their health lower.
+
+        registry - The game's Registry object. THis has all of the unit data.
         '''
         pass
 
