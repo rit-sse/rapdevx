@@ -3,6 +3,9 @@
 import json
 
 class DTO_AssetImage:
+    #files is a
+    #name is a
+    #gid is a
     def __init__(self, file, name, gid):
         self.file = file
         self.name = name
@@ -15,14 +18,13 @@ class DTO_AssetImage:
         r['gid'] = self.gid
         return json.dumps(r)
 
-    def encode(self):
-        r = {}
-        r['file'] = self.file
-        r['name'] = self.name
-        r['gid'] = self.gid
-        return json.dumps(r)
-
 class DTO_ShipClass:
+    #types is a
+    #abilities is a
+    #maxhp is a
+    #radius is a
+    #placement_cost is a
+    #gid is a
     def __init__(self, types, abilities, maxhp, radius, placement_cost, gid):
         self.types = types
         self.abilities = abilities
@@ -42,8 +44,11 @@ class DTO_ShipClass:
         return json.dumps(r)
 
 class DTO_Ability:
-    #default_damage is int
-    #special_damage map from string to int
+    #radius is a
+    #name is a
+    #default_damage is an int
+    #special_damage is a map from string to int
+    #gid is a 
     def __init__(self, radius, name, default_damage, special_damages, gid):
         self.radius = radius
         self.name = name
@@ -61,10 +66,14 @@ class DTO_Ability:
         return json.dumps(r)
     
 class DTO_Assets:
-    #width, height are ints
+    #width is an int
+    #height is an int
     #ship_classes is a list of ShipClass instances
+    #   See DTO_ShipClasses
     #images is a list of AssetImage
+    #   See DTO_AssetImage
     #abilities is a list of abilities
+    #   See DTO_Ability
     def __init__(self, width, height, ship_classes, images, abilities):
         self.width = width
         self.height = height
@@ -80,7 +89,9 @@ class DTO_Assets:
         return json.dumps(r)
 
 class DTO_ShipPlacement:
-    #x,y, classid are all ints
+    #x is an int
+    #y is an int
+    #classid is an int
     def __init__(self, x, y, classid):
         self.x = x
         self.y = y
@@ -95,7 +106,7 @@ class DTO_ShipPlacement:
     
 class DTO_Results:
     #results = map of ship id to PATH of ship
-    #PATH = list of x,y tuples
+    #   PATH = list of x,y tuples
     def __init__(self,results):
         self.results = results
 
@@ -105,16 +116,19 @@ class DTO_Results:
         return json.dumps(r)
     
 class DTO_MovementOrder:
-    #unitid = int
-    #PATH = list of x,y tuples
+    #unitid is an int
+    #PATH is a list of x,y tuples
+    #gid is a
     def __init__(self, unitid, path, gid):
         self.unitid = unitid
         self.path = path
         self.gid = gid
 
 class DTO_AbilityUseOrder:
-    #srcid,targetid = int
-    #ability = string
+    #srcid is an int
+    #targetid is an int
+    #ability is a string
+    #gid is a
     def __init__(self, srcid, targetid, ability, gid):
         self.srcid = srcid
         self.targetid = targetid
@@ -130,6 +144,10 @@ class DTO_AbilityUseOrder:
         return json.dumps(r)
 
 class DTO_Ship:
+    #player_num is a
+    #hp is a
+    #classid is a
+    #gid is a
     def __init__(self, player_num, hp, classid, gid):
         self.player_num = player_num
         self.hp = hp
@@ -137,7 +155,10 @@ class DTO_Ship:
         self.gid = gid
         
 class DTO_Status:
-    #turn, phase, me = ints - me is the playerid of the asking player
+    #turn is an int
+    #phase is an int
+    #me is an int
+    #   me is the playerid of the asking player
     def __init__(self, turn, phase, player_list, me):
         self.turn = turn
         self.phase = phase
