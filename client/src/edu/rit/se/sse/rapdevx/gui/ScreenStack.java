@@ -39,6 +39,7 @@ public class ScreenStack extends JPanel implements KeyListener, MouseListener, M
 			if ((screen.getState() == Screen.State.ACTIVE) ||
 					(screen.getState() == Screen.State.TRANSITION_ON))
 			{
+				//TODO: combine if statements if nothing else is added here
 				if (!otherScreenHasFocus) {
 					otherScreenHasFocus = true;
 					

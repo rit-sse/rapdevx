@@ -14,6 +14,11 @@ import javax.imageio.ImageIO;
 public class Background {
 
 	private static int GRID_SIZE = 64;
+	public static final Color GRID_COLOR_1 = new Color(60, 60, 60);
+	public static final Color GRID_COLOR_2 = new Color(40, 40, 40);
+	
+	//public static final Color GRID_COLOR_2 = new Color(255, 0, 0);
+	//public static final Color GRID_COLOR_1 = new Color(0, 255, 0);
 
 	private int x, y, width, height;
 	private BufferedImage background;
@@ -35,30 +40,27 @@ public class Background {
 	}
 
 	public void draw(Graphics2D gPen, Rectangle2D bounds) {
-		int xOffset = (int) bounds.getX();
-		int yOffset = (int) bounds.getY();
-
-		drawImage(gPen, xOffset, yOffset);
-		drawGrid(gPen, xOffset, yOffset);
+		drawImage(gPen, bounds);
+		drawGrid(gPen, bounds);
 	}
 
-	public void drawImage(Graphics2D gPen, int xOffset, int yOffset) {
+	public void drawImage(Graphics2D gPen, Rectangle2D bounds) {
 		
 		// Steve figured it out with Kristen :D AT NIGHT!!! :D
 		// Now we can enjoy Steve's magnificent background :D
 
-		int x1 = xOffset;
-		int y1 = yOffset;
+		int x1 = 0;
+		int y1 = 0;
 		
 		int backgroundWidth = background.getWidth();
 		int backgroundHeight = background.getHeight();
 		
-		if ( xOffset > 0 ) {
-			x1 =  xOffset - ( backgroundWidth * (int)( xOffset / backgroundWidth + 1 ) );
-		}
-		if ( yOffset > 0 ) {
-			y1 = yOffset - ( backgroundHeight * (int)( yOffset / backgroundHeight +1 ) );
-		}
+		//if ( xOffset > 0 ) {
+		//	x1 =  xOffset - ( backgroundWidth * (int)( xOffset / backgroundWidth + 1 ) );
+		//}
+		//if ( yOffset > 0 ) {
+		//	y1 = yOffset - ( backgroundHeight * (int)( yOffset / backgroundHeight +1 ) );
+		//}
 		
 		int adjustedY1 = y1;
 		
@@ -80,44 +82,24 @@ public class Background {
 	 * @param gPen
 	 *              the graphics2D Pen
 	 */
-	public void drawGrid(Graphics2D gPen, int xOffset, int yOffset) {
-		int x1 = 32 + xOffset;
-		int y1 = 32 + yOffset;
-		if (xOffset > 0) {
-			x1 = 32 - xOffset;
-		}
-		if (yOffset > 0) {
-			y1 = 32 - yOffset;
+	public void drawGrid(Graphics2D gPen, Rectangle2D bounds) {
+		int x = (int)bounds.getX();
+		int y = (int)bounds.getY();
+		int width = (int)bounds.getWidth();
+		int height = (int)bounds.getHeight();
+
+		for (int x1 = x; x1 < x + width; x1++) {
+			if (x1 % GRID_SIZE == 0) {
+				gPen.setColor(getColor(x1));
+				gPen.fill(new Rectangle(x1, y, 4, height));
+			}
 		}
 
-		gPen.setColor(getColor(x1));
-		while (x1 < width) {
-			gPen.fill(new Rectangle(x1, 0, 4, height));
-			x1 += GRID_SIZE;
-			gPen.setColor(getColor(x1));
-		}
-
-		gPen.setColor(getColor(y1));
-		while (y1 < height) {
-			gPen.fill(new Rectangle(0, y1, width, 4));
-			y1 += GRID_SIZE;
-			gPen.setColor(getColor(y1));
-		}
-	}
-
-	/**
-	 * Swaps the color from gray to other gray
-	 * 
-	 * @param gPen
-	 *              the graphics2D Pen
-	 */
-	public void swapColor(Graphics2D gPen) {
-		Color color1 = new Color(18, 18, 19);
-		Color color2 = new Color(26, 24, 29);
-		if (gPen.getColor().equals(color1)) {
-			gPen.setColor(color2);
-		} else {
-			gPen.setColor(color1);
+		for (int y1 = y; y1 < y + height; y1++) {
+			if (y1 % GRID_SIZE == 0) {
+				gPen.setColor(getColor(y1));
+				gPen.fill(new Rectangle(x, y1, width, 4));
+			}
 		}
 	}
 
@@ -128,13 +110,10 @@ public class Background {
 	 *              the graphics2D Pen
 	 */
 	public Color getColor(int coordinate) {
-		Color color1 = new Color(18, 18, 19);
-		Color color2 = new Color(26, 24, 29);
-
-		if ((coordinate / GRID_SIZE) % 2 == 0) {
-			return color1;
+		if ((coordinate / GRID_SIZE) % 3 == 0) {
+			return GRID_COLOR_1;
 		} else {
-			return color2;
+			return GRID_COLOR_2;
 		}
 	}
 }
