@@ -118,7 +118,7 @@ class DTO_Results:
 
     def encode(self):
         r = {}
-        r['results'] = list(self.results)
+        r['results'] = self.results
         return json.dumps(r)
     
 class DTO_MovementOrder:
