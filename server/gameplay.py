@@ -1,22 +1,22 @@
 from dto import *
 
 def swizzle(lists):
-	lists = [x[:] for x in lists]
-	results = []
-	i = 0
-	while lists:
-		print(lists)
-		if lists[i]:
-			results.append(lists[i][0])
-			lists[i] = lists[i][1:]
-			i = (i+1)
-		else:
-			lists.pop(i)
-		if len(lists)==0:
-			return results
-		i = i % len(lists)
+    lists = [x[:] for x in lists]
+    results = []
+    i = 0
+    while lists:
+        print(lists)
+        if lists[i]:
+            results.append(lists[i][0])
+            lists[i] = lists[i][1:]
+            i = (i+1)
+        else:
+            lists.pop(i)
+            if len(lists)==0:
+                return results
+                i = i % len(lists)
     return results
-        
+    
 class Unit:
     '''
 
