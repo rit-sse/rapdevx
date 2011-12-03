@@ -215,14 +215,23 @@ class AttackTurn:
         # TODO: Validate that the client is actually in range/not lying
         self.attack_list.append( playerAttack )
     
-    def deleteAttackOrder(self, move_order_gid, calling_player):
+    def deleteAttackOrder(self, attack_order_gid, calling_player):
         '''
         Remove the specified player's move from the attack list.
 
-        move_order_gid - The id of the move order.
+        attack_order_gid - The id of the move order.
         calling_player - An integer reference to the player who made the move. 
         '''
-        #
+        for attack in attack_list:
+            attack_order = attack[0].gid
+            playerId = attack[1]
+
+            attackOrderMatches = attack_order == attack_order_gid
+            playerIdMatches = playerId == calling_player
+
+            if( attackOrderMatches and playerIdMatches ):
+                attack_list.remove( attack )
+                return
 
         pass
 
