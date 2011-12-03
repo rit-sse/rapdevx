@@ -6,6 +6,7 @@
 .settings
 
 bin/*
+client/bin/*
 *.class
 
 reports/*
@@ -13,3 +14,4 @@ client/doc/*
 cobertura.ser
 
 __pycache__/
+*.pyc
