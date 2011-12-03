@@ -130,6 +130,11 @@ class DTO_MovementOrder:
         self.path = path
         self.gid = gid
 
+    def encode(self):
+        r = {}
+        r['path'] = self.path
+        r['gid'] = self.gid
+        return json.dumps(r)
 class DTO_AbilityUseOrder:
     #srcid is a string
     #targetid is a string
