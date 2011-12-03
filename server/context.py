@@ -224,7 +224,7 @@ class WonPhase(GamePhase):
         return self
 
 
-if __name__ = '__main__':
+if __name__ == '__main__':
     c = GameContext(['a','b'])
     c.setReady(1,True)
     c.setReady(0,True)
