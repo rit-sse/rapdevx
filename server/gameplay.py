@@ -137,17 +137,17 @@ class MoveTurn:
         self.gid = None #set on registry
         self.turn_num = turn_num
         
-    def addMoveOrder(self, move_order, calling_player):
+    def addMoveOrder(self, move_order, calling_player, registry):
         '''
         '''
         pass
     
-    def deleteMoveOrder(self, move_order_gid, calling_player):
+    def deleteMoveOrder(self, move_order_gid, calling_player, registry):
         '''
         '''
         pass
 
-    def getPlayerMoveList(self, calling_player):
+    def getPlayerMoveList(self, calling_player, registry):
         '''
         '''
         pass
@@ -199,40 +199,48 @@ class AttackTurn:
         '''
         self.gid = None #set on registry
         self.turn_num = turn_num
-        self.attack_list = []
+        self.player_attack_lists = {}
+        self.results = None
 
-    def addAttackOrder(self, attack_order, calling_player):
+    def addAttackOrder(self, attack_order, calling_player, registry):
         '''
         Submit a player's attack. This method assumes that the move order has
         already been registered.
 
         attack_order - AbilityUseOrder object for the ability user by the attacker.
         calling_player - integer referencing the attacker's player id.
+        
+        registry - the ID registry to add the move to for later reference
         '''
-        # Associate an attack order with the player who made the attack
-        playerAttack = { attack_order, calling_player }
-
-        # TODO: Validate that the client is actually in range/not lying
-        self.attack_list.append( playerAttack )
-    
-    def deleteAttackOrder(self, move_order_gid, calling_player):
+        #setup a list of attacks for a player if there isn't one yet
+        if calling_player not in self.player_attack_lists:
+            self.player_attack_lists[calling_player]=[]
+        
+        self.player_attack_lists.append(order)
+        
+    def deleteAttackOrder(self, move_order_gid, calling_player, registry):
         '''
         Remove the specified player's move from the attack list.
 
         move_order_gid - The id of the move order.
         calling_player - An integer reference to the player who made the move. 
+        
+        registry - the ID registry to remove the move from
         '''
-        #
+        move_order = registry.getById(move_order_gid)
+        registry.removeById(move_order_gid)
+        
+        self.player_attack_lists[calling_player].remove(move_order)
 
-        pass
-
-    def getPlayerMoveList(self, calling_player):
+    def getPlayerMoveList(self, calling_player, registry):
         '''
-        Get a list of the specified player's moves.
+        Get a list of the specified player's moves' ID's.
 
         calling_player - an integer referencing a player id.
+        
+        registry - the ID registry that the moves are in
         '''
-        pass
+        return [x.to_dto for x in self.player_attack_lists[calling_player]]
     
     def execute(self, registry):
         '''
@@ -243,7 +251,7 @@ class AttackTurn:
         registry - The game's Registry object. This has all of the unit data.
         '''
 
-        #move the 
+        #for now, assume any ability between two real ships worked
         pass
 
     def getResults(self):
@@ -251,14 +259,6 @@ class AttackTurn:
         '''
         pass
 
-    def getTurnNum( self ):
-        '''
-        '''
-        pass
-
-    def setTurnNum( self, turn_num ):
-        '''
-        '''
         
 class UnitClass:
     def __init__(self, types, abilities, maxhp, radius, placement_cost, image, name):
@@ -287,3 +287,25 @@ class Image:
     
     def to_dto(self):
         return DTO_AssetImage(self.contents,self.gid)
+        
+        
+class AttackOrder:
+    def __init__(self, srcid, targetid, ability):
+        self.srcid = srcid
+        self.targetid = targetid
+        self.ability = ability
+        
+        self.gid = None
+        
+    def to_dto(self):
+        return DTO_AbilityUseOrder(self.srcid, self.targetid, self.ability, self.gid)
+        
+class MoveOrder:
+    def __init__(self, shipid, path):
+        self.shipid = shipid
+        self.path = path
+        self.gid = None
+        
+    def to_dto(self):
+        return DTO_MovementOrder(self.shipid, self.path, self.gid)
+        
