@@ -42,10 +42,10 @@ public class Text implements Drawable{
 
 	public void draw(Graphics2D gPen) {
 		
-		char[] derp = toConvert.toCharArray();
+		char[] toConvertArray = toConvert.toCharArray();
 		int tempX = this.xCord;
 		
-		for ( char character : derp ) {
+		for ( char character : toConvertArray ) {
 			
 			int xIndex;
 			BufferedImage largeImage;
@@ -171,15 +171,15 @@ public class Text implements Drawable{
 	public void drawColor(Graphics2D gPen, int toReplace) {
 		
 		int replaceWith = 0x000000;
-		char[] derp = toConvert.toCharArray();
+		char[] toConvertArray = toConvert.toCharArray();
 		int tempX = this.xCord;
 			
-		for ( char character : derp ) {
+		for ( char character : toConvertArray ) {
 				
 			int xIndex;
 			BufferedImage largeImage;
 			BufferedImage smallImage = null;
-			ImageColorizer herp = null;
+			ImageColorizer colorize = null;
 				
 			if (character >= 65 && character <= 90) {
 					
@@ -190,8 +190,8 @@ public class Text implements Drawable{
 						
 					largeImage = ImageIO.read(fontFile);
 					smallImage = largeImage.getSubimage(xIndex, 0, 7, 7);
-					herp = new ImageColorizer(smallImage);
-					herp.colorStrong(replaceWith, toReplace);
+					colorize = new ImageColorizer(smallImage);
+					colorize.recolorStrong(replaceWith, toReplace);
 						
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -206,8 +206,8 @@ public class Text implements Drawable{
 						
 					largeImage = ImageIO.read(fontFile);
 					smallImage = largeImage.getSubimage(xIndex, 12, 7, 7);
-					herp = new ImageColorizer(smallImage);
-					herp.colorStrong(replaceWith, toReplace);
+					colorize = new ImageColorizer(smallImage);
+					colorize.recolorStrong(replaceWith, toReplace);
 						
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -222,8 +222,8 @@ public class Text implements Drawable{
 						
 					largeImage = ImageIO.read(fontFile);
 					smallImage = largeImage.getSubimage(xIndex, 24, 7, 7);
-					herp = new ImageColorizer(smallImage);
-					herp.colorStrong(replaceWith, toReplace);
+					colorize = new ImageColorizer(smallImage);
+					colorize.recolorStrong(replaceWith, toReplace);
 						
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -238,8 +238,8 @@ public class Text implements Drawable{
 						
 					largeImage = ImageIO.read(fontFile);
 					smallImage = largeImage.getSubimage(xIndex, 36, 7, 7);
-					herp = new ImageColorizer(smallImage);
-					herp.colorStrong(replaceWith, toReplace);
+					colorize = new ImageColorizer(smallImage);
+					colorize.recolorStrong(replaceWith, toReplace);
 					
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -255,8 +255,8 @@ public class Text implements Drawable{
 					
 					largeImage = ImageIO.read(fontFile);
 					smallImage = largeImage.getSubimage(xIndex, 36, 7, 7);
-					herp = new ImageColorizer(smallImage);
-					herp.colorStrong(replaceWith, toReplace);
+					colorize = new ImageColorizer(smallImage);
+					colorize.recolorStrong(replaceWith, toReplace);
 						
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -270,8 +270,8 @@ public class Text implements Drawable{
 						
 					largeImage = ImageIO.read(fontFile);
 					smallImage = largeImage.getSubimage(xIndex, 36, 7, 7);
-					herp = new ImageColorizer(smallImage);
-					herp.colorStrong(replaceWith, toReplace);
+					colorize = new ImageColorizer(smallImage);
+					colorize.recolorStrong(replaceWith, toReplace);
 						
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -283,8 +283,8 @@ public class Text implements Drawable{
 						
 					largeImage = ImageIO.read(fontFile);
 					smallImage = largeImage.getSubimage(0, 100, 7, 7);
-					herp = new ImageColorizer(smallImage);
-					herp.colorStrong(replaceWith, toReplace);
+					colorize = new ImageColorizer(smallImage);
+					colorize.recolorStrong(replaceWith, toReplace);
 						
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -296,8 +296,8 @@ public class Text implements Drawable{
 						
 					largeImage = ImageIO.read(fontFile);
 					smallImage = largeImage.getSubimage(0, 48, 7, 7);
-					herp = new ImageColorizer(smallImage);
-					herp.colorStrong(replaceWith, toReplace);
+					colorize = new ImageColorizer(smallImage);
+					colorize.recolorStrong(replaceWith, toReplace);
 						
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -305,7 +305,7 @@ public class Text implements Drawable{
 					
 			}
 				
-			gPen.drawImage(herp.getImage(), tempX, yCord, smallImage.getWidth()*this.textScale, 
+			gPen.drawImage(colorize.copyAndRecolor(replaceWith, toReplace), tempX, yCord, smallImage.getWidth()*this.textScale, 
 				smallImage.getHeight()*this.textScale, null);
 				
 			tempX += 6 * this.textScale;
@@ -318,10 +318,10 @@ public class Text implements Drawable{
 	
 	public void drawWhite(Graphics2D gPen) {
 		
-		char[] derp = toConvert.toCharArray();
+		char[] toConvertArray = toConvert.toCharArray();
 		int tempX = this.xCord;
 		
-		for ( char character : derp ) {
+		for ( char character : toConvertArray ) {
 			
 			int xIndex;
 			BufferedImage largeImage;
