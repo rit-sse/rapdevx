@@ -3,20 +3,37 @@ import session
 import gamemanager
 import sessionmanager
 
-games = []
-
 class NotImplementedException:
 	def __init__(self):
 		super(NotImplementedException, self).__init__()
 
+def get_game(game_id)
+    game = GameManager.find_game(game_id)
+
+    if game == None:
+        abort(404, "Game not found")
+
+    return game
+
+def get_session(session_id):
+    session = SessionManager.find_session(session_id)
+
+    if session == None:
+        abort(404, "Session not found")
+
+    return session
+
 # Gets a list of all games as json
 @get('/games')
-def g_games():
+def list_active_games():
+    games = GameManager.active_games()
+
+    # TODO: this
     return to_json(games)
 
 # Create a new session given posted data
 @post('/sessions')
-def p_sessions():
+def create_session():
 	# pull data out of request
 	nickname = request.forms.nickname
 	game_id = request.forms.game_id
@@ -33,7 +50,7 @@ def p_sessions():
 
 # Return session itself as json
 @get('/session/:session_id')
-def g_sessions(session_id=None):
+def get_session_info(session_id=None):
 	session = SessionManager.find_session(session_id)
 
 	if session == None:
@@ -44,7 +61,7 @@ def g_sessions(session_id=None):
 
 # Mark a session as closed
 @delete('/session/:session_id')
-def d_sessions(session_id=None):
+def delete_session(session_id=None):
 	session = SessionManager.find_session(session_id)
 
 	if session == None:
@@ -55,23 +72,40 @@ def d_sessions(session_id=None):
 
 # Get assets from game as json
 @get('/game/:game_id/assets')
-def g_game_assests(game_id=None):
-    return to_json(games[game_id].getAssetSet())
+def get_game_assets(game_id=None):
+    game = get_game(game_id)
+
+    assets = game.getAssetSet()
+
+    return assets.encode()
 
 # Return game status (progress) as json
 @get('/game/:game_id')
 def g_game(game_id=None):
-    return to_json(games[game_id].status)
+    game = get_game(game_id)
+
+    status = game.getGameProgress
+
+    return status.encode()
 
 # ?? Magic?
 @post('/game/:game_id')
 def g_game(game_id=None):
+    ready = request.forms.ready
+    sess_id = request.forms.session_id
+
+    game = get_game(game_id)
+    session = get_session(sess_id)
+
+    if ready:
+        game.setReady(session)
     pass
     # TODO help
 
 # Set the initial position of all units from given POST data
 @post('/game/:game_id/ships')
 def p_game_ships(game_id=None):
+    game = get_game(game_id)
 	return "POST /game/" + str(game_id) + "/ships"
 
 # Return the location and type of all ships as json
@@ -81,51 +115,64 @@ def p_game_ships(game_id=None):
 # }
 @get('/game/:game_id/ships')
 def g_game_ships(game_id=None):
+    game = get_game(game_id)
+
 	return "GET /game/" + str(game_id) + "/ships"
 
 # Create a new movement order from POST data
 @post('/game/:game_id/turns/:turn_id/moves')
 def p_game_turns_moves(game_id=None, turn_id=None):
+    game = get_game(game_id)
+
     return "POST /game/" + str(game_id) + "/turns/" + str(turn_id) + "/moves"
 
 # Get a list of move order from the provided turn as json
 @get('/game/:game_id/turns/:turn_id/moves')
 def g_game_turns_moves(game_id=None, turn_id=None):
+    game = get_game(game_id)
+
     return "GET /game/" + str(game_id) + "/turns/" + str(turn_id) + "/moves"
 
 # Delete a move from the current turn
 @delete('/game/:game_id/turns/:turn_id/moves/:move_id')
 def d_game_turns_moves(game_id=None, turn_id=None, move_id=None):
+    game = get_game(game_id)
     return "DELETE /game/" + str(game_id) + "/turns/" + str(turn_id) + "/moves/" + str(move_id)
 
 # Create a new attack order from POST data
 @post('/game/:game_id/turns/:turn_id/attacks')
 def p_game_turns_attacks(game_id=None, turn_id=None):
+    game = get_game(game_id)
     return "POST /game/" + str(game_id) + "/turns/" + str(turn_id) + "/attacks"
     
 # Get a list of attack orders from the provided turn as json
 @get('/game/:game_id/turns/:turn_id/attacks')
 def g_game_turns_attacks(game_id=None, turn_id=None):
+    game = get_game(game_id)
     return "GET /game/" + str(game_id) + "/turns/" + str(turn_id) + "/attacks"
 
 # Delete an attack from the current turn
 @delete('/game/:game_id/turns/:turn_id/attacks/:attack_id')
 def d_game_turns_attacks(game_id=None, turn_id=None, attack_id=None):
+    game = get_game(game_id)
     return "DELETE /game/" + str(game_id) + "/turns/" + str(turn_id) + "/attacks/" + attack_id
 
 # Mark current session (by session_id POST) as ready
 @post('/game/:game_id/turns/:turn_id/ready')
 def p_game_turns_ready(game_id=None, turn_id=None):
+    game = get_game(game_id)
     return "POST /game/" + str(game_id) + "/turns/" + str(turn_id) + "/ready"
 
 # Get the finalized movement orders of given turn as json
 @get('/game/:game_id/turns/:turn_id/moves/results')
 def g_game_turns_moves_results(game_id=None, turn_id=None):
+    game = get_game(game_id)
     return "GET /game" + str(game_id) + "/turns/" + str(turn_id) + "/moves/results"
 
 # Get the finalized attack orders of given turn as json
 @get('/game/:game_id/turns/:turn_id/attacks/results')
 def g_game_turns_attacks_results(game_id=None, turn_id=None):
+    game = get_game(game_id)
     return "GET /game" + str(game_id) + "/turns/" + str(turn_id) + "/attacks/results"
 
 run(host='localhost', port=8080)
