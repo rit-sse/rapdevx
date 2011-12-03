@@ -127,7 +127,6 @@ public class ScreenStack extends JPanel implements KeyListener, MouseListener, M
 		//tell all the screen about this mouse event
 		for(Screen screen: screenList) {
 			if(e.isConsumed()) {
-				System.out.println("Ate it");
 				return;	//we're done if someone handled the event
 			}
 			

@@ -17,10 +17,15 @@ public class MenuButton {
 	
 	//colors
 	private final Color ButtonColor = Color.gray.brighter();
-	private final Color SelectionColor = Color.blue;
+	private final Color ErrorColor = Color.magenta;
+	
+	private final Color UnselectedBorderColor = ButtonColor.darker();
+	private final Color SelectedBorderColor = ButtonColor.brighter();
+	private Color borderColor = UnselectedBorderColor;
+	
 	private final Color UnselectedTextColor = Color.white;
-	private final Color SelectedTextColor = Color.pink;
-	private final Color ErrorColor = Color.red;
+	private final Color SelectedTextColor = Color.red.darker().darker();
+	private Color textColor = UnselectedTextColor;
 	
 	private final Font TextFont = new Font("Helvetica", Font.BOLD,  20);
 	
@@ -38,7 +43,12 @@ public class MenuButton {
 	private String help = MenuButton.DefaultHelp;
 	
 	private boolean selected = false;
-	private Color textColor = UnselectedTextColor;
+	
+	//need to keep track of what was displayed to the user.  These values could change from a set() before the screen is redrawn
+	private int lastDrawnFromX = 0;
+	private int lastDrawnFromY = 0;
+	private int lastDrawnWidth = 0;
+	private int lastDrawnHeight = 0;
 	
 	//TODO add support for shortcut keys?
 	
@@ -119,6 +129,18 @@ public class MenuButton {
 		textColor = text;
 	}
 	
+	/**
+	 * Sets the button border color
+	 * @param border The button's new border color.  Should not be null
+	 */
+	private void setBorderColor(Color border) {
+		if(border == null) {
+			border = ErrorColor;
+		}
+		
+		borderColor = border;
+	}
+	
 	//--------------------------------------------------------------------------
 	// Getters
 	//--------------------------------------------------------------------------
@@ -180,6 +202,13 @@ public class MenuButton {
 		return textColor;
 	}
 	
+	/**
+	 * @return The button's border color
+	 */
+	private Color getBorderColor() {
+		return borderColor;
+	}
+	
 	//--------------------------------------------------------------------------
 	// Graphics
 	//--------------------------------------------------------------------------
@@ -218,14 +247,22 @@ public class MenuButton {
 		adjustSize(scale);
 		Dimension size = getSize();
 		
-		//draw the main button
+		//draw the main button and remember where we put it for event handling
 		gPen.setColor(ButtonColor);
 		if(hasArc()) {
 			Dimension arc = getArc();
 			gPen.fillRoundRect(x, y, size.width, size.height, arc.width, arc.height);
+			gPen.setColor(getBorderColor());
+			gPen.drawRoundRect(x, y, size.width, size.height, arc.width, arc.height);
 		} else {
 			gPen.fillRect(x, y, size.width, size.height);
+			gPen.setColor(getBorderColor());
+			gPen.drawRect(x, y, size.width, size.height);
 		}
+		lastDrawnFromX = x;
+		lastDrawnFromY = y;
+		lastDrawnWidth = size.width;
+		lastDrawnHeight = size.height;
 		
 		//display the button's text
 		//TODO better adjust x and y so text isn't right up against button edge
@@ -241,6 +278,12 @@ public class MenuButton {
 	// Actions
 	//--------------------------------------------------------------------------
 	
+	public boolean includesPoint(int x, int y) {
+		//TODO handle when width or height is negative and thus x or y would be below lastDrawnFrom or above lastDrawn :/
+		return	!(x < lastDrawnFromX || x > (lastDrawnFromX+lastDrawnWidth) ||
+				y < lastDrawnFromY || y > (lastDrawnFromY+lastDrawnHeight));
+	}
+	
 	public void click() {
 		//TODO
 	}
@@ -253,13 +296,13 @@ public class MenuButton {
 		this.selected = selected;
 		
 		//Note: the following drawing details are updated here to reduce processing time while drawing
-		//TODO update border drawing details.  How will that be done?
-		
-		//update text color
+		//update border and text colors
 		if(this.selected) {
 			setTextColor(SelectedTextColor);
+			setBorderColor(SelectedBorderColor);
 		} else {
 			setTextColor(UnselectedTextColor);
+			setBorderColor(UnselectedBorderColor);
 		}
 	}
 	
