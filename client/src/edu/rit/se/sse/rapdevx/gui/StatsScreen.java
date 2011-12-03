@@ -3,6 +3,11 @@ package edu.rit.se.sse.rapdevx.gui;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 import edu.rit.se.sse.rapdevx.clientmodels.Ship;
 
@@ -17,6 +22,7 @@ public class StatsScreen extends Screen {
 	private int x;
 	private int y;
 	private Ship ship;
+	private BufferedImage background;
 
 	/**
 	 * Constrctor for the Stats screen
@@ -36,6 +42,11 @@ public class StatsScreen extends Screen {
 		x = wWidth - screenWidth;
 		y = wHeight - screenHeight;
 		this.ship = ship;
+		try {
+			background = ImageIO.read(new File("assets/stats_screen.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		// TODO Auto-generated constructor stub
 	}
 
@@ -55,13 +66,11 @@ public class StatsScreen extends Screen {
 	 * It says awesome Ship!!!!
 	 */
 	public void draw(Graphics2D gPen) {
-
-		gPen.setColor(new Color(85, 85, 85));
-		gPen.fill(new Rectangle(x, y, screenWidth, screenHeight));
+		gPen.drawImage(background, x, y, screenWidth, screenHeight, null);
 		gPen.setColor(Color.BLACK);
 
 		// sample name
-		gPen.drawString("Awesome Ship", x + 10, y + 20);
+		new Text("Awesome Ship", x + 10, y + 10).draw(gPen);
 
 		// gPen.drawString(ship.getgID(), x + 10, y+ 20);
 
@@ -69,19 +78,20 @@ public class StatsScreen extends Screen {
 		gPen.setColor(Color.BLACK);
 
 		// sample move radius
-		gPen.drawString("Move Radius: 5", x + 10, y + 80);
+		new Text("Move Radius: 5", x + 10, y + 65).draw(gPen);
 		// gPen.drawString("Move Radius: " + ship.get)
 		drawAbilities(gPen);
 	}
 
 	public void drawHPBar(Graphics2D gPen) {
-		gPen.drawString("HP:", x + 35, y + 50);
+		new Text("HP:", x + 25, y + 38).draw(gPen);
 
 		// sample value
 		double scale = 18.0 / 20.0 * 195.0;
 		scale = 5.0 / 20.0 * 195.0;
 		gPen.setColor(Color.WHITE);
 		gPen.fill(new Rectangle(x + 65, y + 35, 195, 20));
+		new Text(5 + "/" + 20, x + 65 + 145, y + 20).draw(gPen);
 		if (scale < 1.0 / 3.0 * 195.0) {
 			gPen.setColor(Color.RED);
 		} else if (scale < 2.0 / 3.0 * 195.0) {
@@ -93,10 +103,11 @@ public class StatsScreen extends Screen {
 	}
 
 	public void drawAbilities(Graphics2D gPen) {
-		gPen.drawString("Abilities: ", x + 10, y + 110);
+		new Text("Abilities: ", x + 10, y + 90).draw(gPen);
 		// sample abilities
-		gPen.drawString("Ability 1: 5    Ability 2: 6   Ability3: 7",
-				x + 35, y + 130);
+		new Text("Ability 1: 5", x + 35, y + 110).draw(gPen);
+		new Text("Ability 2: 6", x + 35, y + 130).draw(gPen);
+		new Text("Ability 3: 7", x + 35, y + 150).draw(gPen);
 	}
 
 }
