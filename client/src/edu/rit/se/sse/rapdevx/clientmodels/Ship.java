@@ -11,14 +11,6 @@ public class Ship extends edu.rit.se.sse.rapdevx.api.dataclasses.Ship {
 	private int	X;
 	private int	Y;
 
-	public Ship() {
-	}
-
-	public Ship(edu.rit.se.sse.rapdevx.api.dataclasses.Ship ship, int X, int Y) {
-		this.X = X;
-		this.Y = Y;
-	}
-
 	/**
 	 * @return the x
 	 */

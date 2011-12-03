@@ -15,7 +15,7 @@ public class Game {
 		
 	}
 	
-	public int getID() {
+	public int getId() {
 		return 1; // Ha. Implementation awaits.
 	}
 }

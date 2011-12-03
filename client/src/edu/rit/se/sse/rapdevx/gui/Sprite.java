@@ -7,22 +7,19 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-public class Sprite extends DrawableObject {
+public class Sprite {
 
 	private BufferedImage image;
 	
-	public Sprite(String filename, int x, int y) {
-		super(x, y);
-		
+	public Sprite(String filename) {
 		try {
-			ImageIO.read(new File("ship.png"));
+			image = ImageIO.read(new File(filename));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	@Override
-	public void draw(Graphics2D gPen) {
+	public void draw(Graphics2D gPen, int x, int y, int scale) {
 		gPen.drawImage(image, x, y, 64, 64, null);
 	}
 }
