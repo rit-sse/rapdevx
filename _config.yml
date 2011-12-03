@@ -1,4 +1,4 @@
-exclude: Rakefile, Gemfile, Gemfile.lock, README.markdown, stylesheets/css3.scss
+exclude: Rakefile, Gemfile, Gemfile.lock, README.markdown
 
 markdown: rdiscount
 haml_folder: **/*.haml

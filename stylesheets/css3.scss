@@ -1,7 +1,6 @@
-/* CSS 3 Mixins 
- * Handles all the silly cross-browser CSS3 intricacies and duplication, so
- * other stylesheets look nice.
- */
+// CSS 3 Mixins 
+// Handles all the silly cross-browser CSS3 intricacies and duplication, so
+// other stylesheets look nice.
 
 @mixin linear-gradient( $top, $bottom ) {
     background-image: linear-gradient( $top, $bottom );

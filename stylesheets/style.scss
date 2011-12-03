@@ -1,10 +1,46 @@
 @import './stylesheets/css3.scss';
 
+
+@font-face {
+    font-family: 'SilkscreenNormal';
+    src: url('../fonts/slkscr-webfont.eot');
+    src: url('../fonts/slkscr-webfont.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/slkscr-webfont.woff') format('woff'),
+        url('../fonts/slkscr-webfont.ttf') format('truetype'),
+       url('../fonts/slkscr-webfont.svg#SilkscreenNormal') format('svg');
+   font-weight: normal;
+   font-style: normal;
+}
+
+
+
+
 html {
     margin: 0; padding: 0;
+    background: url( ../images/bg.jpg ) top center;
 }
 
 body {
     margin: 0 auto;
     max-width: 820px;
+}
+
+h1, h2 { 
+    color: #7f7f7f;
+    font-family: "SilkscreenNormal", "Impact", "sans-serif";
+}
+
+
+.gray-box {
+    background-color: #494949;
+    border: 5px outset #545454;
+}
+
+
+.crash {
+    @extend .gray-box;
+}
+
+.repos {
+    @extend .gray-box;
 }
