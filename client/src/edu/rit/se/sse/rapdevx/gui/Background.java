@@ -43,19 +43,34 @@ public class Background {
 	}
 
 	public void drawImage(Graphics2D gPen, int xOffset, int yOffset) {
+		
+		// Steve figured it out with Kristen :D AT NIGHT!!! :D
+		// Now we can enjoy Steve's magnificent background :D
 
-		int x1 =  xOffset;
+		int x1 = xOffset;
 		int y1 = yOffset;
+		
+		int backgroundWidth = background.getWidth();
+		int backgroundHeight = background.getHeight();
+		
+		if ( xOffset > 0 ) {
+			x1 =  xOffset - ( backgroundWidth * (int)( xOffset / backgroundWidth + 1 ) );
+		}
+		if ( yOffset > 0 ) {
+			y1 = yOffset - ( backgroundHeight * (int)( yOffset / backgroundHeight +1 ) );
+		}
+		
+		int adjustedY1 = y1;
 		
 		while (x1 < width) {
 			while (y1 < height) {
 				gPen.drawImage(background, x1, y1,
-						background.getWidth(),
-						background.getHeight(), null);
-				y1 += background.getHeight();
+						backgroundWidth,
+						backgroundHeight, null);
+				y1 += backgroundHeight;
 			}
-			x1 += background.getWidth();
-			y1 = yOffset;
+			x1 += backgroundWidth;
+			y1 = adjustedY1;
 		}
 	}
 
