@@ -6,7 +6,7 @@ package edu.rit.se.sse.rapdevx.api.dataclasses;
  *
  * @author Ben Nicholas
  */
-public class ShipLocation {
+public class ShipPlacement {
 
 }
 
