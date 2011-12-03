@@ -1,22 +1,22 @@
 from dto import *
 
 def swizzle(lists):
-	lists = [x[:] for x in lists]
-	results = []
-	i = 0
-	while lists:
-		print(lists)
-		if lists[i]:
-			results.append(lists[i][0])
-			lists[i] = lists[i][1:]
-			i = (i+1)
-		else:
-			lists.pop(i)
-		if len(lists)==0:
-			return results
-		i = i % len(lists)
+    lists = [x[:] for x in lists]
+    results = []
+    i = 0
+    while lists:
+        print(lists)
+        if lists[i]:
+            results.append(lists[i][0])
+            lists[i] = lists[i][1:]
+            i = (i+1)
+        else:
+            lists.pop(i)
+            if len(lists)==0:
+                return results
+                i = i % len(lists)
     return results
-        
+    
 class Unit:
     '''
 
@@ -155,21 +155,30 @@ class MoveTurn:
     def __init__(self, turn_num):
         self.gid = None #set on registry
         self.turn_num = turn_num
+        self.player_move_list = {}
         
     def addMoveOrder(self, move_order, calling_player, registry):
         '''
         '''
-        pass
+        if calling_player not in self.player_move_list:
+            self.player_move_list[calling_player] = []
+
+        moveOrderObj = MoveOrder(move_order.unitid, move_order.path) 
+        self.player_move_list[calling_player].append( moveOrderObj )
+        registry.register(moveOrderObj)
     
     def deleteMoveOrder(self, move_order_gid, calling_player, registry):
         '''
         '''
-        pass
+        move_order = registry.getById(move_order_gid)
+        registry.removeById(move_order_gid)
+        
+        self.player_attack_lists[calling_player].remove(move_order)
 
     def getPlayerMoveList(self, calling_player, registry):
         '''
         '''
-        pass
+        return [x.to_dto() for x in self.player_move_lists[calling_player]]
         
     #any existing move orders should be evaluated
     #(going round robin on submitting players, in order)
@@ -182,52 +191,6 @@ class MoveTurn:
     def getResults(self):
         pass
         
-    def collisionCheck(self, unit1, unit2, end_loc, bumpSpace):
-        '''
-        '''
-# bumpSpace must be a float/ int
-        unit1_loc = unit1.location
-        unit2_loc = unit2.location
-
-        def distance(point1, point2):
-            return ((point1[0] - point2[0])**2 + (point1[1] - point2[1])**2)**0.5
-        
-        def lengthRatio(unit1_loc, unit2_loc, end_loc):
-            return ((distance(unit1_loc,unit2_loc)**2-distance(unit2_loc,end_loc)**2-distance(end_loc,unit1_loc)**2)/(-2*distance(end_loc,unit1_loc))) / distance(unit1_loc,end_loc)
-        def testPoint(unit1_loc, unit2_loc, end_loc):
-            return (((unit1_loc[0]+unit2_loc[0])*(lengthRatio(unit1_loc, unit2_loc, end_loc_))),((unit1_loc[1]+unit2_loc[1])*(lengthRatio(unit1_loc, unit2_loc, end_loc))))
-
-        def beyondMovement(unit1, unit2, end_loc):
-            if (distance(unit1.location, testPoint(unit1.location, unit2.location, end_loc)) - distance(unit1.location,end_loc)) > 0:
-                return True
-            else:
-                return False
-        def hitFromTestPoint(unit1, unit2, end_loc, bumpSpace):
-            if distance(testPoint(unit1.location, unit2.location, end_loc),unit2_loc) > (unit1.radius + unit2.radius + bumpSpace):
-                return False   
-            else:
-                return True
-        def hitCollide():
-            if beyondMovement(unit1, unit2, end_loc, bumpSpace):
-# check if hit can be made from the end of the unit1's path
-                if unit1.radius + unit2.radius + bumpSpace > distance(unit1.location, unit2.location)
-                    return True
-                else:
-                    return False
-#check if hit can be made from testPoint (mid point of the ships path)
-            else:
-                hitFromTestPoint(unit1, unit2, end_loc, bumpSpace)
-        
-        def main(unit1, unit2, end_loc, bumpSpace):
-            print("location of unit1 is :", unit1.location, "\n", "location of unit2 is :", unit2.location)
-            print("the distance between is unit1 and unit2 is :", distance(unit1.location, unit2.location)
-            print("the distance between unit1 and the end loaction is :", distance(unit1.location, end_loc)
-            print("the length ratio, (the stopping point) of unit1's movement is :", lengthRatio(unit1.location, unit2.location, end_loc)
-            print("the test point, or the location of collision tests is :", testPoint(unit1.location, unit2.location, end_loc)
-            print("test if enemy ship is beyond the point of collision :", beyondMovement(unit1, unit2, end_loc, bumpSpace), "\n", "test if enemy ship hits the ship from the testPoint! :", hitFromTestPoint(unit1, unit2, end_loc, bumpSpace))
-            print("final test if hit (tests if both hit from end and if hit from testPoint)! :", hitCollide(unit1, unit2, end_loc, bumpSpace)
-
-
 class AttackTurn:
     '''
     Represents a player's turn if they choose to attack. 
@@ -244,7 +207,7 @@ class AttackTurn:
         self.player_attack_lists = {}
         self.results = None
 
-    def addAttackOrder(self, attack_order, calling_player, registry):
+    def addAttackOrder(self, dto_attack_order, calling_player, registry):
         '''
         Submit a player's attack. This method assumes that the move order has
         already been registered.
@@ -257,7 +220,25 @@ class AttackTurn:
         #setup a list of attacks for a player if there isn't one yet
         if calling_player not in self.player_attack_lists:
             self.player_attack_lists[calling_player]=[]
+
+
+        order = AttackOrder(dto_attack_order.srcid,dto_attack_order.targetid, dto_attack_order.ability)
+
+        target = registry.getById(dto_attack_order.srcid)
+
+        if registry.getById(dto_attack_order.srcid) == None:
+            raise Exception("Attacking ship not in registry")
+
+        if registry.getById(dto_attack_order.targetid) == None:
+            raise Exception("Target Ship not in registry")
         
+        if registry.getById(dto_attack_order.ability) == None:
+            raise Exception("Ability not in registry")
+
+        if calling_player != target.getPlayer():
+            raise Exception("Player does not own ship")
+
+        registry.register(order)
         self.player_attack_lists.append(order)
         
     def deleteAttackOrder(self, move_order_gid, calling_player, registry):
@@ -274,7 +255,7 @@ class AttackTurn:
         
         self.player_attack_lists[calling_player].remove(move_order)
 
-    def getPlayerMoveList(self, calling_player, registry):
+    def getPlayerAttackList(self, calling_player, registry):
         '''
         Get a list of the specified player's moves' ID's.
 
@@ -282,7 +263,7 @@ class AttackTurn:
         
         registry - the ID registry that the moves are in
         '''
-        return [x.to_dto for x in self.player_attack_lists[calling_player]]
+        return [x.to_dto() for x in self.player_attack_lists[calling_player]]
     
     def execute(self, registry):
         '''
