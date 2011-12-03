@@ -16,7 +16,7 @@ class AssetImage:
     def __init__(self, file, name, registry):
         self.file = file
         self.name = name
-        self.id = None #set by registering it
+        self.id = id
     
     def encode(self):
         r = {}
@@ -25,14 +25,21 @@ class AssetImage:
         r['id'] = self.id
         return json.dumps(r)
 
-class ShipClass:
+    def encode(self):
+        r = {}
+        r['file'] = self.file
+        r['name'] = self.name
+        r['id'] = self.id
+        return json.dumps(r)
+
+class DTO_ShipClass:
     def __init__(self, types, abilities, maxhp, radius, placement_cost):
         self.types = types
         self.abilities = abilities
         self.maxhp = maxhp
         self.radius = radius
-        self.placement_cost = placement_cost
-        self.id = None #set by registering it
+        self.placement_cost = placement_cost  
+        self.id = id
 
     def encode(self):
         r = {}
@@ -44,16 +51,16 @@ class ShipClass:
         r['id'] = self.id
         return json.dumps(r)
 
-class Ability:
+class DTO_Ability:
     #default_damage is int
     #special_damage map from string to int
-    def __init__(self, radius, name, default_damage, special_damages):
+    def __init__(self, radius, name, default_damage, special_damages, id):
         self.radius = radius
         self.name = name
         self.default_damage = default_damage
         self.special_damages = special_damages
-        self.id = None #set by registering it
-    
+        self.id = id
+        
     def encode(self):
         r = {}
         r['radius'] = self.radius
@@ -88,7 +95,7 @@ class ShipPlacement:
         self.x = x
         self.y = y
         self.classid = classid
-
+        
     def encode(self):
         r = {}
         r['x'] = self.x
@@ -101,7 +108,7 @@ class Results:
     #PATH = list of x,y tuples
     def __init__(self,results):
         self.results = results
-    
+
     def encode(self):
         r = {}
         r['results'] = self.results
@@ -110,26 +117,19 @@ class Results:
 class MovementOrder:
     #unitid = int
     #PATH = list of x,y tuples
-    def __init__(self, unitid, path):
+    def __init__(self, unitid, path, id):
         self.unitid = unitid
         self.path = path
-        self.id = None #set by registering it
-    
-    def encode(self):
-        r = {}
-        r['unitid'] = self.unitid
-        r['path'] = self.path
-        r['id'] = self.id
-        return json.dumps(r)
+        self.id = id
 
 class AbilityUseOrder:
     #srcid,targetid = int
     #ability = string
-    def __init__(self, srcid, targetid, ability):
+    def __init__(self, srcid, targetid, ability, id):
         self.srcid = srcid
         self.targetid = targetid
         self.ability = ability
-        self.id = None #set by registering it
+        self.id = id
         
     def encode(self):
         r = {}
@@ -139,3 +139,17 @@ class AbilityUseOrder:
         r['id'] = self.id
         return json.dumps(r)
 
+class DTO_Ship:
+    def __init__(self, player_num, hp, classid, id):
+        self.player_num = player_num
+        self.hp = hp
+        self.classid = classid
+        self.id = id
+        
+class Status:
+    #turn, phase, me = ints - me is the playerid of the asking player
+    def __init__(self, turn, phase, player_list, me):
+        self.turn = turn
+        self.phase = phase
+        self.player_list = player_list
+        self.me = me
