@@ -1,4 +1,4 @@
-from bottle import run, get, post, delete
+from bottle import run, get, post, delete, request
 
 games = []
 sessions = []
@@ -11,13 +11,12 @@ def to_json(obj):
 # Gets a list of all games as json
 @get('/games')
 def g_games():
-    return "GET /games"
+    return to_json(games)
 
 # Create a new session given posted data
 @post('/sessions')
 def p_sessions():
-    # Get post data how???
-    return "POST /sessions"
+    return "session!"
 
 # Return session itself as json
 @get('/session/:session_id')
@@ -38,6 +37,12 @@ def g_game_assests(game_id=None):
 @get('/game/:game_id')
 def g_game(game_id=None):
     return to_json(games[game_id].status)
+
+# ?? Magic?
+@post('/game/:game_id')
+def g_game(game_id=None):
+    pass
+    # TODO help
 
 # Set the initial position of all units from given POST data
 @post('/game/:game_id/ships')
