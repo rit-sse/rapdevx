@@ -92,16 +92,38 @@ public class ScreenStack extends JPanel implements KeyListener, MouseListener, M
 		
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
+	 */
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
+		//TODO should we only send this to the screen with focus?
 		
+		//tell all the screen about this mouse event
+		for(Screen screen: screenList) {
+			if(e.isConsumed()) {
+				return;	//we're done if someone handled the event
+			}
+			
+			screen.mousePressed(e);
+		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
+	 */
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
+		//TODO should we only send this to the screen with focus?
 		
+		//tell all the screen about this mouse event
+		for(Screen screen: screenList) {
+			if(e.isConsumed()) {
+				return;	//we're done if someone handled the event
+			}
+			
+			screen.mouseReleased(e);
+		}
 	}
 	
 	/* (non-Javadoc)

@@ -16,11 +16,14 @@ import java.awt.Graphics2D;
 public class MenuButton {
 	
 	//colors
-	private final Color ButtonColor = Color.gray.brighter();
 	private final Color ErrorColor = Color.magenta;
 	
-	private final Color UnselectedBorderColor = ButtonColor.darker();
-	private final Color SelectedBorderColor = ButtonColor.brighter();
+	private final Color UnpressedBackgroundColor = Color.gray.brighter();
+	private final Color PressedBackgroundColor = Color.gray.darker();
+	private Color backgroundColor = UnpressedBackgroundColor;
+	
+	private final Color UnselectedBorderColor = UnpressedBackgroundColor.darker();
+	private final Color SelectedBorderColor = UnpressedBackgroundColor.brighter();
 	private Color borderColor = UnselectedBorderColor;
 	
 	private final Color UnselectedTextColor = Color.white;
@@ -141,6 +144,18 @@ public class MenuButton {
 		borderColor = border;
 	}
 	
+	/**
+	 * Sets the button background color
+	 * @param border The button's new background color.  Should not be null
+	 */
+	private void setBackgroundColor(Color background) {
+		if(background == null) {
+			background = ErrorColor;
+		}
+		
+		backgroundColor = background;
+	}
+	
 	//--------------------------------------------------------------------------
 	// Getters
 	//--------------------------------------------------------------------------
@@ -209,6 +224,13 @@ public class MenuButton {
 		return borderColor;
 	}
 	
+	/**
+	 * @return The button's background color
+	 */
+	private Color getBackgroundColor() {
+		return backgroundColor;
+	}
+	
 	//--------------------------------------------------------------------------
 	// Graphics
 	//--------------------------------------------------------------------------
@@ -248,7 +270,7 @@ public class MenuButton {
 		Dimension size = getSize();
 		
 		//draw the main button and remember where we put it for event handling
-		gPen.setColor(ButtonColor);
+		gPen.setColor(getBackgroundColor());
 		if(hasArc()) {
 			Dimension arc = getArc();
 			gPen.fillRoundRect(x, y, size.width, size.height, arc.width, arc.height);
@@ -284,10 +306,6 @@ public class MenuButton {
 				y < lastDrawnFromY || y > (lastDrawnFromY+lastDrawnHeight));
 	}
 	
-	public void click() {
-		//TODO
-	}
-	
 	/**
 	 * Sets is this button is selected/highlighted or not
 	 * @param selected true if the button is currently selected, else false
@@ -306,5 +324,21 @@ public class MenuButton {
 		}
 	}
 	
+	public void clicked() {
+		System.out.println("MenuButton: clicked: " + getText());
+	}
 	
+	public void pressed() {
+		setBackgroundColor(PressedBackgroundColor);
+		
+	}
+	
+	public void released(int x, int y) {
+		//check to see if we were 'clicked'
+		if(getBackgroundColor() == PressedBackgroundColor && includesPoint(x, y)) {
+			clicked();
+		}
+		
+		setBackgroundColor(UnpressedBackgroundColor);
+	}
 }
