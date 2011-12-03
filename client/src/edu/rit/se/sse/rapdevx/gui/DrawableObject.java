@@ -49,6 +49,11 @@ public abstract class DrawableObject implements Drawable {
 	public void setY(int y) {
 		this.y = y;
 	}
+	
+	public void setCenter(int x, int y) {
+		this.x = x - (width/2);
+		this.y = y - (height/2);
+	}
 
 	/**
 	 * @return the width

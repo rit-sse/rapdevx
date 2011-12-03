@@ -2,6 +2,7 @@ package edu.rit.se.sse.rapdevx.gui;
 
 import java.awt.Point;
 import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
 import java.util.ArrayList;
 
 /**
@@ -11,43 +12,44 @@ import java.util.ArrayList;
  *
  */
 
-public class ImageColorizer {
-	protected BufferedImage	image;
+public class ImageColorizer extends BufferedImage{
 
 	/**
 	 * Creates a new ImageColorizer given a BufferedImage
 	 * @param bi The BufferedImage to be operated upon
 	 */
 	public ImageColorizer(BufferedImage bi) {
-		image = bi;
+		super(bi.getColorModel(),bi.getRaster(),bi.isAlphaPremultiplied(),null);
+		
 	}
 
 	/**
-	 * Recolors the image.  Hex values for this are the standard RGB codes with an
-	 * extra byte at the top.  Unless you know what the topmost byte is used for,
-	 * it is suggested to either prepend the hex code with FF or use the colorStrong
-	 * method instead.
+	 * Recolors the image.  Hex values for this are the standard RGB codes with another
+	 * byte at the beginning for the alpha values.  If you are using the color off a standard
+	 * RGB picker, the alpha byte should be FF.  If you want something to be completely
+	 * transparent, the alpha byte should be 00.  If you don't want to mess with the alpha
+	 * byte, try using the recolorStrong method instead.
 	 * 
 	 * @param color The color (in hex) that the image will be repainted with
 	 * @param colorReplaced The color (in hex) that will be replaced
 	 */
-	public void color(int color, int colorReplaced) {
+	public void recolor(int color, int colorReplaced) {
 		ArrayList<Point> marked = this.findRecolorMarks(colorReplaced);
 		for (int i = 0; i < marked.size(); i++) {
-			image.setRGB((int) marked.get(i).getX(),
+			this.setRGB((int) marked.get(i).getX(),
 					(int) marked.get(i).getY(), color);
 		}
-		image.flush();
+		this.flush();
 	}
 
 	/**
 	 * Recolors the image and replaces the top byte of the color parameter with FF.
-	 * Otherwise, this is the same as the color method
+	 * Otherwise, this is the same as the recolor method
 	 * @param color The color (in hex) that the image will be repainted with
 	 * @param colorReplaced The color (in hex) that will be replaced
 	 */
-	public void colorStrong(int color, int colorReplaced){
-		color((0xFF000000|color), colorReplaced);
+	public void recolorStrong(int color, int colorReplaced){
+		recolor((0xFF000000|color), colorReplaced);
 	}
 	
 	/**
@@ -57,14 +59,33 @@ public class ImageColorizer {
 	 * @return An ArrayList of Points that match the passed in color
 	 */
 	
+	public BufferedImage copyAndRecolor(int color, int colorReplaced){
+		BufferedImage result = new BufferedImage(this.getWidth(), this.getHeight(), this.getType());
+		result.setData(this.getRaster());
+		long rgbValue;
+		for (int i = 0; i < result.getWidth(); i++) {
+			for (int j = 0; j < result.getHeight(); j++) {
+				// System.out.println(Integer.toHexString(0xFFFFFF &
+				// image.getRGB(i, j)));
+				rgbValue = result.getRGB(i, j);
+				rgbValue &= 0x00FFFFFF;
+				if (rgbValue == colorReplaced) {
+					result.setRGB(i, j, color);
+					//System.out.println("Found some magenta");
+				}
+			}
+		}
+		result.flush();
+		return result;
+	}
 	public ArrayList<Point> findRecolorMarks(long markColor) {
 		ArrayList<Point> markedPoints = new ArrayList<Point>();
 		long rgbValue;
-		for (int i = 0; i < image.getWidth(); i++) {
-			for (int j = 0; j < image.getHeight(); j++) {
+		for (int i = 0; i < this.getWidth(); i++) {
+			for (int j = 0; j < this.getHeight(); j++) {
 				// System.out.println(Integer.toHexString(0xFFFFFF &
 				// image.getRGB(i, j)));
-				rgbValue = image.getRGB(i, j);
+				rgbValue = this.getRGB(i, j);
 				rgbValue &= 0x00FFFFFF;
 				if (rgbValue == markColor) {
 					markedPoints.add(new Point(i, j));
@@ -75,12 +96,4 @@ public class ImageColorizer {
 		return markedPoints;
 	}
 
-	/**
-	 * 
-	 * @return The image that the object is operating on
-	 */
-	
-	public BufferedImage getImage() {
-		return this.image;
-	}
 }

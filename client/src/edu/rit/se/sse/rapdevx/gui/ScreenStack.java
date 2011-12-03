@@ -31,8 +31,10 @@ public class ScreenStack extends JPanel implements KeyListener, MouseListener, M
 		boolean otherScreenHasFocus = false;
 		boolean coveredByOtherScreen = false;
 		
-		for (Screen screen : screenList) {
-			screen.update(otherScreenHasFocus, coveredByOtherScreen);
+		for (int i = screenList.size() - 1; i >= 0; i--) {
+			Screen screen = screenList.get(i);
+			
+			screen.update(otherScreenHasFocus, !coveredByOtherScreen);
 			
 			if ((screen.getState() == Screen.State.ACTIVE) ||
 					(screen.getState() == Screen.State.TRANSITION_ON))
@@ -56,28 +58,58 @@ public class ScreenStack extends JPanel implements KeyListener, MouseListener, M
 	
 	/**** User Input ****/
 	
+	/* (non-Javadoc)
+	 * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
+	 */
 	@Override
 	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
+		for (Screen screen : screenList) {
+			if(e.isConsumed()) {
+				return;	//we're done if someone handled the event
+			}
+			screen.keyPressed(e);
+		}
 		
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.awt.event.KeyListener#keyReleased(java.awt.event.KeyEvent)
+	 */
 	@Override
 	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
+		for (Screen screen : screenList) {
+			if(e.isConsumed()) {
+				return;	//we're done if someone handled the event
+			}
+			screen.keyReleased(e);
+		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.awt.event.KeyListener#keyTyped(java.awt.event.KeyEvent)
+	 */
 	@Override
 	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
+		for(Screen screen: screenList) {
+			if(e.isConsumed()) {
+				return;	//we're done if someone handled the event
+			}
+			screen.keyTyped(e);
+		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
+	 */
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+		//tell all the screens about this mouse event
+		for(Screen screen: screenList) {
+			if(e.isConsumed()) {
+				return;	//we're done if someone handled the event
+			}
+			screen.mouseClicked(e);
+		}
 	}
 	
 	@Override
@@ -92,16 +124,32 @@ public class ScreenStack extends JPanel implements KeyListener, MouseListener, M
 		
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
+	 */
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+		//tell all the screens about this mouse event
+		for(Screen screen: screenList) {
+			if(e.isConsumed()) {
+				return;	//we're done if someone handled the event
+			}
+			screen.mousePressed(e);
+		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
+	 */
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+		//tell all the screens about this mouse event
+		for(Screen screen: screenList) {
+			if(e.isConsumed()) {
+				return;	//we're done if someone handled the event
+			}
+			screen.mouseReleased(e);
+		}
 	}
 	
 	/* (non-Javadoc)
@@ -117,15 +165,13 @@ public class ScreenStack extends JPanel implements KeyListener, MouseListener, M
 	 */
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		//TODO should we only send this to the screen with focus?
+		//TODO should we only send this to the screen with focus? (need to make the same choice for all the other events too)
 		
-		//tell all the screen about this mouse event
+		//tell all the screens about this mouse event
 		for(Screen screen: screenList) {
 			if(e.isConsumed()) {
-				System.out.println("Ate it");
 				return;	//we're done if someone handled the event
 			}
-			
 			screen.mouseMoved(e);
 		}
 	}

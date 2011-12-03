@@ -3,7 +3,11 @@
  */
 package edu.rit.se.sse.rapdevx.clientmodels;
 
+import java.util.List;
+
+import edu.rit.se.sse.rapdevx.api.dataclasses.AssetImage;
 import edu.rit.se.sse.rapdevx.api.dataclasses.Assets;
+import edu.rit.se.sse.rapdevx.api.dataclasses.ShipClass;
 
 /**
  * @author Cody Krieger
@@ -31,14 +35,14 @@ public class AssetLibrary {
 	/**
 	 * @return images for the current game
 	 */
-	public static Object getImages() {
+	public static List<AssetImage> getImages() {
 		return AssetLibrary.assets.getImages();
 	}
 
 	/**
 	 * @return a list of possible ship classes
 	 */
-	public static Object getShipClasses() {
+	public static List<ShipClass> getShipClasses() {
 		return AssetLibrary.assets.getShipClasses();
 	}
 
