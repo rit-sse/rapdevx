@@ -4,10 +4,10 @@ import java.util.List;
 import edu.rit.se.sse.rapdevx.api.dataclasses.Game;
 import edu.rit.se.sse.rapdevx.api.dataclasses.Asset;
 import edu.rit.se.sse.rapdevx.api.dataclasses.Session;
-import edu.rit.se.sse.rapdevx.api.dataclasses.GameStatus;
-import edu.rit.se.sse.rapdevx.api.dataclasses.ShipLocation;
-import edu.rit.se.sse.rapdevx.api.dataclasses.UnitMove;
-import edu.rit.se.sse.rapdevx.api.dataclasses.UnitAttack;
+import edu.rit.se.sse.rapdevx.api.dataclasses.Status;
+import edu.rit.se.sse.rapdevx.api.dataclasses.ShipPlacement;
+import edu.rit.se.sse.rapdevx.api.dataclasses.MovementOrder;
+import edu.rit.se.sse.rapdevx.api.dataclasses.AbilityUseOrder;
 
 /**
  * API access to the Game object on the server side
@@ -25,39 +25,39 @@ public class GameApi {
 		return null;
 	}
 
-	public static GameStatus getStatus(Game inputGame) {
+	public static Status getStatus(Game inputGame) {
 		return null;
 	}
 
-	public static boolean setShipPlacement(Game inputGame, Session userSession, List<ShipLocation> ships) {
+	public static boolean setShipPlacement(Game inputGame, Session userSession, List<ShipPlacement> ships) {
 		return false;
 	}
 
 	// Unit Move contents
 	
-	public static boolean submitUnitMove(Game inputGame, Session userSession, int currentTurn, UnitMove move) {
+	public static boolean submitMovementOrder(Game inputGame, Session userSession, int currentTurn, MovementOrder move) {
 		return false;
 	}
 
-	public static List<UnitMove> getCurrentMoves(Game inputGame, Session userSession, int currentTurn) {
+	public static List<MovementOrder> getCurrentMoves(Game inputGame, Session userSession, int currentTurn) {
 		return null;
 	}
 
-	public static boolean removeUnitMove(Game inputGame, Session userSession, int currentTurn, UnitMove move) {
+	public static boolean removeMovementOrder(Game inputGame, Session userSession, int currentTurn, MovementOrder move) {
 		return false;
 	}
 
 	// Unit Attack contents
 	
-	public static boolean submitUnitAttack(Game inputGame, Session userSession, UnitAttack attack) {
+	public static boolean submitAbilityUseOrder(Game inputGame, Session userSession, AbilityUseOrder attack) {
 		return false;
 	}
 
-	public static List<UnitAttack> getCurrentAttacks(Game inputGame, Session userSession, int currentTurn) {
+	public static List<AbilityUseOrder> getCurrentAttacks(Game inputGame, Session userSession, int currentTurn) {
 		return null;
 	}
 
-	public static boolean removeUnitAttack(Game inputGame, Session userSession, int currentTurn, UnitMove move) {
+	public static boolean removeAbilityUseOrder(Game inputGame, Session userSession, int currentTurn, MovementOrder move) {
 		return false;
 	}
 
@@ -65,11 +65,11 @@ public class GameApi {
 		return false;
 	}
 
-	public static List<UnitMove> getResultMoves(Game inputGame, Session userSession, int currentTurn) {
+	public static List<MovementOrder> getResultMoves(Game inputGame, Session userSession, int currentTurn) {
 		return null;
 	}
 
-	public static List<UnitAttack> getResultAttacks(Game inputGame, Session userSession, int currentTurn) {
+	public static List<AbilityUseOrder> getResultAttacks(Game inputGame, Session userSession, int currentTurn) {
 		return null;
 	}
 }
