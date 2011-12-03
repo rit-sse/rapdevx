@@ -15,6 +15,7 @@ def swizzle(lists):
 		if len(lists)==0:
 			return results
 		i = i % len(lists)
+    return results
         
 class Unit:
     '''
