@@ -1,3 +1,4 @@
+from dto import *
 class Unit:
     '''
 
@@ -15,6 +16,7 @@ class Unit:
         owning_player - An integer refering to the player which owns this unit.
         types - List of strings which tell what kind of thing the unit is.
         location - The unit's location.
+        radius - An integer which represents a units size
         '''
 
         self.gid = None #set on registry
@@ -136,17 +138,17 @@ class MoveTurn:
         self.gid = None #set on registry
         self.turn_num = turn_num
         
-    def addMoveOrder(self, move_order, calling_player):
+    def addMoveOrder(self, move_order, calling_player, registry):
         '''
         '''
         pass
     
-    def deleteMoveOrder(self, move_order_gid, calling_player):
+    def deleteMoveOrder(self, move_order_gid, calling_player, registry):
         '''
         '''
         pass
 
-    def getPlayerMoveList(self, calling_player):
+    def getPlayerMoveList(self, calling_player, registry):
         '''
         '''
         pass
@@ -162,30 +164,52 @@ class MoveTurn:
     def getResults(self):
         pass
         
-    def collisionCheck(self, unit1, unit2, radius1, radius2, end_loc):
+    def collisionCheck(self, unit1, unit2, end_loc, bumpSpace):
         '''
         '''
+# bumpSpace must be a float/ int
         unit1_loc = unit1.location
         unit2_loc = unit2.location
 
         def distance(point1, point2):
             return ((point1[0] - point2[0])**2 + (point1[1] - point2[1])**2)**0.5
         
-        length_ratio = ((distance(unit1_loc,unit2_loc)**2-distance(unit2_loc,end_loc)**2-distance(end_loc,unit1_loc)**2)/(-2*distance(end_loc,unit1_loc))) / distance(unit1_loc,end_loc)
-        test_point = ((unit1_loc[0]+unit2_loc[0])*(length_ratio),(unit1_loc[1]+unit2_loc[1])*(length_ratio))
+        def lengthRatio(unit1_loc, unit2_loc, end_loc):
+            return ((distance(unit1_loc,unit2_loc)**2-distance(unit2_loc,end_loc)**2-distance(end_loc,unit1_loc)**2)/(-2*distance(end_loc,unit1_loc))) / distance(unit1_loc,end_loc)
+        def testPoint(unit1_loc, unit2_loc, end_loc):
+            return (((unit1_loc[0]+unit2_loc[0])*(lengthRatio(unit1_loc, unit2_loc, end_loc_))),((unit1_loc[1]+unit2_loc[1])*(lengthRatio(unit1_loc, unit2_loc, end_loc))))
 
-        if (distance(unit1_loc,test_point) - distance(unit1_loc,end_loc)) > 0:
-            if distance(unit1_loc,unit2_loc) < (radius1 + radius2):
+        def beyondMovement(unit1, unit2, end_loc):
+            if (distance(unit1.location, testPoint(unit1.location, unit2.location, end_loc)) - distance(unit1.location,end_loc)) > 0:
                 return True
             else:
                 return False
-
-        else:
-            if distance(test_point,unit2_loc) >= (radius1 + radius2):
-                return False
+        def hitFromTestPoint(unit1, unit2, end_loc, bumpSpace):
+            if distance(testPoint(unit1.location, unit2.location, end_loc),unit2_loc) > (unit1.radius + unit2.radius + bumpSpace):
+                return False   
             else:
                 return True
+        def hitCollide():
+            if beyondMovement(unit1, unit2, end_loc, bumpSpace):
+# check if hit can be made from the end of the unit1's path
+                if unit1.radius + unit2.radius + bumpSpace > distance(unit1.location, unit2.location)
+                    return True
+                else:
+                    return False
+#check if hit can be made from testPoint (mid point of the ships path)
+            else:
+                hitFromTestPoint(unit1, unit2, end_loc, bumpSpace)
         
+        def main(unit1, unit2, end_loc, bumpSpace):
+            print("location of unit1 is :", unit1.location, "\n", "location of unit2 is :", unit2.location)
+            print("the distance between is unit1 and unit2 is :", distance(unit1.location, unit2.location)
+            print("the distance between unit1 and the end loaction is :", distance(unit1.location, end_loc)
+            print("the length ratio, (the stopping point) of unit1's movement is :", lengthRatio(unit1.location, unit2.location, end_loc)
+            print("the test point, or the location of collision tests is :", testPoint(unit1.location, unit2.location, end_loc)
+            print("test if enemy ship is beyond the point of collision :", beyondMovement(unit1, unit2, end_loc, bumpSpace), "\n", "test if enemy ship hits the ship from the testPoint! :", hitFromTestPoint(unit1, unit2, end_loc, bumpSpace))
+            print("final test if hit (tests if both hit from end and if hit from testPoint)! :", hitCollide(unit1, unit2, end_loc, bumpSpace)
+
+
 class AttackTurn:
     '''
     Represents a player's turn if they choose to attack. 
@@ -199,49 +223,48 @@ class AttackTurn:
         '''
         self.gid = None #set on registry
         self.turn_num = turn_num
-        self.attack_list = []
+        self.player_attack_lists = {}
+        self.results = None
 
-    def addAttackOrder(self, attack_order, calling_player):
+    def addAttackOrder(self, attack_order, calling_player, registry):
         '''
         Submit a player's attack. This method assumes that the move order has
         already been registered.
 
         attack_order - AbilityUseOrder object for the ability user by the attacker.
         calling_player - integer referencing the attacker's player id.
+        
+        registry - the ID registry to add the move to for later reference
         '''
-        # Associate an attack order with the player who made the attack
-        playerAttack = { attack_order, calling_player }
-
-        # TODO: Validate that the client is actually in range/not lying
-        self.attack_list.append( playerAttack )
-    
-    def deleteAttackOrder(self, attack_order_gid, calling_player):
+        #setup a list of attacks for a player if there isn't one yet
+        if calling_player not in self.player_attack_lists:
+            self.player_attack_lists[calling_player]=[]
+        
+        self.player_attack_lists.append(order)
+        
+    def deleteAttackOrder(self, move_order_gid, calling_player, registry):
         '''
         Remove the specified player's move from the attack list.
 
-        attack_order_gid - The id of the move order.
+        move_order_gid - The id of the move order.
         calling_player - An integer reference to the player who made the move. 
+        
+        registry - the ID registry to remove the move from
         '''
-        for attack in attack_list:
-            attack_order = attack[0].gid
-            playerId = attack[1]
+        move_order = registry.getById(move_order_gid)
+        registry.removeById(move_order_gid)
+        
+        self.player_attack_lists[calling_player].remove(move_order)
 
-            attackOrderMatches = attack_order == attack_order_gid
-            playerIdMatches = playerId == calling_player
-
-            if( attackOrderMatches and playerIdMatches ):
-                attack_list.remove( attack )
-                return
-
-        pass
-
-    def getPlayerMoveList(self, calling_player):
+    def getPlayerMoveList(self, calling_player, registry):
         '''
-        Get a list of the specified player's moves.
+        Get a list of the specified player's moves' ID's.
 
         calling_player - an integer referencing a player id.
+        
+        registry - the ID registry that the moves are in
         '''
-        pass
+        return [x.to_dto for x in self.player_attack_lists[calling_player]]
     
     def execute(self, registry):
         '''
@@ -252,7 +275,7 @@ class AttackTurn:
         registry - The game's Registry object. This has all of the unit data.
         '''
 
-        #move the 
+        #for now, assume any ability between two real ships worked
         pass
 
     def getResults(self):
@@ -260,24 +283,53 @@ class AttackTurn:
         '''
         pass
 
-    def getTurnNum( self ):
-        '''
-        '''
-        pass
-
-    def setTurnNum( self, turn_num ):
-        '''
-        '''
         
 class UnitClass:
-    def __init__(self, types, abilities, maxhp, radius, placement_cost):
+    def __init__(self, types, abilities, maxhp, radius, placement_cost, image, name):
         self.types = types
         self.abilities = abilities
         self.maxhp = maxhp
         self.radius = radius
         self.placement_cost = placement_cost  
+        self.name = name
         self.gid = None
+        self.image = image
     
     def makeUnit(self,location,player_id):
         unit = Unit(self.abilities[:],self.maxhp,player_id, self.types, location, self.radius)
         return unit
+    
+    def to_dto(self):
+    #types, abilities, maxhp, radius, placement_cost, imageid, gid):
+        return DTO_ShipClass(self.types, [x.to_dto() for x in self.abilities], 
+            self.maxhp, self.radius, self.placement_cost, self.image.gid, self.gid)
+            
+class Image:
+    def __init__(self, filename):
+        self.contents = open(filename).read()
+        self.gid = None
+    
+    def to_dto(self):
+        return DTO_AssetImage(self.contents,self.gid)
+        
+        
+class AttackOrder:
+    def __init__(self, srcid, targetid, ability):
+        self.srcid = srcid
+        self.targetid = targetid
+        self.ability = ability
+        
+        self.gid = None
+        
+    def to_dto(self):
+        return DTO_AbilityUseOrder(self.srcid, self.targetid, self.ability, self.gid)
+        
+class MoveOrder:
+    def __init__(self, shipid, path):
+        self.shipid = shipid
+        self.path = path
+        self.gid = None
+        
+    def to_dto(self):
+        return DTO_MovementOrder(self.shipid, self.path, self.gid)
+        

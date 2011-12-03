@@ -1,4 +1,4 @@
-from dto import Status
+from dto import DTO_Status
 from gameplay import *
 from registry import GameRegistry
 from dto import *
@@ -10,10 +10,14 @@ class GameContext:
         #todo real asset loading
         atk = Ability(100,"attack", 10,{})
         self.registry.register(atk)
-        klass = UnitClass([],[atk],200,100,10)
+        
+        sprite = Image("../assets/ship.png")
+        self.registry.register(sprite)
+        
+        klass = UnitClass([],[atk],200,100,10, sprite, "Scout")
         self.registry.register(klass)
         
-        self.assets = Assets(1000,1000,[klass],[],[atk])
+        self.assets = DTO_Assets(1000,1000,[klass.to_dto()],[],[atk.to_dto()])
         self.phase = WaitingPhase(self)
     
     def getAssetSet(self):
@@ -27,7 +31,7 @@ class GameContext:
     
     def getAllDTOShips(self, my_playernum):
         pass
-    
+
     #Passthrough to phase
     def addPlayerMove(self, action_order, calling_player):
         self.phase.addPlayerMove(action_order, calling_player)
@@ -57,8 +61,7 @@ class GameContext:
         self.phase.setReady(player_num, val)
         self.phase = self.phase.getNextPhase()
     
-    
-    
+
 class GamePhase:
     #abstract superclass for all phases
     def __init__(self, context):
@@ -223,7 +226,7 @@ class WonPhase(GamePhase):
     def getNextPhase(self):
         return self
 
-
+c = None
 if __name__ == '__main__':
     c = GameContext(['a','b'])
     c.setReady(1,True)
@@ -233,9 +236,12 @@ if __name__ == '__main__':
 
     import dto
 
-    place = dto.ShipPlacement(10,10,'UnitClass0')
+    place = dto.DTO_ShipPlacement(10,10,'UnitClass0')
 
     c.setShipPlacement([place],1)
     c.setShipPlacement([place],0)
     
     print(c.phase)
+    #should be "movement"
+    
+    
