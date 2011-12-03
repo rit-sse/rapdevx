@@ -145,10 +145,8 @@ class MoveTurn:
         pass
         
     def collisionCheck(self, playerShip1, playerShip2, radius1, radius2, endLocation):
-        #A = playerShip1.location
-        #B = playerShip2.location
-        A = playerShip1
-        B = playerShip2
+        A = playerShip1.location
+        B = playerShip2.location
         C = endLocation
 
         def distance(point1, point2):
@@ -345,40 +343,6 @@ class Turn:
         self.move = MoveTurn(turn_num)
         self.gid = None #set on registry
     
-class MoveTurn:
-    '''
-    '''
-
-    def __init__(self, turn_num):
-        self.gid = None #set on registry
-        self.turn_num = turn_num
-        
-    def addMoveOrder(self, move_order, calling_player):
-        '''
-        '''
-        pass
-    
-    def deleteMoveOrder(self, move_order_gid, calling_player):
-        '''
-        '''
-        pass
-
-    def getPlayerMoveList(self, calling_player):
-        '''
-        '''
-        pass
-        
-    #any existing move orders should be evaluated
-    #(going round robin on submitting players, in order)
-    #R1: No collision checking
-    #R2: Stop short of offending segment
-    #R3: Stop tanget to offending ship
-    def execute(self, registry):
-        pass
-        
-    def getResults(self):
-        pass
-             
 class AttackTurn:
     '''
     '''
