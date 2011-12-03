@@ -11,7 +11,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 public class Background {
-	
+
 	private static int GRID_SIZE = 64;
 
 	private int x, y, width, height;
@@ -32,31 +32,39 @@ public class Background {
 
 	public void update() {
 	}
-	
+
 	public void draw(Graphics2D gPen, Rectangle2D bounds) {
 		int xOffset = (int) bounds.getX();
 		int yOffset = (int) bounds.getY();
-		
-		gPen.drawImage(background, x + xOffset, y + yOffset, width, height, null);
+
+		gPen.drawImage(background, x + xOffset, y + yOffset, width, height,
+				null);
 		drawGrid(gPen, xOffset, yOffset);
 	}
 
 	/**
 	 * Draws the grid
 	 * 
-	 * @param gPen the graphics2D Pen
+	 * @param gPen
+	 *              the graphics2D Pen
 	 */
 	public void drawGrid(Graphics2D gPen, int xOffset, int yOffset) {
 		int x1 = 32 + xOffset;
 		int y1 = 32 + yOffset;
-		
+		if (xOffset > 0) {
+			x1 = 32 - xOffset;
+		}
+		if (yOffset > 0) {
+			y1 = 32 - yOffset;
+		}
+
 		gPen.setColor(getColor(x1));
 		while (x1 < width) {
 			gPen.fill(new Rectangle(x1, 0, 4, height));
 			x1 += GRID_SIZE;
 			gPen.setColor(getColor(x1));
 		}
-		
+
 		gPen.setColor(getColor(y1));
 		while (y1 < height) {
 			gPen.fill(new Rectangle(0, y1, width, 4));
@@ -68,7 +76,8 @@ public class Background {
 	/**
 	 * Swaps the color from gray to other gray
 	 * 
-	 * @param gPen the graphics2D Pen
+	 * @param gPen
+	 *              the graphics2D Pen
 	 */
 	public void swapColor(Graphics2D gPen) {
 		Color color1 = new Color(18, 18, 19);
@@ -79,16 +88,17 @@ public class Background {
 			gPen.setColor(color1);
 		}
 	}
-	
+
 	/**
 	 * Swaps the color from gray to other gray
 	 * 
-	 * @param gPen the graphics2D Pen
+	 * @param gPen
+	 *              the graphics2D Pen
 	 */
 	public Color getColor(int coordinate) {
 		Color color1 = new Color(18, 18, 19);
 		Color color2 = new Color(26, 24, 29);
-		
+
 		if ((coordinate / GRID_SIZE) % 2 == 0) {
 			return color1;
 		} else {
