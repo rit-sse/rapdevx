@@ -6,6 +6,7 @@ package edu.rit.se.sse.rapdevx.gui.screens.menus;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -141,6 +142,19 @@ public class Menu extends Screen {
 		}
 		
 		//TODO if we don't have focus, draw transparent, light gray myst over ourself
+	}
+	
+	/* (non-Javadoc)
+	 * @see edu.rit.se.sse.rapdevx.gui.Screen#mouseMoved(java.awt.event.MouseEvent)
+	 */
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		//Note: we'll assume the mouse can't be over more than one button at a time
+		
+		int x = e.getX();
+		int y = e.getY();
+		System.out.println("Menu: mouseMoved(): x, y: " + x + ", " + y);
+		e.consume();	//we handled it
 	}
 	
 }

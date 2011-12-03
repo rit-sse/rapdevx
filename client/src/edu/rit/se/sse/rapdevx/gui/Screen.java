@@ -5,9 +5,8 @@ import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
-public abstract class Screen implements KeyListener, MouseListener {
+public abstract class Screen implements KeyListener, MouseEvents {
 	
 	enum State {
 		ACTIVE,
@@ -66,25 +65,6 @@ public abstract class Screen implements KeyListener, MouseListener {
 	
 	/**** User Input ****/
 	
-	public void mouseClicked(MouseEvent arg0) {
-		
-	}
-	
-	public void mouseEntered(MouseEvent arg0) {		
-	}
-	
-	public void mouseExited(MouseEvent arg0) {
-		
-	}
-	
-	public void mousePressed(MouseEvent arg0) {
-		
-	}
-	
-	public void mouseReleased(MouseEvent arg0) {
-		
-	}
-	
 	public void keyPressed(KeyEvent arg0) {
 		
 	}
@@ -97,4 +77,11 @@ public abstract class Screen implements KeyListener, MouseListener {
 		
 	}
 	
+	/* (non-Javadoc)
+	 * @see edu.rit.se.sse.rapdevx.gui.MouseEvents#mouseMoved(java.awt.event.MouseEvent)
+	 */
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		
+	}
 }

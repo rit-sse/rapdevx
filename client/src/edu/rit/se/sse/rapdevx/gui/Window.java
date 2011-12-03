@@ -10,15 +10,17 @@ import java.awt.image.BufferStrategy;
 import javax.swing.JFrame;
 
 import edu.rit.se.sse.rapdevx.gui.screens.ExampleScreen;
+import edu.rit.se.sse.rapdevx.gui.screens.menus.Menu;
+import edu.rit.se.sse.rapdevx.gui.screens.menus.MenuButton;
 
 public class Window {
-
+	
 	private JFrame window;
 	
 	private GraphicsDevice graphics;
 	private GraphicsConfiguration graphicsConfig;
 	private BufferStrategy bufferStrategy;
-
+	
 	private ScreenStack screenStack;
 	
 	public Window(String title) {
@@ -39,18 +41,29 @@ public class Window {
 		
 		// Setup double buffering (makes graphics faster)
 		window.createBufferStrategy(2);
-        bufferStrategy = window.getBufferStrategy();
+		bufferStrategy = window.getBufferStrategy();
 		
-        
-        /**** Create the panel to draw on ****/
-        screenStack = new ScreenStack();
-        screenStack.setSize(window.getWidth(), window.getHeight());
-        screenStack.addScreen(new ExampleScreen(window.getWidth(), window.getHeight()));
+		
+		/**** Create the panel to draw on ****/
+		screenStack = new ScreenStack();
+		screenStack.setSize(window.getWidth(), window.getHeight());
+		screenStack.addScreen(new ExampleScreen(window.getWidth(), window.getHeight()));
+		
+		//TODO remove after testing
+		Menu testMenu = new Menu(300, 300);
+		MenuButton playButton = new MenuButton("Play Test", "This button does nothing yet");
+		MenuButton settingsButton = new MenuButton("Settings Test", "This button does nothing yet");
+		MenuButton helpButton = new MenuButton("Help Test", "This button does nothing yet");
+		testMenu.addButton(playButton);
+		testMenu.addButton(settingsButton);
+		testMenu.addButton(helpButton);
+		screenStack.addScreen(testMenu);
 		
 		// Add the panel to the window
 		window.getContentPane().add(screenStack);
 		window.addKeyListener(screenStack);
 		window.addMouseListener(screenStack);
+		window.addMouseMotionListener(screenStack);
 		window.requestFocusInWindow();
 	}
 	
@@ -70,8 +83,9 @@ public class Window {
 				bufferStrategy.show();
 			}
 		} finally {
-			if (gPen != null)
+			if (gPen != null) {
 				gPen.dispose();
+			}
 		}
 	}
 }
