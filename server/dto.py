@@ -149,7 +149,7 @@ class DTO_AbilityUseOrder:
         r['gid'] = self.gid
         return json.dumps(r)
 
-class DTO_Ship:
+class DTO_Unit:
     #player_num is an int
     #hp is an int
     #classid is a string
@@ -241,9 +241,9 @@ def JSON_Construct_DTO_AbilityUseOrder(jsonstring):
     attribute_dictionary = json.loads(jsonstring)
     return DTO_AbilityUseOrder(attribute_dictionary.pop('srcid'),attribute_dictionary.pop('targetid'),attribute_dictionary.pop('ability'),attribute_dictionary.pop('gid'))
 
-def JSON_Construct_DTO_Ship(jsonstring):
+def JSON_Construct_DTO_Unit(jsonstring):
     attribute_dictionary = json.loads(jsonstring)
-    return DTO_SHIP(attribute_dictionary.pop('player_num'),attribute_dictionary.pop('hp'),attribute_dictionary.pop('classid'),attribute_dictionary.pop('gid'))
+    return DTO_Unit(attribute_dictionary.pop('player_num'),attribute_dictionary.pop('hp'),attribute_dictionary.pop('classid'),attribute_dictionary.pop('gid'))
 
 def JSON_Construct_DTO_Status(jsonstring):
     attribute_dictionary = json.loads(jsonstring)
