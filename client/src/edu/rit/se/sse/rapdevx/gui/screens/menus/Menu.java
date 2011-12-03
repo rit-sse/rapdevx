@@ -6,6 +6,7 @@ package edu.rit.se.sse.rapdevx.gui.screens.menus;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -21,7 +22,7 @@ public class Menu extends Screen {
 	private final Color BackgroundColor = Color.gray.darker().darker();
 	
 	//Holds all of this menu's buttons
-	private final Collection<MenuButton> buttons = new ArrayList<MenuButton>();
+	private final ArrayList<MenuButton> buttons = new ArrayList<MenuButton>();
 	
 	//spacing vars
 	private static final int Border = 5;	//space between menu and button edges
@@ -32,7 +33,7 @@ public class Menu extends Screen {
 	private static final int EmptyHeight = Border;
 	
 	//true if this menu shouldn't be displayed, else false
-	private boolean isHidden = false;
+	private boolean isHidden = false;	//TODO make a getter
 	
 	//position
 	private int cornerX = 0;
@@ -97,16 +98,8 @@ public class Menu extends Screen {
 	 */
 	@Override
 	public void update(boolean hasFocus, boolean isVisible) {
-		//TODO what about hasFocus?
+		//TODO if lost focus, unselect all buttons and grey display
 		this.isHidden = !isVisible;
-	}
-	
-	/* (non-Javadoc)
-	 * @see edu.rit.se.sse.rapdevx.gui.Screen#updateTransition(double, int)
-	 */
-	@Override
-	public void updateTransition(double position, int direction) {
-		// TODO Auto-generated method stub
 	}
 	
 	/* (non-Javadoc)
@@ -114,10 +107,11 @@ public class Menu extends Screen {
 	 */
 	@Override
 	public void draw(Graphics2D gPen) {
-		//if we aren't displayed, just stop
-		if(isHidden) {
-			return;
-		}
+		//TODO re-enable hiding after testing
+		////if we aren't displayed, just stop
+		//if(isHidden) {
+		//	return;
+		//}
 		
 		//draw the backgrond
 		Dimension size = getSize();
@@ -145,16 +139,112 @@ public class Menu extends Screen {
 	}
 	
 	/* (non-Javadoc)
+	 * @see edu.rit.se.sse.rapdevx.gui.Screen#keyTyped(java.awt.event.KeyEvent)
+	 */
+	@Override
+	public void keyTyped(KeyEvent e) {
+		//TODO switch this to keyPressed() and keyReleased() so user can see which button will be pressed
+		int number = Character.getNumericValue(e.getKeyChar()) - 1;	//doing -1 as buttons index starts at 0
+		if(number < 0 || number >= buttons.size()) {
+			return;
+		}
+		
+		MenuButton button = buttons.get(number);
+		button.clicked();
+	}
+	
+	/* (non-Javadoc)
+	 * @see edu.rit.se.sse.rapdevx.gui.Screen#mousePressed(java.awt.event.MouseEvent)
+	 */
+	@Override
+	public void mousePressed(MouseEvent e) {
+		//if the mouse isn't over us, ignore handle the event
+		int x = e.getX();
+		int y = e.getY();
+		if(!includesPoint(x, y)) {
+			return;
+		}
+		
+		for(MenuButton button: getButtonsOver(x, y)) {
+			button.pressed();
+		}
+		e.consume();
+	}
+	
+	/* (non-Javadoc)
+	 * @see edu.rit.se.sse.rapdevx.gui.Screen#mouseReleased(java.awt.event.MouseEvent)
+	 */
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		//if the mouse isn't over us, ignore handle the event
+		int x = e.getX();
+		int y = e.getY();
+		if(!includesPoint(x, y)) {
+			return;
+		}
+		
+		//don't matter what button we've over, release all of them
+		for(MenuButton button: buttons) {
+			button.released(x, y);
+		}
+		e.consume();
+	}
+	
+	/* (non-Javadoc)
 	 * @see edu.rit.se.sse.rapdevx.gui.Screen#mouseMoved(java.awt.event.MouseEvent)
 	 */
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		//Note: we'll assume the mouse can't be over more than one button at a time
-		
+		//if the mouse isn't over us, ignore handle the event
+		//TODO make sure buttons become unselected when mouse leaves the menu (mouse can jump, so can't rely on it hitting a border before leaving.  Instead, use mouseExit())
 		int x = e.getX();
 		int y = e.getY();
-		System.out.println("Menu: mouseMoved(): x, y: " + x + ", " + y);
-		e.consume();	//we handled it
+		if(!includesPoint(x, y)) {
+			return;
+		}
+		
+		//a button is selected when the mouse is over it
+		for(MenuButton button: buttons) {
+			button.setSelected(button.includesPoint(x,y));
+		}
+		
+		e.consume();
+	}
+	
+	//--------------------------------------------------------------------------
+	// Helper methods
+	//--------------------------------------------------------------------------
+	
+	/**
+	 * Gets a collection of all buttons that include/overlap the both of the points
+	 * @param x A point on the x-axis
+	 * @param y A point on the y-axis
+	 * @return A collection of MenuButtons.  Will may be empty, but will never be null
+	 */
+	private Collection<MenuButton> getButtonsOver(int x, int y) {
+		Collection<MenuButton> overButtons = new ArrayList<MenuButton>();
+		
+		for(MenuButton button: buttons) {
+			if(button.includesPoint(x, y)) {
+				overButtons.add(button);
+			}
+		}
+		
+		assert(overButtons != null);
+		return overButtons;
+	}
+	
+	/**
+	 * Checks to see if the given points are inside this Menu's drawing area
+	 * @param x A point on the x-axis
+	 * @param y A point on the y-axis
+	 * @return true if the given points are inside this Menu
+	 */
+	private boolean includesPoint(int x, int y) {
+		//TODO handle when width or height is negative :/
+		Dimension size = getSize();
+		return !(x < cornerX || x > (cornerX+size.width) ||
+				y < cornerY || y > (cornerY+size.height));
 	}
 	
 }
