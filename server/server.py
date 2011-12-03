@@ -16,9 +16,9 @@ def g_sessions(session_id=None):
 def d_sessions(i=None):
     return "DELETE /session/" + str(session_id)
 
-@get('/game/:game_id/assets')
+@get('/game/:game_id/assests')
 def g_game_assests(game_id=None):
-    return "GET /game/" + str(game_id) + "/assets"
+    return "GET /game/" + str(game_id) + "/assests"
 
 @get('/game/:game_id')
 def g_game(game_id=None):
