@@ -32,7 +32,7 @@ public class Menu extends Screen {
 	private static final int EmptyHeight = Border;
 	
 	//true if this menu shouldn't be displayed, else false
-	private boolean isHidden = false;
+	private boolean isHidden = false;	//TODO make a getter
 	
 	//position
 	private int cornerX = 0;
@@ -97,7 +97,7 @@ public class Menu extends Screen {
 	 */
 	@Override
 	public void update(boolean hasFocus, boolean isVisible) {
-		//TODO what about hasFocus?
+		//TODO if lost focus, unselect all buttons and grey display
 		this.isHidden = !isVisible;
 	}
 	
@@ -114,10 +114,11 @@ public class Menu extends Screen {
 	 */
 	@Override
 	public void draw(Graphics2D gPen) {
-		//if we aren't displayed, just stop
-		if(isHidden) {
-			return;
-		}
+		//TODO re-enable hiding after testing
+		////if we aren't displayed, just stop
+		//if(isHidden) {
+		//	return;
+		//}
 		
 		//draw the backgrond
 		Dimension size = getSize();
@@ -149,12 +150,37 @@ public class Menu extends Screen {
 	 */
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		//Note: we'll assume the mouse can't be over more than one button at a time
-		
+		//if the mouse isn't over us, ignore handle the event
+		//TODO make sure buttons become unselected when mouse leaves the menu (mouse can jump, so can't rely on it hitting a border before leaving.  Instead, use mouseExit())
 		int x = e.getX();
 		int y = e.getY();
-		System.out.println("Menu: mouseMoved(): x, y: " + x + ", " + y);
-		e.consume();	//we handled it
+		if(!includesPoint(x, y)) {
+			return;
+		}
+		
+		//a button is selected when the mouse is over it
+		for(MenuButton button: buttons) {
+			button.setSelected(button.includesPoint(x,y));
+		}
+		
+		e.consume();
+	}
+	
+	//--------------------------------------------------------------------------
+	// Helper methods
+	//--------------------------------------------------------------------------
+	
+	/**
+	 * Checks to see if the given points are inside this Menu's drawing area
+	 * @param x A point on the x-axis
+	 * @param y A point on the y-axis
+	 * @return true if the given points are inside this Menu
+	 */
+	public boolean includesPoint(int x, int y) {
+		//TODO handle when width or height is negative :/
+		Dimension size = getSize();
+		return !(x < cornerX || x > (cornerX+size.width) ||
+				y < cornerY || y > (cornerY+size.height));
 	}
 	
 }
