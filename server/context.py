@@ -241,6 +241,7 @@ if __name__ == '__main__':
     c.setShipPlacement([place],1)
     c.setShipPlacement([place],0)
     
+>>>>>>> f12da3ecf89a88b3536ed35d9b53df06c30e5ccc
     print(c.phase)
     #should be "movement"
     
