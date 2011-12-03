@@ -2,12 +2,26 @@ package edu.rit.se.sse.rapdevx.events;
 
 import java.util.EventObject;
 
+import edu.rit.se.sse.rapdevx.clientstate.StateBase;
+
 @SuppressWarnings("serial")
 public class StateEvent extends EventObject {
 
-	public StateEvent(Object source) {
+	private StateBase oldState;
+	private StateBase newState;
+	
+	public StateEvent(Object source, StateBase oldState, StateBase newState) {
 		super(source);
-		// TODO hold new state and old state references / types?
+		this.newState = newState;
+		this.oldState = oldState;
+	}
+
+	public StateBase getNewState() {
+		return newState;
+	}
+	
+	public StateBase getOldState() {
+		return oldState;
 	}
 
 }
