@@ -18,9 +18,9 @@ public class DrawableShip extends DrawableObject {
 	}
 	
 	public void draw(Graphics2D gPen, Rectangle2D bounds) {
-		if (bounds.intersects(x + bounds.getX(), y + bounds.getY(), 64, 64)) {
-			shipImage.draw(gPen, x + (int)bounds.getX(), y + (int)bounds.getY(), 4);
-		}
+		//if (bounds.intersects(x + bounds.getX(), y + bounds.getY(), 64, 64)) {
+			shipImage.draw(gPen, x, y, 4);
+		//}
 		
 	}	
 

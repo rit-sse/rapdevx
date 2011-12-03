@@ -38,7 +38,7 @@ public class Background {
 		int yOffset = (int) bounds.getY();
 		
 		gPen.drawImage(background, x + xOffset, y + yOffset, width, height, null);
-		drawGrid(gPen, xOffset, yOffset);
+		drawGrid(gPen, 0, 0);
 	}
 
 	/**
