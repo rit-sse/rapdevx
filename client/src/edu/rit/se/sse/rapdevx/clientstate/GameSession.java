@@ -17,13 +17,13 @@ import edu.rit.se.sse.rapdevx.events.StateListener;
  */
 public class GameSession {
 
-	private static GameSession	instance;
-	private List<StateListener>	listeners	= new Vector<StateListener>();
+	private static GameSession instance;
+	private List<StateListener> listeners = new Vector<StateListener>();
 
-	private StateBase			currentState;
-	private Session				session;
+	private StateBase currentState;
+	private Session session;
 
-	private List<ShipClass>		shipClasses	= new Vector<ShipClass>();
+	private List<ShipClass> shipClasses = new Vector<ShipClass>();
 
 	private GameSession() {
 		currentState = new StartingState();
@@ -53,7 +53,7 @@ public class GameSession {
 
 	/**
 	 * @param session
-	 *            the session to set
+	 *              the session to set
 	 */
 	public void setSession(Session newSession) {
 		session = newSession;
@@ -61,7 +61,7 @@ public class GameSession {
 
 	/**
 	 * @param observer
-	 *            the observer to add
+	 *              the observer to add
 	 */
 	public void addStateListener(StateListener listener) {
 		listeners.add(listener);
@@ -69,7 +69,7 @@ public class GameSession {
 
 	/**
 	 * @param observer
-	 *            the observer to remove
+	 *              the observer to remove
 	 */
 	public void removeStateListener(StateListener listener) {
 		listeners.add(listener);
@@ -91,7 +91,7 @@ public class GameSession {
 	 * Add a ShipClass to the game session.
 	 * 
 	 * @param s
-	 *            The ShipClass to add.
+	 *              The ShipClass to add.
 	 */
 	public void addShipClass(ShipClass s) {
 		shipClasses.add(s);
@@ -101,9 +101,25 @@ public class GameSession {
 	 * Remove a ShipClass from the game session.
 	 * 
 	 * @param s
-	 *            The ShipClass to remove.
+	 *              The ShipClass to remove.
 	 */
 	public void removeShipClass(ShipClass s) {
 		shipClasses.remove(s);
+	}
+
+	/**
+	 * Find a Ship class given a class id
+	 * 
+	 * @param id
+	 *              the ship class id
+	 * @return the ship class associated with this id
+	 */
+	public ShipClass findByClassId(String id) {
+		for (ShipClass shipClass : shipClasses) {
+			if (shipClass.getGid().equals(id)) {
+				return shipClass;
+			}
+		}
+		return null;
 	}
 }
