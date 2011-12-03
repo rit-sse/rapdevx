@@ -24,7 +24,6 @@ class Unit:
     def getLocation(self):
         pass
         
-    def 
 class Ability:
     def __init__(self, radius, name, default_damage, special_damages):
         self.radius = radius
