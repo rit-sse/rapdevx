@@ -154,18 +154,18 @@ class MoveTurn:
     #(going round robin on submitting players, in order)
     #R1: No collision checking
     #R2: Stop short of offending segment
-    #R3: Stop tanget to offending ship
+    #R3: Stop tangent to offending unit
     def execute(self, registry):
         pass
         
     def getResults(self):
         pass
         
-    def collisionCheck(self, playerShip1, playerShip2, radius1, radius2, endLocation):
+    def collisionCheck(self, unit1, unit2, radius1, radius2, endLocation):
         '''
         '''
-        A = playerShip1.location
-        B = playerShip2.location
+        A = unit1.location
+        B = unit2.location
         C = endLocation
 
         def distance(point1, point2):
@@ -201,7 +201,6 @@ class AttackTurn:
         self.turn_num = turn_num
         self.attack_list = []
 
-
     def addAttackOrder(self, attack_order, calling_player):
         '''
         Submit a player's attack. This method assumes that the move order has
@@ -223,6 +222,8 @@ class AttackTurn:
         move_order_gid - The id of the move order.
         calling_player - An integer reference to the player who made the move. 
         '''
+        #
+
         pass
 
     def getPlayerMoveList(self, calling_player):
@@ -236,7 +237,7 @@ class AttackTurn:
     def execute(self, registry):
         '''
         Any existing ability order should be evaluated (going round robin on
-        submitting players, in order) remove ships that are destroyed, if not
+        submitting players, in order) remove units that are destroyed, if not
         then set their health lower.
 
         registry - The game's Registry object. This has all of the unit data.
@@ -259,7 +260,7 @@ class AttackTurn:
         '''
         '''
         
-class ShipClass:
+class UnitClass:
     def __init__(self, types, abilities, maxhp, radius, placement_cost):
         self.types = types
         self.abilities = abilities
