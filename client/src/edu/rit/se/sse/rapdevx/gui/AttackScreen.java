@@ -37,7 +37,7 @@ public class AttackScreen extends Screen implements StateListener {
 	public void draw(Graphics2D gPen) {
 		// Translate the coordinates based on the camera
 		Rectangle2D cameraBounds = mapScreen.getCamera().getBounds();
-		gPen.translate(cameraBounds.getX(), cameraBounds.getY());
+		gPen.translate(-cameraBounds.getX(), -cameraBounds.getY());
 		
 		/** Draw things based on the camera here **/
 		
@@ -47,7 +47,7 @@ public class AttackScreen extends Screen implements StateListener {
 		}
 		
 		// Change the drawing back to screen based coordinates
-		gPen.translate(-cameraBounds.getX(), -cameraBounds.getY());
+		gPen.translate(cameraBounds.getX(), cameraBounds.getY());
 	}
 	
 	public void keyPressed(KeyEvent e) {

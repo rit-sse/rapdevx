@@ -34,23 +34,23 @@ public class MapScreen extends Screen {
 		gPen.setColor(Color.BLACK);
 		gPen.fillRect(0, 0, screenWidth, screenHeight);
 		
-		gPen.translate(cameraBounds.getX(), cameraBounds.getY());
+		gPen.translate(-cameraBounds.getX(), -cameraBounds.getY());
 		
 		// Draw the real background
 		background.draw(gPen, cameraBounds);
 		
-		gPen.translate(-cameraBounds.getX(), -cameraBounds.getY());
+		gPen.translate(cameraBounds.getX(), cameraBounds.getY());
 	}
 	
 	public void keyPressed(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_UP) {
-			camera.yVel = CAMERA_SPEED;
-		} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
 			camera.yVel = -CAMERA_SPEED;
+		} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+			camera.yVel = CAMERA_SPEED;
 		} else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-			camera.xVel = CAMERA_SPEED;
-		} else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 			camera.xVel = -CAMERA_SPEED;
+		} else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+			camera.xVel = CAMERA_SPEED;
 		}
 	}
 	
