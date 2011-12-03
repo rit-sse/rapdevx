@@ -12,18 +12,18 @@ public class Text extends DrawableObject {
 	private static final String FONT_FILE = "assets/FontPage.png";
 	private static final String FONT_FILE_WHITE = "assets/FontPageWhite.png";
 
-	private static final int DEFAULT_SCALE = 2;
+	private static final double DEFAULT_SCALE = 2;
 
 	private BufferedImage largeImage;
 
 	private String text;
-	private int scale;
+	private double scale;
 
 	public Text(String text, int x, int y) {
 		this(text, x, y, DEFAULT_SCALE);
 	}
 
-	public Text(String text, int x, int y, int textSize) {
+	public Text(String text, int x, int y, double textSize) {
 		super(x, y);
 
 		this.text = text.toUpperCase();
@@ -98,8 +98,8 @@ public class Text extends DrawableObject {
 
 			}
 
-			gPen.drawImage(smallImage, tempX, y, smallImage.getWidth()
-					* this.scale, smallImage.getHeight() * this.scale, null);
+			gPen.drawImage(smallImage, tempX, y, (int) (smallImage.getWidth()
+					* this.scale), (int) (smallImage.getHeight() * this.scale), null);
 
 			tempX += 6 * this.scale;
 
@@ -185,8 +185,8 @@ public class Text extends DrawableObject {
 			}
 
 			gPen.drawImage(colorize.copyAndRecolor(replaceWith, toReplace),
-					tempX, y, smallImage.getWidth() * this.scale,
-					smallImage.getHeight() * this.scale, null);
+					tempX, y, (int) (smallImage.getWidth() * this.scale),
+					(int) (smallImage.getHeight() * this.scale), null);
 
 			tempX += 6 * this.scale;
 
@@ -195,7 +195,7 @@ public class Text extends DrawableObject {
 	}
 
 	public int getSizeOnScreen() {
-		return text.length() * (7 * scale);
+		return (int) (text.length() * (7 * scale));
 	}
 
 }
