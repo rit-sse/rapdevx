@@ -1,5 +1,21 @@
 class Unit:
+    '''
+    '''
+
     def __init__(self, abilities, maxhp, owning_player, types, location):
+        '''
+        Constructor.
+        
+        gid - The unit's id.
+        abilities - A list of Ability objects which indicate what abilities are
+                    supported by the unit.
+        maxhp - An integer which contains the unit's maximum health value.
+        hp - An integer which contains the unit's current health value.
+        owning_player - An integer refering to the player which owns this unit.
+        types - List of strings which tell what kind of thing the unit is.
+        location - The unit's location.
+        '''
+
         self.gid = None #set on registry
         self.abilities = abilities
         self.maxhp = maxhp
@@ -9,27 +25,51 @@ class Unit:
         self.location = location
     
     def getMaxHP(self):
+        '''
+        Get the unit's maximum health.
+        '''
         return self.maxhp
         
     def getAbilities(self):
+        '''
+        Get the unit's abilities.
+        '''
         return self.abilities
         
     def getHP(self):
+        '''
+        Get the unit's current health.
+        '''
         return self.hp
     
     def setHP(self, hp):
+        '''
+        Set the unit's current health.
+        '''
         self.hp = hp
     
     def getTypes(self):
+        '''
+        Retrieve the list of type strings associated with this unit.
+        '''
         return self.types
         
     def getPlayer(self):
+        '''
+        Get an integer which references the player that owns this unit.
+        '''
         return self.owning_player
 
     def getLocation(self):
+        '''
+        Get the unit's location.
+        '''
         return self.location
 
 class Ability:
+    '''
+    '''
+
     def __init__(self, radius, name, default_damage, special_damages):
         self.radius = radius
         self.name = name
@@ -39,6 +79,8 @@ class Ability:
     
     # 
     def damageForTypes(self,type_list):
+        '''
+        '''
         for type in type_list:
             if type in self.special_damages:
                 return self.special_damages[type]
@@ -47,31 +89,47 @@ class Ability:
 
     # Get the radius.   
     def getRadius(self):
+        '''
+        '''
         return self.radius
         
     # Get a DTO object containing Ability data.
     def to_dto(self):
+        '''
+        '''
         dto = DTO_Ability(self.radius, self.name, self.default_damage, self.special_damages, self.gid)
         return dto
     
 class Turn:
+    '''
+    '''
+
     def __init__(self, turn_num):
         self.attack = AttackTurn(turn_num)
         self.move = MoveTurn(turn_num)
         self.gid = None #set on registry
     
 class MoveTurn:
+    '''
+    '''
+
     def __init__(self, turn_num):
         self.gid = None #set on registry
         self.turn_num = turn_num
         
     def addMoveOrder(self, move_order, calling_player):
+        '''
+        '''
         pass
     
     def deleteMoveOrder(self, move_order_gid, calling_player):
+        '''
+        '''
         pass
 
     def getPlayerMoveList(self, calling_player):
+        '''
+        '''
         pass
         
     #any existing move orders should be evaluated
@@ -111,17 +169,36 @@ class MoveTurn:
                 return True
         
 class AttackTurn:
+    '''
+    '''
+
     def __init__(self, turn_num):
+        '''
+        turn_num - integer referencing the turn where this attack occured.
+        '''
         self.gid = None #set on registry
         self.turn_num = turn_num
-        
+
     def addAttackOrder(self, move_order, calling_player):
-        pass
+        '''
+        Submit a player's attack. This method assumes that the move order has
+        already been registered.
+
+        move_order - AbilityUseOrder object for the ability user by the attacker.
+        calling_player - integer referencing the attacker's player id.
+        '''
+        # Keep track of player's attack list
+        # add code/data structures to support keeping track of adding/deleting
     
     def deleteAttackOrder(self, move_order_gid, calling_player):
         pass
 
     def getPlayerMoveList(self, calling_player):
+        '''
+        Get a list containing a player's moves.
+
+        calling_player - integer referencing a player id.
+        '''
         pass
     
     #any existing ability order should be evaluated
@@ -129,7 +206,20 @@ class AttackTurn:
     #remove ships that are destroyed, if not then set their health
     #lower
     def execute(self, registry):
+        '''
+        '''
         pass
 
     def getResults(self):
+        '''
+        '''
         pass
+
+    def getTurnNum( self ):
+        '''
+        '''
+        pass
+
+    def setTurnNum( self, turn_num ):
+        '''
+        '''
