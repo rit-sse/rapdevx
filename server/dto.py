@@ -61,7 +61,7 @@ class MovementOrder:
 class AbilityUseOrder:
     #srcid,targetid = int
     #ability = string
-    def __init__(self, srcid, targetid, ability, path, id):
+    def __init__(self, srcid, targetid, ability, id):
         self.srcid = srcid
         self.targetid = targetid
         self.ability = ability
