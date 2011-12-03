@@ -13,7 +13,6 @@ public class AssetLibrary {
 
 	private static Assets	assets;
 
-	// private static Vector<AssetImage> images = new Vector<AssetImage>();
 	// private static Vector<ShipClass> shipClasses = new Vector<ShipClass>();
 
 	/**
@@ -29,6 +28,20 @@ public class AssetLibrary {
 	 */
 	public static void setAssets(Assets assets) {
 		AssetLibrary.assets = assets;
+	}
+
+	/**
+	 * @return images for the current game
+	 */
+	public static Object getImages() {
+		return AssetLibrary.assets.getImages();
+	}
+
+	/**
+	 * @return a list of possible ship classes
+	 */
+	public static Object getShipClasses() {
+		return AssetLibrary.assets.getShipClasses();
 	}
 
 }
