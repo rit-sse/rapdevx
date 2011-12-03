@@ -1,6 +1,6 @@
 # Data Transfer Objects - Primarily used to communicate between API team 
 # and the Server Objects. Any class in here is to be exclusively as a struct
-f
+
 class AssetImage:
     def __init__(self, file, name, registry, id):
         self.file = file

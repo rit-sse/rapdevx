@@ -3,7 +3,7 @@ class Unit:
 
     '''
 
-    def __init__(self, abilities, maxhp, owning_player, types, location):
+    def __init__(self, abilities, maxhp, owning_player, types, location, radius):
         '''
         Constructor.
         
@@ -24,6 +24,7 @@ class Unit:
         self.owning_player = owning_player
         self.types = types
         self.location = location
+        self.radius = radius
     
     def getMaxHP(self):
         '''
@@ -268,7 +269,6 @@ class ShipClass:
         self.placement_cost = placement_cost  
         self.gid = None
     
-    def makeUnit(self,location):
-        pass
-        #todo: make an instance of Unit at the location, with
-        #full health and default values from the class
+    def makeUnit(self,location,player_id):
+        unit = Unit(self.abilities[:],self.maxhp,player_id, self.types, location, self.radius)
+        return unit
