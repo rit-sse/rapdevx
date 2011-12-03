@@ -13,10 +13,17 @@ class DTOEncoder(json.JSONEncoder):
         return json.JSONEncoder.encode(r)
 
 class AssetImage:
-    def __init__(self, file, name, registry, id):
+    def __init__(self, file, name, registry):
         self.file = file
         self.name = name
         self.id = id
+    
+    def encode(self):
+        r = {}
+        r['file'] = self.file
+        r['name'] = self.name
+        r['id'] = self.id
+        return json.dumps(r)
 
     def encode(self):
         r = {}
