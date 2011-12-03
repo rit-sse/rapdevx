@@ -87,6 +87,7 @@ class DTO_Assets:
         r['height'] = self.height
         r['ship_classes'] = self.ship_classes
         r['images'] = self.images
+        r['abilities'] = abilities
         return json.dumps(r)
 
 class DTO_ShipPlacement:
