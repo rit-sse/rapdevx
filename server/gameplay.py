@@ -15,6 +15,7 @@ class Unit:
         owning_player - An integer refering to the player which owns this unit.
         types - List of strings which tell what kind of thing the unit is.
         location - The unit's location.
+        radius - An integer which represents a units size
         '''
 
         self.gid = None #set on registry
