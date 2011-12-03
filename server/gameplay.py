@@ -1,18 +1,18 @@
 class Unit:
     def __init__(self, abilities, maxhp, owning_player, types, location):
-        self.id = None #set on registry
+        self.gid = None #set on registry
         self.abilities = abilities
         self.maxhp = maxhp
-        self.hp = maxhp
+        self.hp = maxhp # The unit's health is full upon unit creation
         self.owning_player = owning_player
         self.types = types
         self.location = location
-        
+    
     def getMaxHP(self):
         return self.maxhp
         
     def getAbilities(self):
-        return abilities
+        return self.abilities
         
     def getHP(self):
         return self.hp
@@ -24,10 +24,10 @@ class Unit:
         return self.types
         
     def getPlayer(self):
-        return owning_player
+        return self.owning_player
 
     def getLocation(self):
-        return location
+        return self.location
 
 class Ability:
     def __init__(self, radius, name, default_damage, special_damages):
@@ -35,7 +35,7 @@ class Ability:
         self.name = name
         self.default_damage = default_damage
         self.special_damages = special_damages
-        self.id = None #set on registry
+        self.gid = None #set on registry
     
     # 
     def damageForTypes(self,type_list):
@@ -51,23 +51,24 @@ class Ability:
         
     # Get a DTO object containing Ability data.
     def to_dto(self):
-        return DTO_Ability(self.radius, self.name, self.default_damage, self.special_damages, self.id);
+        dto = DTO_Ability(self.radius, self.name, self.default_damage, self.special_damages, self.gid)
+        return dto
     
 class Turn:
     def __init__(self, turn_num):
         self.attack = AttackTurn(turn_num)
         self.move = MoveTurn(turn_num)
-        self.id = None #set on registry
+        self.gid = None #set on registry
     
 class MoveTurn:
     def __init__(self, turn_num):
-        self.id = None #set on registry
+        self.gid = None #set on registry
         self.turn_num = turn_num
         
     def addMoveOrder(self, move_order):
         pass
     
-    def deleteMoveOrder(self, move_order_id):
+    def deleteMoveOrder(self, move_order_gid):
         pass
         
     #any existing move orders should be evaluated
@@ -83,13 +84,13 @@ class MoveTurn:
         
 class AttackTurn:
     def __init__(self, turn_num):
-        self.id = None #set on registry
+        self.gid = None #set on registry
         self.turn_num = turn_num
         
     def addAttackOrder(self, move_order):
         pass
     
-    def deleteAttackOrder(self, move_order_id):
+    def deleteAttackOrder(self, move_order_gid):
         pass
     
     #any existing ability order should be evaluated
