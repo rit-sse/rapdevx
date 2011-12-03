@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -37,9 +38,25 @@ public class Background {
 		int xOffset = (int) bounds.getX();
 		int yOffset = (int) bounds.getY();
 
-		gPen.drawImage(background, x + xOffset, y + yOffset, width, height,
-				null);
+		drawImage(gPen, xOffset, yOffset);
 		drawGrid(gPen, xOffset, yOffset);
+	}
+
+	public void drawImage(Graphics2D gPen, int xOffset, int yOffset) {
+
+		int x1 =  xOffset;
+		int y1 = yOffset;
+		
+		while (x1 < width) {
+			while (y1 < height) {
+				gPen.drawImage(background, x1, y1,
+						background.getWidth(),
+						background.getHeight(), null);
+				y1 += background.getHeight();
+			}
+			x1 += background.getWidth();
+			y1 = yOffset;
+		}
 	}
 
 	/**
@@ -105,5 +122,4 @@ public class Background {
 			return color2;
 		}
 	}
-
 }
