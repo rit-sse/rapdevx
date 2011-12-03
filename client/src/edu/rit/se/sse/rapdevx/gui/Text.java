@@ -9,16 +9,27 @@ import javax.imageio.ImageIO;
 
 public class Text implements Drawable{
 	
-	private final File fontFile = new File("assets/FontPage");
+	private final File fontFile = new File("assets/FontPage.png");
 	private String toConvert;
 	private int xCord;
 	private int yCord;
+	private int textScale;
 	
 	public Text(String toConvert, int xCord, int yCord) {
 		
-		this.toConvert = toConvert;
+		this.toConvert = toConvert.toUpperCase();
 		this.xCord = xCord;
 		this.yCord = yCord;
+		this.textScale = 2;
+		
+	}
+	
+	public Text(String toConvert, int xCord, int yCord, int textSize) {
+		
+		this.toConvert = toConvert.toUpperCase();
+		this.xCord = xCord;
+		this.yCord = yCord;
+		this.textScale = textSize;
 		
 	}
 
@@ -30,7 +41,8 @@ public class Text implements Drawable{
 
 	public void draw(Graphics2D gPen) {
 		
-char[] derp = toConvert.toCharArray();
+		char[] derp = toConvert.toCharArray();
+		int tempX = this.xCord;
 		
 		for ( char character : derp ) {
 			
@@ -46,7 +58,7 @@ char[] derp = toConvert.toCharArray();
 				try {
 					
 					largeImage = ImageIO.read(fontFile);
-					smallImage = largeImage.getSubimage(xIndex, 0, 6, 6);
+					smallImage = largeImage.getSubimage(xIndex, 0, 7, 7);
 					
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -60,7 +72,7 @@ char[] derp = toConvert.toCharArray();
 				try {
 					
 					largeImage = ImageIO.read(fontFile);
-					smallImage = largeImage.getSubimage(xIndex, 12, 6, 6);
+					smallImage = largeImage.getSubimage(xIndex, 12, 7, 7);
 					
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -74,7 +86,7 @@ char[] derp = toConvert.toCharArray();
 				try {
 					
 					largeImage = ImageIO.read(fontFile);
-					smallImage = largeImage.getSubimage(xIndex, 24, 6, 6);
+					smallImage = largeImage.getSubimage(xIndex, 24, 7, 7);
 					
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -88,13 +100,13 @@ char[] derp = toConvert.toCharArray();
 				try {
 					
 					largeImage = ImageIO.read(fontFile);
-					smallImage = largeImage.getSubimage(xIndex, 36, 6, 6);
+					smallImage = largeImage.getSubimage(xIndex, 36, 7, 7);
 					
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
 				
-			} else if (character >= 91&& character <= 96) {
+			} else if (character >= 91 && character <= 96) {
 				
 				xIndex = (int) character - 91;
 				xIndex *= 6;
@@ -103,7 +115,7 @@ char[] derp = toConvert.toCharArray();
 				try {
 					
 					largeImage = ImageIO.read(fontFile);
-					smallImage = largeImage.getSubimage(xIndex, 36, 6, 6);
+					smallImage = largeImage.getSubimage(xIndex, 36, 7, 7);
 					
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -116,18 +128,29 @@ char[] derp = toConvert.toCharArray();
 				try {
 					
 					largeImage = ImageIO.read(fontFile);
-					smallImage = largeImage.getSubimage(xIndex, 36, 6, 6);
+					smallImage = largeImage.getSubimage(xIndex, 36, 7, 7);
 					
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
 				
-			} else {
+			} else if (character == 32) {
 				
 				try {
 					
 					largeImage = ImageIO.read(fontFile);
-					smallImage = largeImage.getSubimage(0, 48, 6, 6);
+					smallImage = largeImage.getSubimage(0, 100, 7, 7);
+					
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				
+			}else {
+				
+				try {
+					
+					largeImage = ImageIO.read(fontFile);
+					smallImage = largeImage.getSubimage(0, 48, 7, 7);
 					
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -135,10 +158,22 @@ char[] derp = toConvert.toCharArray();
 				
 			}
 			
-			gPen.drawImage(smallImage, xCord, yCord, smallImage.getWidth()*4, 
-					smallImage.getHeight()*4, null);
+			gPen.drawImage(smallImage, tempX, yCord, smallImage.getWidth()*this.textScale, 
+					smallImage.getHeight()*this.textScale, null);
+			
+			tempX += 6 * this.textScale;
 			
 		}
+		
+	}
+	
+	public int getSizeOnScreen() {
+		
+		int size = toConvert.length() * (7 * this.textScale);
+		
+		System.out.println(xCord);
+		
+		return size;
 		
 	}
 
