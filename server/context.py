@@ -113,17 +113,20 @@ class PlacementPhase(GamePhase):
         self.assignments = [None for x in context.playerlist]
 
     def setShipPlacement(self, ship_place_list, calling_player):
+        #todo: verify integrity of ship placement list (it replaces current)
         self.assignments[calling_player] = ship_place_list
         
     def getGameProgress(self, calling_player):
         return Status(None, "placement", self.context.playerlist, calling_player)
         
     def getNextPhase(self):
-        if(self.ready.contains(None)):
+        if(None in self.assignments):
             return self
         else:
-            #todo: instantiate all of the ships, and add
-            #them to registry
+            for player, assignment in enumerate(self.assignments):
+                for placement in assignment:
+                    unit = self.context.registry.getById(placement.classid).makeUnit((placement.x,placement.y),player)
+                    self.context.registry.register(unit)
             return MovementPhase(self.context)
 
 class MovementPhase(GamePhase):
@@ -219,3 +222,18 @@ class WonPhase(GamePhase):
     
     def getNextPhase(self):
         return self
+
+
+if __name__ == '__main__':
+    c = GameContext(['a','b'])
+    c.setReady(1,True)
+    c.setReady(0,True)
+
+    print(c.phase)
+
+    import dto
+
+    place = dto.ShipPlacement(10,10,'ShipClass0')
+
+    c.setShipPlacement([place],1)
+    c.setShipPlacement([place],0)
