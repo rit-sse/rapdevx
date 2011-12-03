@@ -24,4 +24,7 @@ class GameManager:
         else:
             return None
 
+    def active_games():
+        return [game for game in games.values() if game.phase == "waiting"]
+
         
