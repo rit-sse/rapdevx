@@ -163,7 +163,7 @@ public class MoveScreen extends Screen implements StateListener {
 					movePath.stopInput();
 					selectedShip.setCenter( (int)movePath.getPath().getLastPoint().getX(), 
 							(int)movePath.getPath().getLastPoint().getY() );
-					selectedShip.setSelected( false );
+					// selectedShip.setSelected( false );
 					selectedShip = null;
 					movePath = null;
 				} else {
