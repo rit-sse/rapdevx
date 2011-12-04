@@ -9,7 +9,7 @@ import edu.rit.se.sse.rapdevx.gui.Window;
  */
 public class Main {
 
-	public static final int UPDATES_PER_SECOND = 25;
+	public static final int UPDATES_PER_SECOND = 40;
 	public static final int UDATE_TICKS = 1000 / UPDATES_PER_SECOND;
 	public static final int MAX_UPDATE_SKIP = 5;
 	

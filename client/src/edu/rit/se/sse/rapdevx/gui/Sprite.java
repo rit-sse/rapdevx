@@ -22,4 +22,9 @@ public class Sprite {
 	public void draw(Graphics2D gPen, int x, int y, int scale) {
 		gPen.drawImage(image, x, y, 64, 64, null);
 	}
+	
+	public void draw(Graphics2D gPen, int x, int y) {
+		gPen.drawImage(image, x, y, image.getWidth(), 
+				image.getHeight(), null);
+	}
 }
