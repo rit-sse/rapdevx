@@ -6,7 +6,7 @@ import pickle
 path = os.path.abspath( __file__ )
 sys.path.append( os.path.join( os.path.dirname( path ), "../" ) )
 
-import dto
+# import dto #needs fixing
 
 class TestJSON(unittest.TestCase):
     def test_AssetImage(self):
