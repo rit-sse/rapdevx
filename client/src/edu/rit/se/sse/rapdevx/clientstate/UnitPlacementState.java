@@ -5,7 +5,6 @@ package edu.rit.se.sse.rapdevx.clientstate;
 
 import java.util.List;
 import java.util.Timer;
-import java.util.TimerTask;
 
 import edu.rit.se.sse.rapdevx.api.GameApi;
 import edu.rit.se.sse.rapdevx.api.dataclasses.ShipPlacement;
@@ -26,25 +25,16 @@ public class UnitPlacementState extends StateBase {
 	 * Call this when the player is done making up their initial ship layout.
 	 */
 	public void ready(List<ShipPlacement> shipPlacements) {
-		phaseNum = Integer.parseInt(GameApi.getStatus(GameSession.get().getSession()).getPhase());
-
+		poll();
 		GameApi.setShipPlacement(GameSession.get().getSession(), shipPlacements);
-
-		timer.scheduleAtFixedRate(new TimerTask() {
-
-			@Override
-			public void run() {
-				if (Integer.parseInt(GameApi.getStatus(GameSession.get().getSession())
-						.getPhase()) != phaseNum) {
-					this.cancel();
-					readyReady();
-				}
-			}
-
-		}, 0, 1000);
 	}
 
-	private void readyReady() {
+	/*
+	 * (non-Javadoc)
+	 * @see edu.rit.se.sse.rapdevx.clientstate.StateBase#finishedPolling()
+	 */
+	@Override
+	protected void finishedPolling() {
 		GameSession.get().advanceState();
 	}
 }

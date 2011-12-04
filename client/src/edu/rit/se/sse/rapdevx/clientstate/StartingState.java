@@ -4,7 +4,6 @@
 package edu.rit.se.sse.rapdevx.clientstate;
 
 import java.util.Timer;
-import java.util.TimerTask;
 
 import edu.rit.se.sse.rapdevx.api.GameApi;
 import edu.rit.se.sse.rapdevx.api.SessionApi;
@@ -33,27 +32,18 @@ public class StartingState extends StateBase {
 		AssetLibrary.setAssets(GameApi
 				.getAssets(GameSession.get().getSession()));
 
-		phaseNum = Integer.parseInt(GameApi.getStatus(GameSession.get().getSession()).getPhase());
+		poll();
 
 		// yay, we're ready!
 		GameApi.setReady(GameSession.get().getSession());
-
-		timer.scheduleAtFixedRate(new TimerTask() {
-
-			@Override
-			public void run() {
-				if (Integer.parseInt(GameApi.getStatus(GameSession.get().getSession())
-						.getPhase()) != phaseNum) {
-					// once phase # has changed, we're ready to change states
-					this.cancel();
-					ready();
-				}
-			}
-
-		}, 0, 1000);
 	}
 
-	private void ready() {
+	/*
+	 * (non-Javadoc)
+	 * @see edu.rit.se.sse.rapdevx.clientstate.StateBase#finishedPolling()
+	 */
+	@Override
+	protected void finishedPolling() {
 		GameSession.get().advanceState();
 	}
 }

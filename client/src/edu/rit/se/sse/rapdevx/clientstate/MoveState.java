@@ -4,9 +4,9 @@
 package edu.rit.se.sse.rapdevx.clientstate;
 
 import java.util.Timer;
-import java.util.TimerTask;
 
 import edu.rit.se.sse.rapdevx.api.GameApi;
+import edu.rit.se.sse.rapdevx.api.dataclasses.MovementOrder;
 
 /**
  * @author Cody Krieger
@@ -25,33 +25,24 @@ public class MoveState extends StateBase {
 	/**
 	 * Make a move and send it to the server.
 	 */
-	public void makeMove(/* TODO take in a move from the GUI */) {
-		// TODO GameApi.submitMovementOrder(userSession, currentTurn, move)
+	public void makeMove(MovementOrder order) {
+		GameApi.submitMovementOrder(GameSession.get().getSession(), 0, order);
 	}
 
 	/**
 	 * Call this when the player is done with their move stack.
 	 */
 	public void ready() {
-		phaseNum = Integer.parseInt(GameApi.getStatus(GameSession.get().getSession()).getPhase());
-
+		poll();
 		GameApi.setReady(GameSession.get().getSession());
-
-		timer.scheduleAtFixedRate(new TimerTask() {
-
-			@Override
-			public void run() {
-				if (Integer.parseInt(GameApi.getStatus(GameSession.get().getSession())
-						.getPhase())!= phaseNum) {
-					this.cancel();
-					readyReady();
-				}
-			}
-
-		}, 0, 1000);
 	}
 
-	private void readyReady() {
+	/*
+	 * (non-Javadoc)
+	 * @see edu.rit.se.sse.rapdevx.clientstate.StateBase#finishedPolling()
+	 */
+	@Override
+	protected void finishedPolling() {
 		GameSession.get().advanceState();
 	}
 }
