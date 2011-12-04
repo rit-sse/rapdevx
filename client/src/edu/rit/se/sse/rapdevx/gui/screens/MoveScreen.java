@@ -8,6 +8,7 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.Area;
 import java.util.ArrayList;
 
+import edu.rit.se.sse.rapdevx.api.dataclasses.MovementOrder;
 import edu.rit.se.sse.rapdevx.clientmodels.Ship;
 import edu.rit.se.sse.rapdevx.clientstate.AttackState;
 import edu.rit.se.sse.rapdevx.clientstate.GameSession;
@@ -165,7 +166,7 @@ public class MoveScreen extends Screen implements StateListener {
 				
 				Point point = new Point( e.getX() + camera.getX(), e.getY() + camera.getY() );
 				
-				if ( movePath.hasPointCloseToPrevious( point, 5 ) ) {
+				if ( movePath.hasPointCloseToPrevious( point, 32 /*the 'radius' of the ship*/ ) ) {
 					movePath.stopInput();
 					selectedShip.setCenter( (int)movePath.getPath().getLastPoint().getX(), 
 							(int)movePath.getPath().getLastPoint().getY() );
@@ -211,6 +212,22 @@ public class MoveScreen extends Screen implements StateListener {
 			ScreenStack.get().removeScreen(this);
 			GameSession.get().removeStateListener(this);
 		}
+	}
+	
+	/**
+	 * get a list of MovementOrders to send to the server
+	 * @return an ArrayList of MovementOrder types
+	 */
+	public ArrayList<MovementOrder> getMovementOrdersForStateChange() {
+		ArrayList<MovementOrder> orders = new ArrayList<MovementOrder>();
+		
+		for ( DrawableShip ship : shipList ) {
+			if ( ship.hasPath() ) {
+				orders.add( ship.getMovementOrder() );
+			}
+		}
+		
+		return orders;
 	}
 
 }

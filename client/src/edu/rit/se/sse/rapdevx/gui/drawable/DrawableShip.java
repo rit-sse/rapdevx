@@ -13,6 +13,8 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import edu.rit.se.sse.rapdevx.api.dataclasses.MovementOrder;
+import edu.rit.se.sse.rapdevx.clientmodels.Path;
 import edu.rit.se.sse.rapdevx.clientmodels.Ship;
 import edu.rit.se.sse.rapdevx.gui.Art;
 import edu.rit.se.sse.rapdevx.gui.ImageColorizer;
@@ -117,6 +119,30 @@ public class DrawableShip extends DrawableObject {
 	
 	public void setPath( DrawablePath thisPath ) {
 		path = thisPath;
+	}
+	
+	public Path getPath() {
+		if ( hasPath() )
+			return path.getPath();
+		else
+			return null;
+	}
+	
+	public boolean hasPath() {
+		if ( path != null ) 
+			return true;
+		else
+			return false;
+	}
+
+	public MovementOrder getMovementOrder() {
+		MovementOrder order = new MovementOrder();
+		
+		order.setPATH( getPath().getMovementOrderPath() );
+		order.setUnitID( ship.getClassID() );
+		order.setGid( ship.getgid() );
+		
+		return order;
 	}
 
 }
