@@ -70,7 +70,7 @@ public class DrawableShip extends DrawableObject {
 
 	public Ellipse2D getBounds() {
 		// TODO get ship radius (2 * scale)
-		return new Ellipse2D.Double(x - 5, y + 2, 68, 68);
+		return new Ellipse2D.Double(x - 5, y + 3, 68, 68);
 	}
 
 	public Ship getShip() {
