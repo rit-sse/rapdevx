@@ -1,6 +1,7 @@
 package edu.rit.se.sse.rapdevx.gui;
 
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.geom.Rectangle2D;
 
 public abstract class DrawableObject implements Drawable {
@@ -61,6 +62,15 @@ public abstract class DrawableObject implements Drawable {
 	public void setCenter(int x, int y) {
 		this.x = x - (width/2);
 		this.y = y - (height/2);
+	}
+	
+	/**
+	 * returns Point of the center of this object. 
+	 * @return Point of the center of this object
+	 */
+	public Point getCenter()
+	{
+		return new Point(x + width/2, y + height/2);
 	}
 
 	/**

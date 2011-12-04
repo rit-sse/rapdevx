@@ -52,7 +52,7 @@ public class Window {
 		screenStack.addScreen(mapScreen);
 		
 		// Start with the move phase on the map
-		screenStack.addScreen(new MoveScreen(mapScreen.getCamera(), window.getWidth(), window.getHeight()));
+		screenStack.addScreen(new AttackScreen(mapScreen.getCamera(), window.getWidth(), window.getHeight()));
 		
 		//TODO remove after testing
 		Menu testMenu = new Menu(300, 300);
