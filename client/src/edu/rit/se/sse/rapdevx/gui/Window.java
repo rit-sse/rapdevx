@@ -9,7 +9,6 @@ import java.awt.image.BufferStrategy;
 
 import javax.swing.JFrame;
 
-import edu.rit.se.sse.rapdevx.gui.screens.PathTestScreen;
 import edu.rit.se.sse.rapdevx.gui.screens.menus.Menu;
 import edu.rit.se.sse.rapdevx.gui.screens.menus.MenuButton;
 
@@ -67,7 +66,7 @@ public class Window {
 		// Start with the move phase on the map
 		screenStack.addScreen(new AttackScreen(mapScreen.getCamera(), windowWidth, windowHeight));
 
-		screenStack.addScreen(new OverlayScreen(windowWidth, windowHeight));
+		screenStack.addScreen(new OverlayScreen(windowWidth, windowHeight, insetLeft, insetTop));
 		
 		//TODO remove after testing
 		Menu testMenu = new Menu(300, 300);
