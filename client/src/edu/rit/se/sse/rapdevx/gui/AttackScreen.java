@@ -17,11 +17,12 @@ public class AttackScreen extends Screen implements StateListener {
 	/** A reference to the map camera for positioning objects in world space */
 	private Camera camera;
 
-	/** A list of ships currently on the field **/
-	private ArrayList<DrawableShip> shipList = new ArrayList<DrawableShip>();;
+	/** A list of ships currently on the field */
+	private ArrayList<DrawableShip> shipList = new ArrayList<DrawableShip>();
 	private DrawableShip selectedShip;
 
-	/** Current attack path */
+	/** A list of all the attack paths on the field */
+	private ArrayList<DrawableAttack> attackList = new ArrayList<DrawableAttack>();
 	private DrawableAttack curAttack = null;
 
 	public AttackScreen(Camera camera, int width, int height) {
@@ -33,10 +34,21 @@ public class AttackScreen extends Screen implements StateListener {
 		ship.setY(150);
 
 		shipList.add(new DrawableShip(ship, new Color(48, 129, 233)));
+		
+		ship = new Ship();
+		ship.setX(20);
+		ship.setY(50);
+
+		shipList.add(new DrawableShip(ship, new Color(48, 129, 233)));
 
 		Ship ship2 = new Ship();
 		ship2.setX(300);
 		ship2.setY(300);
+		shipList.add(new DrawableShip(ship2, new Color(100, 255, 130)));
+		
+		ship2 = new Ship();
+		ship2.setX(10);
+		ship2.setY(200);
 		shipList.add(new DrawableShip(ship2, new Color(100, 255, 130)));
 	}
 
@@ -67,6 +79,9 @@ public class AttackScreen extends Screen implements StateListener {
 		if (curAttack != null) {
 			curAttack.draw(gPen, cameraBounds);
 		}
+		
+		for (DrawableAttack attack : attackList)
+			attack.draw(gPen, cameraBounds);
 
 		// Change the drawing back to screen based coordinates
 		gPen.translate(cameraBounds.getX(), cameraBounds.getY());
@@ -84,11 +99,14 @@ public class AttackScreen extends Screen implements StateListener {
 					selectedShip = null;
 					curAttack = null;
 				} else if (selectedShip != null) {
-					// Another ship was selected, complete the attack and save it
+					// Another ship was selected, complete the attack and deselect the ship
 					curAttack.setTarget(ship, camera.getBounds());
 					selectedShip.setSelected(false);
 					selectedShip = null;
-					//TODO make an attack list add curAttack to it here
+					
+					// Save the completed attack
+					attackList.add(curAttack);
+					curAttack = null;
 				} else {
 					// No other ship was selected, select this one and start an attack
 					selectedShip = ship;
