@@ -26,6 +26,11 @@ public class Window
 	private GraphicsDevice graphics;
 	private GraphicsConfiguration graphicsConfig;
 	private BufferStrategy bufferStrategy;
+	
+	private AttackScreen attackScreen;
+	private MoveScreen moveScreen;
+	private Screen currScreen;
+	private boolean isMove;
 
 	public Window(String title, boolean fullscreen)
 	{
@@ -73,9 +78,16 @@ public class Window
 		MapScreen mapScreen = new MapScreen(windowWidth, windowHeight);
 		ScreenStack.get().addScreen(mapScreen);
 
+		attackScreen = new AttackScreen(mapScreen.getCamera(), windowWidth, windowHeight);
+		moveScreen = new MoveScreen(mapScreen.getCamera(),
+				windowWidth, windowHeight);
+		
 		// Start with the move phase on the map
-		ScreenStack.get().addScreen(new MoveScreen(mapScreen.getCamera(),
-				windowWidth, windowHeight));
+		/*ScreenStack.get().addScreen(new MoveScreen(mapScreen.getCamera(),
+				windowWidth, windowHeight));*/
+		ScreenStack.get().addScreen(moveScreen);
+		isMove = true;
+		currScreen = moveScreen;
 
 		ScreenStack.get().addScreen(new OverlayScreen(windowWidth, windowHeight));
 
@@ -96,9 +108,6 @@ public class Window
 		StatsScreen testStatsScreen = new StatsScreen(300, 200, windowWidth,
 		 windowHeight, null);
 		ScreenStack.get().addScreen(testStatsScreen);
-
-		// screenStack.addScreen(new PathTestScreen(window.getWidth(),
-		// window.getHeight()));
 
 		// Add the panel to the window
 		// window.getContentPane().add(screenStack);
@@ -136,5 +145,16 @@ public class Window
 				gPen.dispose();
 			}
 		}
+	}
+	
+	/**
+	 * toggle between attack screen and move screen
+	 */
+	public void switchAttackMove()
+	{
+		ScreenStack.get().removeScreen(currScreen);
+		currScreen = isMove ? moveScreen : attackScreen;
+		isMove = !isMove;
+		ScreenStack.get().addScreen(currScreen);
 	}
 }

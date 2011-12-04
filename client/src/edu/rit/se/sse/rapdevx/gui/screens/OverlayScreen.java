@@ -15,6 +15,7 @@ import edu.rit.se.sse.rapdevx.clientstate.UnitPlacementState;
 import edu.rit.se.sse.rapdevx.events.StateEvent;
 import edu.rit.se.sse.rapdevx.events.StateListener;
 import edu.rit.se.sse.rapdevx.gui.Screen;
+import edu.rit.se.sse.rapdevx.gui.Window;
 import edu.rit.se.sse.rapdevx.gui.drawable.Text;
 import edu.rit.se.sse.rapdevx.gui.images.GrayableImage;
 import edu.rit.se.sse.rapdevx.gui.images.IGrayableImage;
@@ -42,7 +43,6 @@ public class OverlayScreen extends Screen implements StateListener
 
 	private Text readyText;
 	private Text stateText;
-	private Text turnText;
 
 	private boolean isReady;
 	private boolean displayPlayback = false;
@@ -52,7 +52,7 @@ public class OverlayScreen extends Screen implements StateListener
 
 	private int center;
 	private int turn = 0;
-
+	
 	public OverlayScreen(int width, int height)
 	{
 		super(width, height);
@@ -92,8 +92,10 @@ public class OverlayScreen extends Screen implements StateListener
 
 		readyText = new Text("Ready", STARTING_X + READY_MODIFIER_X + 28,
 				STARTING_Y + 9, Color.BLACK);
-		stateText = new Text("Waiting...:" + turn, STARTING_X + 100, 15, 2.5,
+		stateText = new Text("Waiting : " + turn, STARTING_X + 100, 15, 2.5,
 				Color.BLACK);
+		
+		//GameSession.get().addStateListener(this);
 	}
 
 	public void update(boolean hasFocus, boolean isVisible)
@@ -151,6 +153,7 @@ public class OverlayScreen extends Screen implements StateListener
 				// TODO more shit
 				isReady = true;
 				readyText.setColor(Color.DARK_GRAY);
+				//GameSession.get().advanceState();
 			}
 			e.consume();
 		}
@@ -201,7 +204,6 @@ public class OverlayScreen extends Screen implements StateListener
 		if (selectedImage != null)
 		{
 			selectedImage.setHovering(false);
-			e.consume();
 		}
 		if (currentlyOver != null)
 		{
@@ -217,21 +219,21 @@ public class OverlayScreen extends Screen implements StateListener
 
 		if (e.getNewState() instanceof StartingState)
 		{
-			stateText = new Text("Waiting...:" + turn, center - 92, 15,
+			stateText = new Text("Waiting : " + turn, center - 92, 15,
 					Color.BLACK);
 		}
 		else if (e.getNewState() instanceof UnitPlacementState)
 		{
-			stateText = new Text("Placing:" + turn, center - 92, 15,
+			stateText = new Text("Placing : " + turn, center - 92, 15,
 					Color.BLACK);
 		}
 		else if (e.getNewState() instanceof MoveState)
 		{
-			stateText = new Text("Moving:" + turn, center - 92, 15, Color.BLACK);
+			stateText = new Text("Moving : " + turn, center - 92, 15, Color.BLACK);
 		}
 		else if (e.getNewState() instanceof AttackState)
 		{
-			stateText = new Text("Attack:" + turn, center - 92, 15, Color.BLACK);
+			stateText = new Text("Attack : " + turn, center - 92, 15, Color.BLACK);
 		}
 		else if (e.getNewState() instanceof DoneState)
 		{
