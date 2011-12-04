@@ -39,15 +39,21 @@ public class OverlayScreen extends Screen implements StateListener
 	private IGrayableImage selectedImage;
 	
 	private Text readyText;
+	private Text stateText;
+	private Text turnText;
 
 	private boolean isReady;
 
 	private Rectangle mainBounds;
 	private Rectangle playbackBounds;
+	
+	private int center;
+	private int turn = 0;
 
 	public OverlayScreen(int width, int height, int insetLeft, int insetTop)
 	{
 		super(width, height);
+		center = width / 2;
 		
 		int STARTING_X = width / 2 - 128 - 64;
 		int STARTING_Y = 0;
@@ -59,7 +65,7 @@ public class OverlayScreen extends Screen implements StateListener
 		mainBounds.y = insetTop;
 
 		playbackBounds = new Rectangle(280, 64);
-		playbackBounds.x = STARTING_X + 52 + insetTop;
+		playbackBounds.x = STARTING_X + 52 + insetLeft;
 		playbackBounds.y = 32 + insetTop;
 
 		for (int x = 0; x < 7; ++x)
@@ -83,6 +89,7 @@ public class OverlayScreen extends Screen implements StateListener
 				STARTING_X + READY_MODIFIER_X, STARTING_Y, insetLeft, insetTop);
 		
 		readyText = new Text("Ready", STARTING_X + READY_MODIFIER_X + 28, STARTING_Y + 9, Color.BLACK);
+		stateText = new Text("Waiting...:" + turn, STARTING_X + 100, 15, 2.5, Color.BLACK);
 	}
 
 	public void update(boolean hasFocus, boolean isVisible)
@@ -116,6 +123,7 @@ public class OverlayScreen extends Screen implements StateListener
 		phase.draw(gPen);
 		
 		readyText.draw(gPen);
+		stateText.draw(gPen);
 	}
 
 	public void mouseReleased(MouseEvent e)
@@ -146,6 +154,8 @@ public class OverlayScreen extends Screen implements StateListener
 				}
 			}
 		}
+		
+		e.consume();
 	}
 
 	public void mouseMoved(MouseEvent e)
@@ -197,19 +207,19 @@ public class OverlayScreen extends Screen implements StateListener
 
 		if (e.getNewState() instanceof StartingState)
 		{
-			// TODO draw text "Waiting..."
+			stateText = new Text("Waiting...:" + turn, center - 92, 15, Color.BLACK);
 		}
 		else if (e.getNewState() instanceof UnitPlacementState)
 		{
-			// TODO draw text "Placing"
+			stateText = new Text("Placing:" + turn, center - 92, 15, Color.BLACK);
 		}
 		else if (e.getNewState() instanceof MoveState)
 		{
-			// TODO draw text "Moving"
+			stateText = new Text("Moving:" + turn, center - 92, 15, Color.BLACK);
 		}
 		else if (e.getNewState() instanceof AttackState)
 		{
-			// TODO draw text "Attack"
+			stateText = new Text("Attack:" + turn, center - 92, 15, Color.BLACK);
 		}
 		else if (e.getNewState() instanceof DoneState)
 		{
