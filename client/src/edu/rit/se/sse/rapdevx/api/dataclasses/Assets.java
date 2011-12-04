@@ -42,12 +42,12 @@ public class Assets {
 		this.height = height;
 	}
 
-	public List<ShipClass> getShipClasses() {
+	public List<ShipClass> getShip_classes() {
 		return ship_classes;
 	}
 
-	public void setShipClasses(List<ShipClass> shipClasses) {
-		this.ship_classes = shipClasses;
+	public void setShipClasses(List<ShipClass> ship_classes) {
+		this.ship_classes = ship_classes;
 	}
 
 	public List<AssetImage> getImages() {
