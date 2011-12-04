@@ -17,6 +17,7 @@ public class ShipClass {
 	private int maxhp;
 	private int radius;
 	private int placement_cost;
+	private String imageid;
 	private String gid;
 	
 	public List<String> getAbilities() {
@@ -96,6 +97,12 @@ public class ShipClass {
 	
 	public ShipClass(){
 		
+	}
+	public void setImageid(String imageid) {
+		this.imageid = imageid;
+	}
+	public String getImageid() {
+		return imageid;
 	}
 	
 }

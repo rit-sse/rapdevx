@@ -53,7 +53,7 @@ public class TestJSONSync {
 		//DTO_Session
 		Session se = new Session();
 		
-		//DTO_ShipClas:
+		//DTO_ShipClass:
 		ShipClass sc = new ShipClass();
 		
 		ArrayList<String> sc_ab_lst = new ArrayList<String>();
@@ -63,7 +63,6 @@ public class TestJSONSync {
 		sc.setMaxhp(999);
 		sc.setRadius(10);
 		sc.setPlacement_cost(5);
-		//sc.set
 		
 		//DTO_ShipPlacement
 		ShipPlacement sp = new ShipPlacement();
