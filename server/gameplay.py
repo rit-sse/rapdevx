@@ -190,6 +190,7 @@ class MoveTurn:
     def deleteMoveOrder(self, move_order_gid, calling_player, registry):
         '''
         '''
+        print("MOVE_GID:", move_order_gid)
         move_order = registry.getById(move_order_gid)
         registry.removeById(move_order_gid)
         
