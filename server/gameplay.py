@@ -180,7 +180,10 @@ class MoveTurn:
         if calling_player not in self.player_move_list:
             self.player_move_list[calling_player] = []
         print("add")
+
+        #moveOrderObj = MoveOrder(move_order.unitid, move_order.path) 
         moveOrderObj = MoveOrder(move_order.unitid, move_order.path) 
+
         self.player_move_list[calling_player].append( moveOrderObj )
         registry.register(moveOrderObj)
     
@@ -214,7 +217,7 @@ class MoveTurn:
         
         for playerMove in combined_list:
             print(playerMove)
-            unitShip = registry.getById(playerMove.shipid)
+            unitShip = registry.getById(playerMove.unitid)
             unitLoc = playerMove.path[-1]
             unitShip.setLocation(unitLoc)
             self.results[unitShip.gid] = playerMove.path
@@ -385,11 +388,11 @@ class AttackOrder:
         return DTO_AbilityUseOrder(self.srcid, self.targetid, self.ability, self.gid)
         
 class MoveOrder:
-    def __init__(self, shipid, path):
-        self.shipid = shipid
+    def __init__(self, unitid, path):
+        self.unitid = unitid
         self.path = path
         self.gid = None
         
     def to_dto(self):
-        return DTO_MovementOrder(self.shipid, self.path, self.gid)
+        return DTO_MovementOrder(self.unitid, self.path, self.gid)
         
