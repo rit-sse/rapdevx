@@ -32,14 +32,14 @@ public class TestJSONSync {
 		
 		//DTO_AbilityUsoOrder:
 		AbilityUseOrder auo = new AbilityUseOrder();
-		auo.setSrcID("srcidtest");
-		auo.setTargetID("targetidtest");
+		auo.setSrcid("srcidtest");
+		auo.setTargetid("targetidtest");
 		auo.setAbility("this is an ability");
-		auo.setgID("gidtest");
+		auo.setgid("gidtest");
 		
 		//DTO_AssetImage
 		AssetImage ai = new AssetImage();
-		ai.setFile("imgtest.png");
+		ai.setFile("YWltZ3Rlc3QucG5n\n");
 		ai.setGid("testTheGid");
 
 		//Moved DTO_Asset to the bottom since it relys on another class
@@ -60,7 +60,7 @@ public class TestJSONSync {
 		mo_res_lst_tpl.put(23, 62);
 		mo_res_lst.add(mo_res_lst_tpl);
 		
-		mo.setUnitID("thisisagid");
+		mo.setUnitid("thisisagid");
 		mo.setGid("thisisagid");
 		mo.setPATH(mo_res_lst);
 		

@@ -43,7 +43,7 @@ public class AssetLibrary {
 	 * @return a list of possible ship classes
 	 */
 	public static List<ShipClass> getShipClasses() {
-		return AssetLibrary.assets.getShipClasses();
+		return AssetLibrary.assets.getShip_classes();
 	}
 
 }

@@ -35,11 +35,11 @@ public class Unit {
 	public void setHp(int hp) {
 		this.hp = hp;
 	}
-	public String getClassID() {
+	public String getClassid() {
 		return classid;
 	}
-	public void setClassID(String classID) {
-		this.classid = classID;
+	public void setClassid(String classid) {
+		this.classid = classid;
 	}
 	public String getgid() {
 		return gid;

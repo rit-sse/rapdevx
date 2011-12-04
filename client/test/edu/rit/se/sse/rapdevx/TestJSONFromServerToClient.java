@@ -85,4 +85,8 @@ public class TestJSONFromServerToClient
 		assertEquals(fromServer.getRadius(), fromClient.getRadius());
 		assertEquals(fromServer.getTypes(), fromClient.getTypes());
 	}
+
+	public void testAssets() {
+		
+	}
 }
