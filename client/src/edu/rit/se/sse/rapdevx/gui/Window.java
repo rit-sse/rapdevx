@@ -77,7 +77,7 @@ public class Window {
 		testMenu.addButton(playButton);
 		testMenu.addButton(settingsButton);
 		testMenu.addButton(helpButton);
-		//screenStack.addScreen(testMenu);
+		screenStack.addScreen(testMenu);
 		
 		//Testing a ship screen
 		StatsScreen testStatsScreen = new StatsScreen(300, 200, windowWidth, windowHeight, null);

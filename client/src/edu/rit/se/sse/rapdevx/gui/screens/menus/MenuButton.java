@@ -7,6 +7,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 
 import edu.rit.se.sse.rapdevx.gui.RectangleBackground;
 import edu.rit.se.sse.rapdevx.gui.Text;
@@ -60,6 +61,8 @@ public class MenuButton {
 	private int lastDrawnFromY = 0;
 	private int lastDrawnWidth = 0;
 	private int lastDrawnHeight = 0;
+
+	private boolean pressed;
 
 	// --------------------------------------------------------------------------
 	// Constructors
@@ -315,8 +318,41 @@ public class MenuButton {
 
 		// draw the main button and remember where we put it for event
 		// handling
-		new RectangleBackground(x, y, size.width, size.height).draw(gPen);
-
+		new RectangleBackground(x, y, size.width, size.height).draw( gPen);
+		if (selected) {
+			gPen.setColor(new Color(30, 127, 255));
+			gPen.fill(new Rectangle(x, y, 12, 4));
+			gPen.fill(new Rectangle(x, y, 4, 12));
+			gPen.fill(new Rectangle(x + size.width - 12, y, 12, 4));
+			gPen.fill(new Rectangle(x + size.width - 4, y, 4, 12));
+			gPen.fill(new Rectangle(x, y + size.height - 12, 4, 12));
+			gPen.fill(new Rectangle(x, y + size.height -4, 12, 4));
+			gPen.fill(new Rectangle(x+ size.width - 12, y + size.height -4, 12, 4));
+			gPen.fill(new Rectangle(x + size.width -4, y+ size.height -12, 4, 12));
+		}
+		if(pressed){
+			//right
+			Color color1 = new Color(76, 76, 76);
+			//bottom
+			Color color2 = new Color(84, 84, 84);
+			//bottom left
+			Color color3 = new Color(72, 72, 72);
+			//top left
+			Color color4 = new Color(66, 66, 66);
+			//background
+			Color color5 = new Color(73, 73, 73);
+			gPen.setColor(color4);
+			gPen.fill(new Rectangle(x, y, 4, size.height-4));
+			gPen.fill(new Rectangle(x + 4, y, size.width - 4, 4));
+			gPen.setColor(color1);
+			gPen.fill(new Rectangle(x + size.width - 4, y, 4, size.height));
+			gPen.setColor(color3);
+			gPen.fill(new Rectangle(x , y+size.height -4, 4, 4));
+			gPen.setColor(color2);
+			gPen.fill(new Rectangle(x + 4, y + size.height - 4, size.width - 8, 4));
+			gPen.setColor(color5);
+			gPen.fill(new Rectangle(x + 4, y + 4, size.width - 8, size.height - 8));
+		}
 		lastDrawnFromX = x;
 		lastDrawnFromY = y;
 		lastDrawnWidth = size.width;
@@ -328,7 +364,7 @@ public class MenuButton {
 		// gPen.setColor(getTextColor());
 		// gPen.setFont(TextFont);
 		int textY = y + size.height / 2 - 10;
-		new Text(getText(), x + 10, textY, 3).draw(gPen);
+		new Text(getText(), x + 10, textY, 3).drawColor(gPen,0xFFFF0000);
 
 		// TODO adjust the border depending on if selected or not
 	}
@@ -354,16 +390,7 @@ public class MenuButton {
 	public void setSelected(boolean selected) {
 		this.selected = selected;
 
-		// Note: the following drawing details are updated here to reduce
-		// processing time while drawing
-		// update border and text colors
-		if (this.selected) {
-			setTextColor(SelectedTextColor);
-			setBorderColor(SelectedBorderColor);
-		} else {
-			setTextColor(UnselectedTextColor);
-			setBorderColor(UnselectedBorderColor);
-		}
+
 	}
 
 	public void clicked() {
@@ -372,7 +399,8 @@ public class MenuButton {
 		System.out.println("MenuButton: clicked: " + getText());
 	}
 
-	public void pressed() {
+	public void setPressed(boolean pressed) {
+		this.pressed=pressed;
 		setBackgroundColor(PressedBackgroundColor);
 
 	}
