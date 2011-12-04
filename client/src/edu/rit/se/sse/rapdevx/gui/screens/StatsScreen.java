@@ -55,6 +55,7 @@ public class StatsScreen extends Screen
 		
 		name = new Text(ship.getClassName(), x + 10, y + 10, 2.5);
 		HP = new Text("HP", x + 25, y + 38, 2.0);
+		//TODO
 		moveRadius = new Text("Move Radius: 5", x + 10, y + 65, 2.5);
 
 		double hp = ship.getHp();
@@ -73,8 +74,10 @@ public class StatsScreen extends Screen
 		abilities.get(0).setName("Bob");
 		abilities.get(0).setRadius(9);
 		abilities.add(new Ability());
+		abilities.add(new Ability());
+		abilities.add(new Ability());
 		
-		//GameSession.get().findByClassId(ship.getClassID()).getAbilities();
+		//TODO GameSession.get().findByClassId(ship.getClassID()).getAbilities();
 		
 		for (Ability ability : abilities)
 		{

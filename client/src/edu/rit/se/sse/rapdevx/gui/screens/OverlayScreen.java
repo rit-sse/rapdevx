@@ -220,25 +220,23 @@ public class OverlayScreen extends Screen implements StateListener
 
 		if (e.getNewState() instanceof StartingState)
 		{
-			stateText = new Text("Waiting : " + turn, center - 92, 15,
-					Color.BLACK);
+			stateText.setText("Waiting :" + turn);
 		}
 		else if (e.getNewState() instanceof UnitPlacementState)
 		{
-			stateText = new Text("Placing : " + turn, center - 92, 15,
-					Color.BLACK);
+			stateText.setText("Placing :" + turn);
 		}
 		else if (e.getNewState() instanceof MoveState)
 		{
-			stateText = new Text("Moving : " + turn, center - 92, 15, Color.BLACK);
+			stateText.setText("Moving :" + turn);
 		}
 		else if (e.getNewState() instanceof AttackState)
 		{
-			stateText = new Text("Attack : " + turn, center - 92, 15, Color.BLACK);
+			stateText.setText("Attack :" + turn);
 		}
 		else if (e.getNewState() instanceof DoneState)
 		{
-			stateText = new Text("Victory : " + turn, center - 92, 15, Color.BLACK);
+			stateText.setText("Victory :" + turn);
 		}
 	}
 
