@@ -9,7 +9,6 @@ os.chdir("..")
 import unittest
 
 from sessionmanager import *
-from gamemanager import *
 from session import *
 from context import * # GameContext
 from server import *
@@ -35,9 +34,9 @@ class TestSessionManager(unittest.TestCase):
         self.manager.register_session(self.session_a)
         self.manager.register_session(self.session_b)
 
-        game = GameManager.games[0]
+        game = gamepool.create_game()
 
-        # self.assertTrue(self.session_a.session_id in game.playerlist)
+        self.assertTrue(self.session_a.session_id in game.playerlist)
 
     def _test_find_session(self):
         self.manager.register_session(self.session_a)

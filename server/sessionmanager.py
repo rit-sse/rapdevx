@@ -1,54 +1,75 @@
 from server import *
 from session import *
-from gamemanager import *
+from gamepool import *
 
 class SessionManager:   
-    """Currently unmatched sessions"""
-    player_pool = []
-    """All known sessions"""
-    sessions = {}
+    """
+    A class containing all sessions known to the system
+    """
 
-    """ Start a matchmaking session for the given session.  Currently
-        this just means to match them with the next available session """
-    def begin_matchmaking(session):
-        match = SessionManager.match(session)
+    def __init__(self):
+        """
+        Constructor.
+        
+        player_pool - Currently unmatched sessions
+        sessions - all known sessions
+        gamepool - pool of games known
+        """
+        self.player_pool = []
+        self.sessions = {}
+        self.gamepool = GamePool()
+
+    def begin_matchmaking(self, session):
+        """ 
+        Start a matchmaking session for the given session.  Currently
+        this just means to match them with the next available session 
+        """
+        match = self.match(session)
 
         if match != None:
-            GameManager.create_game(session, match)
+            self.game_pool.create_game(session, match)
         else:
-            SessionManager.add_session_to_pool(session)
+            self.add_session_to_pool(session)
 
-    def match(session): # Class method
-        """ Find a matching session from the currently available pool
-            of connected sessions. """
-        # TOp do matchmaking here
-        if len(SessionManager.player_pool) >= 1:
-            return SessionManager.player_pool.pop(0)
+    def match(self, session): # Class method
+        """ 
+        Find a matching session from the currently available pool
+        of connected sessions.
+        """
+        # TODO: do matchmaking here
+        if len(self.player_pool) >= 1:
+            return self.player_pool.pop(0)
         else:
             return None
 
-    def add_session_to_pool(session): # Class method
-        """ Add a session to the matchmaking pool for future connections."""
-        SessionManager.player_pool.append(session)
+    def add_session_to_pool(self, session): # Class method
+        """ 
+        Add a session to the matchmaking pool for future connections.
+        """
+        self.player_pool.append(session)
 
     def register_session(self, session, game_id=None):
-        """ Register a new session as being ready to participate in a game
-            and attempt to connect to a game. """
+        """ 
+        Register a new session as being ready to participate in a game
+        and attempt to connect to a game. 
+        """
         self.sessions[session.session_id] = session
 
         if game_id != None:
             raise NotImplementedException
 
-        # Get selected game
+            # Get selected game
             # Check game player status
             # Add player to game
         else:
-            SessionManager.begin_matchmaking(session)
+            self.begin_matchmaking(session)
 
-    """ Find the session object for the given session ID. """
-    def find_session(session_id):
-        if session_id in SessionManager.sessions:
-            session = SessionManager.sessions[session_id]
+    def find_session(self, session_id):
+        """ 
+        Find the session object for the given session ID. 
+        """
+        if session_id in self.sessions:
+            session = self.sessions[session_id]
 
             if session.active == False:
                 return None

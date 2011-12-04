@@ -1,7 +1,7 @@
 from session import *
 from context import *
 
-class GameManager:
+class GamePool:
     '''
     A class containing all the games known to the system.
     '''
@@ -16,7 +16,7 @@ class GameManager:
         self.games = []
         self.last_id = 0
 
-    def next_game_id():
+    def next_game_id(self):
         '''
         Provides a unique identifier for a game
         '''
@@ -24,25 +24,35 @@ class GameManager:
         self.last_id += 1
         return "g" + str( self.last_id )
 
-    def create_game(session1=None, session2=None):
+    def create_game(self, session1=None, session2=None):
         '''
         Creates a new game with the provided sessions connected
         '''
 
-        playerlist = [session1.nickname, session2.nickname]
+        playerlist = []
+
+        if session1:
+            playerlist.append(session1.nickname)
+
+            if session2:
+                playerlist.append(session2.nickname)
 
         game = GameContext(playerlist)
-        game_id = GameManager.next_game_id()
+        game_id = self.next_game_id()
 
         self.games[game_id] = game
         
-        session1.game_id = game_id
-        session1.player_num = 0
+        if session1:
+            session1.game_id = game_id
+            session1.player_num = 0
         
-        session2.game_id = game_id
-        session2.player_num = 1
+        if session2:
+            session2.game_id = game_id
+            session2.player_num = 1
 
-    def find_game(game_id):
+        return game
+
+    def find_game(self, game_id):
         '''
         Finds a game in our database given the game_id.
         '''
@@ -53,7 +63,7 @@ class GameManager:
         else:
             return None
 
-    def active_games():
+    def active_games(self):
         '''
         Return a list of all registered games waiting for more players
         '''
