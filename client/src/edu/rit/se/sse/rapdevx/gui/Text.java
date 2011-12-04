@@ -110,4 +110,14 @@ public class Text extends DrawableObject {
 		return (int) (text.length() * (7 * scale));
 	}
 
+	public void setColor(Color color) {
+		try {
+			largeImage = ImageIO.read(new File(FONT_FILE));
+			ImageColorizer ic = new ImageColorizer(largeImage);
+			ic.recolor(color.getRGB(), 0x1b39f5);
+		} catch (IOException e) {
+			System.err.println("Unable to load font file");
+		}
+	}
+
 }

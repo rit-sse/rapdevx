@@ -1,9 +1,8 @@
 package edu.rit.se.sse.rapdevx.gui;
 
-import java.awt.Dimension;
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 
 import edu.rit.se.sse.rapdevx.audio.AudioManager;
@@ -20,8 +19,6 @@ import edu.rit.se.sse.rapdevx.gui.images.IGrayableImage;
 
 public class OverlayScreen extends Screen implements StateListener
 {
-	private static final Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
-
 	private static final int UNDO_MODIFIER_X = 3;
 	private static final int REDO_MODIFIER_X = 35;
 	private static final int PHASE_MODIFIER_X = 64;
@@ -40,6 +37,8 @@ public class OverlayScreen extends Screen implements StateListener
 			"pause", "forward", "forwardfast", "skip" };
 
 	private IGrayableImage selectedImage;
+	
+	private Text readyText;
 
 	private boolean isReady;
 
@@ -82,6 +81,8 @@ public class OverlayScreen extends Screen implements StateListener
 				+ READY_MODIFIER_X, STARTING_Y, insetLeft, insetTop);
 		readyDisabled = new GrayableImage("assets/Ready-disabled.png",
 				STARTING_X + READY_MODIFIER_X, STARTING_Y, insetLeft, insetTop);
+		
+		readyText = new Text("Ready", STARTING_X + READY_MODIFIER_X + 28, STARTING_Y + 9, Color.BLACK);
 	}
 
 	public void update(boolean hasFocus, boolean isVisible)
@@ -113,6 +114,8 @@ public class OverlayScreen extends Screen implements StateListener
 
 		// Top part, phase bar
 		phase.draw(gPen);
+		
+		readyText.draw(gPen);
 	}
 
 	public void mouseReleased(MouseEvent e)
@@ -130,6 +133,7 @@ public class OverlayScreen extends Screen implements StateListener
 			{
 				// TODO more shit
 				isReady = true;
+				readyText.setColor(Color.DARK_GRAY);
 			}
 		}
 		// if playback controls are active TODO

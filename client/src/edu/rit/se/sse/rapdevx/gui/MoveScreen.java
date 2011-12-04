@@ -84,6 +84,12 @@ public class MoveScreen extends Screen implements StateListener {
 			}
 		} else {
 			
+			boolean selectedShipWasNull;
+			if ( selectedShip == null )
+				selectedShipWasNull = true;
+			else
+				selectedShipWasNull = false;
+			
 			// Check to see if one of the ships was clicked
 			for (DrawableShip ship : shipList) {
 				if (new Area(ship.getBounds()).contains(e.getX() + camera.getX(), e.getY() + camera.getY())) {
@@ -109,7 +115,7 @@ public class MoveScreen extends Screen implements StateListener {
 			}
 			
 			// If no ship is clicked, move any selected ship to the mouse coordinates
-			if (selectedShip != null) {
+			if ( selectedShip != null && !selectedShipWasNull ) {
 				// selectedShip.setCenter(e.getX() + camera.getX(), e.getY() + camera.getY());
 				
 				Point point = new Point( e.getX() + camera.getX(), e.getY() + camera.getY() );
