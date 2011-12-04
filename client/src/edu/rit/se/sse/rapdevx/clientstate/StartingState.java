@@ -24,11 +24,8 @@ public class StartingState extends StateBase {
 		// in null will, in effect, request matchmaking
 		GameSession.get()
 				.setSession(SessionApi.createSession("nickname", null));
-
-		// TODO this null will go away once the API changes -- remove it when
-		// necessary
-		AssetLibrary.setAssets(GameApi.getAssets(null, GameSession.get()
-				.getSession()));
+		AssetLibrary.setAssets(GameApi
+				.getAssets(GameSession.get().getSession()));
 
 		// TODO set ready here
 
