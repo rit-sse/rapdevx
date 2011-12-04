@@ -36,35 +36,35 @@ public class GameApi {
 
 	// Unit Move contents
 
-	public static boolean submitMovementOrder(Session userSession, 
-            int currentTurn, MovementOrder move) {
+	public static boolean submitMovementOrder(Session userSession,
+			int currentTurn, MovementOrder move) {
 		return false;
 	}
 
-	public static List<MovementOrder> getCurrentMoves(Session userSession, 
-            int currentTurn) {
+	public static List<MovementOrder> getCurrentMoves(Session userSession,
+			int currentTurn) {
 		return null;
 	}
 
-	public static boolean removeMovementOrder(Session userSession, 
-            int currentTurn, MovementOrder move) {
+	public static boolean removeMovementOrder(Session userSession,
+			int currentTurn, MovementOrder move) {
 		return false;
 	}
 
 	// Unit Attack contents
 
-	public static boolean submitAbilityUseOrder(Session userSession, 
-            AbilityUseOrder attack) {
+	public static boolean submitAbilityUseOrder(Session userSession,
+			AbilityUseOrder attack) {
 		return false;
 	}
 
-	public static List<AbilityUseOrder> getCurrentAttacks(Session userSession, 
-            int currentTurn) {
+	public static List<AbilityUseOrder> getCurrentAttacks(Session userSession,
+			int currentTurn) {
 		return null;
 	}
 
-	public static boolean removeAbilityUseOrder(Session userSession, 
-            int currentTurn, MovementOrder move) {
+	public static boolean removeAbilityUseOrder(Session userSession,
+			int currentTurn, MovementOrder move) {
 		return false;
 	}
 
@@ -72,13 +72,19 @@ public class GameApi {
 		return false;
 	}
 
-	public static List<MovementOrder> getResultMoves(Session userSession, 
-            int currentTurn) {
+	public static List<MovementOrder> getResultMoves(Session userSession,
+			int currentTurn) {
 		return null;
 	}
 
-	public static List<AbilityUseOrder> getResultAttacks(Session userSession, 
-            int currentTurn) {
+	public static List<AbilityUseOrder> getResultAttacks(Session userSession,
+			int currentTurn) {
 		return null;
+	}
+
+	// General calls
+
+	public static void setReady(Session userSession) {
+		// TODO
 	}
 }

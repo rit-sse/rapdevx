@@ -168,7 +168,7 @@ public class Menu extends Screen {
 		}
 		
 		for(MenuButton button: getButtonsOver(x, y)) {
-			button.pressed();
+			button.setPressed(button.includesPoint(x,y));
 		}
 		e.consume();
 	}
@@ -188,6 +188,7 @@ public class Menu extends Screen {
 		//don't matter what button we've over, release all of them
 		for(MenuButton button: buttons) {
 			button.released(x, y);
+			button.setPressed(false);
 		}
 		e.consume();
 	}

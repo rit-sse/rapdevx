@@ -204,13 +204,26 @@ def p_game_turns_ready(game_id=None, turn_id=None):
 # Get the finalized movement orders of given turn as json
 @get('/game/:game_id/turns/:turn_id/moves/results')
 def g_game_turns_moves_results(game_id=None, turn_id=None):
+    session_id = request.forms.session_id
+
+    session = get_session(session_id)
     game = get_game(game_id)
-    return "GET /game" + str(game_id) + "/turns/" + str(turn_id) + "/moves/results"
+
+    results = getTurnMoveResults(turn_id)
+
+    return results.encode
 
 # Get the finalized attack orders of given turn as json
 @get('/game/:game_id/turns/:turn_id/attacks/results')
 def g_game_turns_attacks_results(game_id=None, turn_id=None):
+    session_id = request.forms.session_id
+
+    session = get_session(session_id)
     game = get_game(game_id)
+
+    results = getTurnAttackResults(turn_id)
+
+    return results.encode
     return "GET /game" + str(game_id) + "/turns/" + str(turn_id) + "/attacks/results"
 
 run(host='localhost', port=8080)
