@@ -1,5 +1,10 @@
 import unittest
+import os
+import sys
 import pickle
+
+path = os.path.abspath( __file__ )
+sys.path.append( os.path.join( os.path.dirname( path ), "../" ) )
 
 import dto
 
