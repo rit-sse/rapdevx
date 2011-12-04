@@ -136,6 +136,7 @@ public class OverlayScreen extends Screen implements StateListener
 			{
 				// TODO more shit
 				isReady = true;
+				readyText.setColor(Color.DARK_GRAY);
 			}
 		}
 		// if playback controls are active TODO
