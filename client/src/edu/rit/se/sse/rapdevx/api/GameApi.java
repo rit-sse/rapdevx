@@ -219,7 +219,7 @@ public class GameApi {
         int respcode = 0;
 
         try {
-            URL url = new URL("http", SERVER_URL, 8080, URLEncoder.encode("/game/" + userSession.getGameID() + "/turns/" + currentTurn + "/moves/" + move.getgid(), "UTF-8"));
+            URL url = new URL("http", SERVER_URL, 8080, URLEncoder.encode("/game/" + userSession.getGameID() + "/turns/" + currentTurn + "/moves/" + move.getGid(), "UTF-8"));
 
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setDoOutput(false);
@@ -242,7 +242,7 @@ public class GameApi {
 
 	// Unit Attack contents
 
-	public static boolean submitAbilityUseOrder(Session userSession,
+	public static boolean submitAbilityUseOrder(Session userSession, int currentTurn,
 			AbilityUseOrder attack) {
         attack.toJSON(attack);
         int respcode = 0;
@@ -287,7 +287,7 @@ public class GameApi {
         int respcode = 0;
 
         try {
-            URL url = new URL("http", SERVER_URL, 8080, URLEncoder.encode("/game/" + userSession.getGameID() + "/turns/" + currentTurn + "/moves/" + move.getgid(), "UTF-8"));
+            URL url = new URL("http", SERVER_URL, 8080, URLEncoder.encode("/game/" + userSession.getGameID() + "/turns/" + currentTurn + "/moves/" + move.getGid(), "UTF-8"));
 
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setDoOutput(false);
