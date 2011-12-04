@@ -31,6 +31,7 @@ public class UnitPlacementState extends StateBase {
 		phaseNum = GameApi.getStatus(GameSession.get().getSession()).getPhase();
 
 		// TODO tell the server our layout
+		// GameApi.setShipPlacement(GameSession.get().getSession(), ships)
 
 		timer.scheduleAtFixedRate(new TimerTask() {
 
