@@ -137,8 +137,28 @@ public class SessionApi {
 	 * successful.
 	 */
 	public static boolean destroySession(Session sessionToDestroy) {
-		HttpDelete delete =
-				new HttpDelete(SERVER_URL + "/session/" + sessionToDestroy.getgID());
+		try {
+			HttpURLConnection con = (HttpURLConnection) (new URL(SERVER_URL).openConnection());
+			con.setDoInput(true);
+			con.setRequestMethod("DELETE");
+			
+		 // Get the response
+		    BufferedReader rd = new BufferedReader(new InputStreamReader(con.getInputStream()));
+		    String line; String incomingJson = "";
+		    while ((line = rd.readLine()) != null) {
+		        incomingJson += line;
+		    }
+		    rd.close();
+		    
+		    if (!incomingJson.equals(""))
+		    	return true;
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		return false;
 	}
