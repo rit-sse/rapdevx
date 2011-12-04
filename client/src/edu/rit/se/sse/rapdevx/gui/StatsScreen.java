@@ -56,7 +56,7 @@ public class StatsScreen extends Screen {
 		gPen.setColor(Color.BLACK);
 
 		// sample name
-		new Text("Awesome Ship", x + 10, y + 10, "Black").draw(gPen);
+		new Text("Awesome Ship", x + 10, y + 10, Color.BLACK).draw(gPen);
 
 		// real stuff
 		// new Text(ship.getgID(), x + 10, y+ 20).draw(gPen);
@@ -65,7 +65,7 @@ public class StatsScreen extends Screen {
 		gPen.setColor(Color.BLACK);
 
 		// sample move radius
-		new Text("Move Radius 5", x + 10, y + 65, "Black").draw(gPen);
+		new Text("Move Radius 5", x + 10, y + 65, Color.BLACK).draw(gPen);
 
 		// real stuff
 		// new Text(
@@ -77,7 +77,7 @@ public class StatsScreen extends Screen {
 	}
 
 	public void drawHPBar(Graphics2D gPen) {
-		new Text("HP", x + 25, y + 38, "Black").draw(gPen);
+		new Text("HP", x + 25, y + 38, Color.BLACK).draw(gPen);
 		// sample value
 		double hp = 5.0;
 		double maxHp = 20.0;
@@ -90,7 +90,7 @@ public class StatsScreen extends Screen {
 		gPen.setColor(new Color(127, 127, 127));
 		gPen.fill(new Rectangle(x + 65, y + 35, 195, 20));
 		new Text((int) hp + "/" + (int) maxHp, x + 65 + 145, y + 20,
-				"Black").draw(gPen);
+				Color.BLACK).draw(gPen);
 		if (scale < 1.0 / 3.0 * 195.0) {
 			gPen.setColor(Color.RED);
 		} else if (scale < 2.0 / 3.0 * 195.0) {
@@ -102,18 +102,13 @@ public class StatsScreen extends Screen {
 	}
 
 	public void drawAbilities(Graphics2D gPen) {
-		new Text("Abilities ", x + 10, y + 90, "Black").draw(gPen);
+		new Text("Abilities ", x + 10, y + 90, Color.BLACK).draw(gPen);
 		// sample abilities
-		new Text("Ability 1  Radius 5  Damage 6", x + 20, y + 110, "Black",
-				1.5).draw(gPen);
-		new Text("Ability 2  Radius 6  Damage 6", x + 20, y + 125, "Black",
-				1.5).draw(gPen);
-		new Text("Ability 3  Radius 7  Damage 8", x + 20, y + 140, "Black",
-				1.5).draw(gPen);
-		new Text("Ability 4  Radius 5  Damage 6", x + 20, y + 155, "Black",
-				1.5).draw(gPen);
-		new Text("Ability 5  Radius 6  Damage 6", x + 20, y + 170, "Black",
-				1.5).draw(gPen);
+		new Text("Ability 1  Radius 5  Damage 6", x + 20, y + 110, 1.5, Color.BLACK).draw(gPen);
+		new Text("Ability 2  Radius 6  Damage 6", x + 20, y + 125, 1.5, Color.BLACK).draw(gPen);
+		new Text("Ability 3  Radius 7  Damage 8", x + 20, y + 140, 1.5, Color.BLACK).draw(gPen);
+		new Text("Ability 4  Radius 5  Damage 6", x + 20, y + 155, 1.5, Color.BLACK).draw(gPen);
+		new Text("Ability 5  Radius 6  Damage 6", x + 20, y + 170, 1.5, Color.BLACK).draw(gPen);
 
 		// real stuff
 		// int yPosition = 110;

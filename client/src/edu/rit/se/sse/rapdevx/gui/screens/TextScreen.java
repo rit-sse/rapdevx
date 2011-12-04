@@ -22,9 +22,9 @@ public class TextScreen extends Screen {
 		
 		// Initialize things here
 		
-		title1 = new Text("Ba", 297, 100, "Black",5);
-		title2 = new Text("SSE", 285 + title1.getSizeOnScreen(), 93, "Black", 7);
-		title3 = new Text("ic wars", 265 + title1.getSizeOnScreen() + title2.getSizeOnScreen(), 100, "Black", 5);
+		title1 = new Text("Ba", 297, 100, 5, Color.BLACK);
+		title2 = new Text("SSE", 285 + title1.getSizeOnScreen(), 93, 7, Color.BLACK);
+		title3 = new Text("ic wars", 265 + title1.getSizeOnScreen() + title2.getSizeOnScreen(), 100, 5, Color.BLACK);
 		
 	}
 
