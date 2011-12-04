@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import edu.rit.se.sse.rapdevx.clientmodels.Ship;
 import edu.rit.se.sse.rapdevx.gui.RectangleBackground;
 import edu.rit.se.sse.rapdevx.gui.Screen;
+import edu.rit.se.sse.rapdevx.gui.drawable.DrawableShip;
 import edu.rit.se.sse.rapdevx.gui.drawable.Text;
 
 /**
@@ -17,6 +18,8 @@ import edu.rit.se.sse.rapdevx.gui.drawable.Text;
  * 
  */
 public class StatsScreen extends Screen {
+	
+	private Ship ship;
 
 	private int x;
 	private int y;
@@ -46,7 +49,7 @@ public class StatsScreen extends Screen {
 		super(width, height);
 		x = wWidth - screenWidth;
 		y = wHeight - screenHeight;
-		// this.ship = ship;
+		this.ship = ship;
 		// sample
 		name = new Text("Awesome Ship", x + 10, y + 10);
 
@@ -147,6 +150,10 @@ public class StatsScreen extends Screen {
 		for (Text ability : abilities) {
 			ability.draw(gPen);
 		}
+	}
+
+	public Ship getShip() {
+		return ship;
 	}
 
 }

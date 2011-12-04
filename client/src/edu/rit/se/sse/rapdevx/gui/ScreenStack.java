@@ -33,7 +33,7 @@ public class ScreenStack implements KeyListener, MouseListener, MouseMotionListe
 	 * 
 	 * @param screen the screen to add
 	 */
-	public void addScreen(Screen screen) {
+	public synchronized void addScreen(Screen screen) {
 		screenList.addLast(screen);
 	}
 	
@@ -43,7 +43,7 @@ public class ScreenStack implements KeyListener, MouseListener, MouseMotionListe
 	 * @param referenceScreen the screen to add before
 	 * @param newScreen the new screen to add
 	 */
-	public void addScreenBefore(Screen referenceScreen, Screen newScreen) {
+	public synchronized void addScreenBefore(Screen referenceScreen, Screen newScreen) {
 		for (int i = 0; i < screenList.size(); i++) {
 			if (screenList.get(i) == referenceScreen) {
 				screenList.add(i, newScreen);
@@ -60,7 +60,7 @@ public class ScreenStack implements KeyListener, MouseListener, MouseMotionListe
 	 * @param referenceScreen the screen to add before
 	 * @param newScreen the new screen to add
 	 */
-	public void addScreenAfter(Screen referenceScreen, Screen newScreen) {
+	public synchronized void addScreenAfter(Screen referenceScreen, Screen newScreen) {
 		for (int i = 0; i < screenList.size(); i++) {
 			if (screenList.get(i) == referenceScreen) {
 				//TODO may need to do special casing for end of list?
@@ -77,7 +77,7 @@ public class ScreenStack implements KeyListener, MouseListener, MouseMotionListe
 	 * 
 	 * @param screen the screen to remove
 	 */
-	public void removeScreen(Screen screen) {
+	public synchronized void removeScreen(Screen screen) {
 		screenList.remove(screen);
 	}
 	
@@ -85,7 +85,7 @@ public class ScreenStack implements KeyListener, MouseListener, MouseMotionListe
 	 * Updates the screens in the list.  Determines which screens should
 	 * have focus and are visible.
 	 */
-	public void update() {
+	public synchronized void update() {
 		boolean otherScreenHasFocus = false;
 		boolean coveredByOtherScreen = false;
 		
@@ -114,7 +114,7 @@ public class ScreenStack implements KeyListener, MouseListener, MouseMotionListe
 	 * 
 	 * @param gPen the graphics pen to draw with 
 	 */
-	public void draw(Graphics2D gPen) {
+	public synchronized void draw(Graphics2D gPen) {
 		for (Screen screen : screenList) {
 			screen.draw(gPen);
 		}

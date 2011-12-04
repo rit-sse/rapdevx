@@ -105,9 +105,9 @@ public class Window
 		//screenStack.addScreen(testMenu);
 
 		// Testing a ship screen
-		StatsScreen testStatsScreen = new StatsScreen(300, 200, windowWidth,
-		 windowHeight, null);
-		ScreenStack.get().addScreen(testStatsScreen);
+		//StatsScreen testStatsScreen = new StatsScreen(300, 200, windowWidth,
+		// windowHeight, null);
+		//ScreenStack.get().addScreen(testStatsScreen);
 
 		// Add the panel to the window
 		// window.getContentPane().add(screenStack);
