@@ -7,6 +7,7 @@ import java.awt.geom.Rectangle2D;
 
 import edu.rit.se.sse.rapdevx.gui.Background;
 import edu.rit.se.sse.rapdevx.gui.Screen;
+import edu.rit.se.sse.rapdevx.gui.ScreenStack;
 import edu.rit.se.sse.rapdevx.gui.drawable.Camera;
 
 public class MapScreen extends Screen {
@@ -55,6 +56,10 @@ public class MapScreen extends Screen {
 			camera.setxVel(-CAMERA_SPEED);
 		} else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
 			camera.setxVel(CAMERA_SPEED);
+		} else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+			OptionsScreen options = new OptionsScreen(screenWidth, screenHeight);
+			ScreenStack.get().addScreen(options);
+			options.init();
 		}
 	}
 	

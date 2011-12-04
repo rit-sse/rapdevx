@@ -12,6 +12,8 @@ public class DrawablePath extends DrawableObject {
 	private Path path;
 	private Point mouseLocation;
 	
+	private boolean mouseLocationValid;
+	
 	private Color pathColor;
 	
 	public DrawablePath( Path path ) {
@@ -19,6 +21,8 @@ public class DrawablePath extends DrawableObject {
 		this.mouseLocation = null;
 		
 		pathColor = new Color(255, 0, 0);
+		
+		mouseLocationValid = true;
 	}
 	
 	public DrawablePath( Path path, Color color ) {
@@ -42,6 +46,9 @@ public class DrawablePath extends DrawableObject {
 		if (mouseLocation != null && path.getLastPoint() != null) {
 			Point lastLocation = path.getLastPoint();
 			
+			if ( !mouseLocationValid )
+				gPen.setColor( Color.RED );
+			
 			// Create a dashed line
 			float[] f1 = { 10.0f };
 			gPen.setStroke(new BasicStroke(2.0f, BasicStroke.CAP_BUTT,
@@ -52,6 +59,9 @@ public class DrawablePath extends DrawableObject {
 			
 			// Reset the line style
 			gPen.setStroke(new BasicStroke());
+			
+			if ( !mouseLocationValid )
+				gPen.setColor( pathColor );
 		}
 		
 		// Draw all of the saved path segments
@@ -74,6 +84,20 @@ public class DrawablePath extends DrawableObject {
 	
 	public void setMouseLocation(Point location) {
 		this.mouseLocation = location;
+	}
+	
+	/**
+	 * this makes the mouse line red and disables the ability to add points.
+	 */
+	public void setMouseLocationInvalid() {
+		mouseLocationValid = false;
+	}
+	
+	/**
+	 * this makes the mouse line the pathColor and enables the ability to add points.
+	 */
+	public void setMouseLocationValid() {
+		mouseLocationValid = true;
 	}
 
 }

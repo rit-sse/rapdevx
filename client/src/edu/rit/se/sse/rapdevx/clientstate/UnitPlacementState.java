@@ -3,10 +3,12 @@
  */
 package edu.rit.se.sse.rapdevx.clientstate;
 
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import edu.rit.se.sse.rapdevx.api.GameApi;
+import edu.rit.se.sse.rapdevx.api.dataclasses.ShipPlacement;
 
 /**
  * @author Cody Krieger
@@ -23,14 +25,10 @@ public class UnitPlacementState extends StateBase {
 	/**
 	 * Call this when the player is done making up their initial ship layout.
 	 */
-	public void ready(/*
-					 * TODO this should take in some kind of layout we can pass
-					 * to the server -- will need to get this called as a result
-					 * of hitting "submit" in the GUI
-					 */) {
+	public void ready(List<ShipPlacement> shipPlacements) {
 		phaseNum = Integer.parseInt(GameApi.getStatus(GameSession.get().getSession()).getPhase());
 
-		// TODO tell the server our layout
+		GameApi.setShipPlacement(GameSession.get().getSession(), shipPlacements);
 
 		timer.scheduleAtFixedRate(new TimerTask() {
 
