@@ -228,8 +228,10 @@ class DTO_Encoder(json.JSONEncoder):
             return json.JSONEncoder.default(self, o)
         
 def JSON_Construct_DTO_AssetImage(jsonstring):
+    print("loading json from:\n",jsonstring)
     attribute_dictionary = json.loads(jsonstring)
-    return DTO_AssetImage(attribute_dictionary.pop('file'), attribute_dictionary.pop('gid'))
+    print("fuck")
+    return DTO_AssetImage(base64.decodebytes(attribute_dictionary.pop('file').encode()), attribute_dictionary.pop('gid'))
 
 def JSON_Construct_DTO_ShipClass(jsonstring):
     attribute_dictionary = json.loads(jsonstring)

@@ -82,32 +82,6 @@ class TestGeometry( unittest.TestCase ):
         point = 3, 5
         expected = 4, 4
         self.assertEqual( expected, dropPointInOrOutSegment( self.source, self.destination, point ) )
-        
-    def test_getClosestPointOnSegment_PointOnSegmentNearSource( self ):
-        self.source = 0, 0
-        self.destination = 10, 10
-        point = 2, 2
-
-        result = getClosestPointOnSegment( self.source, self.destination, point )
-        self.assertEqual( self.source, result )
-
-    def test_getClosestPointOnSegment_PointOnSegmentNearDestination( self ):
-        self.source = 0, 0
-        self.destination = 10, 10
-        point = 8, 8
-
-        result = getClosestPointOnSegment( self.source, self.destination, point )
-        self.assertEqual( self.destination, result )
-
-    def test_getClosestPointOnSegment_PointOnSegmentInMiddle( self ):
-        self.source = 0, 0
-        self.destination = 10, 10
-        point = 5, 5
-
-        # NOTE: I'm assuming this should choose the source point in the case
-        # where the point is exactly in the middle.
-        result = getClosestPointOnSegment( self.source, self.destination, point )
-        self.assertEqual( self.source, result )
 
 if __name__ == "__main__":
     unittest.main()
