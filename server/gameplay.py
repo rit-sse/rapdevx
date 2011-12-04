@@ -1,4 +1,5 @@
 from dto import *
+from io import *
 
 def swizzle(lists):
     lists = [x[:] for x in lists]
@@ -356,7 +357,7 @@ class UnitClass:
             
 class Image:
     def __init__(self, filename):
-        self.contents = open(filename).read()
+        self.contents = FileIO(filename, "r").read()
         self.gid = None
     
     def to_dto(self):

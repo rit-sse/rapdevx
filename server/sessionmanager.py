@@ -1,3 +1,4 @@
+from server import *
 from session import *
 from gamemanager import *
 
@@ -9,13 +10,13 @@ class SessionManager:
 
     """ Start a matchmaking session for the given session.  Currently
         this just means to match them with the next available session """
-    def begin_matchmaking(self, session):
+    def begin_matchmaking(session):
         match = SessionManager.match(session)
 
         if match != None:
             GameManager.create_game(session, match)
         else:
-            SessionManager.add_session_to_pool(self)
+            SessionManager.add_session_to_pool(session)
 
     def match(session): # Class method
         """ Find a matching session from the currently available pool
@@ -42,7 +43,7 @@ class SessionManager:
             # Check game player status
             # Add player to game
         else:
-            self.begin_matchmaking(session)
+            SessionManager.begin_matchmaking(session)
 
     """ Find the session object for the given session ID. """
     def find_session(session_id):

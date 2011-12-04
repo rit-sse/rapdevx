@@ -9,7 +9,6 @@ os.chdir("..")
 import unittest
 
 from gamemanager import *
-from game import *
 
 class TestGameManager(unittest.TestCase):
 
@@ -18,7 +17,10 @@ class TestGameManager(unittest.TestCase):
         self.session_b = Session(nickname="Justin Bieber")
 
     def test_creat_game(self):
-        pass
+        GameManager.create_game(self.session_a, self.session_b)
+        self.assertEqual(0, self.session_a.game_id)
+        self.assertEqual(0, self.session_b.game_id)
+        self.assertEqual(1, self.session_b.player_num)
 
 if __name__ == "__main__":
     unittest.main();

@@ -4,7 +4,7 @@ from session import *
 from gamemanager import *
 from sessionmanager import *
 
-class NotImplementedException:
+class NotImplementedException(Exception):
     def __init__(self):
         super(NotImplementedException, self).__init__()
 
@@ -228,4 +228,5 @@ def g_game_turns_attacks_results(game_id=None, turn_id=None):
 
     return results.encode
 
-run(host='localhost', port=8080)
+if __name__ == "__main__":
+    run(host='localhost', port=8080)
