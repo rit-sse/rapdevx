@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -75,8 +76,9 @@ public class SessionApi {
 			if(gameID != null)data += "&" + URLEncoder.encode("gameID", "UTF-8") + "=" + URLEncoder.encode(gameID, "UTF-8");
 			//url...
 			URL url = new URL(SERVER_URL);
-		    URLConnection conn = url.openConnection();
+		    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 		    conn.setDoOutput(true);
+		    conn.setRequestMethod("POST");
 		    OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
 		    wr.write(data);
 		    wr.flush();
