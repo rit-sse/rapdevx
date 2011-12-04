@@ -47,6 +47,11 @@ public class Ship extends Unit {
 		Y = y;
 	}
 
+	/**
+	 * Convenience method for getting a Unit's ShipClass.
+	 * 
+	 * @return A ShipClass instance.
+	 */
 	public ShipClass getShipClass() {
 		List<ShipClass> classes = AssetLibrary.getShipClasses();
 		for (ShipClass c : classes) {
@@ -85,6 +90,11 @@ public class Ship extends Unit {
 		return placement;
 	}
 
+	/**
+	 * Convenience method for getting the max HP of a Ship's ShipClass.
+	 * 
+	 * @return The max HP.
+	 */
 	public int getMaxHp() {
 		ShipClass sc = getShipClass();
 		if (sc != null)
