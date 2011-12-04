@@ -9,7 +9,7 @@ def swizzle(lists):
     nonEmptyLists = []
     for x in range(len(lists)):
         if not len(lists[x]) == 0:
-            # Remove empty lists; they fizzle the swizzle and don't affect the result
+            # Remove empty lists; they fizzle the swizzle (infinite loop) and don't affect the result
             nonEmptyLists.append(lists[x])
     lists = nonEmptyLists
     results = []
@@ -227,6 +227,8 @@ class MoveTurn:
         player_nums = sorted(self.player_move_list.keys())
         #todo: "rotate" player nums based on the turn number, so 
         #a different player gets to go "first" every turn
+        if not self.turn_num == 0:
+            player_num.append(player_num.pop(0))
         
         lists = [self.player_move_list[x] for x in player_nums]
         combined_list = swizzle(lists)
