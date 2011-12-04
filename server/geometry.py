@@ -65,6 +65,15 @@ def dropPoint( source, destination, point ):
 	point - A tuple containing the (x,y) coordinates from which the short line
 			segment is projected.
 	'''
+	# If the point's x value does not lie within the same range as the line 
+	# segment, pick the closest point on the line segment.
+	if( point[0] >= destination[0] ):
+		return destination
+	
+	if( point[0] <= source[0] ):
+		return source
+
+	# Get distances between points.
 	a = distance( destination, point )
 	b = distance( source, point )
 	c = distance( source, destination )
@@ -93,16 +102,6 @@ def dropPoint( source, destination, point ):
 
 	d = dx, dy
 	return d
-
-# if __name__ == "__main__":
-# 	source = 0, 0
-# 	dest = 11, 11
-
-# 	for x in range( 0, 20 ):
-# 		for y in range( 0, 20 ):
-# 			point = x, y
-# 			if( not isPointOnSegment( source, dest, point ) ):
-# 				print( "Point (" + str(x) +", " + str(y) + "):" + str( dropPoint( source, dest, point ) ) )
 
 def getCollisionPoint( source, destination, point, sourceRadius, pointRadius, radiusBuffer = 0, delta = DEFAULT_TOLERANCE_FACTOR ):
 	'''
