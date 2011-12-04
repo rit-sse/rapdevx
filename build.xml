@@ -103,7 +103,7 @@
         </javac>
     </target>
 
-    <target name="test" depends="client.test, server.test" />
+    <target name="test" depends="client.test" />
     
     <target name="client.test" depends="build-test" 
         description="Run unit test suite">
@@ -130,14 +130,6 @@
         </junitreport>
     </target>
 
-    <target name="server.test" description="Run Python unit tests">
-        <mkdir dir="${test.reports}" />
-        <mkdir dir="${test.reports.pyunit}" />
-        <exec dir="server" executable="python3.2">
-            <arg value="./server/test/tester.py" />
-        </exec>
-    </target>
-    
     <target name="javadoc" description="Create Documentation">
         <delete dir="${javadoc}" />
         <mkdir dir="${javadoc}" />
