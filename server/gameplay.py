@@ -346,8 +346,12 @@ class AttackTurn:
         '''
         
         player_nums = sorted(self.player_attack_lists.keys())
-        #todo: "rotate" player nums based on the turn number, so 
-        #a different player gets to go "first" every turn
+
+        # Shuffle the play priority based on turn num (shifting which player moves first)
+        num_of_players = len(player_nums)
+        num_of_shuffles = self.turn_num % num_of_players
+        for x in range(num_of_shuffles):
+            player_nums.append(player_nums.pop(0))
         
         lists = [self.player_attack_lists[x] for x in player_nums]
         combined_list = swizzle(lists)
