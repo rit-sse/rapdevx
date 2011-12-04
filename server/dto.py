@@ -253,6 +253,13 @@ def JSON_Construct_DTO_ShipPlacement(jsonstring):
 
     return placements
 
+def JSON_Construct_DTO_AttackResults(jsonstring):
+    attribute_dictionary = json.loads(jsonstring)
+    newabilityuseorderlist = []
+    for v in newabilityuseorderlist:
+        newabilityuseorderlist.append(json.loads(v))
+    return DTO_AttackResults(newabilityuseorderlist)
+
 def JSON_Construct_DTO_Results(jsonstring):
     attribute_dictionary = json.loads(jsonstring)
     resultslist = attribute_dictionary.pop('results')
