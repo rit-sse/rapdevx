@@ -4,6 +4,8 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 
+import edu.rit.se.sse.rapdevx.audio.AudioManager;
+import edu.rit.se.sse.rapdevx.audio.Sound;
 import edu.rit.se.sse.rapdevx.clientstate.AttackState;
 import edu.rit.se.sse.rapdevx.clientstate.DoneState;
 import edu.rit.se.sse.rapdevx.clientstate.MoveState;
@@ -143,6 +145,7 @@ public class OverlayScreen extends Screen implements StateListener {
 	
 	public void mouseReleased(MouseEvent e) {if (mainBounds.contains(e.getPoint())) {
 		if (undo.containsPoint(e.getPoint())) {
+			AudioManager.get().play(Sound.BattleStart);
 		}
 		else if (redo.containsPoint(e.getPoint())) {
 		}
