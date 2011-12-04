@@ -45,6 +45,9 @@ class Unit:
         self.types = types
         self.location = location
         self.radius = radius
+        self.classid = None
+    def setClassid(self,classid):
+        self.classid = classid
     
     def getMaxHP(self):
         '''
@@ -70,6 +73,12 @@ class Unit:
         '''
         self.hp = hp
     
+    def setLocation(self, location):
+        '''
+        Set the unit's location.
+        '''
+        self.location = location
+
     def getTypes(self):
         '''
         Retrieve the list of type strings associated with this unit.
@@ -87,6 +96,11 @@ class Unit:
         Get the unit's location.
         '''
         return self.location
+        
+    def to_dto(self):
+        return DTO_Unit(self.owning_player, self.hp, self.classid, self.gid)
+    
+
 
 class Ability:
     '''
@@ -144,6 +158,7 @@ class Turn:
     '''
 
     def __init__(self, turn_num):
+        self.turn_num = turn_num
         self.attack = AttackTurn(turn_num)
         self.move = MoveTurn(turn_num)
         self.gid = None #set on registry
@@ -173,12 +188,12 @@ class MoveTurn:
         move_order = registry.getById(move_order_gid)
         registry.removeById(move_order_gid)
         
-        self.player_attack_lists[calling_player].remove(move_order)
+        self.player_attack_list[calling_player].remove(move_order)
 
     def getPlayerMoveList(self, calling_player, registry):
         '''
         '''
-        return [x.to_dto() for x in self.player_move_lists[calling_player]]
+        return [x.to_dto() for x in self.player_move_list[calling_player]]
         
     #any existing move orders should be evaluated
     #(going round robin on submitting players, in order)
@@ -186,8 +201,14 @@ class MoveTurn:
     #R2: Stop short of offending segment
     #R3: Stop tangent to offending unit
     def execute(self, registry):
-        pass
-        
+        itera = sorted(self.player_move_list.keys())
+        result = {}
+        for k in itera:
+            playerMove = self.player_move_list[k][i]
+            unitShip = registry.getById(playerMove.shipid)
+            unitLoc = playerMove.path[-1]
+            unitShip.setLocation(unitLoc)
+    
     def getResults(self):
         pass
         
@@ -220,10 +241,38 @@ class AttackTurn:
         #setup a list of attacks for a player if there isn't one yet
         if calling_player not in self.player_attack_lists:
             self.player_attack_lists[calling_player]=[]
+
+        source = dto_attack_order.srcid
+        tar = dto_attack_order.targetid
         
-        order = AttackOrder(dto_attack_order.srcid,dto_attack_order.targetid, dto_attack_order.ability)
+        order = AttackOrder(source,dto_attack_order.targetid, dto_attack_order.ability)
+
+        target = registry.getById(source)
+
+        if registry.getById(source) == None:
+            raise Exception("Attacking ship not in registry")
+
+        if registry.getById(dto_attack_order.targetid) == None:
+            raise Exception("Target Ship not in registry")
+        
+        if registry.getById(dto_attack_order.ability) == None:
+            raise Exception("Ability not in registry")
+
+        if calling_player != target.getPlayer():
+            raise Exception("Player does not own ship")
+
+        if dto_attack_order.ability in source.getAbilities():
+            raise Exception("Ship does not have ability")
+
+        if source.getLocation() > tar.getLocation():
+            dist = source.getLocation() - tar.getLocation()
+        else:
+            dist = tar.getLocation() - source.getLocation()
+        if dist > dto_attack_order.ability.getRadius():
+            raise Exception("Target is not in range")
+        
+           
         registry.register(order)
-        
         self.player_attack_lists.append(order)
         
     def deleteAttackOrder(self, move_order_gid, calling_player, registry):
@@ -273,7 +322,7 @@ class AttackTurn:
             target = registry.getById(attack_order.targetid)
             
             if None not in [attacker,target]:
-                self.results.append(attack_order)
+                self.results.append(attack_order.to_dto())
                 ability = registry.getById(attack_order.ability)
                 damage = ability.damageForTypes(target.types)
                 target.setHP(target.getHP()-damage)
@@ -281,7 +330,7 @@ class AttackTurn:
                     registry.removeById(target.gid)
             
     def getResults(self):
-        return self.results
+        return DTO_AttackResults(self.results)
 
         
 class UnitClass:
@@ -297,6 +346,7 @@ class UnitClass:
     
     def makeUnit(self,location,player_id):
         unit = Unit(self.abilities[:],self.maxhp,player_id, self.types, location, self.radius)
+        unit.setClassid(self.gid)
         return unit
     
     def to_dto(self):
