@@ -243,15 +243,8 @@ def JSON_Construct_DTO_Assets(jsonstring):
     return DTO_Assets(attribute_dictionary.pop('width'),attribute_dictionary.pop('height'),shipclasslist,imageslist,abilitieslist)
 
 def JSON_Construct_DTO_ShipPlacement(jsonstring):
-    attribute_dictionary = json.loads(jsonstring)
-    
-    placement_array = attribute_dictions.pop('placements')
-    placements = []
-
-    for unit in placement_array:
-        placements.append(DTO_ShipPlacment(attribute_dictionary.pop('x'), attribute_dictionary.pop('y'), attribute_dictionary.pop('classid')))
-
-    return placements
+    attribute_dictionary = json.loads(jsonstring)    
+    return DTO_ShipPlacement(attribute_dictionary.pop('x'), attribute_dictionary.pop('y'), attribute_dictionary.pop('classid'))
 
 def JSON_Construct_DTO_AttackResults(jsonstring):
     attribute_dictionary = json.loads(jsonstring)
