@@ -5,16 +5,17 @@ def swizzle(lists):
     results = []
     i = 0
     while lists:
-        print(lists)
         if lists[i]:
             results.append(lists[i][0])
             lists[i] = lists[i][1:]
-            i = (i+1)
-        else:
-            lists.pop(i)
-            if len(lists)==0:
-                return results
-                i = i % len(lists)
+            if lists[i]==[]:
+                lists.pop(i)
+            else:
+                i = (i+1)
+        if(len(lists)==0):
+            break
+        i = i% len(lists)
+            
     return results
     
 class Unit:
@@ -171,13 +172,14 @@ class MoveTurn:
         self.gid = None #set on registry
         self.turn_num = turn_num
         self.player_move_list = {}
+        self.results = {}
         
     def addMoveOrder(self, move_order, calling_player, registry):
         '''
         '''
         if calling_player not in self.player_move_list:
             self.player_move_list[calling_player] = []
-
+        print("add")
         moveOrderObj = MoveOrder(move_order.unitid, move_order.path) 
         self.player_move_list[calling_player].append( moveOrderObj )
         registry.register(moveOrderObj)
@@ -201,16 +203,24 @@ class MoveTurn:
     #R2: Stop short of offending segment
     #R3: Stop tangent to offending unit
     def execute(self, registry):
-        itera = sorted(self.player_move_list.keys())
-        result = {}
-        for k in itera:
-            playerMove = self.player_move_list[k][i]
+        player_nums = sorted(self.player_move_list.keys())
+        #todo: "rotate" player nums based on the turn number, so 
+        #a different player gets to go "first" every turn
+        
+        lists = [self.player_move_list[x] for x in player_nums]
+        combined_list = swizzle(lists)
+        
+        self.results = {}
+        
+        for playerMove in combined_list:
+            print(playerMove)
             unitShip = registry.getById(playerMove.shipid)
             unitLoc = playerMove.path[-1]
             unitShip.setLocation(unitLoc)
-    
+            self.results[unitShip.gid] = playerMove.path
+        
     def getResults(self):
-        pass
+        return DTO_Results(self.results)
         
 class AttackTurn:
     '''
