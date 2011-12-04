@@ -256,9 +256,9 @@ def JSON_Construct_DTO_AttackResults(jsonstring):
 def JSON_Construct_DTO_Results(jsonstring):
     attribute_dictionary = json.loads(jsonstring)
     resultslist = attribute_dictionary.pop('results')
-    newresultslistoftuples = []
+    newresultslistoftuples = {}
     for v in resultslist:
-        newresultslistoftuples.append(tuple(v))
+        newresultslistoftuples[v] = tuple(resultslist[v])
     return DTO_Results(newresultslistoftuples)
 
 def JSON_Construct_DTO_MovementOrder(jsonstring):
