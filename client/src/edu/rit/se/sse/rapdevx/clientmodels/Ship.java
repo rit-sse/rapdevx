@@ -6,6 +6,7 @@ package edu.rit.se.sse.rapdevx.clientmodels;
 import java.util.List;
 
 import edu.rit.se.sse.rapdevx.api.dataclasses.ShipClass;
+import edu.rit.se.sse.rapdevx.api.dataclasses.ShipPlacement;
 import edu.rit.se.sse.rapdevx.api.dataclasses.Unit;
 
 /**
@@ -59,5 +60,20 @@ public class Ship extends Unit {
 		}
 
 		return "Unknown Class";
+	}
+
+	/**
+	 * Generate a ShipPlacement based on this Ship's information.
+	 * 
+	 * @return A newly generated ShipPlacement.
+	 */
+	public ShipPlacement getShipPlacement() {
+		ShipPlacement placement = new ShipPlacement();
+
+		placement.setClassid(this.getClassID());
+		placement.setX(this.X);
+		placement.setY(this.Y);
+
+		return placement;
 	}
 }
