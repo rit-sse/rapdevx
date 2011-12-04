@@ -152,9 +152,9 @@ public class OverlayScreen extends Screen implements StateListener
 				isReady = true;
 				readyText.setColor(Color.DARK_GRAY);
 			}
+			e.consume();
 		}
-		// if playback controls are active TODO
-		else if (playbackBounds.contains(e.getPoint()))
+		else if (displayPlayback && playbackBounds.contains(e.getPoint()))
 		{
 			for (IGrayableImage img : turnControlImages)
 			{
@@ -162,9 +162,8 @@ public class OverlayScreen extends Screen implements StateListener
 				{
 				}
 			}
+			e.consume();
 		}
-
-		e.consume();
 	}
 
 	public void mouseMoved(MouseEvent e)
@@ -185,9 +184,9 @@ public class OverlayScreen extends Screen implements StateListener
 			{
 				currentlyOver = readyEnabled;
 			}
+			e.consume();
 		}
-		// if playback controls are active TODO
-		else if (playbackBounds.contains(e.getPoint()))
+		else if (displayPlayback && playbackBounds.contains(e.getPoint()))
 		{
 			for (IGrayableImage img : turnControlImages)
 			{
@@ -196,11 +195,13 @@ public class OverlayScreen extends Screen implements StateListener
 					currentlyOver = img;
 				}
 			}
+			e.consume();
 		}
 
 		if (selectedImage != null)
 		{
 			selectedImage.setHovering(false);
+			e.consume();
 		}
 		if (currentlyOver != null)
 		{
