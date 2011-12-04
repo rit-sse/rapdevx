@@ -25,7 +25,8 @@ public class UnitPlacementState extends StateBase {
 	 */
 	public void ready(/*
 					 * TODO this should take in some kind of layout we can pass
-					 * to the server
+					 * to the server -- will need to get this called as a result
+					 * of hitting "submit" in the GUI
 					 */) {
 		phaseNum = GameApi.getStatus(GameSession.get().getSession()).getPhase();
 
