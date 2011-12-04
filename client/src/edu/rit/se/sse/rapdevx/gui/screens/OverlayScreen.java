@@ -5,17 +5,15 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 
-import edu.rit.se.sse.rapdevx.audio.AudioManager;
-import edu.rit.se.sse.rapdevx.audio.Sound;
 import edu.rit.se.sse.rapdevx.clientstate.AttackState;
 import edu.rit.se.sse.rapdevx.clientstate.DoneState;
+import edu.rit.se.sse.rapdevx.clientstate.GameSession;
 import edu.rit.se.sse.rapdevx.clientstate.MoveState;
 import edu.rit.se.sse.rapdevx.clientstate.StartingState;
 import edu.rit.se.sse.rapdevx.clientstate.UnitPlacementState;
 import edu.rit.se.sse.rapdevx.events.StateEvent;
 import edu.rit.se.sse.rapdevx.events.StateListener;
 import edu.rit.se.sse.rapdevx.gui.Screen;
-import edu.rit.se.sse.rapdevx.gui.Window;
 import edu.rit.se.sse.rapdevx.gui.drawable.Text;
 import edu.rit.se.sse.rapdevx.gui.images.GrayableImage;
 import edu.rit.se.sse.rapdevx.gui.images.IGrayableImage;
@@ -95,7 +93,7 @@ public class OverlayScreen extends Screen implements StateListener
 		stateText = new Text("Waiting : " + turn, STARTING_X + 100, 15, 2.5,
 				Color.BLACK);
 		
-		//GameSession.get().addStateListener(this);
+		GameSession.get().addStateListener(this);
 	}
 
 	public void update(boolean hasFocus, boolean isVisible)
@@ -141,7 +139,7 @@ public class OverlayScreen extends Screen implements StateListener
 		{
 			if (undo.containsPoint(e.getPoint()))
 			{
-				AudioManager.get().play(Sound.BattleStart);
+				
 			}
 			else if (redo.containsPoint(e.getPoint()))
 			{
@@ -153,7 +151,7 @@ public class OverlayScreen extends Screen implements StateListener
 				// TODO more shit
 				isReady = true;
 				readyText.setColor(Color.DARK_GRAY);
-				//GameSession.get().advanceState();
+				GameSession.get().advanceState();
 			}
 			e.consume();
 		}
@@ -163,6 +161,7 @@ public class OverlayScreen extends Screen implements StateListener
 			{
 				if (img.containsPoint(e.getPoint()))
 				{
+					//GameSession.get().advanceState();
 				}
 			}
 			e.consume();
@@ -219,25 +218,23 @@ public class OverlayScreen extends Screen implements StateListener
 
 		if (e.getNewState() instanceof StartingState)
 		{
-			stateText = new Text("Waiting : " + turn, center - 92, 15,
-					Color.BLACK);
+			stateText.setText("Waiting :" + turn);
 		}
 		else if (e.getNewState() instanceof UnitPlacementState)
 		{
-			stateText = new Text("Placing : " + turn, center - 92, 15,
-					Color.BLACK);
+			stateText.setText("Placing :" + turn);
 		}
 		else if (e.getNewState() instanceof MoveState)
 		{
-			stateText = new Text("Moving : " + turn, center - 92, 15, Color.BLACK);
+			stateText.setText("Moving :" + turn);
 		}
 		else if (e.getNewState() instanceof AttackState)
 		{
-			stateText = new Text("Attack : " + turn, center - 92, 15, Color.BLACK);
+			stateText.setText("Attack :" + turn);
 		}
 		else if (e.getNewState() instanceof DoneState)
 		{
-			// TODO draw text "Victory!/Defeat!"
+			stateText.setText("Victory :" + turn);
 		}
 	}
 

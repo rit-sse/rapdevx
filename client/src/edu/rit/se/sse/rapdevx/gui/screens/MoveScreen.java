@@ -8,7 +8,10 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.Area;
 import java.util.ArrayList;
 
+import edu.rit.se.sse.rapdevx.api.dataclasses.MovementOrder;
 import edu.rit.se.sse.rapdevx.clientmodels.Ship;
+import edu.rit.se.sse.rapdevx.clientstate.AttackState;
+import edu.rit.se.sse.rapdevx.clientstate.GameSession;
 import edu.rit.se.sse.rapdevx.events.StateEvent;
 import edu.rit.se.sse.rapdevx.events.StateListener;
 import edu.rit.se.sse.rapdevx.gui.Screen;
@@ -37,15 +40,19 @@ public class MoveScreen extends Screen implements StateListener {
 		super(width, height);
 		this.camera = camera;
 		
+		GameSession.get().addStateListener(this);
+		
 		shipList = new ArrayList<DrawableShip>();
 		Ship ship = new Ship();
 		ship.setX(150);
 		ship.setY(150);
+		ship.setHp(50);
 		shipList.add(new DrawableShip(ship, new Color(48, 129, 233)));
 		
 		Ship ship2 = new Ship();
 		ship2.setX(200);
 		ship2.setY(300);
+		ship2.setHp(75);
 		shipList.add(new DrawableShip(ship2, new Color(108, 200, 47)));
 	}
 
@@ -87,7 +94,7 @@ public class MoveScreen extends Screen implements StateListener {
 	}
 	
 	private void deselectShip() {
-		setShipSelected(selectedShip, false);
+		// setShipSelected(selectedShip, false);
 		
 		selectedShip = null;
 		movePath = null;
@@ -98,9 +105,9 @@ public class MoveScreen extends Screen implements StateListener {
 		
 		if (isSelected) {
 			if (statsScreen == null) {
-				statsScreen = new StatsScreen(300, 200, screenWidth, screenHeight, ship.getShip());
+				statsScreen = new StatsScreen(/*300, 200,*/ screenWidth, screenHeight, ship.getShip());
 				ScreenStack.get().addScreenAfter(this, statsScreen);
-			} else if (statsScreen != null && statsScreen.getShip() != ship.getShip()) {
+			} else if (statsScreen != null && statsScreen.getShip() != ship.getShip() && movePath == null) {
 				ScreenStack.get().removeScreen(statsScreen);
 				statsScreen = null;
 			}
@@ -159,7 +166,7 @@ public class MoveScreen extends Screen implements StateListener {
 				
 				Point point = new Point( e.getX() + camera.getX(), e.getY() + camera.getY() );
 				
-				if ( movePath.hasPointCloseToPrevious( point, 5 ) ) {
+				if ( movePath.hasPointCloseToPrevious( point, 32 /*the 'radius' of the ship*/ ) ) {
 					movePath.stopInput();
 					selectedShip.setCenter( (int)movePath.getPath().getLastPoint().getX(), 
 							(int)movePath.getPath().getLastPoint().getY() );
@@ -177,11 +184,23 @@ public class MoveScreen extends Screen implements StateListener {
 	}
 	
 	public void mouseMoved(MouseEvent e) {
+		
+		
+		
+		if ( movePath != null ) {
+			// update movePath to let know that the mouse has moved
+			movePath.setMouseLocation( new Point( e.getX() + camera.getX(), e.getY() + camera.getY()) );
+			setShipSelected( movePath.getDrawableShip(), true);
+			movePath.setMouseLocationValid();
+		}
+		
 		// Check all ships to see if the mouse is hovered over it
 		boolean found = false;
 		for (DrawableShip ship : shipList) {
 			if (!found && new Area(ship.getBounds()).contains(e.getX() + camera.getX(), e.getY() + camera.getY())) {
 				setShipSelected(ship, true);
+				if ( movePath != null && selectedShip != ship )
+					movePath.setMouseLocationInvalid();
 				found = true;
 				continue;
 			}
@@ -191,15 +210,31 @@ public class MoveScreen extends Screen implements StateListener {
 				setShipSelected(ship, false);
 		}
 		
-		if ( movePath != null )
-			// update movePath to let know that the mouse has moved
-			movePath.setMouseLocation( new Point( e.getX() + camera.getX(), e.getY() + camera.getY()) );
-		
 		e.consume();
 	}
 	
 	public void stateChanged(StateEvent e) {
-		//TODO Switch to move phase, etc
+		if (e.getNewState() instanceof AttackState) {
+			ScreenStack.get().addScreenAfter(this, new AttackScreen(camera, screenWidth, screenHeight));
+			ScreenStack.get().removeScreen(this);
+			GameSession.get().removeStateListener(this);
+		}
+	}
+	
+	/**
+	 * get a list of MovementOrders to send to the server
+	 * @return an ArrayList of MovementOrder types
+	 */
+	public ArrayList<MovementOrder> getMovementOrdersForStateChange() {
+		ArrayList<MovementOrder> orders = new ArrayList<MovementOrder>();
+		
+		for ( DrawableShip ship : shipList ) {
+			if ( ship.hasPath() ) {
+				orders.add( ship.getMovementOrder() );
+			}
+		}
+		
+		return orders;
 	}
 
 }
