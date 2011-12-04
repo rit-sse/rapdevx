@@ -127,9 +127,6 @@ public class Assets {
 		assets.images.add(new AssetImage());
 		assets.images.add(new AssetImage());
 		assets.images.add(new AssetImage());
-		assets.abilities.add("dfgh");
-		assets.abilities.add("cvnnb");
-		assets.abilities.add("hgfd");
 		assets.toJSON(assets);
 	}
 
