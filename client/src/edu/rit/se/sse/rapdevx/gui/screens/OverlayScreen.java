@@ -153,7 +153,6 @@ public class OverlayScreen extends Screen implements StateListener
 				// TODO more shit
 				isReady = true;
 				readyText.setColor(Color.DARK_GRAY);
-				//GameSession.get().advanceState();
 			}
 			e.consume();
 		}
@@ -163,6 +162,7 @@ public class OverlayScreen extends Screen implements StateListener
 			{
 				if (img.containsPoint(e.getPoint()))
 				{
+					//GameSession.get().advanceState();
 				}
 			}
 			e.consume();
@@ -237,7 +237,7 @@ public class OverlayScreen extends Screen implements StateListener
 		}
 		else if (e.getNewState() instanceof DoneState)
 		{
-			// TODO draw text "Victory!/Defeat!"
+			stateText = new Text("Victory : " + turn, center - 92, 15, Color.BLACK);
 		}
 	}
 
