@@ -132,8 +132,9 @@ public class MoveScreen extends Screen implements StateListener {
 			}
 		}
 		
-		// update movePath to let know that the mouse has moved
-		movePath.setMouseLocation( new Point( e.getX() + camera.getX(), e.getY() + camera.getY()) );
+		if ( movePath != null )
+			// update movePath to let know that the mouse has moved
+			movePath.setMouseLocation( new Point( e.getX() + camera.getX(), e.getY() + camera.getY()) );
 		
 		e.consume();
 	}
