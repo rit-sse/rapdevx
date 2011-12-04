@@ -57,7 +57,7 @@ public class Window {
 		
 		
 		/**** Create the panel to draw on ****/
-		screenStack = new ScreenStack();
+		screenStack = new ScreenStack(insetLeft, insetTop);
 		
 		// Add a map screen on startup
 		MapScreen mapScreen = new MapScreen(windowWidth, windowHeight);
@@ -76,11 +76,11 @@ public class Window {
 		testMenu.addButton(playButton);
 		testMenu.addButton(settingsButton);
 		testMenu.addButton(helpButton);
-		screenStack.addScreen(testMenu);
+		//screenStack.addScreen(testMenu);
 		
 		//Testing a ship screen
-		StatsScreen testStatsScreen = new StatsScreen(300, 200, windowWidth, windowHeight, null);
-		screenStack.addScreen(testStatsScreen);
+		//StatsScreen testStatsScreen = new StatsScreen(300, 200, windowWidth, windowHeight, null);
+		//screenStack.addScreen(testStatsScreen);
 		
 		//screenStack.addScreen(new PathTestScreen(window.getWidth(), window.getHeight()));
 		
