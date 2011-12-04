@@ -18,16 +18,16 @@ import edu.rit.se.sse.rapdevx.events.StateListener;
  */
 public class GameSession {
 
-	private static GameSession instance = new GameSession();
-	private ConcurrentLinkedQueue<StateListener> listeners = new ConcurrentLinkedQueue<StateListener>();
+	private static GameSession						instance		= new GameSession();
+	private ConcurrentLinkedQueue<StateListener>	listeners		= new ConcurrentLinkedQueue<StateListener>();
 
-	private StateBase currentState = new MoveState();
-	private Session session;
+	private StateBase								currentState	= new MoveState();
+	private Session									session;
 
-	private List<ShipClass> shipClasses = new Vector<ShipClass>();
+	private List<ShipClass>							shipClasses		= new Vector<ShipClass>();
 
 	private GameSession() {
-		
+
 	}
 
 	public static GameSession get() {
@@ -44,6 +44,15 @@ public class GameSession {
 	}
 
 	/**
+	 * Get the current state of the state machine.
+	 * 
+	 * @return The current state.
+	 */
+	public StateBase getCurrentState() {
+		return currentState;
+	}
+
+	/**
 	 * @return the session
 	 */
 	public Session getSession() {
@@ -52,7 +61,7 @@ public class GameSession {
 
 	/**
 	 * @param session
-	 *              the session to set
+	 *            the session to set
 	 */
 	public void setSession(Session newSession) {
 		session = newSession;
@@ -60,7 +69,7 @@ public class GameSession {
 
 	/**
 	 * @param observer
-	 *              the observer to add
+	 *            the observer to add
 	 */
 	public synchronized void addStateListener(StateListener listener) {
 		listeners.add(listener);
@@ -68,13 +77,14 @@ public class GameSession {
 
 	/**
 	 * @param observer
-	 *              the observer to remove
+	 *            the observer to remove
 	 */
 	public synchronized void removeStateListener(StateListener listener) {
 		listeners.remove(listener);
 	}
 
-	private synchronized void notifyStateListeners(StateBase oldState, StateBase newState) {
+	private synchronized void notifyStateListeners(StateBase oldState,
+			StateBase newState) {
 		for (StateListener listener : listeners) {
 			StateEvent event = new StateEvent(this, oldState, newState);
 			listener.stateChanged(event);
@@ -92,7 +102,7 @@ public class GameSession {
 	 * Add a ShipClass to the game session.
 	 * 
 	 * @param s
-	 *              The ShipClass to add.
+	 *            The ShipClass to add.
 	 */
 	public void addShipClass(ShipClass s) {
 		shipClasses.add(s);
@@ -102,7 +112,7 @@ public class GameSession {
 	 * Remove a ShipClass from the game session.
 	 * 
 	 * @param s
-	 *              The ShipClass to remove.
+	 *            The ShipClass to remove.
 	 */
 	public void removeShipClass(ShipClass s) {
 		shipClasses.remove(s);
@@ -112,7 +122,7 @@ public class GameSession {
 	 * Find a Ship class given a class id
 	 * 
 	 * @param id
-	 *              the ship class id
+	 *            the ship class id
 	 * @return the ship class associated with this id
 	 */
 	public ShipClass findByClassId(String id) {
