@@ -134,7 +134,7 @@
         <mkdir dir="${test.reports}" />
         <mkdir dir="${test.reports.pyunit}" />
         <exec dir="server" executable="python3.2">
-            <arg value="server/test/tester.py" />
+            <arg value="./server/test/tester.py" />
         </exec>
     </target>
     
