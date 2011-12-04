@@ -34,33 +34,39 @@ class GameContext:
 
     #Passthrough to phase
     def addPlayerMove(self, action_order, calling_player):
-        self.phase.addPlayerMove(action_order, calling_player)
+        x = self.phase.addPlayerMove(action_order, calling_player)
         self.phase = self.phase.getNextPhase()
+        return x
         
     def getPlayerMoveList(self, calling_player):
-        self.phase.getPlayerMoveList(calling_player)
+        x = self.phase.getPlayerMoveList(calling_player)
         self.phase = self.phase.getNextPhase()
+        return x
         
     def getPlayerMove(self, move_id, calling_player):
-        self.phase.getPlayerMove(move_id, calling_player)
+        x = self.phase.getPlayerMove(move_id, calling_player)
         self.phase = self.phase.getNextPhase()
+        return x
     
     def deletePlayerMove(self, move_id, calling_player):
-        self.phase.deletePlayerMove(move_id, calling_player)
+        x = self.phase.deletePlayerMove(move_id, calling_player)
         self.phase = self.phase.getNextPhase()
+        return x
         
     def setShipPlacement(self, ship_place_list, calling_player):
-        self.phase.setShipPlacement(ship_place_list, calling_player)
+        x = self.phase.setShipPlacement(ship_place_list, calling_player)
         self.phase = self.phase.getNextPhase()
+        return x
         
     def getGameProgress(self, calling_player):
-        self.phase.getGameProgress(calling_player)
+        x = self.phase.getGameProgress(calling_player)
         self.phase = self.phase.getNextPhase()
-    
+        return x
+        
     def setReady(self, player_num, val):
-        self.phase.setReady(player_num, val)
+        x = self.phase.setReady(player_num, val)
         self.phase = self.phase.getNextPhase()
-    
+        return x
 
 class GamePhase:
     #abstract superclass for all phases
