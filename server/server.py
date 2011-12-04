@@ -1,9 +1,10 @@
 from bottle import run, get, post, delete, request
-import session
-import gamemanager
-import sessionmanager
+from bottle import *
+from session import *
+from gamemanager import *
+from sessionmanager import *
 
-class NotImplementedException:
+class NotImplementedException(Exception):
     def __init__(self):
         super(NotImplementedException, self).__init__()
 
@@ -28,8 +29,8 @@ def get_session(session_id):
 def list_active_games():
     games = GameManager.active_games()
 
-    # TODO: this
-    return to_json(games)
+    games_json_array = [game.encode() for game in games]
+    return json.dumps(games_json_array)
 
 # Create a new session given posted data
 @post('/sessions')
@@ -144,7 +145,8 @@ def g_game_turns_moves(game_id=None, turn_id=None):
 
     movement_orders = game.getPlayerMoveList(session.player_num)
 
-    # TODO: orders.to_json
+    orders_json_array = [order.encode() for order in movement_orders]
+    return json.dumps(orders_json_array)
 
 # Delete a move from the current turn
 @delete('/game/:game_id/turns/:turn_id/moves/:move_id')
@@ -179,7 +181,8 @@ def g_game_turns_attacks(game_id=None, turn_id=None):
 
     attack_orders = game.getPlayerMoveList(session.player_num)
 
-    # TODO: orders.to_json
+    orders_json_array = [order.encode() for order in attack_orders]
+    return json.dumps(orders_json_array)
 
 # Delete an attack from the current turn
 @delete('/game/:game_id/turns/:turn_id/attacks/:attack_id')
@@ -224,6 +227,6 @@ def g_game_turns_attacks_results(game_id=None, turn_id=None):
     results = getTurnAttackResults(turn_id)
 
     return results.encode
-    return "GET /game" + str(game_id) + "/turns/" + str(turn_id) + "/attacks/results"
 
-run(host='localhost', port=8080)
+if __name__ == "__main__":
+    run(host='localhost', port=8080)
