@@ -6,7 +6,6 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
-import java.util.ArrayList;
 
 public class DrawableAttack extends DrawableObject
 {
@@ -14,6 +13,8 @@ public class DrawableAttack extends DrawableObject
 	private DrawableShip source;
 
 	private AttackScreen parent;
+	
+	private DrawableShip selectedShip;
 
 	public DrawableAttack(DrawableShip source, AttackScreen parent)
 	{
@@ -24,6 +25,11 @@ public class DrawableAttack extends DrawableObject
 
 	public void draw(Graphics2D gPen)
 	{
+		if(selectedShip != null)
+		{
+			setMouseLocation(selectedShip.getCenter());
+		}
+		
 		float[] f1 = {10.0f};
 		gPen.setStroke(new BasicStroke(2.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f, f1, 0.0f));
 		
@@ -63,13 +69,16 @@ public class DrawableAttack extends DrawableObject
 	 */
 	private void drawRecticule(Graphics2D gPen, int x, int y)
 	{
+		selectedShip = null;
 		gPen.setStroke(new BasicStroke(2.0f));
+		
 		for (DrawableShip ship : parent.getShipList())
 		{
 			if (new Area(ship.getBounds()).contains(mouseLocation.x,
 					mouseLocation.y))
 			{
 				gPen.setColor(new Color(255, 0, 0));
+				selectedShip = ship;
 			}
 		}
 
