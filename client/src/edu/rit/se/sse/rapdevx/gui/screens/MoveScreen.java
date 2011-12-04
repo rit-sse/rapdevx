@@ -207,6 +207,7 @@ public class MoveScreen extends Screen implements StateListener {
 		if (e.getNewState() instanceof AttackState) {
 			ScreenStack.get().addScreenAfter(this, new AttackScreen(camera, screenWidth, screenHeight));
 			ScreenStack.get().removeScreen(this);
+			GameSession.get().removeStateListener(this);
 		}
 	}
 

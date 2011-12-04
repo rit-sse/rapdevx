@@ -5,6 +5,7 @@ package edu.rit.se.sse.rapdevx.clientstate;
 
 import java.util.List;
 import java.util.Vector;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import edu.rit.se.sse.rapdevx.api.dataclasses.Session;
 import edu.rit.se.sse.rapdevx.api.dataclasses.ShipClass;
@@ -18,7 +19,7 @@ import edu.rit.se.sse.rapdevx.events.StateListener;
 public class GameSession {
 
 	private static GameSession instance = new GameSession();
-	private List<StateListener> listeners = new Vector<StateListener>();
+	private ConcurrentLinkedQueue<StateListener> listeners = new ConcurrentLinkedQueue<StateListener>();
 
 	private StateBase currentState = new MoveState();
 	private Session session;
@@ -61,7 +62,7 @@ public class GameSession {
 	 * @param observer
 	 *              the observer to add
 	 */
-	public void addStateListener(StateListener listener) {
+	public synchronized void addStateListener(StateListener listener) {
 		listeners.add(listener);
 	}
 
@@ -69,13 +70,15 @@ public class GameSession {
 	 * @param observer
 	 *              the observer to remove
 	 */
-	public void removeStateListener(StateListener listener) {
-		listeners.add(listener);
+	public synchronized void removeStateListener(StateListener listener) {
+		listeners.remove(listener);
 	}
 
-	private void notifyStateListeners(StateBase oldState, StateBase newState) {
-		for (StateListener listener : listeners)
-			listener.stateChanged(new StateEvent(this, oldState, newState));
+	private synchronized void notifyStateListeners(StateBase oldState, StateBase newState) {
+		for (StateListener listener : listeners) {
+			StateEvent event = new StateEvent(this, oldState, newState);
+			listener.stateChanged(event);
+		}
 	}
 
 	/**
