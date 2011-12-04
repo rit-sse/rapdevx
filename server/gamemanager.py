@@ -7,7 +7,7 @@ class GameManager:
 
     def next_game_id():
         last_id += 1
-        return "g" + last_id
+        return "g" + str(GameManager.last_id)
 
     def create_game(session1=None, session2=None):
         """Creates a new game with the provided sessions connected"""
