@@ -6,7 +6,7 @@ from sessionmanager import *
 session_manager = SessionManager()
 
 def get_game(game_id):
-    game = session_manager.game_pool.find_game(game_id)
+    game = session_manager.gamepool.find_game(game_id)
 
     if game == None:
         abort(404, "Game not found")

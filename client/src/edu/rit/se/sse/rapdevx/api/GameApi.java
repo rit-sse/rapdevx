@@ -176,7 +176,37 @@ public class GameApi {
 
 	public static boolean submitMovementOrder(Session userSession,
 			int currentTurn, MovementOrder move) {
-		return false;
+        move.toJSON(move);
+        int respcode = 0;
+
+        try {
+            String movejsonstring = readFileAsString("MovementOrderFromJava.json");
+
+            String data = URLEncoder.encode("session_id", "UTF-8") + "=" + URLEncoder.encode(userSession.getgid()) + "&" + URLEncoder.encode("movement_order", "UTF-8") + "=" + URLEncoder.encode(movejsonstring);
+
+            URL url = new URL("http", SERVER_URL, 8080, URLEncoder.encode("/game/" + userSession.getGameID() + "/turns/" + currentTurn + "/moves", "UTF-8"));
+
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setDoOutput(true);
+            conn.setRequestMethod("POST");
+            
+            conn.connect();
+
+            OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+            wr.write(data);
+            wr.flush();
+
+            respcode = conn.getResponseCode();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        if (respcode == 200) {
+            return true;
+        } else {
+            return false;
+        }
 	}
 
 	public static List<MovementOrder> getCurrentMoves(Session userSession,
@@ -186,14 +216,65 @@ public class GameApi {
 
 	public static boolean removeMovementOrder(Session userSession,
 			int currentTurn, MovementOrder move) {
-		return false;
+        int respcode = 0;
+
+        try {
+            URL url = new URL("http", SERVER_URL, 8080, URLEncoder.encode("/game/" + userSession.getGameID() + "/turns/" + currentTurn + "/moves/" + move.getgid(), "UTF-8"));
+
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setDoOutput(false);
+            conn.setRequestMethod("DELETE");
+            
+            conn.connect();
+
+            respcode = conn.getResponseCode();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        if (respcode == 200) {
+            return true;
+        } else {
+            return false;
+        }
 	}
 
 	// Unit Attack contents
 
 	public static boolean submitAbilityUseOrder(Session userSession,
 			AbilityUseOrder attack) {
-		return false;
+        attack.toJSON(attack);
+        int respcode = 0;
+
+        try {
+            String movejsonstring = readFileAsString("AbilityUseOrderFromJava.json");
+
+            String data = URLEncoder.encode("session_id", "UTF-8") + "=" + URLEncoder.encode(userSession.getgid()) + "&" + URLEncoder.encode("attack_order", "UTF-8") + "=" + URLEncoder.encode(movejsonstring);
+
+            URL url = new URL("http", SERVER_URL, 8080, URLEncoder.encode("/game/" + userSession.getGameID() + "/turns/" + currentTurn + "/attacks", "UTF-8"));
+
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setDoOutput(true);
+            conn.setRequestMethod("POST");
+            
+            conn.connect();
+
+            OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+            wr.write(data);
+            wr.flush();
+
+            respcode = conn.getResponseCode();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        if (respcode == 200) {
+            return true;
+        } else {
+            return false;
+        }
 	}
 
 	public static List<AbilityUseOrder> getCurrentAttacks(Session userSession,
@@ -203,7 +284,28 @@ public class GameApi {
 
 	public static boolean removeAbilityUseOrder(Session userSession,
 			int currentTurn, MovementOrder move) {
-		return false;
+        int respcode = 0;
+
+        try {
+            URL url = new URL("http", SERVER_URL, 8080, URLEncoder.encode("/game/" + userSession.getGameID() + "/turns/" + currentTurn + "/moves/" + move.getgid(), "UTF-8"));
+
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setDoOutput(false);
+            conn.setRequestMethod("DELETE");
+            
+            conn.connect();
+
+            respcode = conn.getResponseCode();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+
+        if (respcode == 200) {
+            return true;
+        } else {
+            return false;
+        }
 	}
 
 	public static boolean finishedWithTurn(Session userSession, int currentTurn) {
