@@ -63,10 +63,10 @@ public class Background {
 		// if the camera is in the negative coordinate space
 		// on the map, adjust the draw positions.
 		if ( cameraX < 0 ) {
-			drawAtX = -drawAtX - backgroundWidth;
+			drawAtX = drawAtX - backgroundWidth;
 		}
 		if ( cameraY < 0 ) {
-			drawAtY = -drawAtY - backgroundHeight;
+			drawAtY = drawAtY - backgroundHeight;
 		}
 		
 		int startDrawAtY = drawAtY;

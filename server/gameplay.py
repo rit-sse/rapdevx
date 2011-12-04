@@ -1,4 +1,22 @@
 from dto import *
+
+def swizzle(lists):
+    lists = [x[:] for x in lists]
+    results = []
+    i = 0
+    while lists:
+        print(lists)
+        if lists[i]:
+            results.append(lists[i][0])
+            lists[i] = lists[i][1:]
+            i = (i+1)
+        else:
+            lists.pop(i)
+            if len(lists)==0:
+                return results
+                i = i % len(lists)
+    return results
+    
 class Unit:
     '''
 
@@ -16,6 +34,7 @@ class Unit:
         owning_player - An integer refering to the player which owns this unit.
         types - List of strings which tell what kind of thing the unit is.
         location - The unit's location.
+        radius - An integer which represents a units size
         '''
 
         self.gid = None #set on registry
@@ -136,21 +155,30 @@ class MoveTurn:
     def __init__(self, turn_num):
         self.gid = None #set on registry
         self.turn_num = turn_num
+        self.player_move_list = {}
         
-    def addMoveOrder(self, move_order, calling_player):
+    def addMoveOrder(self, move_order, calling_player, registry):
         '''
         '''
-        pass
-    
-    def deleteMoveOrder(self, move_order_gid, calling_player):
-        '''
-        '''
-        pass
+        if calling_player not in self.player_move_list:
+            self.player_move_list[calling_player] = []
 
-    def getPlayerMoveList(self, calling_player):
+        moveOrderObj = MoveOrder(move_order.unitid, move_order.path) 
+        self.player_move_list[calling_player].append( moveOrderObj )
+        registry.register(moveOrderObj)
+    
+    def deleteMoveOrder(self, move_order_gid, calling_player, registry):
         '''
         '''
-        pass
+        move_order = registry.getById(move_order_gid)
+        registry.removeById(move_order_gid)
+        
+        self.player_attack_lists[calling_player].remove(move_order)
+
+    def getPlayerMoveList(self, calling_player, registry):
+        '''
+        '''
+        return [x.to_dto() for x in self.player_move_lists[calling_player]]
         
     #any existing move orders should be evaluated
     #(going round robin on submitting players, in order)
@@ -162,29 +190,6 @@ class MoveTurn:
         
     def getResults(self):
         pass
-        
-    def collisionCheck(self, unit1, unit2, end_loc):
-        '''
-        '''
-        unit1_loc = unit1.location
-        unit2_loc = unit2.location
-
-        def distance(point1, point2):
-            return ((point1[0] - point2[0])**2 + (point1[1] - point2[1])**2)**0.5
-        
-        length_ratio = ((distance(unit1_loc,unit2_loc)**2-distance(unit2_loc,end_loc)**2-distance(end_loc,unit1_loc)**2)/(-2*distance(end_loc,unit1_loc))) / distance(unit1_loc,end_loc)
-        test_point = ((unit1_loc[0]+unit2_loc[0])*(length_ratio),(unit1_loc[1]+unit2_loc[1])*(length_ratio))
-
-        if (distance(unit1_loc,test_point) - distance(unit1_loc,end_loc)) > 0:
-            if distance(unit1_loc,unit2_loc) < (unit1.radius + unit2.radius):
-                return True
-            else:
-                return False
-        else:
-            if distance(test_point,unit2_loc) >= (unit1.radius + unit2.radius):
-                return False
-            else:
-                return True
         
 class AttackTurn:
     '''
@@ -199,40 +204,51 @@ class AttackTurn:
         '''
         self.gid = None #set on registry
         self.turn_num = turn_num
-        self.attack_list = []
+        self.player_attack_lists = {}
+        self.results = None
 
-    def addAttackOrder(self, attack_order, calling_player):
+    def addAttackOrder(self, dto_attack_order, calling_player, registry):
         '''
         Submit a player's attack. This method assumes that the move order has
         already been registered.
 
-        attack_order - AbilityUseOrder object for the ability user by the attacker.
+        attack_order - DTO_AbilityUseOrder object for the ability user by the attacker.
         calling_player - integer referencing the attacker's player id.
+        
+        registry - the ID registry to add the move to for later reference
         '''
-        # Associate an attack order with the player who made the attack
-        playerAttack = { attack_order, calling_player }
-
-        # TODO: Validate that the client is actually in range/not lying
-        self.attack_list.append( playerAttack )
-    
-    def deleteAttackOrder(self, move_order_gid, calling_player):
+        #setup a list of attacks for a player if there isn't one yet
+        if calling_player not in self.player_attack_lists:
+            self.player_attack_lists[calling_player]=[]
+        
+        order = AttackOrder(dto_attack_order.srcid,dto_attack_order.targetid, dto_attack_order.ability)
+        registry.register(order)
+        
+        self.player_attack_lists.append(order)
+        
+    def deleteAttackOrder(self, move_order_gid, calling_player, registry):
         '''
         Remove the specified player's move from the attack list.
 
         move_order_gid - The id of the move order.
         calling_player - An integer reference to the player who made the move. 
+        
+        registry - the ID registry to remove the move from
         '''
-        #
+        move_order = registry.getById(move_order_gid)
+        registry.removeById(move_order_gid)
+        
+        self.player_attack_lists[calling_player].remove(move_order)
 
-        pass
-
-    def getPlayerMoveList(self, calling_player):
+    def getPlayerAttackList(self, calling_player, registry):
         '''
-        Get a list of the specified player's moves.
+        Get a list of the specified player's moves' ID's.
 
         calling_player - an integer referencing a player id.
+        
+        registry - the ID registry that the moves are in
         '''
-        pass
+        return [x.to_dto() for x in self.player_attack_lists[calling_player]]
     
     def execute(self, registry):
         '''
@@ -242,23 +258,31 @@ class AttackTurn:
 
         registry - The game's Registry object. This has all of the unit data.
         '''
-
-        #move the 
-        pass
-
+        
+        player_nums = sorted(self.player_attack_lists.keys())
+        #todo: "rotate" player nums based on the turn number, so 
+        #a different player gets to go "first" every turn
+        
+        lists = [self.player_attack_lists[x] for x in player_nums]
+        combined_list = swizzle(lists)
+        
+        self.results = []
+        
+        for attack_order in combined_list:
+            attacker = registry.getById(attack_order.srcid)
+            target = registry.getById(attack_order.targetid)
+            
+            if None not in [attacker,target]:
+                self.results.append(attack_order)
+                ability = registry.getById(attack_order.ability)
+                damage = ability.damageForTypes(target.types)
+                target.setHP(target.getHP()-damage)
+                if target.getHP()<=0:
+                    registry.removeById(target.gid)
+            
     def getResults(self):
-        '''
-        '''
-        pass
+        return self.results
 
-    def getTurnNum( self ):
-        '''
-        '''
-        pass
-
-    def setTurnNum( self, turn_num ):
-        '''
-        '''
         
 class UnitClass:
     def __init__(self, types, abilities, maxhp, radius, placement_cost, image, name):
@@ -287,3 +311,25 @@ class Image:
     
     def to_dto(self):
         return DTO_AssetImage(self.contents,self.gid)
+        
+        
+class AttackOrder:
+    def __init__(self, srcid, targetid, ability):
+        self.srcid = srcid
+        self.targetid = targetid
+        self.ability = ability
+        
+        self.gid = None
+        
+    def to_dto(self):
+        return DTO_AbilityUseOrder(self.srcid, self.targetid, self.ability, self.gid)
+        
+class MoveOrder:
+    def __init__(self, shipid, path):
+        self.shipid = shipid
+        self.path = path
+        self.gid = None
+        
+    def to_dto(self):
+        return DTO_MovementOrder(self.shipid, self.path, self.gid)
+        

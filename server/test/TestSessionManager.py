@@ -20,12 +20,12 @@ class TestSessionManager(unittest.TestCase):
         self.session_b = Session()
         self.manager = SessionManager()
     
-    def _test_register_session(self):
+    def test_register_session(self):
         self.manager.register_session(self.session_a, game_id=0)
 
         self.assertTrue(self.session_a in self.manager.sessions)
 
-    def _test_register_new_session(self):
+    def test_register_new_session(self):
         self.manager.register_session(self.session_a)
 
         self.assertTrue(self.session_a in self.manager.sessions)
@@ -37,6 +37,11 @@ class TestSessionManager(unittest.TestCase):
         game = GameManager.games[0]
 
         # self.assertTrue(self.session_a.session_id in game.playerlist)
+
+    def test_find_session(self):
+        self.manager.register_session(self.session_a)
+
+        self.assertIsNotNone(self.manager.find_session(self.session_a.session_id))
 
 if __name__ == "__main__":
     unittest.main()

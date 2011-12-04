@@ -9,7 +9,7 @@ import java.awt.image.BufferStrategy;
 
 import javax.swing.JFrame;
 
-import edu.rit.se.sse.rapdevx.gui.screens.ExampleScreen;
+import edu.rit.se.sse.rapdevx.gui.screens.PathTestScreen;
 import edu.rit.se.sse.rapdevx.gui.screens.menus.Menu;
 import edu.rit.se.sse.rapdevx.gui.screens.menus.MenuButton;
 
@@ -46,7 +46,6 @@ public class Window {
 		
 		/**** Create the panel to draw on ****/
 		screenStack = new ScreenStack();
-		screenStack.setSize(window.getWidth(), window.getHeight());
 		
 		// Add a map screen on startup
 		MapScreen mapScreen = new MapScreen(window.getWidth(), window.getHeight());
@@ -63,14 +62,16 @@ public class Window {
 		testMenu.addButton(playButton);
 		testMenu.addButton(settingsButton);
 		testMenu.addButton(helpButton);
-		screenStack.addScreen(testMenu);
+		//screenStack.addScreen(testMenu);
 		
 		//Testing a ship screen
 		StatsScreen testStatsScreen = new StatsScreen(300, 200, window.getWidth(), window.getHeight(), null);
 		screenStack.addScreen(testStatsScreen);
 		
+		//screenStack.addScreen(new PathTestScreen(window.getWidth(), window.getHeight()));
+		
 		// Add the panel to the window
-		window.getContentPane().add(screenStack);
+		//window.getContentPane().add(screenStack);
 		window.addKeyListener(screenStack);
 		window.addMouseListener(screenStack);
 		window.addMouseMotionListener(screenStack);
