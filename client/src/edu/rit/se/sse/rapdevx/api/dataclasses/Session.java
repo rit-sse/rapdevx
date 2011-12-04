@@ -18,16 +18,16 @@ public class Session {
 
 	private static ObjectMapper mapper = new ObjectMapper();
 	
-	private int gid;
+	private String gid;
 	private String nickName;
-	private int gameID;
+	private String gameID;
 	private boolean active;
 	
 	
-	public int getgid() {
+	public String getgid() {
 		return gid;
 	}
-	public void setgid(int gid) {
+	public void setgid(String gid) {
 		this.gid = gid;
 	}
 	public String getNickName() {
@@ -36,10 +36,10 @@ public class Session {
 	public void setNickName(String nickName) {
 		this.nickName = nickName;
 	}
-	public int getGameID() {
+	public String getGameID() {
 		return gameID;
 	}
-	public void setGameID(int gameID) {
+	public void setGameID(String gameID) {
 		this.gameID = gameID;
 	}
 	public boolean isActive() {

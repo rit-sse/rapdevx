@@ -21,15 +21,15 @@ public class MovementOrder {
 	
 	private static ObjectMapper mapper = new ObjectMapper();
 	
-	private String unitID;
+	private String unitid;
 	private LinkedList<Hashtable<Integer,Integer>> path = new LinkedList<Hashtable<Integer,Integer>>();
 	private String gid;
 	
-	public String getUnitID() {
-		return unitID;
+	public String getUnitid() {
+		return unitid;
 	}
-	public void setUnitID(String unitID) {
-		this.unitID = unitID;
+	public void setUnitid(String unitid) {
+		this.unitid = unitid;
 	}
 	public LinkedList<Hashtable<Integer,Integer>> getPATH() {
 		return path;
