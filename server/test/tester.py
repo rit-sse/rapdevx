@@ -2,11 +2,11 @@ import xmlrunner
 import unittest
 
 # Import all tests here
-from TestAttackTurn import *
 from TestJSON import *
 from TestRegistry import *
 from TestGameplay import *
 from TestServer import *
+from TestGeometry import *
 
 
 if __name__ == '__main__':
