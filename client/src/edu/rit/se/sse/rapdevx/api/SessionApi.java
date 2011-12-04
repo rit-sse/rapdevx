@@ -196,9 +196,10 @@ public class SessionApi {
 	 */
 	private static String getResponse(String args) {
 		try {
-			HttpURLConnection conn = (HttpURLConnection) (new URL(SERVER_URL
-					+ args).openConnection());
-			conn.setDoInput(true);
+			URL url = new URL("http", SERVER_URL, 8080, args);
+
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			conn.setDoOutput(false);
 			conn.setRequestMethod("GET");
 
 			conn.connect();
@@ -246,6 +247,18 @@ public class SessionApi {
 	}
 
 	public static void main(String[] argv) {
-		// createSession("Derp", null);
+		Session session = null;
+
+		try {
+			session = createSession("Derp", null);
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.err.println("createSession is f'ed");
+		}
+
+		session = updateSession(session);
+		System.out.println(session);
+
+		System.out.println(destroySession(session));
 	}
 }
