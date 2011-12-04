@@ -1,7 +1,8 @@
 from bottle import run, get, post, delete, request
-import session
-import gamemanager
-import sessionmanager
+from bottle import *
+from session import *
+from gamemanager import *
+from sessionmanager import *
 
 class NotImplementedException:
     def __init__(self):
@@ -145,7 +146,7 @@ def g_game_turns_moves(game_id=None, turn_id=None):
     movement_orders = game.getPlayerMoveList(session.player_num)
 
     orders_json_array = [order.encode() for order in movement_orders]
-    return json.dumps(orders_json_array)]
+    return json.dumps(orders_json_array)
 
 # Delete a move from the current turn
 @delete('/game/:game_id/turns/:turn_id/moves/:move_id')
