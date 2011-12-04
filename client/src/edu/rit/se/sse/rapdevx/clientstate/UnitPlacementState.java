@@ -28,7 +28,7 @@ public class UnitPlacementState extends StateBase {
 					 * to the server -- will need to get this called as a result
 					 * of hitting "submit" in the GUI
 					 */) {
-		phaseNum = GameApi.getStatus(GameSession.get().getSession()).getPhase();
+		phaseNum = Integer.parseInt(GameApi.getStatus(GameSession.get().getSession()).getPhase());
 
 		// TODO tell the server our layout
 
@@ -36,8 +36,8 @@ public class UnitPlacementState extends StateBase {
 
 			@Override
 			public void run() {
-				if (GameApi.getStatus(GameSession.get().getSession())
-						.getPhase() != phaseNum) {
+				if (Integer.parseInt(GameApi.getStatus(GameSession.get().getSession())
+						.getPhase()) != phaseNum) {
 					this.cancel();
 					readyReady();
 				}
