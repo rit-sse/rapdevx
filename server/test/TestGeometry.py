@@ -30,5 +30,12 @@ class TestGeometry( unittest.TestCase ):
 		expected = 5.5, 5.5
 		self.assertEqual( expected, dropPoint( self.source, self.destination, point ) )
 
+	def test_dropPoint_0Slope( self ):
+		self.source = 0, 5
+		self.destination = 10, 5
+		point = 5, 10
+		expected = 5, 5
+		self.assertEqual( expected, dropPoint( self.source, self.destination, point ) )
+
 if __name__ == "__main__":
 	unittest.main()

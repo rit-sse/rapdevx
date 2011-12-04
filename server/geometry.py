@@ -12,7 +12,7 @@ def distance( point1, point2 ):
 	deltax = point2[0] - point1[0]
 	deltay = point2[1] - point1[1]
 
-	return ( deltax**2 + deltay**2 ) ** 0.5
+	return ( deltax ** 2 + deltay ** 2 ) ** 0.5
 
 def slope( point1, point2 ):
 	'''
@@ -30,7 +30,7 @@ def slope( point1, point2 ):
 
 def isPointOnSegment( source, destination, point, delta = DEFAULT_TOLERANCE_FACTOR ):
 	'''
-	Determine if a point is on the line segment between source and destination.
+	Determine if a point is on the line segment defined by source and destination.
 
 	source - Tuple containing (x, y) coordinates for the first point of the
 			 line segment.
@@ -56,7 +56,9 @@ def isPointOnSegment( source, destination, point, delta = DEFAULT_TOLERANCE_FACT
 def dropPoint( source, destination, point ):
 	'''
 	Finds the shortest line segment that intersects with a line segment
-	starting at source and ending at destination.
+	starting at source and ending at destination. If the calculated point of
+	intersection is on the same slope of the line segment, but not between the
+	two points defining it, then one of the two points will be used.
 
 	source - A tuple containing the first pair of (x,y) coordinates for the
 			 line segment.
@@ -65,23 +67,32 @@ def dropPoint( source, destination, point ):
 	point - A tuple containing the (x,y) coordinates from which the short line
 			segment is projected.
 	'''
-	# If the point's x value does not lie within the same range as the line 
-	# segment, pick the closest point on the line segment.
-	if( point[0] >= destination[0] ):
-		return destination
-	
-	if( point[0] <= source[0] ):
-		return source
 
 	# Get distances between points.
 	a = distance( destination, point )
 	b = distance( source, point )
 	c = distance( source, destination )
 
-	# Find angle between c and a
+	# If the slope is zero, then drop the point straight down
+	m = slope( source, destination )
+
+	if( m == 0 ):
+		d = point[0], source[1]
+		return d
+
+	# Do some math to find the angle between c and a
 	numerator = ( b ** 2 ) - ( a ** 2 ) - ( c ** 2 )
 	denominator = -2 * a * c
-	tau = acos( numerator / denominator )
+
+	result = numerator / denominator
+
+	if( result > 1 ):
+		result = 1
+
+	if( result < -1 ):
+		result = -1
+
+	tau = acos( result )
 
 	# Get the distance between point and the projected point on the
 	# line segment.
@@ -97,9 +108,17 @@ def dropPoint( source, destination, point ):
 
 	# Get the x-coordinate of the projected point.
 	sourceY = source[1]
-	m = slope( source, destination )
 	dx = ( dy - sourceY ) / m
 
+	# If the point's x value does not lie within the same range as the line 
+	# segment, pick the closest point on the line segment.
+	if( dx >= destination[0] ):
+		return destination
+	
+	if( dx <= source[0] ):
+		return source
+
+	# If we've made it this far, we have the point's coordinates :D
 	d = dx, dy
 	return d
 
