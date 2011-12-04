@@ -9,10 +9,8 @@ import java.util.List;
 
 import edu.rit.se.sse.rapdevx.api.dataclasses.Ability;
 import edu.rit.se.sse.rapdevx.clientmodels.Ship;
-import edu.rit.se.sse.rapdevx.clientstate.GameSession;
 import edu.rit.se.sse.rapdevx.gui.RectangleBackground;
 import edu.rit.se.sse.rapdevx.gui.Screen;
-import edu.rit.se.sse.rapdevx.gui.drawable.DrawableShip;
 import edu.rit.se.sse.rapdevx.gui.drawable.Text;
 
 /**
@@ -49,35 +47,39 @@ public class StatsScreen extends Screen
 	 * @param wHeight
 	 *            the height of the window
 	 */
-	public StatsScreen(/* int wWidth, int wHeight, */
-	Ship ship)
+	public StatsScreen(int wWidth, int wHeight, Ship ship)
 	{
-		super(200, 150);
-		x = Toolkit.getDefaultToolkit().getScreenSize().width - screenWidth;
-		y = Toolkit.getDefaultToolkit().getScreenSize().height - screenHeight;
+		super(wWidth, wHeight);
+		x = screenWidth - 300;
+		y = screenHeight - 200;
 		this.ship = ship;
-
-		//name = new Text(ship.getClassName(), x + 10, y + 10, 2.5);
-		moveRadius = new Text("Move Radius: 5", x + 10, y + 65, 2.5);
+		
+		name = new Text("Awesome Ship", x + 10, y + 10, 2.5);
 		HP = new Text("HP", x + 25, y + 38, 2.0);
+		moveRadius = new Text("Move Radius: 5", x + 10, y + 65, 2.5);
 
-		double hp = ship.getHp();
-		double maxHp = GameSession.get().findByClassId(ship.getClassID())
-				.getMaxhp();
+		double hp = 5; //ship.getHp();
+		double maxHp = 20;//GameSession.get().findByClassId(ship.getClassID());
+				//.getMaxhp();
 
 		hpMaxHp = new Text((int) hp + "/" + (int) maxHp, x + 65 + 145, y + 20,
 				1.5);
 
-		int yPosition = 110;
-		/*ArrayList<Ability> abilities = GameSession.get()
-				.findByClassId(ship.getClassID()).getAbilities();
+		abilitiesWord = new Text("Abilites:", x + 10, y + 95, 2.5);
+		
+		int yPosition = 115;
+		List<Ability> abilities = new ArrayList<Ability>();
+		abilities.add(new Ability());
+		abilities.add(new Ability());
+		//GameSession.get().findByClassId(ship.getClassID()).getAbilities();
 		for (Ability ability : abilities)
 		{
 			this.abilities.add(new Text(ability.getName() + ": Radius: "
 					+ ability.getRadius() + " Damage: "
 					+ ability.getDefault_damage(), x + 35, y + yPosition, 1.5));
 			yPosition += 10;
-		}*/
+		}
+		
 	}
 
 	@Override
@@ -96,21 +98,23 @@ public class StatsScreen extends Screen
 
 	public void draw(Graphics2D gPen)
 	{
-		new RectangleBackground(x, y, screenWidth, screenHeight).draw(gPen);
+		new RectangleBackground(x, y, 300, 200).draw(gPen);
 		gPen.setColor(Color.BLACK);
 		name.draw(gPen);
 		drawHPBar(gPen);
-		gPen.setColor(Color.BLACK);
 		moveRadius.draw(gPen);
 		drawAbilities(gPen);
 	}
 
 	public void drawHPBar(Graphics2D gPen)
 	{
+		Color startColor = gPen.getColor();
 		HP.draw(gPen);
 		// sample value
 		double hp = 5.0;
 		double maxHp = 20.0;
+		
+		hpMaxHp.setText(hp + "/" + maxHp);
 
 		// real stuff
 		// double hp = ship.getHp();
@@ -133,6 +137,7 @@ public class StatsScreen extends Screen
 			gPen.setColor(Color.GREEN);
 		}
 		gPen.fill(new Rectangle(x + 65, y + 35, (int) scale, 20));
+		gPen.setColor(startColor);
 	}
 
 	public void drawAbilities(Graphics2D gPen)

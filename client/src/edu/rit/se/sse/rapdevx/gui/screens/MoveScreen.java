@@ -102,7 +102,7 @@ public class MoveScreen extends Screen implements StateListener {
 		
 		if (isSelected) {
 			if (statsScreen == null) {
-				statsScreen = new StatsScreen(300, 200, screenWidth, screenHeight, ship.getShip());
+				statsScreen = new StatsScreen(/*300, 200,*/ screenWidth, screenHeight, ship.getShip());
 				ScreenStack.get().addScreenAfter(this, statsScreen);
 			} else if (statsScreen != null && statsScreen.getShip() != ship.getShip()) {
 				ScreenStack.get().removeScreen(statsScreen);
