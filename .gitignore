@@ -1,7 +1,4 @@
 *.swp
 _site/*
 
-_layouts/*.html
-stylesheets/*.css
-
 .sass-cache/
