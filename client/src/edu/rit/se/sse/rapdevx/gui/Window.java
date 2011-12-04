@@ -10,8 +10,6 @@ import java.awt.image.BufferStrategy;
 import javax.swing.JFrame;
 
 import edu.rit.se.sse.rapdevx.gui.screens.*;
-import edu.rit.se.sse.rapdevx.gui.screens.menus.Menu;
-import edu.rit.se.sse.rapdevx.gui.screens.menus.MenuButton;
 
 public class Window {
 
@@ -48,7 +46,15 @@ public class Window {
 		window.setIgnoreRepaint(true);
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setVisible(true);
+		
+		
+		// Set the screen stack to handle input
+		window.addKeyListener(ScreenStack.get());
+		window.addMouseListener(ScreenStack.get());
+		window.addMouseMotionListener(ScreenStack.get());
 
+		
+		// Adjust the coordinates to account for window decorations
 		insetLeft = window.getInsets().left;
 		insetTop = window.getInsets().top;
 		insetRight = window.getInsets().right;
@@ -59,12 +65,12 @@ public class Window {
 		
 		ScreenStack.get().setOffsets(insetLeft, insetTop);
 
+		
 		// Setup double buffering (makes graphics faster)
 		window.createBufferStrategy(2);
 		bufferStrategy = window.getBufferStrategy();
 
-		/**** Create the panel to draw on ****/
-
+		
 		// Start with the move phase on the map
 		MapScreen mapScreen = new MapScreen(windowWidth, windowHeight);
 		ScreenStack.get().addScreen(mapScreen);
@@ -76,25 +82,9 @@ public class Window {
 		// Add a control overlay to the window
 		ScreenStack.get().addScreen(new OverlayScreen(windowWidth, windowHeight));
 
-		// TODO remove after testing
-		Menu testMenu = new Menu(300, 300);
-		MenuButton playButton = new MenuButton("Play",
-				"This button does nothing yet");
-		MenuButton settingsButton = new MenuButton("Settings",
-				"This button does nothing yet");
-		MenuButton helpButton = new MenuButton("Help",
-				"This button does nothing yet");
-		testMenu.addButton(playButton);
-		testMenu.addButton(settingsButton);
-		testMenu.addButton(helpButton);
-		//ScreenStack.get().addScreen(testMenu);;
-		ScreenStack.get().addScreen(new PlacementScreen(mapScreen.getCamera(), 100, 100));
-
-		// Add the panel to the window
-		// window.getContentPane().add(screenStack);
-		window.addKeyListener(ScreenStack.get());
-		window.addMouseListener(ScreenStack.get());
-		window.addMouseMotionListener(ScreenStack.get());
+		//TODO this screen should be before move
+		//ScreenStack.get().addScreen(new PlacementScreen(mapScreen.getCamera(), 100, 100));
+		
 		window.requestFocusInWindow();
 	}
 
@@ -109,8 +99,7 @@ public class Window {
 
 		try {
 			gPen = bufferStrategy.getDrawGraphics();
-			if (!bufferStrategy.contentsLost())
-			{
+			if (!bufferStrategy.contentsLost()) {
 				gPen.translate(window.getInsets().left, window.getInsets().top);
 				ScreenStack.get().draw((Graphics2D) gPen);
 				bufferStrategy.show();
