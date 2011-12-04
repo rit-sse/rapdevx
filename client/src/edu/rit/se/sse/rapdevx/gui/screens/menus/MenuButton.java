@@ -364,7 +364,7 @@ public class MenuButton {
 		// gPen.setColor(getTextColor());
 		// gPen.setFont(TextFont);
 		int textY = y + size.height / 2 - 10;
-		new Text(getText(), x + 10, textY, 3).drawColor(gPen,0xFFFF0000);
+		new Text(getText(), x + 10, textY, 3).drawColor(gPen,0xFF7f7f7f);
 
 		// TODO adjust the border depending on if selected or not
 	}
