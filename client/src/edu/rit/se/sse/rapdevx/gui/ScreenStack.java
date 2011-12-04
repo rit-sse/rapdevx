@@ -11,9 +11,12 @@ import java.util.LinkedList;
 public class ScreenStack implements KeyListener, MouseListener, MouseMotionListener {
 	
 	private LinkedList<Screen> screenList;
+	int xShift, yShift;
 	
-	public ScreenStack() {
+	public ScreenStack(int xShift, int yShift) {
 		screenList = new LinkedList<Screen>();
+		this.xShift = xShift;
+		this.yShift = yShift;
 	}
 	
 	/**
@@ -158,6 +161,8 @@ public class ScreenStack implements KeyListener, MouseListener, MouseMotionListe
 	 */
 	@Override
 	public void mouseClicked(MouseEvent e) {
+		adjustMouseCoords(e);
+		
 		//tell all the screens about this mouse event
 		for (int i = screenList.size() - 1; i >= 0; i--) {
 			Screen screen = screenList.get(i);
@@ -179,6 +184,8 @@ public class ScreenStack implements KeyListener, MouseListener, MouseMotionListe
 	 */
 	@Override
 	public void mousePressed(MouseEvent e) {
+		adjustMouseCoords(e);
+		
 		//tell all the screens about this mouse event
 		for (int i = screenList.size() - 1; i >= 0; i--) {
 			Screen screen = screenList.get(i);
@@ -194,6 +201,8 @@ public class ScreenStack implements KeyListener, MouseListener, MouseMotionListe
 	 */
 	@Override
 	public void mouseReleased(MouseEvent e) {
+		adjustMouseCoords(e);
+		
 		//tell all the screens about this mouse event
 		for (int i = screenList.size() - 1; i >= 0; i--) {
 			Screen screen = screenList.get(i);
@@ -219,6 +228,8 @@ public class ScreenStack implements KeyListener, MouseListener, MouseMotionListe
 	public void mouseMoved(MouseEvent e) {
 		//TODO should we only send this to the screen with focus? (need to make the same choice for all the other events too)
 		
+		adjustMouseCoords(e);
+		
 		//tell all the screens about this mouse event
 		for (int i = screenList.size() - 1; i >= 0; i--) {
 			Screen screen = screenList.get(i);
@@ -227,6 +238,10 @@ public class ScreenStack implements KeyListener, MouseListener, MouseMotionListe
 			}
 			screen.mouseMoved(e);
 		}
+	}
+	
+	private void adjustMouseCoords(MouseEvent e) {
+		e.translatePoint(-xShift, -yShift);
 	}
 	
 }
