@@ -73,6 +73,12 @@ class Unit:
         '''
         self.hp = hp
     
+    def setLocation(self, location):
+        '''
+        Set the unit's location.
+        '''
+        self.location = location
+
     def getTypes(self):
         '''
         Retrieve the list of type strings associated with this unit.
@@ -182,12 +188,12 @@ class MoveTurn:
         move_order = registry.getById(move_order_gid)
         registry.removeById(move_order_gid)
         
-        self.player_attack_lists[calling_player].remove(move_order)
+        self.player_attack_list[calling_player].remove(move_order)
 
     def getPlayerMoveList(self, calling_player, registry):
         '''
         '''
-        return [x.to_dto() for x in self.player_move_lists[calling_player]]
+        return [x.to_dto() for x in self.player_move_list[calling_player]]
         
     #any existing move orders should be evaluated
     #(going round robin on submitting players, in order)
@@ -195,7 +201,14 @@ class MoveTurn:
     #R2: Stop short of offending segment
     #R3: Stop tangent to offending unit
     def execute(self, registry):
-        pass
+        itera = sorted(self.player_move_list.keys())
+        result = {}
+        for i in numOFTurns:
+            for k in itera:
+                playerMove = self.player_move_list[k][i]
+                unitShip = registry.getById(playerMove.shipid)
+                unitLoc = playerMove.path[-1]
+                unitShip.setLocation(unitLoc)
         
     def getResults(self):
         pass
@@ -230,12 +243,14 @@ class AttackTurn:
         if calling_player not in self.player_attack_lists:
             self.player_attack_lists[calling_player]=[]
 
+        source = dto_attack_order.srcid
+        tar = dto_attack_order.targetid
+        
+        order = AttackOrder(source,dto_attack_order.targetid, dto_attack_order.ability)
 
-        order = AttackOrder(dto_attack_order.srcid,dto_attack_order.targetid, dto_attack_order.ability)
+        target = registry.getById(source)
 
-        target = registry.getById(dto_attack_order.srcid)
-
-        if registry.getById(dto_attack_order.srcid) == None:
+        if registry.getById(source) == None:
             raise Exception("Attacking ship not in registry")
 
         if registry.getById(dto_attack_order.targetid) == None:
@@ -247,6 +262,17 @@ class AttackTurn:
         if calling_player != target.getPlayer():
             raise Exception("Player does not own ship")
 
+        if dto_attack_order.ability in source.getAbilities():
+            raise Exception("Ship does not have ability")
+
+        if source.getLocation() > tar.getLocation():
+            dist = source.getLocation() - tar.getLocation()
+        else:
+            dist = tar.getLocation() - source.getLocation()
+        if dist > dto_attack_order.ability.getRadius():
+            raise Exception("Target is not in range")
+        
+           
         registry.register(order)
         self.player_attack_lists.append(order)
         
