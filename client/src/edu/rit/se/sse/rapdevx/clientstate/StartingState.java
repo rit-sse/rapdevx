@@ -27,7 +27,8 @@ public class StartingState extends StateBase {
 		AssetLibrary.setAssets(GameApi
 				.getAssets(GameSession.get().getSession()));
 
-		// TODO set ready here
+		// yay, we're ready!
+		GameApi.setReady(GameSession.get().getSession());
 
 		timer.scheduleAtFixedRate(new TimerTask() {
 
