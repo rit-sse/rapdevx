@@ -11,6 +11,7 @@ class Session:
         self.game_id = None
         self.player_num = None
 
+    @staticmethod
     def nextID():
         Session.last_id += 1
         return "s" + str(Session.last_id)

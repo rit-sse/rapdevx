@@ -17,11 +17,11 @@ import org.codehaus.jackson.map.ObjectMapper;
  */
 public class ShipPlacement {
 
-	private ObjectMapper mapper = new ObjectMapper();
+	private static ObjectMapper mapper = new ObjectMapper();
 	
 	private int x;
 	private int y;
-	private int classid;
+	private String classid;
 	
 	public int getX() {
 		return x;
@@ -35,10 +35,10 @@ public class ShipPlacement {
 	public void setY(int y) {
 		this.y = y;
 	}
-	public int getClassid() {
+	public String getClassid() {
 		return classid;
 	}
-	public void setClassid(int classid) {
+	public void setClassid(String classid) {
 		this.classid = classid;
 	}
 	
@@ -48,10 +48,10 @@ public class ShipPlacement {
 	 * 
 	 * @return The mapped ShipPlacement as an ShipPlacement object. or null if error.
 	 */
-	public ShipPlacement fromJSON(){
+	public static ShipPlacement fromJSON(String incomingJson){
 
 		try {
-			ShipPlacement shipPlacement = mapper.readValue(new File("ShipPlacementToJava.json"), ShipPlacement.class);
+			ShipPlacement shipPlacement = mapper.readValue(incomingJson, ShipPlacement.class);
 			return shipPlacement;
 		} catch (JsonParseException e) {
 			// TODO Auto-generated catch block

@@ -31,7 +31,7 @@ public class MoveState extends StateBase {
 	 * Call this when the player is done with their move stack.
 	 */
 	public void ready() {
-		phaseNum = GameApi.getStatus(GameSession.get().getSession()).getPhase();
+		phaseNum = Integer.parseInt(GameApi.getStatus(GameSession.get().getSession()).getPhase());
 
 		GameApi.setReady(GameSession.get().getSession());
 
@@ -39,8 +39,8 @@ public class MoveState extends StateBase {
 
 			@Override
 			public void run() {
-				if (GameApi.getStatus(GameSession.get().getSession())
-						.getPhase() != phaseNum) {
+				if (Integer.parseInt(GameApi.getStatus(GameSession.get().getSession())
+						.getPhase())!= phaseNum) {
 					this.cancel();
 					readyReady();
 				}

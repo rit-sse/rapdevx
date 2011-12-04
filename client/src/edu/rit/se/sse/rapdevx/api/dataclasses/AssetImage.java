@@ -16,7 +16,7 @@ import org.codehaus.jackson.map.ObjectMapper;
  */
 public class AssetImage {
 
-	private ObjectMapper mapper = new ObjectMapper();
+	private static ObjectMapper mapper = new ObjectMapper();
 	private String file;
 	private String gid;
 	
@@ -38,10 +38,10 @@ public class AssetImage {
 	 * 
 	 * @return The mapped AssetImage as an AssetImage object. or null if error.
 	 */
-	public AssetImage fromJSON(){
+	public static AssetImage fromJSON(String incomingJson){
 
 		try {
-			AssetImage assets = mapper.readValue(new File("AssetImageToJava.json"), AssetImage.class);
+			AssetImage assets = mapper.readValue(incomingJson, AssetImage.class);
 			return assets;
 		} catch (JsonParseException e) {
 			// TODO Auto-generated catch block
