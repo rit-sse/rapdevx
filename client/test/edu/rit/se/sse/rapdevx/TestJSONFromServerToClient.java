@@ -59,4 +59,9 @@ public class TestJSONFromServerToClient
 		assertEquals(fromServer.getFile(), fromClient.getFile());
 		assertEquals(fromServer.getGid(), fromClient.getGid());
 	}
+	
+	@Test
+	public void testShipClass() {
+		
+	}
 }
