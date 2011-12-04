@@ -1,0 +1,102 @@
+import os #path stuff
+import sys #path stuff
+
+#Path Stuff
+path = os.path.abspath(__file__)
+sys.path.append(os.path.join(os.path.dirname(path), '../'))
+
+import dto
+import unittest
+
+class TestDecoders(unittest.TestCase):
+    def test_AssetImageDec(self):
+        f=open('json_sync/AssetImageFromJava.json')
+        for i in f:
+            ait=i
+        f.close()
+        aidt=dto.JSON_Construct_DTO_AssetImage(ait)
+        if str(dto.DTO_Encoder().encode(aidt))==ait:
+            return True
+    def test_ShipClassDec(self):
+        f=open('json_sync/ShipClassFromJava.json')
+        for i in f:
+            sct=i
+        f.close()
+        scdt=dto.JSON_Construct_DTO_ShipClass(sct)
+        if str(dto.DTO_Encoder().encode(scdt))==sct:
+            return True
+    def test_AbilityDec(self):
+        f=open('json_sync/AbilityFromJava.json')
+        for i in f:
+            at=i
+        f.close()
+        adt=dto.JSON_Construct_DTO_Ability(at)
+        if str(dto.DTO_Encoder().encode(adt))==at:
+            return True
+    def test_AssetsDec(self):
+        f=open('json_sync/AssetsFromJava.json')
+        for i in f:
+            ast=i
+        f.close()
+        asdt=dto.JSON_Construct_DTO_Assets(ast)
+        if str(dto.DTO_Encoder().encode(asdt))==ast:
+            return True
+    def test_ShipPlacementDec(self):
+        f=open('json_sync/ShipPlacementFromJava.json')
+        for i in f:
+            spt=i
+        f.close()
+        spdt=dto.JSON_Construct_DTO_ShipPlacement(spt)
+        if str(dto.DTO_Encoder().encode(spdt))==spt:
+            return True
+    def test_ResultsDec(self):
+        f=open('json_sync/ResultsFromJava.json')
+        for i in f:
+            rt=i
+        f.close()
+        rdt=dto.JSON_Construct_DTO_Results(rt)
+        if str(dto.DTO_Encoder().encode(rdt))==rt:
+            return True
+    def test_MovementOrderDec(self):
+        f=open('json_sync/MovementOrderFromJava.json')
+        for i in f:
+            mot=i
+        f.close()
+        modt=dto.JSON_Construct_DTO_MovementOrder(mot)
+        if str(dto.DTO_Encoder().encode(modt))==mot:
+            return True
+    def test_AbilityUseOrderDec(self):
+        f=open('json_sync/AbilityUseOrderFromJava.json')
+        for i in f:
+            auot=i
+        f.close()
+        auodt=dto.JSON_Construct_DTO_AbilityUseOrder(auot)
+        if str(dto.DTO_Encoder().encode(auodt))==auot:
+            return True
+    def test_AttackResultsDec(self):
+        f=open('json_sync/AttackResultsFromJava.json')
+        for i in f:
+            art=i
+        f.close()
+        ardt=dto.JSON_Construct_DTO_AttackResults(art)
+        if str(dto.DTO_Encoder().encode(ardt))==art:
+            return True
+    def test_UnitDec(self):
+        f=open('json_sync/UnitFromJava.json')
+        for i in f:
+            ut=i
+        f.close()
+        udt=dto.JSON_Construct_DTO_Unit(ut)
+        if str(dto.DTO_Encoder().encode(udt))==ut:
+            return True
+    def test_StatusDec(self):
+        f=open('json_sync/StatusFromJava.json')
+        for i in f:
+            st=i
+        f.close()
+        sdt=dto.JSON_Construct_DTO_Status(st)
+        if str(dto.DTO_Encoder().encode(sdt))==st:
+            return True
+
+if __name__ == "__main__":
+    unittest.main()
