@@ -1,7 +1,6 @@
 package edu.rit.se.sse.rapdevx.gui;
 
-import java.awt.Graphics2D;
-import java.awt.geom.Rectangle2D;
+import java.awt.Rectangle;
 
 public class Camera extends DrawableObject {
 	
@@ -9,12 +8,8 @@ public class Camera extends DrawableObject {
 		super(x, y, width, height);
 	}
 	
-	public Rectangle2D getBounds() {
-		return new Rectangle2D.Double(x, y, width, height);
-	}
-	
-	public void draw(Graphics2D gPen) {
-		// TODO Auto-generated method stub
+	public Rectangle getBounds() {
+		return new Rectangle(x, y, width, height);
 	}
 	
 }
