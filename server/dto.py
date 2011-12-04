@@ -4,7 +4,6 @@ import json
 
 class DTO_AssetImage:
     #file is a string that contains contents of file (base64) (may change)
-    #name is a string
     #gid is a string
     def __init__(self, file, gid):
         self.file = file
@@ -15,16 +14,16 @@ class DTO_AssetImage:
         r['file'] = self.file
         r['gid'] = self.gid
         return json.dumps(r)
+    
 
 class DTO_ShipClass:
-    #types is a list of strings
     #abilities is a list of strings which are DTO_Ability ids
     #maxhp is an int
     #radius is an int
     #placement_cost is an int
+    #imageid is an string
     #gid is a string
-    def __init__(self, types, abilities, maxhp, radius, placement_cost, imageid, gid):
-        self.types = types
+    def __init__(self, abilities, maxhp, radius, placement_cost, imageid, gid):
         self.abilities = abilities
         self.maxhp = maxhp
         self.radius = radius
@@ -34,34 +33,37 @@ class DTO_ShipClass:
     
     def encode(self):
         r = {}
+        r['abilities'] = self.abilities
+        r['maxhp'] = self.maxhp
+        r['radius'] = self.radius
+        r['placement_cost'] = self.placement_cost
+        r['imageid'] = self.imageid
+        r['gid'] = self.gid
+        return json.dumps(r)
+    
+        
+class DTO_Ability:
+    #radius is an int
+    #name is a string
+    #default_damage is an int
+    #special_damages is a dictionary from string to int
+    #gid is a string
+    def __init__(self, radius, name, default_damage, special_damages, gid):
+        self.radius = radius
+        self.name = name
+        self.default_damage = default_damage
+        self.special_damages = special_damages
+        self.gid = gid
+        
+    def encode(self):
+        r = {}
         r['radius'] = self.radius
         r['name'] = self.name
         r['default_damage'] = self.default_damage
         r['special_damages'] = self.special_damages
         r['gid'] = self.gid
         return json.dumps(r)
-        
-        
-class DTO_Ability:
-    #default_damage is int
-    #special_damage map from string to int
-    def __init__(self, radius, name, default_damage, special_damages, id):
-        self.radius = radius
-        self.name = name
-        self.default_damage = default_damage
-        self.special_damages = special_damages
-        self.gid = id
-
-    def encode(self):
-        r = {}
-        r['types'] = self.types
-        r['abilities'] = self.abilities
-        r['maxhp'] = self.maxhp
-        r['radius'] = self.radius
-        r['placement_cost'] = self.placement_cost
-        r['gid'] = self.gid
-        return json.dumps(r)
-
+    
     
 class DTO_Assets:
     #width is an int
@@ -202,7 +204,7 @@ def JSON_Construct_DTO_AssetImage(jsonstring):
 
 def JSON_Construct_DTO_ShipClass(jsonstring):
     attribute_dictionary = json.loads(jsonstring)
-    return DTO_ShipClass(attribute_dictionary.pop('types'), attribute_dictionary.pop('abilities'), attribute_dictionary.pop('maxhp'), attribute_dictionary.pop('radius'), attribute_dictionary.pop('placement_cost'), attribute_dictionary.pop('gid'))
+    return DTO_ShipClass(attribute_dictionary.pop('abilities'), attribute_dictionary.pop('maxhp'), attribute_dictionary.pop('radius'), attribute_dictionary.pop('placement_cost'), attribute_dictionary.pop('imageid'), attribute_dictionary.pop('gid'))
 
 def JSON_Construct_DTO_Ability(jsonstring):
     attribute_dictionary = json.loads(jsonstring)
