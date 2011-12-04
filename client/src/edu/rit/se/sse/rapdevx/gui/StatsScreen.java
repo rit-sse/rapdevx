@@ -3,6 +3,7 @@ package edu.rit.se.sse.rapdevx.gui;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.util.ArrayList;
 
 import edu.rit.se.sse.rapdevx.clientmodels.Ship;
 
@@ -16,6 +17,12 @@ public class StatsScreen extends Screen {
 
 	private int x;
 	private int y;
+	private Text name;
+	private Text moveRadius;
+	private Text HP;
+	private Text hpMaxHp;
+	private Text abilitiesWord;
+	private ArrayList<Text> abilities = new ArrayList<Text>();
 
 	// private Ship ship;
 
@@ -37,6 +44,53 @@ public class StatsScreen extends Screen {
 		x = wWidth - screenWidth;
 		y = wHeight - screenHeight;
 		// this.ship = ship;
+		// sample
+		name = new Text("Awesome Ship", x + 10, y + 10);
+
+		// real stuff
+		// name = new Text(ship.getgID(), x + 10, y+ 20);
+		moveRadius = new Text("Move Radius 5", x + 10, y + 65);
+
+		// real stuff
+		// moveRadius = new Text(
+		// "Move Radius: "
+		// + GameSession.get().findByClassId(
+		// ship.getClassID()).getRadius(), x + 10,
+		// y + 65);
+
+		HP = new Text("HP", x + 25, y + 38);
+		// sample value
+		double hp = 5.0;
+		double maxHp = 20.0;
+
+		// real stuff
+		// double hp = ship.getHp();
+		// double maxHp = GameSession.get().findByClassId(ship.getClassID())
+		// .getMaxhp();
+		hpMaxHp = new Text((int) hp + "/" + (int) maxHp, x + 65 + 145,
+				y + 20);
+		abilitiesWord = new Text("Abilities ", x + 10, y + 90);
+		abilities.add(new Text("Ability 1  Radius 5  Damage 6", x + 20,
+				y + 110, 1.5));
+		abilities.add(new Text("Ability 2  Radius 6  Damage 6", x + 20,
+				y + 125, 1.5));
+		abilities.add(new Text("Ability 3  Radius 7  Damage 8", x + 20,
+				y + 140, 1.5));
+		abilities.add(new Text("Ability 4  Radius 5  Damage 6", x + 20,
+				y + 155, 1.5));
+		abilities.add(new Text("Ability 5  Radius 6  Damage 6", x + 20,
+				y + 170, 1.5));
+		// real stuff
+		// int yPosition = 110;
+		// List<Ability> abilities = GameSession.get()
+		// .findByClassId(ship.getClassID()).getAbilities();
+		// for (Ability ability : abilities) {
+		// abilities.add(new Text(ability.getName() + ": Radius: "
+		// + ability.getRadius() + " Damage: "
+		// + ability.getDefault_damage(), x + 35, y
+		// + yPosition, 1.5));
+		// yPosition += 10;
+		// }
 	}
 
 	@Override
@@ -54,30 +108,15 @@ public class StatsScreen extends Screen {
 	public void draw(Graphics2D gPen) {
 		new RectangleBackground(x, y, screenWidth, screenHeight).draw(gPen);
 		gPen.setColor(Color.BLACK);
-
-		// sample name
-		new Text("Awesome Ship", x + 10, y + 10, "Black").draw(gPen);
-
-		// real stuff
-		// new Text(ship.getgID(), x + 10, y+ 20).draw(gPen);
-
+		name.draw(gPen);
 		drawHPBar(gPen);
 		gPen.setColor(Color.BLACK);
-
-		// sample move radius
-		new Text("Move Radius 5", x + 10, y + 65, "Black").draw(gPen);
-
-		// real stuff
-		// new Text(
-		// "Move Radius: "
-		// + GameSession.get().findByClassId(
-		// ship.getClassID()).getRadius(), x + 10,
-		// y + 65).draw(gPen);
+		moveRadius.draw(gPen);
 		drawAbilities(gPen);
 	}
 
 	public void drawHPBar(Graphics2D gPen) {
-		new Text("HP", x + 25, y + 38, "Black").draw(gPen);
+		HP.draw(gPen);
 		// sample value
 		double hp = 5.0;
 		double maxHp = 20.0;
@@ -89,8 +128,7 @@ public class StatsScreen extends Screen {
 		double scale = hp / maxHp * 195.0;
 		gPen.setColor(new Color(127, 127, 127));
 		gPen.fill(new Rectangle(x + 65, y + 35, 195, 20));
-		new Text((int) hp + "/" + (int) maxHp, x + 65 + 145, y + 20,
-				"Black").draw(gPen);
+		hpMaxHp.draw(gPen);
 		if (scale < 1.0 / 3.0 * 195.0) {
 			gPen.setColor(Color.RED);
 		} else if (scale < 2.0 / 3.0 * 195.0) {
@@ -102,30 +140,10 @@ public class StatsScreen extends Screen {
 	}
 
 	public void drawAbilities(Graphics2D gPen) {
-		new Text("Abilities ", x + 10, y + 90, "Black").draw(gPen);
-		// sample abilities
-		new Text("Ability 1  Radius 5  Damage 6", x + 20, y + 110, "Black",
-				1.5).draw(gPen);
-		new Text("Ability 2  Radius 6  Damage 6", x + 20, y + 125, "Black",
-				1.5).draw(gPen);
-		new Text("Ability 3  Radius 7  Damage 8", x + 20, y + 140, "Black",
-				1.5).draw(gPen);
-		new Text("Ability 4  Radius 5  Damage 6", x + 20, y + 155, "Black",
-				1.5).draw(gPen);
-		new Text("Ability 5  Radius 6  Damage 6", x + 20, y + 170, "Black",
-				1.5).draw(gPen);
-
-		// real stuff
-		// int yPosition = 110;
-		// List<Ability> abilities = GameSession.get()
-		// .findByClassId(ship.getClassID()).getAbilities();
-		// for (Ability ability : abilities) {
-		// new Text(ability.getName() + ": Radius: "
-		// + ability.getRadius() + " Damage: "
-		// + ability.getDefault_damage(), x + 35, y
-		// + yPosition, 1.5).draw(gPen);
-		// yPosition += 10;
-		// }
+		abilitiesWord.draw(gPen);
+		for (Text ability : abilities) {
+			ability.draw(gPen);
+		}
 	}
 
 }
