@@ -12,9 +12,27 @@ public class DrawablePath extends DrawableObject {
 	private Path path;
 	private Point mouseLocation;
 	
-	public DrawablePath(Path path) {
+	private Color pathColor;
+	
+	public DrawablePath( Path path ) {
 		this.path = path;
 		this.mouseLocation = null;
+		
+		pathColor = new Color(255, 0, 0);
+	}
+	
+	public DrawablePath( Path path, Color color ) {
+		this( path );
+		
+		pathColor = color;
+	}
+	
+	public void setColor( Color newColor ) {
+		pathColor = newColor;
+	}
+	
+	public Color getColor() {
+		return pathColor;
 	}
 	
 	public void draw(Graphics2D gPen) {
@@ -29,7 +47,7 @@ public class DrawablePath extends DrawableObject {
 		// Draw all of the saved path segments
 		Point prevLocation = null;
 		
-		gPen.setColor(new Color(255, 0, 0));
+		gPen.setColor( pathColor );
 		for (Point location : path.getPath()) {
 			// Draw a square marking the point
 			gPen.fillRect(location.x - 4, location.y - 4, 8, 8);

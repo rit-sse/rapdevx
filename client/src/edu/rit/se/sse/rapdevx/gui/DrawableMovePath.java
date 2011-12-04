@@ -3,6 +3,7 @@ package edu.rit.se.sse.rapdevx.gui;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.geom.Rectangle2D;
 
 import edu.rit.se.sse.rapdevx.clientmodels.Path;
 import edu.rit.se.sse.rapdevx.clientmodels.Ship;
@@ -27,6 +28,8 @@ public class DrawableMovePath extends DrawableObject {
 	/** Does the MovePath accept new input? */
 	private boolean acceptInput;
 	
+	private Point mouseLocation;
+	
 //	public DrawableMovePath( Ship givenShip ) {
 //		ship = givenShip;
 //		path = new Path( new Point( ship.getX(), ship.getY() ) );
@@ -44,7 +47,7 @@ public class DrawableMovePath extends DrawableObject {
 		path = new Path( new Point( drawableShip.getX() + drawableShip.getWidth() / 2, 
 				drawableShip.getY() + drawableShip.getHeight() / 2 ) );
 		
-		drawablePath = new DrawablePath( path );
+		drawablePath = new DrawablePath( path, drawableShip.getColor() );
 		
 		acceptInput = true;
 	}
@@ -81,8 +84,10 @@ public class DrawableMovePath extends DrawableObject {
 	 * 
 	 * @param	gPen	- the 2D Graphics
 	 */
-	public void draw(Graphics2D gPen) {
+	public void draw(Graphics2D gPen, Rectangle2D bounds) {
 		drawablePath.draw( gPen );
+		if ( mouseLocation != null )
+			drawableShip.drawClear( gPen, bounds, mouseLocation );
 	}
 	
 	/**
@@ -92,10 +97,13 @@ public class DrawableMovePath extends DrawableObject {
 	 * @post if we are not accepting input, then the mouseLocation is set to null
 	 */
 	public void setMouseLocation( Point mouseLocation ) {
-		if ( acceptInput )
+		if ( acceptInput ) {
 			drawablePath.setMouseLocation( mouseLocation );
-		else
+			this.mouseLocation = mouseLocation;
+		} else {
 			drawablePath.setMouseLocation( null );
+			this.mouseLocation = null;
+		}
 	}
 	
 	/**
@@ -117,10 +125,12 @@ public class DrawableMovePath extends DrawableObject {
 	/**
 	 * stop accepting input
 	 * @post we are no longer accepting input
+	 * 		 sets the ship's path.
 	 * 		 (this is perminant to the object)
 	 */
 	public void stopInput() {
 		acceptInput = false;
+		drawableShip.setPath( drawablePath );
 	}
 	
 	/**

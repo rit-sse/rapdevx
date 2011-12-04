@@ -3,6 +3,7 @@ package edu.rit.se.sse.rapdevx.gui;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
@@ -18,12 +19,16 @@ public class DrawableShip extends DrawableObject {
 	
 	private static final int MAGIC_PINK = 0xd6007f;
 	private static final String SHIP_IMAGE = "assets/ship.png";
+	private static final String SHIP_CLEAR_IMAGE = "assets/clear_ship.png";
 	
 	private Ship ship;
 	private boolean isSelected;
 	private Color teamColor;
 	
 	private BufferedImage shipImage;
+	private BufferedImage shipClearImage;
+	
+	private DrawablePath path;
 	
 	public DrawableShip(Ship ship, Color teamColor) {
 		super(ship.getX() * 2, ship.getY() * 2, 64, 64);
@@ -37,10 +42,26 @@ public class DrawableShip extends DrawableObject {
 		} catch (IOException e) {
 			System.err.println("Unable to load ship image");
 		}
+		try {
+			shipClearImage = ImageIO.read(new File(SHIP_CLEAR_IMAGE));
+		} catch (IOException e) {
+			System.err.println("Unable to load ship clear image");
+		}
 		
 		// Recolor the ship with the team color
 		ImageColorizer ic = new ImageColorizer(shipImage);
 		ic.recolorStrong(teamColor.getRGB(), MAGIC_PINK);
+		
+		ic = new ImageColorizer(shipClearImage);
+		ic.recolorStrong(teamColor.getRGB(), MAGIC_PINK);
+	}
+	
+//	public void setColor( Color newColor ) {
+//		teamColor = newColor;
+//	}
+	
+	public Color getColor() {
+		return teamColor;
 	}
 
 	public void update() {
@@ -56,8 +77,28 @@ public class DrawableShip extends DrawableObject {
 			gPen.setStroke(new BasicStroke(2.0f));
 			gPen.draw(getBounds());
 			gPen.setStroke(new BasicStroke());
+			
+			if ( path != null ) {
+				path.draw( gPen );
+			}
 		}
 		gPen.drawImage(shipImage, x, y, 64, 64, null);
+	}
+	
+	public void drawClear(Graphics2D gPen, Rectangle2D bounds, Point center) {
+		/*
+		if (isSelected) {
+			gPen.setColor(teamColor);
+			gPen.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+			        RenderingHints.VALUE_ANTIALIAS_ON);
+			gPen.setStroke(new BasicStroke(2.0f));
+			gPen.draw(getBounds());
+			gPen.setStroke(new BasicStroke());
+		}
+		*/
+		int leftX = (int)center.getX() - (64/2);
+		int topY = (int)center.getY() - (64/2);
+		gPen.drawImage(shipClearImage, leftX, topY, 64, 64, null);
 	}
 	
 	public void setSelected(boolean isSelected) {
@@ -75,6 +116,10 @@ public class DrawableShip extends DrawableObject {
 
 	public Ship getShip() {
 		return ship;
+	}
+	
+	public void setPath( DrawablePath thisPath ) {
+		path = thisPath;
 	}
 
 }
