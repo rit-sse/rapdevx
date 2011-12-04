@@ -56,19 +56,19 @@ class TestGeometry( unittest.TestCase ):
         expected = 5, 6
         self.assertEqual( expected, dropPointInSegment( self.source, self.destination, point) )
 
-    def test_dropPointInSegment_0Slope_Outside( self ):
+    def test_dropPointInOrOutSegment_0Slope_Outside( self ):
         self.source = 0, 5
         self.destination = 10, 5
         point = 11, 5
         expected = 11, 5
-        self.assertEqual( expected, dropPointInSegment( self.source, self.destination, point) )
+        self.assertEqual( expected, dropPointInOrOutSegment( self.source, self.destination, point) )
         
-    def test_dropPointInSegment_InfSlope_Outside( self ):
+    def test_dropPointInOrOutSegment_InfSlope_Outside( self ):
         self.source = 5, 0
         self.destination = 5, 10
         point = 6, 11
         expected = 5, 11
-        self.assertEqual( expected, dropPointInSegment( self.source, self.destination, point) )
+        self.assertEqual( expected, dropPointInOrOutSegment( self.source, self.destination, point) )
         
     def test_dropPointInOrOutSegment_NotMiddle_GoingLeft( self ):
         self.source = 10, 10

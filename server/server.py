@@ -1,15 +1,12 @@
 from bottle import run, get, post, delete, request
 from bottle import *
 from session import *
-from gamemanager import *
 from sessionmanager import *
 
-class NotImplementedException(Exception):
-    def __init__(self):
-        super(NotImplementedException, self).__init__()
+session_manager = SessionManager()
 
 def get_game(game_id):
-    game = GameManager.find_game(game_id)
+    game = session_manager.game_pool.find_game(game_id)
 
     if game == None:
         abort(404, "Game not found")
@@ -17,7 +14,7 @@ def get_game(game_id):
     return game
 
 def get_session(session_id):
-    session = SessionManager.find_session(session_id)
+    session = session_manager.find_session(session_id)
 
     if session == None:
         abort(404, "Session not found")
@@ -27,7 +24,7 @@ def get_session(session_id):
 # Gets a list of all games as json
 @get('/games')
 def list_active_games():
-    games = GameManager.active_games()
+    games = session_manager.game_pool.active_games()
 
     games_json_array = [game.encode() for game in games]
     return json.dumps(games_json_array)
@@ -45,25 +42,21 @@ def create_session():
     
     session = Session(nickname, game_id)
 
-    SessionManager.register_session(session, game_id)
+    session_manager.register_session(session, game_id)
 
     return session.to_json
 
 # Return session itself as json
 @get('/session/:session_id')
 def get_session_info(session_id=None):
-    session = SessionManager.find_session(session_id)
-
-    if session == None:
-        # Do we need to return after this?
-        abort(404, "No session with that ID found")
-
+    session = get_session(session_id)
+    
     return session.to_json
 
 # Mark a session as closed
 @delete('/session/:session_id')
 def delete_session(session_id=None):
-    session = find_session(session_id)
+    session = get_session(session_id)
 
     session.active = False
 
@@ -81,11 +74,11 @@ def get_game_assets(game_id=None):
 def g_game(game_id=None):
     game = get_game(game_id)
 
-    status = game.getGameProgress
+    status = game.getGameProgress()
 
     return status.encode()
 
-# Indicate that the user is ready to start the gaem
+# Indicate that the user is ready to start the game
 @post('/game/:game_id')
 def g_game(game_id=None):
     ready = request.forms.ready

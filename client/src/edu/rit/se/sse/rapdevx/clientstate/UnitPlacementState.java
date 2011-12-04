@@ -26,7 +26,7 @@ public class UnitPlacementState extends StateBase {
 	 * Call this when the player is done making up their initial ship layout.
 	 */
 	public void ready(List<ShipPlacement> shipPlacements) {
-		phaseNum = GameApi.getStatus(GameSession.get().getSession()).getPhase();
+		phaseNum = Integer.parseInt(GameApi.getStatus(GameSession.get().getSession()).getPhase());
 
 		GameApi.setShipPlacement(GameSession.get().getSession(), shipPlacements);
 
@@ -34,8 +34,8 @@ public class UnitPlacementState extends StateBase {
 
 			@Override
 			public void run() {
-				if (GameApi.getStatus(GameSession.get().getSession())
-						.getPhase() != phaseNum) {
+				if (Integer.parseInt(GameApi.getStatus(GameSession.get().getSession())
+						.getPhase()) != phaseNum) {
 					this.cancel();
 					readyReady();
 				}

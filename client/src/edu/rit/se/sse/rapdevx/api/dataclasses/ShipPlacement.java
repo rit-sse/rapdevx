@@ -17,12 +17,12 @@ import org.codehaus.jackson.map.ObjectMapper;
  */
 public class ShipPlacement {
 
-	private static ObjectMapper	mapper	= new ObjectMapper();
-
-	private int					x;
-	private int					y;
-	private String				classid;
-
+	private static ObjectMapper mapper = new ObjectMapper();
+	
+	private int x;
+	private int y;
+	private String classid;
+	
 	public int getX() {
 		return x;
 	}

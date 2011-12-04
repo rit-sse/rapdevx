@@ -55,155 +55,38 @@ def isPointOnSegment( source, destination, point, delta = DEFAULT_TOLERANCE_FACT
 
     difference = ( s2dDistance + d2pDistance ) - s2pDistance
 
-    # If the difference between the two line segment lengths is within the 
-    # range [-delta, delta], then the point is considered to be on the line
-    # segment.
-    if( ( -1 * delta <= difference ) and ( difference <= delta ) ):
-        return True
-
-    return False
+    return abs( s2dDistance -d2pDistance - s2pDistance)<delta
     
-def dropPointInOrOutSegment( source, destination, point ):
+def dropPointInOrOutSegment(P1, P2, P3):
     '''
-    Finds the point that 'point' forms a right triangle between the line 
-    (not segment) formed between source and destination.
-    
-    source - A tuple containing the first pair of (x,y) coordinates for the
-             line.
-    destination - A tuple containing the other pair of (x,y) coordinates for
-                  the line.
-    point - A tuple containing the (x,y) coordinates from which the short line
-            segment is projected.
+    given a line with points P1 and P2 on it, find the closest point on the
+    line to P3
     '''
+    x1,y1 = P1
+    x2,y2 = P2
     
-    source = source[0], -source[1]
-    destination = destination[0], -destination[1]
-    point = point[0], -point[1]
-
-    # Get distances between points.
-    a = distance( destination, point )
-    b = distance( source, point )
-    c = distance( source, destination )
-
-    # If the slope is horizontal (inf), then drop the point across
-    if ( isHorizontal( source, destination ) ):
-        d = source[0], point[1]
-        return d
+    xp,yp = P3
     
-    # If the slope is zero, then drop the point straight down
-    m = slope( source, destination )
+    dx = x1-x2
+    dy = y1-y2
+    
+    t = (dx*(xp-x1)+dy*(yp-y1))/(dx*dx + dy*dy)
+    return (x1+dx*t,y1+dy*t)
 
-    if( m == 0 ):
-        d = point[0], source[1]
-        return d
-
-    # Do some math to find the angle between c and a
-    numerator = ( b ** 2 ) - ( a ** 2 ) - ( c ** 2 )
-    denominator = -2 * a * c
-
-    result = numerator / denominator
-
-    if( result > 1 ):
-        result = 1
-
-    if( result < -1 ):
-        result = -1
-
-    tau = acos( result )
-
-    # Get the distance between point and the projected point on the
-    # line segment.
-    x = a * sin( tau )
-
-    # Get the distance between the source point and the projected point on
-    # the line segment.
-    c1 = ( ( b ** 2 ) - ( x ** 2 ) ) ** 0.5
-
-    # Get the y-coordinate of the projected point.
-    destinationY = destination[1]
-    dy = ( c1 * destinationY ) / c
-
-    # Get the x-coordinate of the projected point.
-    sourceY = source[1]
-    dx = ( dy - sourceY ) / m
-
-    # If we've made it this far, we have the point's coordinates :D
-    d = dx, -dy
-    return d
 
 def dropPointInSegment( source, destination, point ):
     '''
-    Finds the shortest line segment that intersects with a line segment
-    starting at source and ending at destination. If the calculated point of
-    intersection is on the same slope of the line segment, but not between the
-    two points defining it, then one of the two points will be used.
-
-    source - A tuple containing the first pair of (x,y) coordinates for the
-             line segment.
-    destination - A tuple containing the other pair of (x,y) coordinates for
-                  the line segment.
-    point - A tuple containing the (x,y) coordinates from which the short line
-            segment is projected.
+    returns the closest point to "point" on the line segment [source,destination]
     '''
-
-    # Get distances between points.
-    a = distance( destination, point )
-    b = distance( source, point )
-    c = distance( source, destination )
-
-    # If the slope is horizontal (inf), then drop the point across
-    if ( isHorizontal( source, destination ) ):
-        d = source[0], point[1]
-        return d
-    
-    # If the slope is zero, then drop the point straight down
-    m = slope( source, destination )
-
-    if( m == 0 ):
-        d = point[0], source[1]
-        return d
-
-    # Do some math to find the angle between c and a
-    numerator = ( b ** 2 ) - ( a ** 2 ) - ( c ** 2 )
-    denominator = -2 * a * c
-
-    result = numerator / denominator
-
-    if( result > 1 ):
-        result = 1
-
-    if( result < -1 ):
-        result = -1
-
-    tau = acos( result )
-
-    # Get the distance between point and the projected point on the
-    # line segment.
-    x = a * sin( tau )
-
-    # Get the distance between the source point and the projected point on
-    # the line segment.
-    c1 = ( ( b ** 2 ) - ( x ** 2 ) ) ** 0.5
-
-    # Get the y-coordinate of the projected point.
-    destinationY = destination[1]
-    dy = ( c1 * destinationY ) / c
-
-    # Get the x-coordinate of the projected point.
-    sourceY = source[1]
-    dx = ( dy - sourceY ) / m
-
-    # If the point's x value does not lie within the same range as the line 
-    # segment, pick the closest point on the line segment.
-    if( dx >= destination[0] ):
-        return destination
-    
-    if( dx <= source[0] ):
-        return source
-
-    # If we've made it this far, we have the point's coordinates :D
-    d = dx, dy
-    return d
+    onLine = dropPointInOrOutSegment(source,destination,point)
+    if isPointOnSegment(source,destination,onLine):
+        return onLine
+    else:
+        #closest is one of the end points
+        if distance(source,onLine)<distance(destination,onLine):
+            return source
+        else:
+            return destination
 
 def getCollisionPoint( source, destination, point, sourceRadius, pointRadius, radiusBuffer = 0, delta = DEFAULT_TOLERANCE_FACTOR ):
     '''
@@ -250,3 +133,5 @@ def getClosestPointOnSegment( source, destination, point, delta = DEFAULT_TOLERA
 
     else:
         return destination
+
+        

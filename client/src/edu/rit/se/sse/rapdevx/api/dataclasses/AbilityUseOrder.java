@@ -19,16 +19,16 @@ public class AbilityUseOrder {
 
 	private static ObjectMapper mapper = new ObjectMapper();
 	
-	private String srcID;
-	private String targetID;
+	private String srcid;
+	private String targetid;
 	private String ability;
 	private String gid;
 	
 	public String getSrcID() {
-		return srcID;
+		return srcid;
 	}
 	public void setSrcID(String srcID) {
-		this.srcID = srcID;
+		this.srcid = srcID;
 	}
 	public String getAbility() {
 		return ability;
@@ -37,10 +37,10 @@ public class AbilityUseOrder {
 		this.ability = ability;
 	}
 	public String getTargetID() {
-		return targetID;
+		return targetid;
 	}
 	public void setTargetID(String targetID) {
-		this.targetID = targetID;
+		this.targetid = targetID;
 	}
 	public String getgID() {
 		return gid;

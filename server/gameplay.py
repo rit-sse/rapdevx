@@ -190,10 +190,14 @@ class MoveTurn:
     def deleteMoveOrder(self, move_order_gid, calling_player, registry):
         '''
         '''
+        print("MOVE_GID:", move_order_gid)
         move_order = registry.getById(move_order_gid)
         registry.removeById(move_order_gid)
         
-        self.player_attack_list[calling_player].remove(move_order)
+        print("MOVE_LIST_FOR_CALLING_PLAYER:", self.player_move_list[calling_player])
+        print("MOVE_ORDER TO BE REMOVED:", move_order)
+
+        self.player_move_list[calling_player].remove(move_order)
 
     def getPlayerMoveList(self, calling_player, registry):
         '''
@@ -400,6 +404,10 @@ class MoveOrder:
         self.path = path
         self.gid = None
         
+    def __eq__(self, other):
+        print("CHECKING TYPE OF OTHER:", type(other))
+        return self.gid == other.gid
+
     def to_dto(self):
         return DTO_MovementOrder(self.unitid, self.path, self.gid)
         
