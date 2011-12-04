@@ -4,6 +4,8 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 
+import edu.rit.se.sse.rapdevx.audio.AudioManager;
+import edu.rit.se.sse.rapdevx.audio.Sound;
 import edu.rit.se.sse.rapdevx.clientstate.AttackState;
 import edu.rit.se.sse.rapdevx.clientstate.DoneState;
 import edu.rit.se.sse.rapdevx.clientstate.MoveState;
@@ -52,6 +54,8 @@ public class OverlayScreen extends Screen implements StateListener {
 	
 	private IGrayableImage selectedImage;
 	
+	private boolean isReady;
+	
 	private Rectangle mainBounds;
 	private Rectangle playbackBounds;
 	
@@ -60,6 +64,8 @@ public class OverlayScreen extends Screen implements StateListener {
 
 		int STARTING_X = (width / 2) - STARTING_X_MODIFIER;
 		int STARTING_Y = 0;
+		
+		isReady = false;
 		
 		mainBounds = new Rectangle(382, 32);
 		mainBounds.x = STARTING_X + insetLeft;
@@ -130,14 +136,41 @@ public class OverlayScreen extends Screen implements StateListener {
 		// Top part, under phase bar
 		undo.draw(gPen);
 		redo.draw(gPen);
-		readyEnabled.draw(gPen);
+		if (!isReady) readyEnabled.draw(gPen);
+		else readyDisabled.draw(gPen);
 		
 		// Top part, phase bar
 		phase.draw(gPen);
 	}
 	
-	public void mouseReleased(MouseEvent e) {
-		
+	public void mouseReleased(MouseEvent e) {if (mainBounds.contains(e.getPoint())) {
+		if (undo.containsPoint(e.getPoint())) {
+			AudioManager.get().play(Sound.BattleStart);
+		}
+		else if (redo.containsPoint(e.getPoint())) {
+		}
+		else if (readyEnabled.containsPoint(e.getPoint())) {
+			// TODO more shit
+			isReady = true;
+		}
+	}
+//	if playback controls are active TODO
+	else if (playbackBounds.contains(e.getPoint())) {
+		if (beginning.containsPoint(e.getPoint())) {
+		}
+		else if (backfast.containsPoint(e.getPoint())) {
+		}
+		else if (back.containsPoint(e.getPoint())) {
+		}
+		else if (pause.containsPoint(e.getPoint())) {
+		}
+		else if (forward.containsPoint(e.getPoint())) {
+		}
+		else if (forwardfast.containsPoint(e.getPoint())) {
+		}
+		else if (skip.containsPoint(e.getPoint())) {
+		}
+	}
 	}
 	
 	public void mouseMoved(MouseEvent e) {
@@ -154,7 +187,7 @@ public class OverlayScreen extends Screen implements StateListener {
 				currentlyOver = readyEnabled;
 			}
 		}
-//		if playback controls are active
+//		if playback controls are active TODO
 		else if (playbackBounds.contains(e.getPoint())) {
 			if (beginning.containsPoint(e.getPoint())) {
 				currentlyOver = beginning;
@@ -190,6 +223,8 @@ public class OverlayScreen extends Screen implements StateListener {
 	}
 	
 	public void stateChanged(StateEvent e) {
+		isReady = false;
+		
 		if (e.getNewState() instanceof StartingState) {
 			// TODO draw text "Waiting..."
 		}

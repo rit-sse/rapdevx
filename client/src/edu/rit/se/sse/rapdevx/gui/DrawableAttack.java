@@ -11,11 +11,13 @@ import java.awt.geom.Rectangle2D;
 public class DrawableAttack extends DrawableObject
 {
 	private Point mouseLocation;
+
 	private DrawableShip source;
+	private DrawableShip selectedShip;
 
 	private AttackScreen parent;
 
-	private DrawableShip selectedShip;
+	private boolean lockedOn = false;
 
 	public DrawableAttack(DrawableShip source, AttackScreen parent)
 	{
@@ -28,7 +30,7 @@ public class DrawableAttack extends DrawableObject
 	{
 		if (selectedShip != null)
 		{
-			setMouseLocation(selectedShip.getCenter());
+			setMouseLocation(selectedShip.getCenter(), true);
 		}
 
 		float[] f1 = { 10.0f };
@@ -41,8 +43,8 @@ public class DrawableAttack extends DrawableObject
 			Point start = source.getCenter();
 			gPen.setColor(new Color(0, 255, 0));
 
-			Area outside = new Area(new Rectangle2D.Double(0, 0, parent.screenWidth,
-					parent.screenHeight));
+			Area outside = new Area(new Rectangle2D.Double(0, 0,
+					parent.screenWidth, parent.screenHeight));
 			outside.subtract(new Area(source.getBounds()));
 			gPen.setClip(outside);
 
@@ -54,9 +56,21 @@ public class DrawableAttack extends DrawableObject
 		gPen.setClip(null);
 	}
 
-	public void setMouseLocation(Point location)
+	public void setMouseLocation(Point location, boolean snapped)
 	{
-		this.mouseLocation = location;
+		if (!lockedOn)
+		{
+			if (snapped)
+			{
+				this.mouseLocation = new Point(location.x, location.y);
+			}
+			else
+			{
+				this.mouseLocation = new Point(location.x
+						+ parent.getCamera().getX(), location.y
+						+ parent.getCamera().getY());
+			}
+		}
 	}
 
 	/**
@@ -70,7 +84,7 @@ public class DrawableAttack extends DrawableObject
 	 */
 	private void drawRecticule(Graphics2D gPen, int x, int y)
 	{
-		selectedShip = null;
+		selectedShip = lockedOn ? selectedShip : null;
 		gPen.setStroke(new BasicStroke(2.0f));
 
 		// check if overlaying ship
@@ -93,5 +107,11 @@ public class DrawableAttack extends DrawableObject
 
 		// reset color
 		gPen.setColor(new Color(0, 255, 0));
+	}
+
+	public void lockOn(DrawableShip target)
+	{
+		lockedOn = true;
+		selectedShip = target;
 	}
 }

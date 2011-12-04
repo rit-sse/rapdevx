@@ -33,12 +33,11 @@ public class AttackScreen extends Screen implements StateListener
 		ship.setY(150);
 
 		shipList.add(new DrawableShip(ship, new Color(48, 129, 233)));
-		
+
 		Ship ship2 = new Ship();
 		ship2.setX(300);
 		ship2.setY(300);
-		shipList.add(new DrawableShip(ship2, new Color(100,255,130)));
-
+		shipList.add(new DrawableShip(ship2, new Color(100, 255, 130)));
 
 	}
 
@@ -89,54 +88,37 @@ public class AttackScreen extends Screen implements StateListener
 					selectedShip.setSelected(false);
 					selectedShip = null;
 				}
+				else if (selectedShip != null)
+				{
+					currAttack.lockOn(ship);
+				}
 				else
 				{
-					if (selectedShip != null)
-					{
-						selectedShip.setSelected(false);
-					}
-					ship.setSelected(true);
 					selectedShip = ship;
+					selectedShip.setSelected(true);
 				}
-				// If no ship is clicked, move any selected ship to the mouse
-				// coordinates
 			}
+			// If no ship is clicked, move any selected ship to the mouse
+			// coordinates
 			else if (selectedShip != null)
 			{
-				selectedShip.setCenter(e.getX() + camera.getX(), e.getY()
-						+ camera.getY());
 			}
 		}
-
-		currAttack = selectedShip != null ? new DrawableAttack(selectedShip, this) : null;
+		
+		if(selectedShip == null)
+			currAttack = null;
+		else if(currAttack == null)
+			currAttack = new DrawableAttack(selectedShip, this);
 		
 		e.consume();
 	}
 
 	public void mouseMoved(MouseEvent e)
 	{
-		if (selectedShip != null)
+		if (currAttack != null)
 		{
-			currAttack.setMouseLocation(e.getPoint());
+			currAttack.setMouseLocation(e.getPoint(), false);
 		}
-		
-		// Check all ships to see if the mouse is hovered over it
-		// TODO utilize for locking
-		/*
-		 * for (DrawableShip ship : shipList)
-		 * {
-		 * if (ship != selectedShip)
-		 * {
-		 * ship.setSelected(false);
-		 * }
-		 * 
-		 * if (new Area(ship.getBounds()).contains(e.getX() + camera.getX(),
-		 * e.getY() + camera.getY()))
-		 * {
-		 * ship.setSelected(true);
-		 * }
-		 * }
-		 */
 
 		e.consume();
 	}
@@ -145,18 +127,20 @@ public class AttackScreen extends Screen implements StateListener
 	{
 		// TODO Switch to move phase, etc
 	}
-	
+
 	/**
 	 * get the shipList, should only be used by DrawableAttack at this time
+	 * 
 	 * @return
 	 */
 	public ArrayList<DrawableShip> getShipList()
 	{
 		return shipList;
 	}
-	
+
 	/**
 	 * get the Camera, should only be used by DrawableAttack at this time
+	 * 
 	 * @return
 	 */
 	public Camera getCamera()
