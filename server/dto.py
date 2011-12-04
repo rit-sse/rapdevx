@@ -245,17 +245,17 @@ def JSON_Construct_DTO_Assets(jsonstring):
     jsonlist = attribute_dictionary.pop('ship_classes')
     shipclasslist = []
     for v in jsonlist:
-        shipclasslist.append(json.loads(v))
+        shipclasslist.append(JSON_Construct_DTO_ShipClass(v))
 
     jsonlist = attribute_dictionary.pop('images')
     imageslist = []
     for v in jsonlist:
-        imageslist.append(json.loads(v))
+        imageslist.append(JSON_Construct_DTO_AssetImage(v))
 
     jsonlist = attribute_dictionary.pop('abilities')
     abilitieslist = []
     for v in jsonlist:
-        abilitieslist.append(json.loads(v))
+        abilitieslist.append(JSON_Construct_DTO_Ability(v))
 
     return DTO_Assets(attribute_dictionary.pop('width'),attribute_dictionary.pop('height'),shipclasslist,imageslist,abilitieslist)
 
@@ -273,9 +273,9 @@ def JSON_Construct_DTO_AttackResults(jsonstring):
 def JSON_Construct_DTO_Results(jsonstring):
     attribute_dictionary = json.loads(jsonstring)
     resultslist = attribute_dictionary.pop('results')
-    newresultslistoftuples = []
+    newresultslistoftuples = {}
     for v in resultslist:
-        newresultslistoftuples.append(tuple(v))
+        newresultslistoftuples[v] = tuple(resultslist[v])
     return DTO_Results(newresultslistoftuples)
 
 def JSON_Construct_DTO_MovementOrder(jsonstring):

@@ -11,7 +11,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 
 public class Ability {
 
-	private ObjectMapper mapper = new ObjectMapper();
+	private static ObjectMapper mapper = new ObjectMapper();
 	
 	private int radius;
 	private String name;
@@ -56,10 +56,10 @@ public class Ability {
 	 * 
 	 * @return The mapped Ability as an Ability object. or null if error.
 	 */
-	public Ability fromJSON(){
+	public static Ability fromJSON(String incomingJson){
 
 		try {
-			Ability ability = mapper.readValue(new File("AbilityToJava.json"), Ability.class);
+			Ability ability = mapper.readValue(incomingJson, Ability.class);
 			return ability;
 		} catch (JsonParseException e) {
 			// TODO Auto-generated catch block
