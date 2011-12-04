@@ -148,7 +148,7 @@ public class PlacementScreen extends Screen implements StateListener {
 		private final Color SELECT_SOLID = new Color(192, 192, 192);
 		
 		private Rectangle selectArea;
-		private Color selectColor;
+		private Color selectColor = SELECT_CLEAR;
 		private boolean isHoveredOver;
 		
 		// TODO Probably don't want to use drawable ship...
