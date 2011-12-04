@@ -10,4 +10,4 @@ from TestServer import *
 
 
 if __name__ == '__main__':
-    unittest.main(testRunner=xmlrunner.XMLTestRunner(output='test-reports'))
+    unittest.main(testRunner=xmlrunner.XMLTestRunner(output='../../reports/pyunit'))
