@@ -1,9 +1,13 @@
-package edu.rit.se.sse.rapdevx.gui;
+package edu.rit.se.sse.rapdevx.gui.screens;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.geom.Rectangle2D;
+
+import edu.rit.se.sse.rapdevx.gui.Background;
+import edu.rit.se.sse.rapdevx.gui.Screen;
+import edu.rit.se.sse.rapdevx.gui.drawable.Camera;
 
 public class MapScreen extends Screen {
 	
@@ -44,21 +48,21 @@ public class MapScreen extends Screen {
 	
 	public void keyPressed(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_UP) {
-			camera.yVel = -CAMERA_SPEED;
+			camera.setyVel(-CAMERA_SPEED);
 		} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-			camera.yVel = CAMERA_SPEED;
+			camera.setyVel(CAMERA_SPEED);
 		} else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-			camera.xVel = -CAMERA_SPEED;
+			camera.setxVel(-CAMERA_SPEED);
 		} else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-			camera.xVel = CAMERA_SPEED;
+			camera.setxVel(CAMERA_SPEED);
 		}
 	}
 	
 	public void keyReleased(KeyEvent e) {
 		if ((e.getKeyCode() == KeyEvent.VK_UP) || (e.getKeyCode() == KeyEvent.VK_DOWN)) {
-			camera.yVel = 0;
+			camera.setyVel(0);
 		} else if ((e.getKeyCode() == KeyEvent.VK_LEFT) || (e.getKeyCode() == KeyEvent.VK_RIGHT)) {
-			camera.xVel = 0;
+			camera.setxVel(0);
 		}
 	}
 	

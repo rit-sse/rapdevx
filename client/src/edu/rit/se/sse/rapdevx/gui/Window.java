@@ -9,6 +9,7 @@ import java.awt.image.BufferStrategy;
 
 import javax.swing.JFrame;
 
+import edu.rit.se.sse.rapdevx.gui.screens.*;
 import edu.rit.se.sse.rapdevx.gui.screens.menus.Menu;
 import edu.rit.se.sse.rapdevx.gui.screens.menus.MenuButton;
 
@@ -25,8 +26,6 @@ public class Window
 	private GraphicsDevice graphics;
 	private GraphicsConfiguration graphicsConfig;
 	private BufferStrategy bufferStrategy;
-
-	private ScreenStack screenStack;
 
 	public Window(String title, boolean fullscreen)
 	{
@@ -61,24 +60,24 @@ public class Window
 
 		int windowWidth = window.getWidth() - insetLeft - insetRight;
 		int windowHeight = window.getHeight() - insetTop - insetBottom;
+		
+		ScreenStack.get().setOffsets(insetLeft, insetTop);
 
 		// Setup double buffering (makes graphics faster)
 		window.createBufferStrategy(2);
 		bufferStrategy = window.getBufferStrategy();
 
 		/**** Create the panel to draw on ****/
-		screenStack = new ScreenStack(insetLeft, insetTop);
 
 		// Add a map screen on startup
 		MapScreen mapScreen = new MapScreen(windowWidth, windowHeight);
-		screenStack.addScreen(mapScreen);
+		ScreenStack.get().addScreen(mapScreen);
 
 		// Start with the move phase on the map
-		screenStack.addScreen(new MoveScreen(mapScreen.getCamera(),
+		ScreenStack.get().addScreen(new MoveScreen(mapScreen.getCamera(),
 				windowWidth, windowHeight));
 
-		screenStack.addScreen(new OverlayScreen(windowWidth, windowHeight,
-				insetLeft, insetTop));
+		ScreenStack.get().addScreen(new OverlayScreen(windowWidth, windowHeight));
 
 		// TODO remove after testing
 		Menu testMenu = new Menu(300, 300);
@@ -91,27 +90,27 @@ public class Window
 		testMenu.addButton(playButton);
 		testMenu.addButton(settingsButton);
 		testMenu.addButton(helpButton);
-		// screenStack.addScreen(testMenu);
+		//screenStack.addScreen(testMenu);
 
 		// Testing a ship screen
-		// StatsScreen testStatsScreen = new StatsScreen(300, 200, windowWidth,
-		// windowHeight, null);
-		// screenStack.addScreen(testStatsScreen);
+		StatsScreen testStatsScreen = new StatsScreen(300, 200, windowWidth,
+		 windowHeight, null);
+		ScreenStack.get().addScreen(testStatsScreen);
 
 		// screenStack.addScreen(new PathTestScreen(window.getWidth(),
 		// window.getHeight()));
 
 		// Add the panel to the window
 		// window.getContentPane().add(screenStack);
-		window.addKeyListener(screenStack);
-		window.addMouseListener(screenStack);
-		window.addMouseMotionListener(screenStack);
+		window.addKeyListener(ScreenStack.get());
+		window.addMouseListener(ScreenStack.get());
+		window.addMouseMotionListener(ScreenStack.get());
 		window.requestFocusInWindow();
 	}
 
 	public void update()
 	{
-		screenStack.update();
+		ScreenStack.get().update();
 	}
 
 	public void render()
@@ -126,7 +125,7 @@ public class Window
 			if (!bufferStrategy.contentsLost())
 			{
 				gPen.translate(window.getInsets().left, window.getInsets().top);
-				screenStack.draw((Graphics2D) gPen);
+				ScreenStack.get().draw((Graphics2D) gPen);
 				bufferStrategy.show();
 			}
 		}

@@ -10,11 +10,20 @@ import java.util.LinkedList;
 
 public class ScreenStack implements KeyListener, MouseListener, MouseMotionListener {
 	
+	private static ScreenStack instance = new ScreenStack();
+	
 	private LinkedList<Screen> screenList;
 	int xShift, yShift;
 	
-	public ScreenStack(int xShift, int yShift) {
+	private ScreenStack() {
 		screenList = new LinkedList<Screen>();
+	}
+	
+	public static ScreenStack get() {
+		return instance;
+	}
+	
+	public void setOffsets(int xShift, int yShift) {
 		this.xShift = xShift;
 		this.yShift = yShift;
 	}

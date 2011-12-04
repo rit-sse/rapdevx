@@ -1,4 +1,4 @@
-package edu.rit.se.sse.rapdevx.gui;
+package edu.rit.se.sse.rapdevx.gui.screens;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -11,18 +11,22 @@ import java.util.ArrayList;
 import edu.rit.se.sse.rapdevx.clientmodels.Ship;
 import edu.rit.se.sse.rapdevx.events.StateEvent;
 import edu.rit.se.sse.rapdevx.events.StateListener;
+import edu.rit.se.sse.rapdevx.gui.Screen;
+import edu.rit.se.sse.rapdevx.gui.drawable.Camera;
 import edu.rit.se.sse.rapdevx.gui.drawable.DrawableAttack;
+import edu.rit.se.sse.rapdevx.gui.drawable.DrawableShip;
 
 public class AttackScreen extends Screen implements StateListener {
 	/** A reference to the map camera for positioning objects in world space */
 	private Camera camera;
 
-	/** A list of ships currently on the field **/
-	private ArrayList<DrawableShip> shipList = new ArrayList<DrawableShip>();;
+	/** A list of ships currently on the field */
+	private ArrayList<DrawableShip> shipList = new ArrayList<DrawableShip>();
 	private DrawableShip selectedShip;
 
-	/** Current attack path */
-	private DrawableAttack currAttack = null;
+	/** A list of all the attack paths on the field */
+	private ArrayList<DrawableAttack> attackList = new ArrayList<DrawableAttack>();
+	private DrawableAttack curAttack = null;
 
 	public AttackScreen(Camera camera, int width, int height) {
 		super(width, height);
@@ -33,10 +37,21 @@ public class AttackScreen extends Screen implements StateListener {
 		ship.setY(150);
 
 		shipList.add(new DrawableShip(ship, new Color(48, 129, 233)));
+		
+		ship = new Ship();
+		ship.setX(20);
+		ship.setY(50);
+
+		shipList.add(new DrawableShip(ship, new Color(48, 129, 233)));
 
 		Ship ship2 = new Ship();
 		ship2.setX(300);
 		ship2.setY(300);
+		shipList.add(new DrawableShip(ship2, new Color(100, 255, 130)));
+		
+		ship2 = new Ship();
+		ship2.setX(10);
+		ship2.setY(200);
 		shipList.add(new DrawableShip(ship2, new Color(100, 255, 130)));
 	}
 
@@ -64,9 +79,12 @@ public class AttackScreen extends Screen implements StateListener {
 		}
 		
 		// Draw all the attack targets
-		if (currAttack != null) {
-			currAttack.draw(gPen, cameraBounds);
+		if (curAttack != null) {
+			curAttack.draw(gPen, cameraBounds);
 		}
+		
+		for (DrawableAttack attack : attackList)
+			attack.draw(gPen, cameraBounds);
 
 		// Change the drawing back to screen based coordinates
 		gPen.translate(cameraBounds.getX(), cameraBounds.getY());
@@ -82,30 +100,36 @@ public class AttackScreen extends Screen implements StateListener {
 					// This ship was previously selected.  Deselect it and stop the attack.
 					selectedShip.setSelected(false);
 					selectedShip = null;
-					currAttack = null;
+					curAttack = null;
 				} else if (selectedShip != null) {
-					// Another ship was selected, attack it
-					currAttack.setTarget(ship, camera.getBounds());
+					// Another ship was selected, complete the attack and deselect the ship
+					curAttack.setTarget(ship, camera.getBounds());
+					selectedShip.setSelected(false);
+					selectedShip = null;
+					
+					// Save the completed attack
+					attackList.add(curAttack);
+					curAttack = null;
 				} else {
 					// No other ship was selected, select this one and start an attack
 					selectedShip = ship;
 					selectedShip.setSelected(true);
-					currAttack = new DrawableAttack(ship);
+					curAttack = new DrawableAttack(ship);
 				}
 			}
 		}
 
 		
 		if (selectedShip == null)
-			currAttack = null;
-		else if (currAttack == null)
-			currAttack = new DrawableAttack(selectedShip);
+			curAttack = null;
+		else if (curAttack == null)
+			curAttack = new DrawableAttack(selectedShip);
 
 		e.consume();
 	}
 
 	public void mouseMoved(MouseEvent e) {
-		if (currAttack != null) {
+		if (curAttack != null) {
 			// Snap the reticle to a ship if we are hovering over one
 			for (DrawableShip ship : shipList) {
 				if (ship == selectedShip)
@@ -114,8 +138,8 @@ public class AttackScreen extends Screen implements StateListener {
 				if (new Area(ship.getBounds()).contains(e.getX() + camera.getX(),
 						e.getY() + camera.getY()))
 				{
-					currAttack.setMouseLocation(ship.getCenter());
-					currAttack.setSnapped(true);
+					curAttack.setMouseLocation(ship.getCenter());
+					curAttack.setSnapped(true);
 					
 					e.consume();
 					return;
@@ -123,10 +147,10 @@ public class AttackScreen extends Screen implements StateListener {
 			}
 			
 			// No ship under the mouse, clear snapping
-			currAttack.setSnapped(false);
+			curAttack.setSnapped(false);
 			
 			// If there is an attack selection in progress, update the reticle
-			currAttack.setMouseLocation(new Point(e.getX() + camera.getX(),
+			curAttack.setMouseLocation(new Point(e.getX() + camera.getX(),
 					e.getY() + camera.getY()));
 		}
 

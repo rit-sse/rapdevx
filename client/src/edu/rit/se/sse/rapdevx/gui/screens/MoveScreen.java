@@ -1,4 +1,4 @@
-package edu.rit.se.sse.rapdevx.gui;
+package edu.rit.se.sse.rapdevx.gui.screens;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -11,6 +11,10 @@ import java.util.ArrayList;
 import edu.rit.se.sse.rapdevx.clientmodels.Ship;
 import edu.rit.se.sse.rapdevx.events.StateEvent;
 import edu.rit.se.sse.rapdevx.events.StateListener;
+import edu.rit.se.sse.rapdevx.gui.Screen;
+import edu.rit.se.sse.rapdevx.gui.drawable.Camera;
+import edu.rit.se.sse.rapdevx.gui.drawable.DrawableMovePath;
+import edu.rit.se.sse.rapdevx.gui.drawable.DrawableShip;
 
 public class MoveScreen extends Screen implements StateListener {
 	
@@ -59,7 +63,7 @@ public class MoveScreen extends Screen implements StateListener {
 		
 		// draw the move path if there is one
 		if ( movePath != null ) {
-			movePath.draw( gPen );
+			movePath.draw( gPen, cameraBounds );
 		}
 		
 		// Draw all the ships on the map
@@ -76,10 +80,13 @@ public class MoveScreen extends Screen implements StateListener {
 		if ( e.getButton() == MouseEvent.BUTTON3 ) {
 			if ( movePath != null ) {
 				if ( movePath.isAcceptingInput() ) {
-					if ( movePath.hasInitialPath() )
+					if ( movePath.hasInitialPath() ) {
+						selectedShip.setSelected( false );
+						selectedShip = null;
 						movePath = null;
-					else
+					} else {
 						movePath.removeLastMove();
+					}
 				}
 			}
 		} else {
@@ -115,13 +122,18 @@ public class MoveScreen extends Screen implements StateListener {
 			}
 			
 			// If no ship is clicked, move any selected ship to the mouse coordinates
-			if ( selectedShip != null && !selectedShipWasNull ) {
+			if ( selectedShip != null && !selectedShipWasNull && movePath != null ) {
 				// selectedShip.setCenter(e.getX() + camera.getX(), e.getY() + camera.getY());
 				
 				Point point = new Point( e.getX() + camera.getX(), e.getY() + camera.getY() );
 				
 				if ( movePath.hasPointCloseToPrevious( point, 5 ) ) {
 					movePath.stopInput();
+					selectedShip.setCenter( (int)movePath.getPath().getLastPoint().getX(), 
+							(int)movePath.getPath().getLastPoint().getY() );
+					selectedShip.setSelected( false );
+					selectedShip = null;
+					movePath = null;
 				} else {
 					movePath.addMove( point );
 				}

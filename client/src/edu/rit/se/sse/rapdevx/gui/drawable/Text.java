@@ -1,4 +1,4 @@
-package edu.rit.se.sse.rapdevx.gui;
+package edu.rit.se.sse.rapdevx.gui.drawable;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -8,10 +8,13 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import edu.rit.se.sse.rapdevx.gui.ImageColorizer;
+import edu.rit.se.sse.rapdevx.gui.drawable.DrawableObject;
+
 public class Text extends DrawableObject {
 
 	private static final String FONT_FILE = "assets/FontPage.png";
-
+	private static final int FONT_REPLACE_COLOR = 0x1b39f5;
 	private static final double DEFAULT_SCALE = 2;
 
 	private BufferedImage largeImage;
@@ -40,7 +43,7 @@ public class Text extends DrawableObject {
 		try {
 			largeImage = ImageIO.read(new File(FONT_FILE));
 			ImageColorizer ic = new ImageColorizer(largeImage);
-			ic.recolor(color.getRGB(), 0x1b39f5);
+			ic.recolor(color.getRGB(), FONT_REPLACE_COLOR);
 		} catch (IOException e) {
 			System.err.println("Unable to load font file");
 		}
@@ -52,57 +55,43 @@ public class Text extends DrawableObject {
 
 		for (char character : characters) {
 
-			int xIndex;
+			int xIndex = 0;
+			int yIndex = 0;
 			BufferedImage smallImage = null;
 
 			if (character >= 65 && character <= 90) {
-				xIndex = (int) character - 65;
-				xIndex *= 6;
-
-				smallImage = largeImage.getSubimage(xIndex, 0, 7, 7);
-
+				xIndex = ((int) character - 65) * 6;
+				yIndex = 0;
 			} else if (character >= 97 && character <= 122) {
-				xIndex = (int) character - 97;
-				xIndex *= 6;
-
-				smallImage = largeImage.getSubimage(xIndex, 12, 7, 7);
-
+				xIndex = ((int) character - 97) * 6;
+				yIndex = 7;
 			} else if (character >= 33 && character <= 58) {
-				xIndex = (int) character - 33;
-				xIndex *= 6;
-
-				smallImage = largeImage.getSubimage(xIndex, 24, 7, 7);
-
+				xIndex = ((int) character - 33) * 6;
+				yIndex = 14;
 			} else if (character >= 59 && character <= 63) {
-				xIndex = (int) character - 59;
-				xIndex *= 6;
-
-				smallImage = largeImage.getSubimage(xIndex, 36, 7, 7);
-
+				xIndex = ((int) character - 59) * 6;
+				yIndex = 21;
 			} else if (character >= 91 && character <= 96) {
-				xIndex = (int) character - 91;
-				xIndex *= 6;
-				xIndex += 30;
-
-				smallImage = largeImage.getSubimage(xIndex, 36, 7, 7);
-
+				xIndex = ((int) character - 91) * 6 + 30;
+				yIndex = 21;
 			} else if (character == 124) {
 				xIndex = 66;
-
-				smallImage = largeImage.getSubimage(xIndex, 36, 7, 7);
-
+				yIndex = 21;
 			} else if (character == 32) {
-				smallImage = largeImage.getSubimage(0, 48, 7, 7);
+				xIndex = 84;
+				yIndex = 21;
 			} else {
-				smallImage = largeImage.getSubimage(0, 48, 7, 7);
+				xIndex = 78;
+				yIndex = 21;
 			}
+			
+			smallImage = largeImage.getSubimage(xIndex, yIndex, 6, 7);
 
 			gPen.drawImage(smallImage, tempX, y,
-					(int) (smallImage.getWidth() * this.scale),
-					(int) (smallImage.getHeight() * this.scale), null);
+					(int) (smallImage.getWidth() * scale),
+					(int) (smallImage.getHeight() * scale), null);
 
-			tempX += 6 * this.scale;
-			
+			tempX += 6 * scale;
 		}
 	}
 

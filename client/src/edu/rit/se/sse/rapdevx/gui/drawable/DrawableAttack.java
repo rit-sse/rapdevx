@@ -9,8 +9,6 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 
 import edu.rit.se.sse.rapdevx.clientmodels.Attack;
-import edu.rit.se.sse.rapdevx.gui.DrawableObject;
-import edu.rit.se.sse.rapdevx.gui.DrawableShip;
 
 public class DrawableAttack extends DrawableObject {
 
