@@ -203,13 +203,12 @@ class MoveTurn:
     def execute(self, registry):
         itera = sorted(self.player_move_list.keys())
         result = {}
-        for i in numOFTurns:
-            for k in itera:
-                playerMove = self.player_move_list[k][i]
-                unitShip = registry.getById(playerMove.shipid)
-                unitLoc = playerMove.path[-1]
-                unitShip.setLocation(unitLoc)
-        
+        for k in itera:
+            playerMove = self.player_move_list[k][i]
+            unitShip = registry.getById(playerMove.shipid)
+            unitLoc = playerMove.path[-1]
+            unitShip.setLocation(unitLoc)
+    
     def getResults(self):
         pass
         
