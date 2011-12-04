@@ -78,9 +78,9 @@ public class TextScreen extends Screen {
 			e.printStackTrace();
 		}
 		
-		title1.drawColor(gPen, 0xffff00);
-		title2.drawColor(gPen, 0xffff00);
-		title3.drawColor(gPen, 0xffff00);
+		title1.draw(gPen);
+		title2.draw(gPen);
+		title3.draw(gPen);
 		
 	}
 
