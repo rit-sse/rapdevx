@@ -57,10 +57,6 @@ public class DrawableShip extends DrawableObject {
 		ic.recolorStrong(teamColor.getRGB(), Art.MAGIC_PINK);
 	}
 	
-//	public void setColor( Color newColor ) {
-//		teamColor = newColor;
-//	}
-	
 	public Color getColor() {
 		return teamColor;
 	}

@@ -12,6 +12,7 @@ import edu.rit.se.sse.rapdevx.clientmodels.Ship;
 import edu.rit.se.sse.rapdevx.events.StateEvent;
 import edu.rit.se.sse.rapdevx.events.StateListener;
 import edu.rit.se.sse.rapdevx.gui.Screen;
+import edu.rit.se.sse.rapdevx.gui.ScreenStack;
 import edu.rit.se.sse.rapdevx.gui.drawable.Camera;
 import edu.rit.se.sse.rapdevx.gui.drawable.DrawableMovePath;
 import edu.rit.se.sse.rapdevx.gui.drawable.DrawableShip;
@@ -27,6 +28,9 @@ public class MoveScreen extends Screen implements StateListener {
 	
 	/** A path */
 	private DrawableMovePath movePath;
+	
+	/** A stats screen that shows when a ship is moused over */
+	private StatsScreen statsScreen = null;
 	
 	
 	public MoveScreen(Camera camera, int width, int height) {
@@ -75,15 +79,47 @@ public class MoveScreen extends Screen implements StateListener {
 		gPen.translate(cameraBounds.getX(), cameraBounds.getY());
 	}
 	
+	private void selectShip(DrawableShip ship) {
+		setShipSelected(ship, true);
+		
+		selectedShip = ship;
+		movePath = new DrawableMovePath( ship );
+	}
+	
+	private void deselectShip() {
+		setShipSelected(selectedShip, false);
+		
+		selectedShip = null;
+		movePath = null;
+	}
+	
+	private void setShipSelected(DrawableShip ship, boolean isSelected) {
+		ship.setSelected(isSelected);
+		
+		if (isSelected) {
+			if (statsScreen == null) {
+				statsScreen = new StatsScreen(300, 200, screenWidth, screenHeight, ship.getShip());
+				ScreenStack.get().addScreenAfter(this, statsScreen);
+			} else if (statsScreen != null && statsScreen.getShip() != ship.getShip()) {
+				ScreenStack.get().removeScreen(statsScreen);
+				statsScreen = null;
+			}
+		} else {
+			// If the there is a stats screen for this ship, get rid of it
+			if (statsScreen != null && statsScreen.getShip() == ship.getShip()) {
+				ScreenStack.get().removeScreen(statsScreen);
+				statsScreen = null;
+			}
+		}
+	}
+	
 	public void mouseReleased(MouseEvent e) {
 		// if the screen was right-clicked
 		if ( e.getButton() == MouseEvent.BUTTON3 ) {
 			if ( movePath != null ) {
 				if ( movePath.isAcceptingInput() ) {
 					if ( movePath.hasInitialPath() ) {
-						selectedShip.setSelected( false );
-						selectedShip = null;
-						movePath = null;
+						deselectShip();
 					} else {
 						movePath.removeLastMove();
 					}
@@ -102,9 +138,7 @@ public class MoveScreen extends Screen implements StateListener {
 				if (new Area(ship.getBounds()).contains(e.getX() + camera.getX(), e.getY() + camera.getY())) {
 					// The ship is selected so deselect it
 					if (ship == selectedShip) {
-						selectedShip.setSelected(false);
-						selectedShip = null;
-						movePath = null;
+						deselectShip();
 					// The ship is not selected
 					} else {
 						// Another ship is selected, make sure this one has no selection circle
@@ -112,9 +146,7 @@ public class MoveScreen extends Screen implements StateListener {
 							selectedShip.setSelected(false);
 						// No other ship is selected so select this one
 						} else {
-							ship.setSelected(true);
-							selectedShip = ship;
-							movePath = new DrawableMovePath( ship );
+							selectShip(ship);
 						}
 					}
 				
@@ -146,15 +178,17 @@ public class MoveScreen extends Screen implements StateListener {
 	
 	public void mouseMoved(MouseEvent e) {
 		// Check all ships to see if the mouse is hovered over it
+		boolean found = false;
 		for (DrawableShip ship : shipList) {
-			//TODO potential bug when a null ship is in the list and selected ship is null?
-			if (ship != selectedShip) {
-				ship.setSelected(false);
+			if (!found && new Area(ship.getBounds()).contains(e.getX() + camera.getX(), e.getY() + camera.getY())) {
+				setShipSelected(ship, true);
+				found = true;
+				continue;
 			}
 			
-			if (new Area(ship.getBounds()).contains(e.getX() + camera.getX(), e.getY() + camera.getY())) {
-				ship.setSelected(true);
-			}
+			// Another ship is hovered
+			if (ship != selectedShip)
+				setShipSelected(ship, false);
 		}
 		
 		if ( movePath != null )
