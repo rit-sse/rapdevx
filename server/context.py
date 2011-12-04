@@ -30,7 +30,7 @@ class GameContext:
         return GamePhase(self)
     
     def getAllDTOShips(self, my_playernum):
-        pass
+        return [x.to_dto() for x in self.registry.getAllByType(Unit)]
 
     #Passthrough to phase
     def addPlayerMove(self, action_order, calling_player):
@@ -241,8 +241,9 @@ if __name__ == '__main__':
     c.setShipPlacement([place],1)
     c.setShipPlacement([place],0)
     
->>>>>>> f12da3ecf89a88b3536ed35d9b53df06c30e5ccc
     print(c.phase)
     #should be "movement"
+
+    print(c.getAllDTOShips(0))
     
     
