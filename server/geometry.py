@@ -157,4 +157,12 @@ def getClosestPointOnSegment( source, destination, point, delta = DEFAULT_TOLERA
 	point - A tuple containing the (x,y) coordinates for some point on the line.
 	delta - Tolerance factor. Uses DEFAULT_TOLERANCE_FACTOR by default.
 	'''
-	pass
+	
+	s2pDistance = distance( source, point )
+	p2dDistance = distance( point, destination )
+
+	if( s2pDistance <= p2dDistance ):
+		return source
+
+	else:
+		return destination
