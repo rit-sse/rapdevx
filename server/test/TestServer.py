@@ -30,4 +30,5 @@ class TestServer( unittest.TestCase ):
         except:
             self.fail()
 
-unittest.main()
+if __name__ == "__main__":
+    unittest.main()

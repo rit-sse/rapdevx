@@ -65,7 +65,7 @@ public class Window {
 		screenStack.addScreen(mapScreen);
 		
 		// Start with the move phase on the map
-		screenStack.addScreen(new AttackScreen(mapScreen.getCamera(), windowWidth, windowHeight));
+		screenStack.addScreen(new MoveScreen(mapScreen.getCamera(), windowWidth, windowHeight));
 
 		screenStack.addScreen(new OverlayScreen(windowWidth, windowHeight));
 		
@@ -77,7 +77,7 @@ public class Window {
 		testMenu.addButton(playButton);
 		testMenu.addButton(settingsButton);
 		testMenu.addButton(helpButton);
-		//screenStack.addScreen(testMenu);
+		screenStack.addScreen(testMenu);
 		
 		//Testing a ship screen
 		StatsScreen testStatsScreen = new StatsScreen(300, 200, windowWidth, windowHeight, null);
