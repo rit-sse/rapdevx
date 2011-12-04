@@ -17,6 +17,10 @@ public class Ship extends Unit {
 	private int	X;
 	private int	Y;
 
+	public Ship()
+	{
+	}
+	
 	/**
 	 * @return the x
 	 */

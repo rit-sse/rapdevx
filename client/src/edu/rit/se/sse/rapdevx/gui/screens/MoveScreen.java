@@ -45,11 +45,13 @@ public class MoveScreen extends Screen implements StateListener {
 		Ship ship = new Ship();
 		ship.setX(150);
 		ship.setY(150);
+		ship.setHp(50);
 		shipList.add(new DrawableShip(ship, new Color(48, 129, 233)));
 		
 		Ship ship2 = new Ship();
 		ship2.setX(200);
 		ship2.setY(300);
+		ship2.setHp(75);
 		shipList.add(new DrawableShip(ship2, new Color(108, 200, 47)));
 	}
 
@@ -102,7 +104,7 @@ public class MoveScreen extends Screen implements StateListener {
 		
 		if (isSelected) {
 			if (statsScreen == null) {
-				statsScreen = new StatsScreen(300, 200, screenWidth, screenHeight, ship.getShip());
+				statsScreen = new StatsScreen(/*300, 200,*/ screenWidth, screenHeight, ship.getShip());
 				ScreenStack.get().addScreenAfter(this, statsScreen);
 			} else if (statsScreen != null && statsScreen.getShip() != ship.getShip()) {
 				ScreenStack.get().removeScreen(statsScreen);
@@ -207,6 +209,7 @@ public class MoveScreen extends Screen implements StateListener {
 		if (e.getNewState() instanceof AttackState) {
 			ScreenStack.get().addScreenAfter(this, new AttackScreen(camera, screenWidth, screenHeight));
 			ScreenStack.get().removeScreen(this);
+			GameSession.get().removeStateListener(this);
 		}
 	}
 
