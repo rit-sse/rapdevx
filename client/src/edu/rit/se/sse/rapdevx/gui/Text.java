@@ -30,11 +30,7 @@ public class Text extends DrawableObject {
 		this.scale = textSize;
 		
 		try {
-			if (color.toUpperCase().equals("BLACK")) {
-				largeImage = ImageIO.read(new File(FONT_FILE));
-			} else {
-				largeImage = ImageIO.read(new File(FONT_FILE_WHITE));
-			}
+			largeImage = ImageIO.read(new File(FONT_FILE));
 		} catch (IOException e) {
 			System.err.println("Unable to load font file");
 		}
