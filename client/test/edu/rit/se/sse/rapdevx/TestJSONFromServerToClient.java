@@ -1,6 +1,6 @@
 package edu.rit.se.sse.rapdevx;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.util.HashMap;
 
@@ -27,18 +27,36 @@ public class TestJSONFromServerToClient
 	
 	@Test
 	public void testAbility() {
-		Ability ab = new Ability();
+		Ability fromClient = new Ability();
 
 		HashMap<String, Integer> ab_spec_damage = new HashMap<String, Integer>();
 		ab_spec_damage.put("one", 1);
 		ab_spec_damage.put("two", 2);
 		
-		ab.setRadius(10);
-		ab.setName("name");
-		ab.setDefault_damage(5);
-		ab.setSpecial_damage(ab_spec_damage);
-		ab.setGid("this is a gid");
+		fromClient.setRadius(10);
+		fromClient.setName("name");
+		fromClient.setDefault_damage(5);
+		fromClient.setSpecial_damages(ab_spec_damage);
+		fromClient.setGid("this is a gid");
 		
-		assertTrue(ab.equals(Ability.fromJSON(readFile("client/test/edu/rit/se/sse/rapdevx/json_sync/AbilityFromServer.json"))));
+		Ability fromServer = Ability.fromJSON(readFile("client/test/edu/rit/se/sse/rapdevx/json_sync/AbilityFromServer.json"));
+		
+		assertEquals(fromClient.getDefault_damage(), fromServer.getDefault_damage());
+		assertEquals(fromClient.getGid(), fromServer.getGid());
+		assertEquals(fromClient.getName(), fromServer.getName());
+		assertEquals(fromClient.getRadius(), fromServer.getRadius());
+		assertEquals(fromClient.getSpecial_damages(), fromServer.getSpecial_damages());
+	}
+	
+	@Test
+	public void testAssetImage() {
+		AssetImage fromClient = new AssetImage();
+		fromClient.setFile("YWltZ3Rlc3QucG5n\n");
+		fromClient.setGid("testTheGid");
+		
+		AssetImage fromServer = AssetImage.fromJSON(readFile("client/test/edu/rit/se/sse/rapdevx/json_sync/AssetImageFromServer.json"));
+		
+		assertEquals(fromServer.getFile(), fromClient.getFile());
+		assertEquals(fromServer.getGid(), fromClient.getGid());
 	}
 }

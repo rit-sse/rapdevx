@@ -26,7 +26,7 @@ public class TestJSONSync {
 		ab.setRadius(10);
 		ab.setName("name");
 		ab.setDefault_damage(5);
-		ab.setSpecial_damage(ab_spec_damage);
+		ab.setSpecial_damages(ab_spec_damage);
 		ab.setGid("this is a gid");
 		
 		
