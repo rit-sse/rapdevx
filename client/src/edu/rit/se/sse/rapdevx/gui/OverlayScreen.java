@@ -45,7 +45,7 @@ public class OverlayScreen extends Screen implements StateListener
 	private Rectangle mainBounds;
 	private Rectangle playbackBounds;
 
-	public OverlayScreen(int width, int height, int insetLeft, int insetTop)
+	public OverlayScreen(int width, int height)
 	{
 		super(width, height);
 		
@@ -55,32 +55,31 @@ public class OverlayScreen extends Screen implements StateListener
 		isReady = false;
 
 		mainBounds = new Rectangle(382, 32);
-		mainBounds.x = STARTING_X + insetLeft;
-		mainBounds.y = insetTop;
+		mainBounds.x = STARTING_X;
+		mainBounds.y = 0;
 
 		playbackBounds = new Rectangle(280, 64);
-		playbackBounds.x = STARTING_X + 52 + insetTop;
-		playbackBounds.y = 32 + insetTop;
+		playbackBounds.x = STARTING_X + 52;
+		playbackBounds.y = 32;
 
 		for (int x = 0; x < 7; ++x)
 		{
 			turnControlImageStr[x] = "assets/Play-" + turnControlImageStr[x]
 					+ ".png";
 			turnControlImages[x] = new GrayableImage(turnControlImageStr[x],
-					STARTING_X + 40 * x + 52, STARTING_Y + TURN_CONTROL_Y,
-					insetLeft, insetTop);
+					STARTING_X + 40 * x + 52, STARTING_Y + TURN_CONTROL_Y);
 		}
 
 		undo = new GrayableImage("assets/Undo.png", STARTING_X
-				+ UNDO_MODIFIER_X, STARTING_Y, insetLeft, insetTop);
+				+ UNDO_MODIFIER_X, STARTING_Y);
 		redo = new GrayableImage("assets/Redo.png", STARTING_X
-				+ REDO_MODIFIER_X, STARTING_Y, insetLeft, insetTop);
+				+ REDO_MODIFIER_X, STARTING_Y);
 		phase = new GrayableImage("assets/StatusBar.png", STARTING_X
-				+ PHASE_MODIFIER_X, STARTING_Y, insetLeft, insetTop);
+				+ PHASE_MODIFIER_X, STARTING_Y);
 		readyEnabled = new GrayableImage("assets/Ready-enabled.png", STARTING_X
-				+ READY_MODIFIER_X, STARTING_Y, insetLeft, insetTop);
+				+ READY_MODIFIER_X, STARTING_Y);
 		readyDisabled = new GrayableImage("assets/Ready-disabled.png",
-				STARTING_X + READY_MODIFIER_X, STARTING_Y, insetLeft, insetTop);
+				STARTING_X + READY_MODIFIER_X, STARTING_Y);
 		
 		readyText = new Text("Ready", STARTING_X + READY_MODIFIER_X + 28, STARTING_Y + 9, Color.BLACK);
 	}

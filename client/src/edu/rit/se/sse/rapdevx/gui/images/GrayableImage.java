@@ -25,15 +25,15 @@ public class GrayableImage implements IGrayableImage {
 	private boolean hovering;
 	private Rectangle rect;
 	
-	public GrayableImage(String asset, int x, int y, int insetLeft, int insetTop) {
+	public GrayableImage(String asset, int x, int y) {
 		this.baseImage = new Sprite(asset);
 		this.x = x;
 		this.y = y;
 		this.hovering = false;
 		this.rect = new Rectangle(this.baseImage.getImageWidth(),
 				this.baseImage.getImageHeight());
-		this.rect.x = this.x + insetLeft;
-		this.rect.y = this.y + insetTop;
+		this.rect.x = this.x;
+		this.rect.y = this.y;
 		
 		if (grayOverlay == null) {
 			grayOverlay = new BufferedImage(
