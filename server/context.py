@@ -14,10 +14,10 @@ class GameContext:
         sprite = Image("../assets/ship.png")
         self.registry.register(sprite)
         
-        klass = UnitClass([],[atk],200,100,10, sprite, "Scout")
-        self.registry.register(klass)
+        unitClass = UnitClass([],[atk],200,100,10, sprite, "Scout")
+        self.registry.register(unitClass)
         
-        self.assets = DTO_Assets(1000,1000,[klass.to_dto()],[],[atk.to_dto()])
+        self.assets = DTO_Assets(1000,1000,[unitClass.to_dto()],[],[atk.to_dto()])
         self.phase = WaitingPhase(self)
     
         self.turns = {}
@@ -79,7 +79,6 @@ class GameContext:
         self.phase = self.phase.getNextPhase()
         return x
     
-
 class GamePhase:
     #abstract superclass for all phases
     def __init__(self, context):
