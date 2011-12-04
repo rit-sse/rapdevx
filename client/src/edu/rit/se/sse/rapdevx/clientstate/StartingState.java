@@ -20,9 +20,12 @@ public class StartingState extends StateBase {
 	public StartingState() {
 		this.nextState = UnitPlacementState.class;
 
-		GameSession.setSession(SessionApi.createSession("nickname", null));
-		AssetLibrary.setAssets(GameApi.getAssets(
-		/* get the game from where? */null, GameSession.getSession()));
+		// TODO here we'll need to include some "game picking" logic -- passing
+		// in null will, in effect, request matchmaking
+		GameSession.get()
+				.setSession(SessionApi.createSession("nickname", null));
+		AssetLibrary.setAssets(GameApi
+				.getAssets(GameSession.get().getSession()));
 
 		// TODO set ready here
 
@@ -41,6 +44,6 @@ public class StartingState extends StateBase {
 	}
 
 	private void ready() {
-		GameSession.advanceState();
+		GameSession.get().advanceState();
 	}
 }
