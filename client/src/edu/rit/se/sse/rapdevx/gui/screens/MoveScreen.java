@@ -39,6 +39,8 @@ public class MoveScreen extends Screen implements StateListener {
 		super(width, height);
 		this.camera = camera;
 		
+		GameSession.get().addStateListener(this);
+		
 		shipList = new ArrayList<DrawableShip>();
 		Ship ship = new Ship();
 		ship.setX(150);

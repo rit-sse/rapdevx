@@ -9,13 +9,13 @@ import edu.rit.se.sse.rapdevx.audio.AudioManager;
 import edu.rit.se.sse.rapdevx.audio.Sound;
 import edu.rit.se.sse.rapdevx.clientstate.AttackState;
 import edu.rit.se.sse.rapdevx.clientstate.DoneState;
+import edu.rit.se.sse.rapdevx.clientstate.GameSession;
 import edu.rit.se.sse.rapdevx.clientstate.MoveState;
 import edu.rit.se.sse.rapdevx.clientstate.StartingState;
 import edu.rit.se.sse.rapdevx.clientstate.UnitPlacementState;
 import edu.rit.se.sse.rapdevx.events.StateEvent;
 import edu.rit.se.sse.rapdevx.events.StateListener;
 import edu.rit.se.sse.rapdevx.gui.Screen;
-import edu.rit.se.sse.rapdevx.gui.Window;
 import edu.rit.se.sse.rapdevx.gui.drawable.Text;
 import edu.rit.se.sse.rapdevx.gui.images.GrayableImage;
 import edu.rit.se.sse.rapdevx.gui.images.IGrayableImage;
@@ -95,7 +95,7 @@ public class OverlayScreen extends Screen implements StateListener
 		stateText = new Text("Waiting : " + turn, STARTING_X + 100, 15, 2.5,
 				Color.BLACK);
 		
-		//GameSession.get().addStateListener(this);
+		GameSession.get().addStateListener(this);
 	}
 
 	public void update(boolean hasFocus, boolean isVisible)
@@ -153,7 +153,7 @@ public class OverlayScreen extends Screen implements StateListener
 				// TODO more shit
 				isReady = true;
 				readyText.setColor(Color.DARK_GRAY);
-				//GameSession.get().advanceState();
+				GameSession.get().advanceState();
 			}
 			e.consume();
 		}

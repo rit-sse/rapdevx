@@ -17,22 +17,19 @@ import edu.rit.se.sse.rapdevx.events.StateListener;
  */
 public class GameSession {
 
-	private static GameSession instance;
+	private static GameSession instance = new GameSession();
 	private List<StateListener> listeners = new Vector<StateListener>();
 
-	private StateBase currentState;
+	private StateBase currentState = new MoveState();
 	private Session session;
 
 	private List<ShipClass> shipClasses = new Vector<ShipClass>();
 
 	private GameSession() {
-		currentState = new StartingState();
-		notifyStateListeners(null, currentState);
+		
 	}
 
 	public static GameSession get() {
-		if (instance == null)
-			instance = new GameSession();
 		return instance;
 	}
 
