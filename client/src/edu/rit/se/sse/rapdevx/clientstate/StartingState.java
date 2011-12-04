@@ -16,6 +16,7 @@ import edu.rit.se.sse.rapdevx.clientmodels.AssetLibrary;
  */
 public class StartingState extends StateBase {
 	private Timer	timer	= new Timer();
+	private int		phaseNum;
 
 	public StartingState() {
 		this.nextState = UnitPlacementState.class;
@@ -27,8 +28,7 @@ public class StartingState extends StateBase {
 		AssetLibrary.setAssets(GameApi
 				.getAssets(GameSession.get().getSession()));
 
-		int phaseNum = GameApi.getStatus(GameSession.get().getSession())
-				.getPhase();
+		phaseNum = GameApi.getStatus(GameSession.get().getSession()).getPhase();
 
 		// yay, we're ready!
 		GameApi.setReady(GameSession.get().getSession());
