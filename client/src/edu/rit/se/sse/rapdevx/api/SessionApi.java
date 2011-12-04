@@ -59,12 +59,8 @@ public class SessionApi {
 	 */
 	public static Session createSession(String nickname, String gameID)
 			throws Exception {
-		// Connect to session
-		Map<String, String> json = getJsonMap(getResponse("/game/"
-				+ gameID));
+
 		String incomingJson = "";
-		// pull values
-		json.get("id"); // Don't know what to get
 
 		try {
 			// contents of the POST
@@ -199,7 +195,8 @@ public class SessionApi {
 			URL url = new URL("http", SERVER_URL, 8080, args);
 
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-			conn.setDoOutput(false);
+			conn.setDoInput(true);
+			conn.setDoOutput(true);
 			conn.setRequestMethod("GET");
 
 			conn.connect();
