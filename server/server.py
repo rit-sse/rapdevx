@@ -88,10 +88,10 @@ def g_game(game_id=None):
 @post('/game/:game_id')
 def g_game(game_id=None):
     ready = request.forms.ready
-    sess_id = request.forms.session_id
+    session_id = request.forms.session_id
 
     game = get_game(game_id)
-    session = get_session(sess_id)
+    session = get_session(session_id)
 
     if ready:
         game.setReady(session)
@@ -99,8 +99,15 @@ def g_game(game_id=None):
 # Set the initial position of all units from given POST data
 @post('/game/:game_id/ships')
 def p_game_ships(game_id=None):
+    session_id = request.forms.session_id
+    unit_layout_json = request.forms.unit_layout
+
     game = get_game(game_id)
-    return "POST /game/" + str(game_id) + "/ships"
+    session = get_session(session_id)
+
+    unit_layout = JSON_Construct_DTO_ShipPlacement(unit_layout_json)
+    
+    game.setShipPlacement(unit_layout, session_id.player_num)
 
 # Return the location and type of all ships as json
 # { # Example
@@ -110,52 +117,89 @@ def p_game_ships(game_id=None):
 @get('/game/:game_id/ships')
 def g_game_ships(game_id=None):
     game = get_game(game_id)
+    # TODO: waiting on mitch integration
 
     return "GET /game/" + str(game_id) + "/ships"
 
 # Create a new movement order from POST data
 @post('/game/:game_id/turns/:turn_id/moves')
 def p_game_turns_moves(game_id=None, turn_id=None):
+    session_id = request.forms.session_id
+    move_descriptor_json = request.forms.movement_order
+
+    session = get_session(session_id)
     game = get_game(game_id)
 
-    return "POST /game/" + str(game_id) + "/turns/" + str(turn_id) + "/moves"
+    movement_order = JSON_Construct_DTO_MovementOrder(move_descriptor_json)
+
+    game.addPlayerMove(movement_order, session.player_num)
 
 # Get a list of move order from the provided turn as json
 @get('/game/:game_id/turns/:turn_id/moves')
 def g_game_turns_moves(game_id=None, turn_id=None):
+    session_id = request.forms.session_id
+
+    session = get_session(session_id)
     game = get_game(game_id)
 
-    return "GET /game/" + str(game_id) + "/turns/" + str(turn_id) + "/moves"
+    movement_orders = game.getPlayerMoveList(session.player_num)
+
+    # TODO: orders.to_json
 
 # Delete a move from the current turn
 @delete('/game/:game_id/turns/:turn_id/moves/:move_id')
 def d_game_turns_moves(game_id=None, turn_id=None, move_id=None):
+    session_id = request.forms.session_id
+
+    session = get_session(session_id)
     game = get_game(game_id)
-    return "DELETE /game/" + str(game_id) + "/turns/" + str(turn_id) + "/moves/" + str(move_id)
+
+    game.deletePlayerMove(move_id, session.player_num)
 
 # Create a new attack order from POST data
 @post('/game/:game_id/turns/:turn_id/attacks')
 def p_game_turns_attacks(game_id=None, turn_id=None):
+    session_id = request.forms.session_id
+    attack_order_json = request.forms.attack_order
+
+    session = get_session(session_id)
     game = get_game(game_id)
-    return "POST /game/" + str(game_id) + "/turns/" + str(turn_id) + "/attacks"
+
+    attack_order = JSON_Construct_DTO_AbilityUseOrder(attack_order_json)
+
+    game.addPlayerMove(attack_order, session.player_num)
     
 # Get a list of attack orders from the provided turn as json
 @get('/game/:game_id/turns/:turn_id/attacks')
 def g_game_turns_attacks(game_id=None, turn_id=None):
+    session_id = request.forms.session_id
+    
+    session = get_session(session_id)
     game = get_game(game_id)
-    return "GET /game/" + str(game_id) + "/turns/" + str(turn_id) + "/attacks"
+
+    attack_orders = game.getPlayerMoveList(session.player_num)
+
+    # TODO: orders.to_json
 
 # Delete an attack from the current turn
 @delete('/game/:game_id/turns/:turn_id/attacks/:attack_id')
 def d_game_turns_attacks(game_id=None, turn_id=None, attack_id=None):
+    session_id = request.forms.session_id
+
+    session = get_session(session_id)
     game = get_game(game_id)
-    return "DELETE /game/" + str(game_id) + "/turns/" + str(turn_id) + "/attacks/" + attack_id
+
+    game.deletePlayerMove(attack_id, session.player_num)
 
 # Mark current session (by session_id POST) as ready
 @post('/game/:game_id/turns/:turn_id/ready')
 def p_game_turns_ready(game_id=None, turn_id=None):
+    session_id = request.forms.session_id
+
+    session = get_session(session_id)
     game = get_game(game_id)
-    return "POST /game/" + str(game_id) + "/turns/" + str(turn_id) + "/ready"
+
+    game.setReady(session.player_num, True)
 
 # Get the finalized movement orders of given turn as json
 @get('/game/:game_id/turns/:turn_id/moves/results')
