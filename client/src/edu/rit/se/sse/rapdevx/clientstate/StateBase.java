@@ -37,17 +37,28 @@ public abstract class StateBase {
 	}
 
 	protected void poll() {
-		phaseNum = Integer.parseInt(GameApi.getStatus(
-				GameSession.get().getSession()).getPhase());
+		try {
+			phaseNum = Integer.parseInt(GameApi.getStatus(
+					GameSession.get().getSession()).getPhase());
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.err.println("Couldn't get session");
+		}
 
 		timer.scheduleAtFixedRate(new TimerTask() {
 
 			@Override
 			public void run() {
-				if (Integer.parseInt(GameApi.getStatus(
-						GameSession.get().getSession()).getPhase()) != phaseNum) {
+				try {
+					if (Integer.parseInt(GameApi.getStatus(
+							GameSession.get().getSession()).getPhase()) != phaseNum) {
+						this.cancel();
+						finishedPolling();
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+					System.err.println("Couldn't get session");
 					this.cancel();
-					finishedPolling();
 				}
 			}
 

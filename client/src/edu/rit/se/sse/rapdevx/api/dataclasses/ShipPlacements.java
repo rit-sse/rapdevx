@@ -2,6 +2,7 @@ package edu.rit.se.sse.rapdevx.api.dataclasses;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.JsonParseException;
@@ -9,56 +10,34 @@ import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
 /**
- * POJO representing an instance of a unit/ship.
+ * POJO representing the status of a Game on the server side of 
+ * things. Will be annotated in order to have Jackson data bindings.
  *
  * @author Ben Nicholas
- * @author Paul Cassidy
  */
-public class Unit {
+public class ShipPlacements {
 	
 	private static ObjectMapper mapper = new ObjectMapper();
 	
-	private int player_num;
-	private int hp;
-	private String classid;
-	private String gid;
+	private List<ShipPlacement> ships;
 	
-	public int getPlayer_num() {
-		return player_num;
-	}
-	public void setPlayer_num(int player_num) {
-		this.player_num = player_num;
-	}
-	public int getHp() {
-		return hp;
-	}
-	public void setHp(int hp) {
-		this.hp = hp;
-	}
-	public String getClassid() {
-		return classid;
-	}
-	public void setClassid(String classid) {
-		this.classid = classid;
-	}
-	public String getgid() {
-		return gid;
-	}
-	public void setgid(String gid) {
-		this.gid = gid;
-	}
+    public List<ShipPlacement> getShips() {
+        return ships;
+    }
+    public void setShips(List<ShipPlacement> ships) {
+        this.ships = ships;
+    }
 	
-
-	/**
-	 * Creates and maps to an Unit object.
+	/**}
+	 * Creates and maps to an Status object.
 	 * 
-	 * @return The mapped Unit as an Unit object. or null if error.
+	 * @return The mapped Status as an Status object. or null if error.
 	 */
-	public static Unit fromJSON(String incomingJson){
+	public static ShipPlacements fromJSON(String incomingJson){
 
 		try {
-			Unit unit = mapper.readValue(incomingJson, Unit.class);
-			return unit;
+			ShipPlacements ships = mapper.readValue(incomingJson, ShipPlacements.class);
+			return ships;
 		} catch (JsonParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -73,13 +52,13 @@ public class Unit {
 	}
 	
 	/**
-	 * Creates a JSON file from an Unit object.
+	 * Creates a JSON file from an Status object.
 	 * 
-	 * @param Unit
+	 * @param Status
 	 */
-	public void toJSON(Unit unit){
+	public void toJSON(ShipPlacements ships){
 		try {
-			mapper.writeValue(new File("UnitFromJava.json"), unit);
+			mapper.writeValue(new File("ShipPlacementsFromJava.json"), ships);
 		} catch (JsonGenerationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -92,9 +71,10 @@ public class Unit {
 		}
 	}
 	
-	public Unit(){
-		
-	}
-	
+    public ShipPlacements(List<ShipPlacement> ships) {
+        this.ships = ships;
+    }
 }
+
+
 

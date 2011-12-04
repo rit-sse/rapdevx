@@ -228,12 +228,14 @@ class DTO_Encoder(json.JSONEncoder):
             return json.JSONEncoder.default(self, o)
         
 def JSON_Construct_DTO_AssetImage(jsonstring):
+    print("loading json from:\n",jsonstring)
     attribute_dictionary = json.loads(jsonstring)
-    return DTO_AssetImage(attribute_dictionary.pop('file'), attribute_dictionary.pop('gid'))
+    print("fuck")
+    return DTO_AssetImage(base64.decodebytes(attribute_dictionary.pop('file').encode()), attribute_dictionary.pop('gid'))
 
 def JSON_Construct_DTO_ShipClass(jsonstring):
     attribute_dictionary = json.loads(jsonstring)
-    return DTO_ShipClass(attribute_dictionary.pop('abilities'), attribute_dictionary.pop('maxhp'), attribute_dictionary.pop('radius'), attribute_dictionary.pop('placement_cost'), attribute_dictionary.pop('imageid'), attribute_dictionary.pop('gid'))
+    return DTO_ShipClass(attribute_dictionary.pop('types'), attribute_dictionary.pop('abilities'), attribute_dictionary.pop('maxhp'), attribute_dictionary.pop('radius'), attribute_dictionary.pop('placement_cost'), attribute_dictionary.pop('imageid'), attribute_dictionary.pop('gid'))
 
 def JSON_Construct_DTO_Ability(jsonstring):
     attribute_dictionary = json.loads(jsonstring)
