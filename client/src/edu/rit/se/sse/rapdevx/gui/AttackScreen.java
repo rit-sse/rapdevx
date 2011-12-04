@@ -1,5 +1,6 @@
 package edu.rit.se.sse.rapdevx.gui;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
@@ -29,7 +30,7 @@ public class AttackScreen extends Screen implements StateListener {
 		Ship ship = new Ship();
 		ship.setX(150);
 		ship.setY(150);
-		shipList.add(new DrawableShip(ship));
+		shipList.add(new DrawableShip(ship, new Color(48, 129, 233)));
 	}
 
 	public void update(boolean hasFocus, boolean isVisible) {
