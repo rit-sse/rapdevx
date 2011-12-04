@@ -108,5 +108,10 @@ public class Text extends DrawableObject {
 			System.err.println("Unable to load font file");
 		}
 	}
+	
+	public void setText(String text)
+	{
+		this.text = text.toUpperCase();
+	}
 
 }

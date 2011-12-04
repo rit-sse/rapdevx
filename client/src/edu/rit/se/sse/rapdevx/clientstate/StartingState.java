@@ -23,8 +23,13 @@ public class StartingState extends StateBase {
 
 		// TODO here we'll need to include some "game picking" logic -- passing
 		// in null will, in effect, request matchmaking
-		GameSession.get()
-				.setSession(SessionApi.createSession("nickname", null));
+		try {
+			GameSession.get().setSession(
+					SessionApi.createSession("nickname", null));
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.err.println("Failed to create session");
+		}
 		AssetLibrary.setAssets(GameApi
 				.getAssets(GameSession.get().getSession()));
 

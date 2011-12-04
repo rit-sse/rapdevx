@@ -27,6 +27,4 @@ public interface ScreenEvents {
 	
 	public abstract void mouseMoved(MouseEvent e);
 	
-	public abstract void mouseClicked(MouseEvent e);
-	
 }

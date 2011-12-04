@@ -126,7 +126,7 @@ public class ScreenStack implements KeyListener, MouseListener, MouseMotionListe
 	 * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
 	 */
 	@Override
-	public void keyPressed(KeyEvent e) {
+	public synchronized void keyPressed(KeyEvent e) {
 		for (int i = screenList.size() - 1; i >= 0; i--) {
 			Screen screen = screenList.get(i);
 			if(e.isConsumed()) {
@@ -141,7 +141,7 @@ public class ScreenStack implements KeyListener, MouseListener, MouseMotionListe
 	 * @see java.awt.event.KeyListener#keyReleased(java.awt.event.KeyEvent)
 	 */
 	@Override
-	public void keyReleased(KeyEvent e) {
+	public synchronized void keyReleased(KeyEvent e) {
 		for (int i = screenList.size() - 1; i >= 0; i--) {
 			Screen screen = screenList.get(i);
 			if(e.isConsumed()) {
@@ -155,7 +155,7 @@ public class ScreenStack implements KeyListener, MouseListener, MouseMotionListe
 	 * @see java.awt.event.KeyListener#keyTyped(java.awt.event.KeyEvent)
 	 */
 	@Override
-	public void keyTyped(KeyEvent e) {
+	public synchronized void keyTyped(KeyEvent e) {
 		for (int i = screenList.size() - 1; i >= 0; i--) {
 			Screen screen = screenList.get(i);
 			if(e.isConsumed()) {
@@ -165,22 +165,8 @@ public class ScreenStack implements KeyListener, MouseListener, MouseMotionListe
 		}
 	}
 	
-	/* (non-Javadoc)
-	 * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
-	 */
 	@Override
-	public void mouseClicked(MouseEvent e) {
-		adjustMouseCoords(e);
-		
-		//tell all the screens about this mouse event
-		for (int i = screenList.size() - 1; i >= 0; i--) {
-			Screen screen = screenList.get(i);
-			if(e.isConsumed()) {
-				return;	//we're done if someone handled the event
-			}
-			screen.mouseClicked(e);
-		}
-	}
+	public void mouseClicked(MouseEvent e) {}
 	
 	@Override
 	public void mouseEntered(MouseEvent e) {}
@@ -192,7 +178,7 @@ public class ScreenStack implements KeyListener, MouseListener, MouseMotionListe
 	 * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
 	 */
 	@Override
-	public void mousePressed(MouseEvent e) {
+	public synchronized void mousePressed(MouseEvent e) {
 		adjustMouseCoords(e);
 		
 		//tell all the screens about this mouse event
@@ -209,7 +195,7 @@ public class ScreenStack implements KeyListener, MouseListener, MouseMotionListe
 	 * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
 	 */
 	@Override
-	public void mouseReleased(MouseEvent e) {
+	public synchronized void mouseReleased(MouseEvent e) {
 		adjustMouseCoords(e);
 		
 		//tell all the screens about this mouse event
@@ -234,7 +220,7 @@ public class ScreenStack implements KeyListener, MouseListener, MouseMotionListe
 	 * @see java.awt.event.MouseMotionListener#mouseMoved(java.awt.event.MouseEvent)
 	 */
 	@Override
-	public void mouseMoved(MouseEvent e) {
+	public synchronized void mouseMoved(MouseEvent e) {
 		//TODO should we only send this to the screen with focus? (need to make the same choice for all the other events too)
 		
 		adjustMouseCoords(e);
