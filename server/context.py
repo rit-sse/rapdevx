@@ -159,8 +159,8 @@ class MovementPhase(GamePhase):
         self.context._register_turn(turn.turn_num,turn)
 
     def addPlayerMove(self, action_order, calling_player):
-        if (isinstance(action_order, MovementOrder)):
-            self.turn.addMoveOrder(action_order)
+        if (isinstance(action_order, DTO_MovementOrder)):
+            self.turn.move.addMoveOrder(action_order,calling_player, self.context.registry)
         else:
             Exception("Movement phase is in order, attack orders not allowed")
         
@@ -187,7 +187,7 @@ class MovementPhase(GamePhase):
         if(False in self.ready):
             return self
         else:
-            self.turn.move.execute(self.context)
+            self.turn.move.execute(self.context.registry)
             return AttackPhase(self.context, self.turn)
     
 
@@ -247,29 +247,6 @@ class WonPhase(GamePhase):
         return self
 
 c = None
-if __name__ == '__main__':
-    c = GameContext(['a','b'])
-    c.setReady(1,True)
-    c.setReady(0,True)
 
-    print(c.phase)
-
-    import dto
-
-    place = dto.DTO_ShipPlacement(10,10,'UnitClass0')
-
-    c.setShipPlacement([place],1)
-    c.setShipPlacement([place],0)
     
-    print(c.phase)
-    #should be "movement"
-
-    print(c.getAllDTOShips(0))
-    print(c.getTurnMoveResults(0))
-
-    c.setReady(1,True)
-    c.setReady(0,True)
-
-    print(c.getTurnMoveResults(0))
-    print(c.phase)    
     
