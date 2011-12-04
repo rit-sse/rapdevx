@@ -18,7 +18,6 @@ public class AssetImage {
 
 	private static ObjectMapper mapper = new ObjectMapper();
 	private String file;
-	private String name;
 	private String gid;
 	
 	public String getFile() {
@@ -32,12 +31,6 @@ public class AssetImage {
 	}
 	public void setGid(String gid) {
 		this.gid = gid;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
 	}
 	
 	/**

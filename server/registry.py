@@ -24,19 +24,23 @@ class GameRegistry:
         self.registry[prefix + str(self.count[prefix])] = entry
         entry.gid = prefix + str(self.count[prefix])
         
-    def getAllByType(self, game_type):
+    def getAllByType(self, t):
         '''
         Return any registered entry that is the given python type.
         '''
         type_list = []
         for i in self.registry:
-            if(game_type in i): type_list.append(self.registry[i])
+            if self.registry[i].__class__==t:
+                type_list.append(self.registry[i])
         return type_list
     
     def getById(self, game_id):
         '''
         '''
-        return self.registry[game_id]
+        if game_id in self.registry:
+            return self.registry[game_id]
+        else:
+            return None
     
     def removeById(self, game_id):
         '''
@@ -50,4 +54,5 @@ class GameRegistry:
         effency reasons
         '''
         return self.getAllByType("Unit")
+    
     
