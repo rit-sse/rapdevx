@@ -7,7 +7,7 @@ sys.path.append(os.path.join(os.path.dirname(path), '../'))
 
 import dto
 def testAll():
-        f='testJSON.txt'
+        f='testSync.txt'
         f=open(f, "w")
         aidt=dto.DTO_AssetImage('imgtest.png','testTheGid')
         f.write(aidt.encode()+'\n')
@@ -32,6 +32,9 @@ def testAll():
         """abilityuseorder"""
         aut=dto.DTO_AbilityUseOrder('srcidtest','targetidtest','this is an ability','gidtest')
         f.write(aut.encode()+'\n')
+        """attackresults"""
+        art=dto.DTO_AttackResults([aut])
+        f.write(art.encode()+'\n')
         """Unit"""
         ut=dto.DTO_Unit(23,43,'idtest','thisisgid')
         f.write(ut.encode()+'\n')

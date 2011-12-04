@@ -6,5 +6,6 @@
 {"results": {"thisisanid": [23, 62]}}
 {"path": [[23, 62]], "gid": "thisisagid", "unitid": "thisisanid"}
 {"targetid": "targetidtest", "gid": "gidtest", "srcid": "srcidtest", "ability": "this is an ability"}
+{"results": ["{\"targetid\": \"targetidtest\", \"gid\": \"gidtest\", \"srcid\": \"srcidtest\", \"ability\": \"this is an ability\"}"]}
 {"player_num": 23, "classid": "idtest", "hp": 43, "gid": "thisisgid"}
 {"phase": "phase2", "turn": 3, "player_list": ["p1", "p2"], "me": 22}
