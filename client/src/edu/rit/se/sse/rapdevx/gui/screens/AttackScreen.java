@@ -17,6 +17,7 @@ import edu.rit.se.sse.rapdevx.gui.Screen;
 import edu.rit.se.sse.rapdevx.gui.ScreenStack;
 import edu.rit.se.sse.rapdevx.gui.drawable.Camera;
 import edu.rit.se.sse.rapdevx.gui.drawable.DrawableAttack;
+import edu.rit.se.sse.rapdevx.gui.drawable.DrawableMovePath;
 import edu.rit.se.sse.rapdevx.gui.drawable.DrawableShip;
 
 public class AttackScreen extends Screen implements StateListener {
@@ -30,6 +31,9 @@ public class AttackScreen extends Screen implements StateListener {
 	/** A list of all the attack paths on the field */
 	private ArrayList<DrawableAttack> attackList = new ArrayList<DrawableAttack>();
 	private DrawableAttack curAttack = null;
+	
+	/** A stats screen that shows when a ship is moused over */
+	private StatsScreen statsScreen = null;
 
 	public AttackScreen(Camera camera, int width, int height) {
 		super(width, height);
@@ -143,11 +147,17 @@ public class AttackScreen extends Screen implements StateListener {
 				if (new Area(ship.getBounds()).contains(e.getX() + camera.getX(),
 						e.getY() + camera.getY()))
 				{
+					setShipSelected(ship, true);
+					
 					curAttack.setMouseLocation(ship.getCenter());
 					curAttack.setSnapped(true);
 					
 					e.consume();
 					return;
+				}
+				else
+				{
+					setShipSelected(ship, false);
 				}
 			}
 			
@@ -158,6 +168,21 @@ public class AttackScreen extends Screen implements StateListener {
 			curAttack.setMouseLocation(new Point(e.getX() + camera.getX(),
 					e.getY() + camera.getY()));
 		}
+		else
+		{
+			for (DrawableShip ship : shipList) 
+			{
+				if (new Area(ship.getBounds()).contains(e.getX() + camera.getX(),
+						e.getY() + camera.getY()))
+				{
+					setShipSelected(ship, true);
+				}
+				else
+				{
+					setShipSelected(ship, false);
+				}
+			}
+		}
 
 		e.consume();
 	}
@@ -167,6 +192,39 @@ public class AttackScreen extends Screen implements StateListener {
 			ScreenStack.get().addScreenAfter(this, new MoveScreen(camera, screenWidth, screenHeight));
 			ScreenStack.get().removeScreen(this);
 			GameSession.get().removeStateListener(this);
+		}
+	}
+	
+	
+	private void selectShip(DrawableShip ship) {
+		setShipSelected(ship, true);
+		
+		selectedShip = ship;
+	}
+	
+	private void deselectShip() {
+		setShipSelected(selectedShip, false);
+		
+		selectedShip = null;
+	}
+	
+	private void setShipSelected(DrawableShip ship, boolean isSelected) {
+		ship.setSelected(isSelected);
+		
+		if (isSelected) {
+			if (statsScreen == null) {
+				statsScreen = new StatsScreen(/*300, 200,*/ screenWidth, screenHeight, ship.getShip());
+				ScreenStack.get().addScreenAfter(this, statsScreen);
+			} else if (statsScreen != null && statsScreen.getShip() != ship.getShip()) {
+				ScreenStack.get().removeScreen(statsScreen);
+				statsScreen = null;
+			}
+		} else {
+			// If the there is a stats screen for this ship, get rid of it
+			if (statsScreen != null && statsScreen.getShip() == ship.getShip()) {
+				ScreenStack.get().removeScreen(statsScreen);
+				statsScreen = null;
+			}
 		}
 	}
 	
