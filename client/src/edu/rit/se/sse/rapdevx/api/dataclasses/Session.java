@@ -18,17 +18,17 @@ public class Session {
 
 	private static ObjectMapper mapper = new ObjectMapper();
 	
-	private int gID;
+	private int gid;
 	private String nickName;
 	private int gameID;
 	private boolean active;
 	
 	
-	public int getgID() {
-		return gID;
+	public int getgid() {
+		return gid;
 	}
-	public void setgID(int gID) {
-		this.gID = gID;
+	public void setgid(int gid) {
+		this.gid = gid;
 	}
 	public String getNickName() {
 		return nickName;

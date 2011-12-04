@@ -21,7 +21,7 @@ public class Unit {
 	private int player_num;
 	private int hp;
 	private String classID;
-	private String gID;
+	private String gid;
 	
 	public int getPlayer_num() {
 		return player_num;
@@ -41,11 +41,11 @@ public class Unit {
 	public void setClassID(String classID) {
 		this.classID = classID;
 	}
-	public String getgID() {
-		return gID;
+	public String getgid() {
+		return gid;
 	}
-	public void setgID(String gID) {
-		this.gID = gID;
+	public void setgid(String gid) {
+		this.gid = gid;
 	}
 	
 

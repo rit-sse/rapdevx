@@ -23,7 +23,7 @@ public class Assets {
 	private List<ShipClass>		ship_classes;
 	// needs to be changed to AssetImage once the object exists.
 	private List<AssetImage>	images;
-	private List<String>		abilities;
+	private List<Ability>		abilities;
 	private static ObjectMapper		mapper	= new ObjectMapper();
 
 	public int getWidth() {
@@ -58,11 +58,11 @@ public class Assets {
 		this.images = images;
 	}
 
-	public List<String> getAbilities() {
+	public List<Ability> getAbilities() {
 		return abilities;
 	}
 
-	public void setAbilities(List<String> abilities) {
+	public void setAbilities(List<Ability> abilities) {
 		this.abilities = abilities;
 	}
 
@@ -114,7 +114,7 @@ public class Assets {
 	public Assets() {
 		ship_classes = new LinkedList<ShipClass>();
 		images = new LinkedList<AssetImage>();
-		abilities = new LinkedList<String>();
+		abilities = new LinkedList<Ability>();
 	}
 
 	public static void main(String args[]) {

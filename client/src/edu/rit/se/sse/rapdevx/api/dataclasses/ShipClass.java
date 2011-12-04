@@ -13,19 +13,12 @@ import org.codehaus.jackson.map.ObjectMapper;
 public class ShipClass {
 
 	private static ObjectMapper mapper = new ObjectMapper();
-	private List<String> types = new LinkedList<String>();
 	private List<String> abilities = new LinkedList<String>();
 	private int maxhp;
 	private int radius;
 	private int placement_cost;
 	private String gid;
 	
-	public List<String> getTypes() {
-		return types;
-	}
-	public void setTypes(List<String> types) {
-		this.types = types;
-	}
 	public List<String> getAbilities() {
 		return abilities;
 	}

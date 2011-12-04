@@ -19,7 +19,7 @@ public class Status {
 	private static ObjectMapper mapper = new ObjectMapper();
 	
 	private int turn;
-	private int phase;
+	private String phase;
 	private int me;
 	
 	public int getTurn() {
@@ -28,10 +28,10 @@ public class Status {
 	public void setTurn(int turn) {
 		this.turn = turn;
 	}
-	public int getPhase() {
+	public String getPhase() {
 		return phase;
 	}
-	public void setPhase(int phase) {
+	public void setPhase(String phase) {
 		this.phase = phase;
 	}
 	public int getMe() {
