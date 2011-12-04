@@ -45,6 +45,9 @@ class Unit:
         self.types = types
         self.location = location
         self.radius = radius
+        self.classid = None
+    def setClassid(self,classid):
+        self.classid = classid
     
     def getMaxHP(self):
         '''
@@ -93,6 +96,11 @@ class Unit:
         Get the unit's location.
         '''
         return self.location
+        
+    def to_dto(self):
+        return DTO_Unit(self.owning_player, self.hp, self.classid, self.gid)
+    
+
 
 class Ability:
     '''
@@ -150,6 +158,7 @@ class Turn:
     '''
 
     def __init__(self, turn_num):
+        self.turn_num = turn_num
         self.attack = AttackTurn(turn_num)
         self.move = MoveTurn(turn_num)
         self.gid = None #set on registry
@@ -327,6 +336,7 @@ class UnitClass:
     
     def makeUnit(self,location,player_id):
         unit = Unit(self.abilities[:],self.maxhp,player_id, self.types, location, self.radius)
+        unit.setClassid(self.gid)
         return unit
     
     def to_dto(self):
