@@ -218,7 +218,8 @@ class MoveTurn:
         for playerMove in combined_list:
             print(playerMove)
             unitShip = registry.getById(playerMove.unitid)
-            unitLoc = playerMove.path[-1]
+            unitLoc = playerMove.path
+            print("SETTING LOCATION FOR SHIP TO:", unitLoc)
             unitShip.setLocation(unitLoc)
             self.results[unitShip.gid] = playerMove.path
         

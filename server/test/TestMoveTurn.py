@@ -19,8 +19,8 @@ class TestMoveTurn( unittest.TestCase ):
         reg.register(p2Ship)
         moP1M1 = gameplay.MoveOrder( p1Ship.gid, (5,5) )
         moP1M2 = gameplay.MoveOrder( p1Ship.gid, (15,15) )
-        moP2M1 = gameplay.MoveOrder( p1Ship.gid, (35,35) )
-        moP2M2 = gameplay.MoveOrder( p1Ship.gid, (55,45) )
+        moP2M1 = gameplay.MoveOrder( p2Ship.gid, (35,35) )
+        moP2M2 = gameplay.MoveOrder( p2Ship.gid, (55,45) )
 
         testTurn.addMoveOrder( moP1M1, 1, reg )
         testTurn.addMoveOrder( moP1M2, 1, reg )
