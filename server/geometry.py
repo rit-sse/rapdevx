@@ -1,4 +1,4 @@
-from math import *
+from math import acos, sin
 
 DEFAULT_TOLERANCE_FACTOR = 0.005
 
@@ -143,11 +143,27 @@ def getCollisionPoint( source, destination, point, sourceRadius, pointRadius, ra
 	'''
 	pass
 
-def getClosestPointOnSegment( source, destination, point, delta ):
+def getClosestPointOnSegment( source, destination, point, delta = DEFAULT_TOLERANCE_FACTOR ):
 	'''
-	Given three points on the same line segment, determine which point is closest to 
+	Given a line segment and a point on that line segment, determine which end
+	of the line segment is closer.
 
 	Note: This function assumes that point is on the line segment and doesn't
 	actually verify if it is or not.
+
+	source - A tuple containing the first pair of (x,y) coordinates for the
+			 line segment.
+	destination - A tuple containing the other pair of (x,y) coordinates for
+				  the line segment.
+	point - A tuple containing the (x,y) coordinates for some point on the line.
+	delta - Tolerance factor. Uses DEFAULT_TOLERANCE_FACTOR by default.
 	'''
-	pass
+
+	s2pDistance = distance( source, point )
+	p2dDistance = distance( point, destination )
+
+	if( s2pDistance <= p2dDistance ):
+		return source
+
+	else:
+		return destination
