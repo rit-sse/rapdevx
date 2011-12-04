@@ -14,13 +14,13 @@ public class Results {
 
 	private static ObjectMapper mapper = new ObjectMapper();
 	
-	private Map<String,LinkedList<Integer>> results = new Hashtable<String,LinkedList<Integer>>();
+	private Map<String,LinkedList<Hashtable<Integer,Integer>>> results = new Hashtable<String,LinkedList<Hashtable<Integer,Integer>>>();
 
-	public Map<String,LinkedList<Integer>> getResults() {
+	public Map<String, LinkedList<Hashtable<Integer, Integer>>> getResults() {
 		return results;
 	}
 
-	public void setResults(Map<String,LinkedList<Integer>> results) {
+	public void setResults(Map<String, LinkedList<Hashtable<Integer, Integer>>> results) {
 		this.results = results;
 	}
 	
