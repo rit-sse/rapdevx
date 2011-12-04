@@ -15,7 +15,7 @@ public class MapScreen extends Screen {
 	public MapScreen(int width, int height) {
 		super(width, height);
 		
-		background = new Background(0, 0, screenWidth, screenHeight);
+		background = new Background();
 		camera = new Camera(0, 0, screenWidth, screenHeight);
 	}
 	
