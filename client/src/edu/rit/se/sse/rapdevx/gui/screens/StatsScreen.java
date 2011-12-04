@@ -3,7 +3,6 @@ package edu.rit.se.sse.rapdevx.gui.screens;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import java.awt.Toolkit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,6 +69,9 @@ public class StatsScreen extends Screen
 		
 		List<Ability> abilities = new ArrayList<Ability>();
 		abilities.add(new Ability());
+		abilities.get(0).setDefault_damage(5);
+		abilities.get(0).setName("Bob");
+		abilities.get(0).setRadius(9);
 		abilities.add(new Ability());
 		
 		//GameSession.get().findByClassId(ship.getClassID()).getAbilities();
