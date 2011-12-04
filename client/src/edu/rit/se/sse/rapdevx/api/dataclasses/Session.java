@@ -79,9 +79,10 @@ public class Session {
 	 * 
 	 * @param Session
 	 */
-	public void toJSON(Session session){
+	public String toJSON(Session session){
 		try {
 			mapper.writeValue(new File("SessionFromJava.json"), session);
+			return mapper.writeValueAsString(session);
 		} catch (JsonGenerationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -92,6 +93,8 @@ public class Session {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		return null;
 	}
 	
 	public Session(){
