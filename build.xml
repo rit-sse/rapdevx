@@ -131,9 +131,8 @@
 
     <target name="server.test" description="Run Python unit tests">
         <mkdir dir="${test.reports}" />
-        <exec dir="server" executable="python">
-            <arg value="-m" />
-            <arg value="unittest" />
+        <exec dir="server" executable="python3.2">
+            <arg value="server/test/tester.py" />
         </exec>
     </target>
     
