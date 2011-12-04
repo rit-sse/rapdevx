@@ -122,9 +122,11 @@ public class SessionApi {
 	 * of the provided session.
 	 */
 	public static Session updateSession(Session sessionToCheck) {
+		String json = getResponse("/session/" + sessionToCheck.getgID());
 		
+		Session session = Session.fromJSON(json);
 		
-		return null;
+		return session;
 	}
 
 	/**
