@@ -27,6 +27,9 @@ public class StartingState extends StateBase {
 		AssetLibrary.setAssets(GameApi
 				.getAssets(GameSession.get().getSession()));
 
+		int phaseNum = GameApi.getStatus(GameSession.get().getSession())
+				.getPhase();
+
 		// yay, we're ready!
 		GameApi.setReady(GameSession.get().getSession());
 
@@ -34,11 +37,12 @@ public class StartingState extends StateBase {
 
 			@Override
 			public void run() {
-				// TODO poll for phase # change
-
-				// once phase # has changed, we're ready to change states
-				this.cancel();
-				ready();
+				if (GameApi.getStatus(GameSession.get().getSession())
+						.getPhase() != phaseNum) {
+					// once phase # has changed, we're ready to change states
+					this.cancel();
+					ready();
+				}
 			}
 
 		}, 0, 1);
