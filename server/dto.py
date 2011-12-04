@@ -118,6 +118,13 @@ class DTO_AttackResults:
     #results = list of DTO_AbilityUseOrders that were executed
     def __init__(self,results):
         self.results = results
+
+    def encode(self):
+        r = {}
+        r['results'] = []
+        for auo in self.results:
+            r['results'].append(auo.encode())
+        return json.dumps(r)
    
 class DTO_Results:
     #results = map of ship id to PATH of ship
