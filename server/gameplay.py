@@ -118,7 +118,7 @@ class Ability:
     an "offensive" attack or a "healing" attack.
     '''
 
-    def __init__(self, radius, name, default_damage, special_damages):
+    def __init__(self, radius=50, name="default", default_damage=10, special_damages={}):
         '''
         Constructor.
 
@@ -225,9 +225,11 @@ class MoveTurn:
         '''
 
         player_nums = sorted(self.player_move_list.keys())
-        #todo: "rotate" player nums based on the turn number, so 
-        #a different player gets to go "first" every turn
-        if not self.turn_num == 0:
+        # "rotate" player nums based on the turn number, so 
+        # a different player gets to go "first" every turn
+        num_of_players = len(player_nums)
+        num_of_shuffles = self.turn_num % num_of_players
+        for x in range(num_of_shuffles):
             player_num.append(player_num.pop(0))
         
         lists = [self.player_move_list[x] for x in player_nums]
