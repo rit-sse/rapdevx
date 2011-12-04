@@ -297,7 +297,7 @@ class AttackTurn:
             target = registry.getById(attack_order.targetid)
             
             if None not in [attacker,target]:
-                self.results.append(attack_order)
+                self.results.append(attack_order.to_dto())
                 ability = registry.getById(attack_order.ability)
                 damage = ability.damageForTypes(target.types)
                 target.setHP(target.getHP()-damage)

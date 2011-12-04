@@ -111,7 +111,12 @@ class DTO_ShipPlacement:
         r['y'] = self.y
         r['classid'] = self.classid
         return json.dumps(r)
-    
+   
+class DTO_AttackResults:
+    #results = list of DTO_AbilityUseOrders that were executed
+    def __init__(self,results):
+        self.results = results
+   
 class DTO_Results:
     #results = map of ship id to PATH of ship
     #   PATH = list of x,y tuples
