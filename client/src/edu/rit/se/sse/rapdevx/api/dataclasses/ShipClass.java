@@ -12,20 +12,15 @@ import org.codehaus.jackson.map.ObjectMapper;
 
 public class ShipClass {
 
-	private ObjectMapper mapper = new ObjectMapper();
-	private List<String> types = new LinkedList<String>();
+	private static ObjectMapper mapper = new ObjectMapper();
 	private List<String> abilities = new LinkedList<String>();
+	private List<String> types = new LinkedList<String>();
 	private int maxhp;
 	private int radius;
 	private int placement_cost;
+	private String imageid;
 	private String gid;
 	
-	public List<String> getTypes() {
-		return types;
-	}
-	public void setTypes(List<String> types) {
-		this.types = types;
-	}
 	public List<String> getAbilities() {
 		return abilities;
 	}
@@ -63,7 +58,7 @@ public class ShipClass {
 	 * 
 	 * @return The mapped ShipClass as an ShipClass object. or null if error.
 	 */
-	public ShipClass fromJSON(){
+	public static ShipClass fromJSON(){
 
 		try {
 			ShipClass shipClass = mapper.readValue(new File("ShipClassToJava.json"), ShipClass.class);
@@ -103,6 +98,18 @@ public class ShipClass {
 	
 	public ShipClass(){
 		
+	}
+	public void setImageid(String imageid) {
+		this.imageid = imageid;
+	}
+	public String getImageid() {
+		return imageid;
+	}
+	public void setTypes(List<String> types) {
+		this.types = types;
+	}
+	public List<String> getTypes() {
+		return types;
 	}
 	
 }

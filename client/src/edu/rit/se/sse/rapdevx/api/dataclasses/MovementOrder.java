@@ -19,10 +19,10 @@ import org.codehaus.jackson.map.ObjectMapper;
  */
 public class MovementOrder {
 	
-	private ObjectMapper mapper = new ObjectMapper();
+	private static ObjectMapper mapper = new ObjectMapper();
 	
 	private String unitID;
-	private LinkedList<Hashtable<Integer,Integer>> PATH = new LinkedList<Hashtable<Integer,Integer>>();
+	private LinkedList<Hashtable<Integer,Integer>> path = new LinkedList<Hashtable<Integer,Integer>>();
 	private String gid;
 	
 	public String getUnitID() {
@@ -32,10 +32,10 @@ public class MovementOrder {
 		this.unitID = unitID;
 	}
 	public LinkedList<Hashtable<Integer,Integer>> getPATH() {
-		return PATH;
+		return path;
 	}
 	public void setPATH(LinkedList<Hashtable<Integer,Integer>> pATH) {
-		PATH = pATH;
+		path = pATH;
 	}
 	public String getGid() {
 		return gid;
@@ -50,10 +50,10 @@ public class MovementOrder {
 	 * 
 	 * @return The mapped MovementOrder as an MovementOrder object. or null if error.
 	 */
-	public MovementOrder fromJSON(){
+	public static MovementOrder fromJSON(String incomingJson){
 
 		try {
-			MovementOrder movementOrder = mapper.readValue(new File("MovementOrderToJava.json"), MovementOrder.class);
+			MovementOrder movementOrder = mapper.readValue(incomingJson, MovementOrder.class);
 			return movementOrder;
 		} catch (JsonParseException e) {
 			// TODO Auto-generated catch block
