@@ -2,6 +2,7 @@ package edu.rit.se.sse.rapdevx;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import java.util.Scanner;
@@ -62,6 +63,26 @@ public class TestJSONFromServerToClient
 	
 	@Test
 	public void testShipClass() {
+		ShipClass fromClient = new ShipClass();
 		
+		ArrayList<String> sc_ab_lst = new ArrayList<String>();
+		sc_ab_lst.add("this is a gid");		
+		
+		fromClient.setGid("thisisanid");
+		fromClient.setImageid("imgtest.png");
+		fromClient.setAbilities(sc_ab_lst);
+		fromClient.setMaxhp(999);
+		fromClient.setRadius(10);
+		fromClient.setPlacement_cost(5);
+		
+		ShipClass fromServer = ShipClass.fromJSON(readFile("client/test/edu/rit/se/sse/rapdevx/json_sync/ShipClassFromServer.json"));
+		
+		assertEquals(fromServer.getAbilities(), fromClient.getAbilities());
+		assertEquals(fromServer.getGid(), fromClient.getGid());
+		assertEquals(fromServer.getImageid(), fromClient.getImageid());
+		assertEquals(fromServer.getMaxhp(), fromClient.getMaxhp());
+		assertEquals(fromServer.getPlacement_cost(), fromClient.getPlacement_cost());
+		assertEquals(fromServer.getRadius(), fromClient.getRadius());
+		assertEquals(fromServer.getTypes(), fromClient.getTypes());
 	}
 }

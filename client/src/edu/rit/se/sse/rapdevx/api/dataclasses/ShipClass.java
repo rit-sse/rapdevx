@@ -58,10 +58,10 @@ public class ShipClass {
 	 * 
 	 * @return The mapped ShipClass as an ShipClass object. or null if error.
 	 */
-	public static ShipClass fromJSON(){
+	public static ShipClass fromJSON(String incomingJson){
 
 		try {
-			ShipClass shipClass = mapper.readValue(new File("ShipClassToJava.json"), ShipClass.class);
+			ShipClass shipClass = mapper.readValue(incomingJson, ShipClass.class);
 			return shipClass;
 		} catch (JsonParseException e) {
 			// TODO Auto-generated catch block

@@ -85,6 +85,8 @@ public class TestJSONSync {
 		ArrayList<String> sc_ab_lst = new ArrayList<String>();
 		sc_ab_lst.add("this is a gid");		
 		
+		sc.setGid("thisisanid");
+		sc.setImageid("imgtest.png");
 		sc.setAbilities(sc_ab_lst);
 		sc.setMaxhp(999);
 		sc.setRadius(10);
