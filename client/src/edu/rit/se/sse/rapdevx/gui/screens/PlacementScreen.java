@@ -3,6 +3,7 @@ package edu.rit.se.sse.rapdevx.gui.screens;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -21,6 +22,9 @@ public class PlacementScreen extends Screen implements StateListener {
 	private static final Color PLACEMENT_CLEAR = new Color(124, 124, 124, 124);
 	private static final Color PLACEMENT_SOLID = new Color(124, 124, 124);
 	
+	private static final Color BUTTON_CLEAR_BACK = new Color(160, 160, 160, 96);
+	private static final Color BUTTON_SOLID_BACK = new Color(192, 192, 192);
+	
 	/** A reference to the map camera for positioning objects in world space */
 	private Camera camera;
 	
@@ -29,9 +33,13 @@ public class PlacementScreen extends Screen implements StateListener {
 	private int shownIndex;
 	
 	private Rectangle upArea;
+	private Polygon upTriangle;
 	private Rectangle downArea;
+	private Polygon downTriangle;
+	private Rectangle hoveredRectangle;
 	
 	private ArrayList<ShipSelectSquare> shipSelectSquares;
+	private ShipSelectSquare selectedSquare;
 	
 	public PlacementScreen(Camera camera, int width, int height) {
 		super(width, height);
@@ -48,10 +56,20 @@ public class PlacementScreen extends Screen implements StateListener {
 		upArea.y = 4;
 		upArea.translate(placementArea.x, placementArea.y);
 		
+		upTriangle = new Polygon();
+		upTriangle.addPoint(upArea.x + 4, upArea.y + 28);
+		upTriangle.addPoint(upArea.x + 64, upArea.y + 28);
+		upTriangle.addPoint(upArea.x + 36, upArea.y + 4);
+		
 		downArea = new Rectangle(72, 32);
 		downArea.x = 8;
 		downArea.y = 436;
 		downArea.translate(placementArea.x, placementArea.y);
+		
+		downTriangle = new Polygon();
+		downTriangle.addPoint(downArea.x + 4, downArea.y + 4);
+		downTriangle.addPoint(downArea.x + 64, downArea.y + 4);
+		downTriangle.addPoint(downArea.x + 36, downArea.y + 28);
 		
 		shownIndex = 0;
 		
@@ -75,20 +93,33 @@ public class PlacementScreen extends Screen implements StateListener {
 				placementArea.width, placementArea.height,
 				15, 15);
 		
-		// TODO use arrows as images
-		if (shownIndex != 0) gPen.setColor(Color.RED);
-		else                 gPen.setColor(Color.GRAY);
+		int buttonAlpha = 96;
+		int grayLevel = 160;
+		if (hoveredRectangle == upArea) buttonAlpha = 255;
+		if (shownIndex == 0) buttonAlpha = 0;
+		if (hoveredRectangle == upArea) grayLevel = 192;
+		
+		gPen.setColor(new Color(grayLevel, grayLevel, grayLevel, buttonAlpha));
 		gPen.fillRoundRect(upArea.x, upArea.y, 
 				upArea.width, upArea.height,
 				10, 10);
 		
-		// TODO use arrows as images
-		if (shownIndex < shipSelectSquares.size() - 5) 
-			 gPen.setColor(Color.RED);
-		else gPen.setColor(Color.GRAY);
+		gPen.setColor(new Color(255, 0, 0, buttonAlpha));
+		gPen.fillPolygon(upTriangle);
+		
+		buttonAlpha = 96;
+		grayLevel = 160;
+		if (hoveredRectangle == downArea) buttonAlpha = 255;
+		if (shownIndex >= shipSelectSquares.size() - 5) buttonAlpha = 0;
+		if (hoveredRectangle == downArea) grayLevel = 192;
+		
+		gPen.setColor(new Color(grayLevel, grayLevel, grayLevel, buttonAlpha));
 		gPen.fillRoundRect(downArea.x, downArea.y, 
 				downArea.width, downArea.height,
 				10, 10);
+
+		gPen.setColor(new Color(255, 0, 0, buttonAlpha));
+		gPen.fillPolygon(downTriangle);
 		
 		for (int i = shownIndex; i < shownIndex + 5; i++) {
 			if (i >= shipSelectSquares.size()) break;
@@ -120,6 +151,28 @@ public class PlacementScreen extends Screen implements StateListener {
 			e.consume();
 		}
 		
+		if (e.isConsumed())
+			return;
+		
+		for (ShipSelectSquare square : shipSelectSquares) {
+			if (square.containsPoint(e.getPoint())) {
+				if (selectedSquare != null) {
+					selectedSquare.setSelected(false);
+				}
+				
+				selectedSquare = square;
+				selectedSquare.setSelected(true);
+				e.consume();
+				return;
+			}
+		}
+		
+		if (selectedSquare != null) {
+			// TODO place a ship
+			selectedSquare.setSelected(false);
+			e.consume();
+		}
+		
 	}
 	
 	public void mouseMoved(MouseEvent e) {
@@ -127,10 +180,23 @@ public class PlacementScreen extends Screen implements StateListener {
 		placementColor = PLACEMENT_CLEAR;
 		if (placementArea.contains(e.getPoint())) {
 			placementColor = PLACEMENT_SOLID;
+			e.consume();
 		}
 		
 		for (ShipSelectSquare square : shipSelectSquares) {
 			square.setHoveredOver(square.containsPoint(e.getPoint()));
+		}
+		
+		if (upArea.contains(e.getPoint())) {
+			hoveredRectangle = upArea;
+			e.consume();
+		}
+		else if (downArea.contains(e.getPoint())) {
+			hoveredRectangle = downArea;
+			e.consume();
+		}
+		else {
+			hoveredRectangle = null;
 		}
 		
 	}
@@ -150,6 +216,7 @@ public class PlacementScreen extends Screen implements StateListener {
 		private Rectangle selectArea;
 		private Color selectColor = SELECT_CLEAR;
 		private boolean isHoveredOver;
+		private boolean isSelected;
 		
 		// TODO Probably don't want to use drawable ship...
 		private DrawableShip ship;
@@ -177,12 +244,13 @@ public class PlacementScreen extends Screen implements StateListener {
 		
 		public void draw(Graphics2D gPen) {
 			
-			gPen.setColor(selectColor);
+			if (this.isSelected) gPen.setColor(SELECT_SOLID);
+			else                 gPen.setColor(selectColor);
 			gPen.fillRoundRect(selectArea.x, selectArea.y, 
 					selectArea.width, selectArea.height,
 					10, 10);
 			
-			if (this.isHoveredOver) {
+			if (this.isHoveredOver || this.isSelected) {
 				gPen.setColor(Color.BLUE);
 				gPen.drawRoundRect(selectArea.x, selectArea.y, 
 					selectArea.width, selectArea.height,
@@ -201,6 +269,10 @@ public class PlacementScreen extends Screen implements StateListener {
 			else {
 				selectColor = SELECT_CLEAR;
 			}
+		}
+		
+		public void setSelected(boolean selected) {
+			this.isSelected = selected;
 		}
 		
 		public int magicMoveConstant = 80;
