@@ -1,4 +1,4 @@
-package edu.rit.se.sse.rapdevx.gui;
+package edu.rit.se.sse.rapdevx.gui.drawable;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -14,6 +14,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import edu.rit.se.sse.rapdevx.clientmodels.Ship;
+import edu.rit.se.sse.rapdevx.gui.ImageColorizer;
 
 public class DrawableShip extends DrawableObject {
 	

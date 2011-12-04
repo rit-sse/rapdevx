@@ -1,4 +1,4 @@
-package edu.rit.se.sse.rapdevx.gui;
+package edu.rit.se.sse.rapdevx.gui.drawable;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -7,6 +7,9 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+
+import edu.rit.se.sse.rapdevx.gui.ImageColorizer;
+import edu.rit.se.sse.rapdevx.gui.drawable.DrawableObject;
 
 public class Text extends DrawableObject {
 

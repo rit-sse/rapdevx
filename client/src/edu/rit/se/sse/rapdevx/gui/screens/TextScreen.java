@@ -9,7 +9,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import edu.rit.se.sse.rapdevx.gui.Screen;
-import edu.rit.se.sse.rapdevx.gui.Text;
+import edu.rit.se.sse.rapdevx.gui.drawable.Text;
 
 public class TextScreen extends Screen {
 	

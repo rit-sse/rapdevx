@@ -5,8 +5,8 @@ import java.awt.Point;
 import java.awt.event.MouseEvent;
 
 import edu.rit.se.sse.rapdevx.clientmodels.Path;
-import edu.rit.se.sse.rapdevx.gui.DrawablePath;
 import edu.rit.se.sse.rapdevx.gui.Screen;
+import edu.rit.se.sse.rapdevx.gui.drawable.DrawablePath;
 
 public class PathTestScreen extends Screen {
 	

@@ -9,7 +9,7 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
 import edu.rit.se.sse.rapdevx.gui.RectangleBackground;
-import edu.rit.se.sse.rapdevx.gui.Text;
+import edu.rit.se.sse.rapdevx.gui.drawable.Text;
 
 /**
  * @author dpk3062

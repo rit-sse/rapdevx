@@ -11,7 +11,9 @@ import java.util.ArrayList;
 import edu.rit.se.sse.rapdevx.clientmodels.Ship;
 import edu.rit.se.sse.rapdevx.events.StateEvent;
 import edu.rit.se.sse.rapdevx.events.StateListener;
+import edu.rit.se.sse.rapdevx.gui.drawable.Camera;
 import edu.rit.se.sse.rapdevx.gui.drawable.DrawableAttack;
+import edu.rit.se.sse.rapdevx.gui.drawable.DrawableShip;
 
 public class AttackScreen extends Screen implements StateListener {
 	/** A reference to the map camera for positioning objects in world space */

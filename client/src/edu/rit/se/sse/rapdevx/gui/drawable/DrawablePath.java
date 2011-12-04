@@ -1,4 +1,4 @@
-package edu.rit.se.sse.rapdevx.gui;
+package edu.rit.se.sse.rapdevx.gui.drawable;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
