@@ -254,13 +254,11 @@ def JSON_Construct_DTO_AttackResults(jsonstring):
     return DTO_AttackResults(newabilityuseorderlist)
 
 def JSON_Construct_DTO_Results(jsonstring):
-    print("ASDUIFUISDJFIOSDJFIOSDJFIOJSDIOFJS")
     attribute_dictionary = json.loads(jsonstring)
     resultslist = attribute_dictionary.pop('results')
-    newresultslistoftuples = []
+    newresultslistoftuples = {}
     for v in resultslist:
-        print(v)
-        newresultslistoftuples.append(tuple(v))
+        newresultslistoftuples[v] = tuple(resultslist[v])
     return DTO_Results(newresultslistoftuples)
 
 def JSON_Construct_DTO_MovementOrder(jsonstring):
