@@ -11,11 +11,13 @@ import java.awt.geom.Rectangle2D;
 public class DrawableAttack extends DrawableObject
 {
 	private Point mouseLocation;
+	
 	private DrawableShip source;
+	private DrawableShip selectedShip;
 
 	private AttackScreen parent;
-
-	private DrawableShip selectedShip;
+	
+	private boolean lockedOn = false;
 
 	public DrawableAttack(DrawableShip source, AttackScreen parent)
 	{
@@ -26,7 +28,7 @@ public class DrawableAttack extends DrawableObject
 
 	public void draw(Graphics2D gPen)
 	{
-		if (selectedShip != null)
+		if (selectedShip != null || lockedOn)
 		{
 			setMouseLocation(selectedShip.getCenter());
 		}
@@ -70,7 +72,7 @@ public class DrawableAttack extends DrawableObject
 	 */
 	private void drawRecticule(Graphics2D gPen, int x, int y)
 	{
-		selectedShip = null;
+		selectedShip = lockedOn ? selectedShip : null;
 		gPen.setStroke(new BasicStroke(2.0f));
 
 		// check if overlaying ship
@@ -93,5 +95,11 @@ public class DrawableAttack extends DrawableObject
 
 		// reset color
 		gPen.setColor(new Color(0, 255, 0));
+	}
+	
+	public void lockOn(DrawableShip target)
+	{
+		lockedOn = true;
+		selectedShip = target;
 	}
 }
