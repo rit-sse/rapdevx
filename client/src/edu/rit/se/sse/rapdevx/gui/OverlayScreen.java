@@ -37,16 +37,17 @@ public class OverlayScreen extends Screen implements StateListener
 			"pause", "forward", "forwardfast", "skip" };
 
 	private IGrayableImage selectedImage;
-	
+
 	private Text readyText;
 	private Text stateText;
 	private Text turnText;
 
 	private boolean isReady;
+	private boolean displayPlayback = false;
 
 	private Rectangle mainBounds;
 	private Rectangle playbackBounds;
-	
+
 	private int center;
 	private int turn = 0;
 
@@ -54,7 +55,7 @@ public class OverlayScreen extends Screen implements StateListener
 	{
 		super(width, height);
 		center = width / 2;
-		
+
 		int STARTING_X = width / 2 - 128 - 64;
 		int STARTING_Y = 0;
 
@@ -87,9 +88,11 @@ public class OverlayScreen extends Screen implements StateListener
 				+ READY_MODIFIER_X, STARTING_Y, insetLeft, insetTop);
 		readyDisabled = new GrayableImage("assets/Ready-disabled.png",
 				STARTING_X + READY_MODIFIER_X, STARTING_Y, insetLeft, insetTop);
-		
-		readyText = new Text("Ready", STARTING_X + READY_MODIFIER_X + 28, STARTING_Y + 9, Color.BLACK);
-		stateText = new Text("Waiting...:" + turn, STARTING_X + 100, 15, 2.5, Color.BLACK);
+
+		readyText = new Text("Ready", STARTING_X + READY_MODIFIER_X + 28,
+				STARTING_Y + 9, Color.BLACK);
+		stateText = new Text("Waiting...:" + turn, STARTING_X + 100, 15, 2.5,
+				Color.BLACK);
 	}
 
 	public void update(boolean hasFocus, boolean isVisible)
@@ -105,10 +108,13 @@ public class OverlayScreen extends Screen implements StateListener
 	public void draw(Graphics2D gPen)
 	{
 
-		// Bottom part, conditional, playback buttons
-		for(IGrayableImage img : turnControlImages)
+		if (displayPlayback)
 		{
-			img.draw(gPen);
+			// Bottom part, conditional, playback buttons
+			for (IGrayableImage img : turnControlImages)
+			{
+				img.draw(gPen);
+			}
 		}
 
 		// Top part, under phase bar
@@ -121,7 +127,7 @@ public class OverlayScreen extends Screen implements StateListener
 
 		// Top part, phase bar
 		phase.draw(gPen);
-		
+
 		readyText.draw(gPen);
 		stateText.draw(gPen);
 	}
@@ -136,6 +142,8 @@ public class OverlayScreen extends Screen implements StateListener
 			}
 			else if (redo.containsPoint(e.getPoint()))
 			{
+				//TODO temp for testing purposes
+				displayPlayback = !displayPlayback;
 			}
 			else if (readyEnabled.containsPoint(e.getPoint()))
 			{
@@ -147,14 +155,14 @@ public class OverlayScreen extends Screen implements StateListener
 		// if playback controls are active TODO
 		else if (playbackBounds.contains(e.getPoint()))
 		{
-			for(IGrayableImage img : turnControlImages)
+			for (IGrayableImage img : turnControlImages)
 			{
-				if(img.containsPoint(e.getPoint()))
+				if (img.containsPoint(e.getPoint()))
 				{
 				}
 			}
 		}
-		
+
 		e.consume();
 	}
 
@@ -180,9 +188,9 @@ public class OverlayScreen extends Screen implements StateListener
 		// if playback controls are active TODO
 		else if (playbackBounds.contains(e.getPoint()))
 		{
-			for(IGrayableImage img : turnControlImages)
+			for (IGrayableImage img : turnControlImages)
 			{
-				if(img.containsPoint(e.getPoint()))
+				if (img.containsPoint(e.getPoint()))
 				{
 					currentlyOver = img;
 				}
@@ -207,11 +215,13 @@ public class OverlayScreen extends Screen implements StateListener
 
 		if (e.getNewState() instanceof StartingState)
 		{
-			stateText = new Text("Waiting...:" + turn, center - 92, 15, Color.BLACK);
+			stateText = new Text("Waiting...:" + turn, center - 92, 15,
+					Color.BLACK);
 		}
 		else if (e.getNewState() instanceof UnitPlacementState)
 		{
-			stateText = new Text("Placing:" + turn, center - 92, 15, Color.BLACK);
+			stateText = new Text("Placing:" + turn, center - 92, 15,
+					Color.BLACK);
 		}
 		else if (e.getNewState() instanceof MoveState)
 		{
