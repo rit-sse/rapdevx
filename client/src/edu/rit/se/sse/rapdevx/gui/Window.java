@@ -87,7 +87,8 @@ public class Window {
 		testMenu.addButton(playButton);
 		testMenu.addButton(settingsButton);
 		testMenu.addButton(helpButton);
-		//screenStack.addScreen(testMenu);;
+		//ScreenStack.get().addScreen(testMenu);;
+		ScreenStack.get().addScreen(new PlacementScreen(mapScreen.getCamera(), 100, 100));
 
 		// Add the panel to the window
 		// window.getContentPane().add(screenStack);
