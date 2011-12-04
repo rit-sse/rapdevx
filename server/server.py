@@ -40,7 +40,7 @@ def create_session():
     if game_id == '':
         game_id = None
     
-    session = Session(nickname, game_id)
+    session = Session(nickname)
 
     session_manager.register_session(session, game_id)
 
