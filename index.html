@@ -1,0 +1,39 @@
+---
+layout: default
+title: SSE Rapid Development Weekend
+---
+
+<h1>Super Space Exterminator</h1>
+
+<div class="left">
+    <div class="block repos">
+        <h2>Source Code Repositories</h2>
+        <ul>
+            <li><a href="https://github.com/rit-sse/rapdevx">Main</a></li>
+            <li><a href="https://github.com/rit-sse/rapdevx-client">Client</a></li>
+            <li><a href="https://github.com/rit-sse/rapdevx-gui">Client Resources</a></li>
+            <li><a href="https://github.com/rit-sse/rapdevx-server">Server</a></li>
+            <li><a href="https://github.com/rit-sse/rapdevx-api">API</a></li>
+        </ul>
+    </div>
+</div>
+
+<div class="right">
+    
+    <div class="block ewcc">
+        <h2>Epic Week of Crash Courses</h2>
+    {% for post in site.categories.ewcc %}
+        <article>
+            <h1>{{ post.title }}</h1>
+            <a href="ewcc/{{ post.ppt }}">PPT</a>
+            <a href="ewcc/{{ post.pdf }}">PDF</a>
+        </article>
+    {% endfor %}
+    </div>
+
+    <div class="block jenkins">
+        <h2>Continuous Integration</h2>
+        <a href="/jenkins">Jenkins</a>
+    </div>
+    
+</div>
