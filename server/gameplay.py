@@ -2,7 +2,16 @@ from dto import *
 from geometry import *
 
 def swizzle(lists):
-    lists = [x[:] for x in lists]
+    ''' swizzle: List of lists -> List
+    Returns a list whose elements are alternating elements of the lists passed.
+    Example: swizzle( [0, 1, 2] , [3, 4, 5] ) -> [0, 3, 1, 4, 2, 5]
+    '''
+    nonEmptyLists = []
+    for x in range(len(lists)):
+        if not len(lists[x]) == 0:
+            # Remove empty lists; they fizzle the swizzle and don't affect the result
+            nonEmptyLists.append(lists[x])
+    lists = nonEmptyLists
     results = []
     i = 0
     while lists:
