@@ -94,7 +94,6 @@ class DTO_Assets:
         r['abilities'] = []
         for ab in self.abilities:
             r['abilities'].append(ab.encode())
-        print(r)
         return json.dumps(r)
     
 

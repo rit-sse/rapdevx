@@ -22,7 +22,7 @@ public class AbilityUseOrder {
 	private String srcID;
 	private String targetID;
 	private String ability;
-	private String gID;
+	private String gid;
 	
 	public String getSrcID() {
 		return srcID;
@@ -43,10 +43,10 @@ public class AbilityUseOrder {
 		this.targetID = targetID;
 	}
 	public String getgID() {
-		return gID;
+		return gid;
 	}
-	public void setgID(String gID) {
-		this.gID = gID;
+	public void setgID(String gid) {
+		this.gid = gid;
 	}
 	
 

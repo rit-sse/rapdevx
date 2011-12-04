@@ -22,7 +22,7 @@ public class MovementOrder {
 	private static ObjectMapper mapper = new ObjectMapper();
 	
 	private String unitID;
-	private LinkedList<Hashtable<Integer,Integer>> path = new LinkedList<Hashtable<Integer,Integer>>();
+	private LinkedList<Hashtable<Integer,Integer>> PATH = new LinkedList<Hashtable<Integer,Integer>>();
 	private String gid;
 	
 	public String getUnitID() {
@@ -31,11 +31,11 @@ public class MovementOrder {
 	public void setUnitID(String unitID) {
 		this.unitID = unitID;
 	}
-	public LinkedList<Hashtable<Integer,Integer>> getPath() {
-		return path;
+	public LinkedList<Hashtable<Integer,Integer>> getPATH() {
+		return PATH;
 	}
-	public void setPath(LinkedList<Hashtable<Integer,Integer>> path) {
-		this.path = path;
+	public void setPATH(LinkedList<Hashtable<Integer,Integer>> pATH) {
+		PATH = pATH;
 	}
 	public String getGid() {
 		return gid;

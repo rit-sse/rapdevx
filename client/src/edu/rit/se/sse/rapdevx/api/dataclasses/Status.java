@@ -2,6 +2,7 @@ package edu.rit.se.sse.rapdevx.api.dataclasses;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.JsonParseException;
@@ -19,7 +20,8 @@ public class Status {
 	private static ObjectMapper mapper = new ObjectMapper();
 	
 	private int turn;
-	private String phase;
+	private int phase;
+	private List<String> player_list;
 	private int me;
 	
 	public int getTurn() {
@@ -28,10 +30,10 @@ public class Status {
 	public void setTurn(int turn) {
 		this.turn = turn;
 	}
-	public String getPhase() {
+	public int getPhase() {
 		return phase;
 	}
-	public void setPhase(String phase) {
+	public void setPhase(int phase) {
 		this.phase = phase;
 	}
 	public int getMe() {
@@ -86,6 +88,12 @@ public class Status {
 	
 	public Status(){
 		
+	}
+	public void setPlayer_list(List<String> player_list) {
+		this.player_list = player_list;
+	}
+	public List<String> getPlayer_list() {
+		return player_list;
 	}
 	
 }

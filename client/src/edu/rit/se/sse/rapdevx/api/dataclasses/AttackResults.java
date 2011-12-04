@@ -24,6 +24,8 @@ public class AttackResults {
 		this.results = results;
 	}
 	
+
+
 	/**
 	 * Creates and maps to an AttackResults object.
 	 * 

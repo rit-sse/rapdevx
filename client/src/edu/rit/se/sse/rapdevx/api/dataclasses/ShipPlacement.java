@@ -21,7 +21,7 @@ public class ShipPlacement {
 	
 	private int x;
 	private int y;
-	private String classid;
+	private int classid;
 	
 	public int getX() {
 		return x;
@@ -35,10 +35,10 @@ public class ShipPlacement {
 	public void setY(int y) {
 		this.y = y;
 	}
-	public String getClassid() {
+	public int getClassid() {
 		return classid;
 	}
-	public void setClassid(String classid) {
+	public void setClassid(int classid) {
 		this.classid = classid;
 	}
 	

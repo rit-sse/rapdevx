@@ -23,7 +23,7 @@ public class Assets {
 	private List<ShipClass>		ship_classes;
 	// needs to be changed to AssetImage once the object exists.
 	private List<AssetImage>	images;
-	private List<Ability>		abilities;
+	private List<String>		abilities;
 	private static ObjectMapper		mapper	= new ObjectMapper();
 
 	public int getWidth() {
@@ -58,11 +58,11 @@ public class Assets {
 		this.images = images;
 	}
 
-	public List<Ability> getAbilities() {
+	public List<String> getAbilities() {
 		return abilities;
 	}
 
-	public void setAbilities(List<Ability> abilities) {
+	public void setAbilities(List<String> abilities) {
 		this.abilities = abilities;
 	}
 
@@ -114,7 +114,7 @@ public class Assets {
 	public Assets() {
 		ship_classes = new LinkedList<ShipClass>();
 		images = new LinkedList<AssetImage>();
-		abilities = new LinkedList<Ability>();
+		abilities = new LinkedList<String>();
 	}
 
 	public static void main(String args[]) {
@@ -127,6 +127,9 @@ public class Assets {
 		assets.images.add(new AssetImage());
 		assets.images.add(new AssetImage());
 		assets.images.add(new AssetImage());
+		assets.abilities.add("dfgh");
+		assets.abilities.add("cvnnb");
+		assets.abilities.add("hgfd");
 		assets.toJSON(assets);
 	}
 
