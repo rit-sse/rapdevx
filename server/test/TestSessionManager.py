@@ -46,5 +46,8 @@ class TestSessionManager(unittest.TestCase):
 
         self.assertIsNotNone(self.manager.find_session(self.session_a.session_id))
 
+    def test_find_session_on_non_existant_session(self):
+        self.assertIsNone(self.manager.find_session("not-a-session"))
+
 if __name__ == "__main__":
     unittest.main()

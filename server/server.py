@@ -74,11 +74,11 @@ def get_game_assets(game_id=None):
 def g_game(game_id=None):
     game = get_game(game_id)
 
-    status = game.getGameProgress
+    status = game.getGameProgress()
 
     return status.encode()
 
-# Indicate that the user is ready to start the gaem
+# Indicate that the user is ready to start the game
 @post('/game/:game_id')
 def g_game(game_id=None):
     ready = request.forms.ready
