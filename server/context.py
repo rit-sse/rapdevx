@@ -20,6 +20,8 @@ class GameContext:
         self.assets = DTO_Assets(1000,1000,[klass.to_dto()],[],[atk.to_dto()])
         self.phase = WaitingPhase(self)
     
+        self.turns = {}
+    
     def getAssetSet(self):
         return self.assets
     
@@ -32,6 +34,15 @@ class GameContext:
     def getAllDTOShips(self, my_playernum):
         return [x.to_dto() for x in self.registry.getAllByType(Unit)]
 
+    def _register_turn(self, turn_number, turn):
+        self.turns[turn_number] = turn
+    
+    def getTurnAttackResults(self, number):
+        return self.turns[number].attack.getResults()
+    
+    def getTurnMoveResults(self, number):
+        return self.turns[number].move.getResults()
+    
     #Passthrough to phase
     def addPlayerMove(self, action_order, calling_player):
         x = self.phase.addPlayerMove(action_order, calling_player)
@@ -67,6 +78,7 @@ class GameContext:
         x = self.phase.setReady(player_num, val)
         self.phase = self.phase.getNextPhase()
         return x
+    
 
 class GamePhase:
     #abstract superclass for all phases
@@ -144,6 +156,7 @@ class MovementPhase(GamePhase):
         GamePhase.__init__(self,context)
         self.ready = [False for x in context.playerlist]
         self.turn = turn
+        self.context._register_turn(turn.turn_num,turn)
 
     def addPlayerMove(self, action_order, calling_player):
         if (isinstance(action_order, MovementOrder)):
@@ -171,10 +184,10 @@ class MovementPhase(GamePhase):
         self.ready[player_num] = val
 
     def getNextPhase(self):
-        if(self.ready.contains(False)):
+        if(False in self.ready):
             return self
         else:
-            self.turn.move.execute()
+            self.turn.move.execute(self.context)
             return AttackPhase(self.context, self.turn)
     
 
@@ -184,6 +197,7 @@ class AttackPhase(GamePhase):
         GamePhase.__init__(self,context)
         self.ready = [False for x in context.playerlist]
         self.turn = turn
+        self.context._register_turn(turn.turn_num,turn)
 
     def addPlayerMove(self, action_order, calling_player):
         if (isinstance(action_order, AbilityUseOrder)):
@@ -251,5 +265,11 @@ if __name__ == '__main__':
     #should be "movement"
 
     print(c.getAllDTOShips(0))
-    
+    print(c.getTurnMoveResults(0))
+
+    c.setReady(1,True)
+    c.setReady(0,True)
+
+    print(c.getTurnMoveResults(0))
+    print(c.phase)    
     

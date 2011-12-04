@@ -152,6 +152,7 @@ class Turn:
     '''
 
     def __init__(self, turn_num):
+        self.turn_num = turn_num
         self.attack = AttackTurn(turn_num)
         self.move = MoveTurn(turn_num)
         self.gid = None #set on registry
