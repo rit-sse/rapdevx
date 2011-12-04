@@ -15,6 +15,7 @@
     <property name="test.build.classes" value="${test.build}/classes" />
     <property name="test.reports" value="reports" />
     <property name="test.reports.junit" value="reports/junit" />
+    <property name="test.reports.pyunit" value="reports/pyunit" />
     <property name="test.reports.pmd" value="reports/pmd" />
     <property name="lib" value="lib" />
     <property name="javadoc" value="${client}/doc" />
@@ -131,6 +132,7 @@
 
     <target name="server.test" description="Run Python unit tests">
         <mkdir dir="${test.reports}" />
+        <mkdir dir="${test.reports.pyunit}" />
         <exec dir="server" executable="python3.2">
             <arg value="server/test/tester.py" />
         </exec>
