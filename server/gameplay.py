@@ -195,8 +195,6 @@ class MoveTurn:
         
         print("MOVE_LIST_FOR_CALLING_PLAYER:", self.player_move_list[calling_player])
         print("MOVE_ORDER TO BE REMOVED:", move_order)
-        print("MOVE_LIST[-1] UNITID:", self.player_move_list[calling_player][-1].unitid)
-        print("MOVE_ORDER UNITID:", move_order.unitid)
 
         self.player_move_list[calling_player].remove(move_order)
 
@@ -405,6 +403,10 @@ class MoveOrder:
         self.path = path
         self.gid = None
         
+    def __eq__(self, other):
+        print("CHECKING TYPE OF OTHER:", type(other))
+        return self.gid == other.gid
+
     def to_dto(self):
         return DTO_MovementOrder(self.unitid, self.path, self.gid)
         

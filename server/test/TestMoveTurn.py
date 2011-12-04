@@ -48,8 +48,6 @@ class TestMoveTurn( unittest.TestCase ):
     def test_removeMoves(self):
         moP1M1 = gameplay.MoveOrder( self.p1Ship.gid, (5,5) )
         moP1M2 = gameplay.MoveOrder( self.p1Ship.gid, (15,15) )
-        self.reg.register(moP1M1)
-        self.reg.register(moP1M2)
 
         self.testTurn.addMoveOrder( moP1M1, 1, self.reg )
         self.testTurn.addMoveOrder( moP1M2, 1, self.reg )
