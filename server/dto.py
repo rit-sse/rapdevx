@@ -42,7 +42,7 @@ class DTO_ShipClass(DTO_ReprMixin):
     
     def encode(self):
         r = {}
-        r['types'] self.types
+        r['types'] = self.types
         r['abilities'] = self.abilities
         r['maxhp'] = self.maxhp
         r['radius'] = self.radius
