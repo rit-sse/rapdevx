@@ -12,7 +12,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 
 public class ShipClass {
 
-	private ObjectMapper mapper = new ObjectMapper();
+	private static ObjectMapper mapper = new ObjectMapper();
 	private List<String> types = new LinkedList<String>();
 	private List<String> abilities = new LinkedList<String>();
 	private int maxhp;
@@ -63,7 +63,7 @@ public class ShipClass {
 	 * 
 	 * @return The mapped ShipClass as an ShipClass object. or null if error.
 	 */
-	public ShipClass fromJSON(){
+	public static ShipClass fromJSON(){
 
 		try {
 			ShipClass shipClass = mapper.readValue(new File("ShipClassToJava.json"), ShipClass.class);

@@ -17,7 +17,7 @@ import org.codehaus.jackson.map.ObjectMapper;
  */
 public class AbilityUseOrder {
 
-	private ObjectMapper mapper = new ObjectMapper();
+	private static ObjectMapper mapper = new ObjectMapper();
 	
 	private String srcID;
 	private String targetID;
@@ -55,10 +55,10 @@ public class AbilityUseOrder {
 	 * 
 	 * @return The mapped AbilityUseOrder as an AbilityUseOrder object. or null if error.
 	 */
-	public AbilityUseOrder fromJSON(){
+	public static AbilityUseOrder fromJSON(String incomingJson){
 
 		try {
-			AbilityUseOrder abilityUseOrder = mapper.readValue(new File("AbilityUseOrderToJava.json"), AbilityUseOrder.class);
+			AbilityUseOrder abilityUseOrder = mapper.readValue(incomingJson, AbilityUseOrder.class);
 			return abilityUseOrder;
 		} catch (JsonParseException e) {
 			// TODO Auto-generated catch block

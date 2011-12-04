@@ -16,7 +16,7 @@ import org.codehaus.jackson.map.ObjectMapper;
  */
 public class Status {
 	
-	private ObjectMapper mapper = new ObjectMapper();
+	private static ObjectMapper mapper = new ObjectMapper();
 	
 	private int turn;
 	private int phase;
@@ -46,10 +46,10 @@ public class Status {
 	 * 
 	 * @return The mapped Status as an Status object. or null if error.
 	 */
-	public Status fromJSON(){
+	public static Status fromJSON(String incomingJson){
 
 		try {
-			Status status = mapper.readValue(new File("StatusToJava.json"), Status.class);
+			Status status = mapper.readValue(incomingJson, Status.class);
 			return status;
 		} catch (JsonParseException e) {
 			// TODO Auto-generated catch block

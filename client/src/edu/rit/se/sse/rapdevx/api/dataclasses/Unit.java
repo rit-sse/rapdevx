@@ -16,7 +16,7 @@ import org.codehaus.jackson.map.ObjectMapper;
  */
 public class Unit {
 	
-	private ObjectMapper mapper = new ObjectMapper();
+	private static ObjectMapper mapper = new ObjectMapper();
 	
 	private int player_num;
 	private int hp;
@@ -54,10 +54,10 @@ public class Unit {
 	 * 
 	 * @return The mapped Unit as an Unit object. or null if error.
 	 */
-	public Unit fromJSON(){
+	public static Unit fromJSON(String incomingJson){
 
 		try {
-			Unit unit = mapper.readValue(new File("UnitToJava.json"), Unit.class);
+			Unit unit = mapper.readValue(incomingJson, Unit.class);
 			return unit;
 		} catch (JsonParseException e) {
 			// TODO Auto-generated catch block
