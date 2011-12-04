@@ -46,7 +46,18 @@ class TestMoveTurn( unittest.TestCase ):
         self.assertEqual( self.p2Ship.getLocation(), (35,50))
 
     def test_removeMoves(self):
-        pass
+        moP1M1 = gameplay.MoveOrder( self.p1Ship.gid, (5,5) )
+        moP1M2 = gameplay.MoveOrder( self.p1Ship.gid, (15,15) )
+        self.reg.register(moP1M1)
+        self.reg.register(moP1M2)
+
+        self.testTurn.addMoveOrder( moP1M1, 1, self.reg )
+        self.testTurn.addMoveOrder( moP1M2, 1, self.reg )
+
+        self.testTurn.deleteMoveOrder( moP1M2.gid, 1, self.reg )
+
+        self.tetsTurn.execute(self.reg)
+        self.assertEqual( self.p1Ship.getLocation(), (5,5))
 
 if (__name__ == "__main__") :
     unittest.main()
