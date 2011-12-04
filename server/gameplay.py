@@ -193,7 +193,12 @@ class MoveTurn:
         move_order = registry.getById(move_order_gid)
         registry.removeById(move_order_gid)
         
-        self.player_attack_list[calling_player].remove(move_order)
+        print("MOVE_LIST_FOR_CALLING_PLAYER:", self.player_move_list[calling_player])
+        print("MOVE_ORDER TO BE REMOVED:", move_order)
+        print("MOVE_LIST[-1] UNITID:", self.player_move_list[calling_player][-1].unitid)
+        print("MOVE_ORDER UNITID:", move_order.unitid)
+
+        self.player_move_list[calling_player].remove(move_order)
 
     def getPlayerMoveList(self, calling_player, registry):
         '''
