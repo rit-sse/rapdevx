@@ -15,7 +15,6 @@ GEM
       kramdown (>= 0.13.2)
       liquid (>= 1.9.0)
       maruku (>= 0.5.9)
-    jekyll_ext (0.1.4)
     kramdown (0.13.3)
     liquid (2.3.0)
     maruku (0.6.0)
@@ -31,6 +30,5 @@ PLATFORMS
 DEPENDENCIES
   haml
   jekyll
-  jekyll_ext
   rdiscount
   sass
