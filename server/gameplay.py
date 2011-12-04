@@ -229,12 +229,14 @@ class AttackTurn:
         if calling_player not in self.player_attack_lists:
             self.player_attack_lists[calling_player]=[]
 
+        source = dto_attack_order.srcid
+        tar = dto_attack_order.targetid
+        
+        order = AttackOrder(source,dto_attack_order.targetid, dto_attack_order.ability)
 
-        order = AttackOrder(dto_attack_order.srcid,dto_attack_order.targetid, dto_attack_order.ability)
+        target = registry.getById(source)
 
-        target = registry.getById(dto_attack_order.srcid)
-
-        if registry.getById(dto_attack_order.srcid) == None:
+        if registry.getById(source) == None:
             raise Exception("Attacking ship not in registry")
 
         if registry.getById(dto_attack_order.targetid) == None:
@@ -246,6 +248,17 @@ class AttackTurn:
         if calling_player != target.getPlayer():
             raise Exception("Player does not own ship")
 
+        if dto_attack_order.ability in source.getAbilities():
+            raise Exception("Ship does not have ability")
+
+        if source.getLocation() > tar.getLocation():
+            dist = source.getLocation() - tar.getLocation()
+        else:
+            dist = tar.getLocation() - source.getLocation()
+        if dist > dto_attack_order.ability.getRadius():
+            raise Exception("Target is not in range")
+        
+           
         registry.register(order)
         self.player_attack_lists.append(order)
         
