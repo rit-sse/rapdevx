@@ -9,7 +9,7 @@ import edu.rit.se.sse.rapdevx.gui.Window;
  */
 public class Main {
 
-	public static final int UPDATES_PER_SECOND = 40;
+	public static final int UPDATES_PER_SECOND = 25;
 	public static final int UDATE_TICKS = 1000 / UPDATES_PER_SECOND;
 	public static final int MAX_UPDATE_SKIP = 5;
 	
@@ -29,7 +29,7 @@ public class Main {
 	 */
 	public void run() {
 		// Create a new window
-		Window window = new Window("RapdevX");
+		Window window = new Window("RapdevX", false);
 		
 		// Save the current system time
 		long nextUpdate = System.currentTimeMillis();

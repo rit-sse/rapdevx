@@ -9,7 +9,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import edu.rit.se.sse.rapdevx.gui.Screen;
-import edu.rit.se.sse.rapdevx.gui.Text;
+import edu.rit.se.sse.rapdevx.gui.drawable.Text;
 
 public class TextScreen extends Screen {
 	
@@ -22,9 +22,9 @@ public class TextScreen extends Screen {
 		
 		// Initialize things here
 		
-		title1 = new Text("Ba", 297, 100, 5);
-		title2 = new Text("SSE", 285 + title1.getSizeOnScreen(), 93, 7);
-		title3 = new Text("ic wars", 265 + title1.getSizeOnScreen() + title2.getSizeOnScreen(), 100, 5);
+		title1 = new Text("Ba", 297, 100, 5, Color.BLACK);
+		title2 = new Text("SSE", 285 + title1.getSizeOnScreen(), 93, 7, Color.BLACK);
+		title3 = new Text("ic wars", 265 + title1.getSizeOnScreen() + title2.getSizeOnScreen(), 100, 5, Color.BLACK);
 		
 	}
 
@@ -78,9 +78,9 @@ public class TextScreen extends Screen {
 			e.printStackTrace();
 		}
 		
-		title1.drawColor(gPen, 0xffff00);
-		title2.drawColor(gPen, 0xffff00);
-		title3.drawColor(gPen, 0xffff00);
+		title1.draw(gPen);
+		title2.draw(gPen);
+		title3.draw(gPen);
 		
 	}
 
