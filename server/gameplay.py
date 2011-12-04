@@ -376,7 +376,7 @@ class UnitClass:
             
 class Image:
     def __init__(self, filename):
-        self.contents = open(filename).read()
+        self.contents = open(filename,'rb').read()
         self.gid = None
     
     def to_dto(self):
