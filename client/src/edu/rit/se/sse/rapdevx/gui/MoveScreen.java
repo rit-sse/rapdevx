@@ -2,6 +2,7 @@ package edu.rit.se.sse.rapdevx.gui;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Area;
@@ -19,6 +20,9 @@ public class MoveScreen extends Screen implements StateListener {
 	/** A list of ships currently on the field **/
 	private ArrayList<DrawableShip> shipList;
 	private DrawableShip selectedShip;
+	
+	/** A path */
+	private DrawableMovePath movePath;
 	
 	
 	public MoveScreen(Camera camera, int width, int height) {
@@ -53,6 +57,11 @@ public class MoveScreen extends Screen implements StateListener {
 		
 		/** Draw things based on the camera here **/
 		
+		// draw the move path if there is one
+		if ( movePath != null ) {
+			movePath.draw( gPen );
+		}
+		
 		// Draw all the ships on the map
 		for (DrawableShip ship : shipList) {
 			ship.draw(gPen, cameraBounds);
@@ -63,24 +72,48 @@ public class MoveScreen extends Screen implements StateListener {
 	}
 	
 	public void mouseReleased(MouseEvent e) {
-		// Check to see if one of the ships was clicked
-		for (DrawableShip ship : shipList) {
-			if (new Area(ship.getBounds()).contains(e.getX() + camera.getX(), e.getY() + camera.getY())) {
-				// Select a non-selected ship and deselect a selected ship
-				if (ship == selectedShip) {
-					selectedShip.setSelected(false);
-					selectedShip = null;
-				} else {
-					if (selectedShip != null)
-						selectedShip.setSelected(false);
-					
-					ship.setSelected(true);
-					selectedShip = ship;
+		// if the screen was right-clicked
+		if ( e.getButton() == MouseEvent.BUTTON3 ) {
+			if ( movePath != null ) {
+				if ( movePath.isAcceptingInput() ) {
+					if ( movePath.hasInitialPath() )
+						movePath = null;
+					else
+						movePath.removeLastMove();
 				}
-			// If no ship is clicked, move any selected ship to the mouse coordinates
-			} else if (selectedShip != null) {
-				selectedShip.setCenter(e.getX() + camera.getX(), e.getY() + camera.getY());
 			}
+		} else {
+			
+			// Check to see if one of the ships was clicked
+			for (DrawableShip ship : shipList) {
+				if (new Area(ship.getBounds()).contains(e.getX() + camera.getX(), e.getY() + camera.getY())) {
+					// Select a non-selected ship and deselect a selected ship
+					if (ship == selectedShip) {
+						selectedShip.setSelected(false);
+						selectedShip = null;
+						movePath = null;
+					} else {
+						if (selectedShip != null)
+							selectedShip.setSelected(false);
+						
+						ship.setSelected(true);
+						selectedShip = ship;
+						movePath = new DrawableMovePath( ship );
+					}
+				// If no ship is clicked, move any selected ship to the mouse coordinates
+				} else if (selectedShip != null) {
+					// selectedShip.setCenter(e.getX() + camera.getX(), e.getY() + camera.getY());
+					
+					Point point = new Point( e.getX() + camera.getX(), e.getY() + camera.getY() );
+					
+					if ( movePath.hasPointCloseToPrevious( point, 5 ) ) {
+						movePath.stopInput();
+					} else {
+						movePath.addMove( point );
+					}
+				}
+			}
+		
 		}
 		
 		e.consume();
@@ -98,6 +131,9 @@ public class MoveScreen extends Screen implements StateListener {
 				ship.setSelected(true);
 			}
 		}
+		
+		// update movePath to let know that the mouse has moved
+		movePath.setMouseLocation( new Point( e.getX() + camera.getX(), e.getY() + camera.getY()) );
 		
 		e.consume();
 	}

@@ -111,7 +111,12 @@ class DTO_ShipPlacement:
         r['y'] = self.y
         r['classid'] = self.classid
         return json.dumps(r)
-    
+   
+class DTO_AttackResults:
+    #results = list of DTO_AbilityUseOrders that were executed
+    def __init__(self,results):
+        self.results = results
+   
 class DTO_Results:
     #results = map of ship id to PATH of ship
     #   PATH = list of x,y tuples
@@ -230,7 +235,14 @@ def JSON_Construct_DTO_Assets(jsonstring):
 
 def JSON_Construct_DTO_ShipPlacement(jsonstring):
     attribute_dictionary = json.loads(jsonstring)
-    return DTO_ShipPlacement(attribute_dictionary.pop('x'),attribute_dictionary.pop('y'),attribute_dictionary.pop('classid'))
+    
+    placement_array = attribute_dictions.pop('placements')
+    placements = []
+
+    for unit in placement_array:
+        placements.append(DTO_ShipPlacment(attribute_dictionary.pop('x'), attribute_dictionary.pop('y'), attribute_dictionary.pop('classid')))
+
+    return placements
 
 def JSON_Construct_DTO_Results(jsonstring):
     attribute_dictionary = json.loads(jsonstring)

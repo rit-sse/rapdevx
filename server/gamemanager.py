@@ -19,10 +19,10 @@ class GameManager:
         games[game_id] = game
         
         session1.game_id = game_id
-        session1.player_num = 1
+        session1.player_num = 0
         
         session2.game_id = game_id
-        session2.player_num = 2
+        session2.player_num = 1
 
     def find_game(game_id):
         """Finds a game in our database given the game_id."""
