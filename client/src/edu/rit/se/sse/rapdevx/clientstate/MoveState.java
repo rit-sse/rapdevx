@@ -18,13 +18,15 @@ public class MoveState extends StateBase {
 
 	public MoveState() {
 		this.nextState = AttackState.class;
+
+		// TODO move/redraw enemy ships according to newly received layout
 	}
 
 	/**
 	 * Make a move and send it to the server.
 	 */
 	public void makeMove(/* TODO take in a move from the GUI */) {
-		// TODO : GameApi.submitMovementOrder(userSession, currentTurn, move)
+		// TODO GameApi.submitMovementOrder(userSession, currentTurn, move)
 	}
 
 	/**

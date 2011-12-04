@@ -2,6 +2,7 @@ package edu.rit.se.sse.rapdevx.api.dataclasses;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.JsonParseException;
@@ -16,10 +17,11 @@ import org.codehaus.jackson.map.ObjectMapper;
  */
 public class Status {
 	
-	private ObjectMapper mapper = new ObjectMapper();
+	private static ObjectMapper mapper = new ObjectMapper();
 	
 	private int turn;
 	private int phase;
+	private List<String> player_list;
 	private int me;
 	
 	public int getTurn() {
@@ -46,10 +48,10 @@ public class Status {
 	 * 
 	 * @return The mapped Status as an Status object. or null if error.
 	 */
-	public Status fromJSON(){
+	public static Status fromJSON(String incomingJson){
 
 		try {
-			Status status = mapper.readValue(new File("StatusToJava.json"), Status.class);
+			Status status = mapper.readValue(incomingJson, Status.class);
 			return status;
 		} catch (JsonParseException e) {
 			// TODO Auto-generated catch block
@@ -86,6 +88,12 @@ public class Status {
 	
 	public Status(){
 		
+	}
+	public void setPlayer_list(List<String> player_list) {
+		this.player_list = player_list;
+	}
+	public List<String> getPlayer_list() {
+		return player_list;
 	}
 	
 }

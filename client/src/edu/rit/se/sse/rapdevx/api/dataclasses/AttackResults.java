@@ -1,48 +1,41 @@
 package edu.rit.se.sse.rapdevx.api.dataclasses;
+
 import java.io.File;
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
-/**
- * POJO representing the asset image on the server side of 
- * things. Will be annotated in order to have Jackson data bindings.
- *
- * @author Ben Nicholas
- * @author Paul Cassidy
- */
-public class AssetImage {
+public class AttackResults {
 
 	private static ObjectMapper mapper = new ObjectMapper();
-	private String file;
-	private String gid;
 	
-	public String getFile() {
-		return file;
+	private List<AbilityUseOrder> results = new LinkedList<AbilityUseOrder>();
+
+	public List<AbilityUseOrder> getResults() {
+		return results;
 	}
-	public void setFile(String file) {
-		this.file = file;
-	}
-	public String getGid() {
-		return gid;
-	}
-	public void setGid(String gid) {
-		this.gid = gid;
+
+	public void setResults(List<AbilityUseOrder> results) {
+		this.results = results;
 	}
 	
+
+
 	/**
-	 * Creates and maps to an AssetImage object.
+	 * Creates and maps to an AttackResults object.
 	 * 
-	 * @return The mapped AssetImage as an AssetImage object. or null if error.
+	 * @return The mapped AttackResults as an AttackResults object. or null if error.
 	 */
-	public static AssetImage fromJSON(String incomingJson){
+	public static AttackResults fromJSON(){
 
 		try {
-			AssetImage assets = mapper.readValue(incomingJson, AssetImage.class);
-			return assets;
+			AttackResults attackResults = mapper.readValue(new File("AttackResultsToJava.json"), AttackResults.class);
+			return attackResults;
 		} catch (JsonParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -57,13 +50,13 @@ public class AssetImage {
 	}
 	
 	/**
-	 * Creates a JSON file from an Assets object.
+	 * Creates a JSON file from an AttackResults object.
 	 * 
-	 * @param assets
+	 * @param attackResults
 	 */
-	public void toJSON(AssetImage assets){
+	public void toJSON(AttackResults attackResults){
 		try {
-			mapper.writeValue(new File("AssetImageFromJava.json"), assets);
+			mapper.writeValue(new File("AttackResultsFromJava.json"), attackResults);
 		} catch (JsonGenerationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -76,8 +69,9 @@ public class AssetImage {
 		}
 	}
 	
-	public AssetImage(){
+	public AttackResults(){
 		
 	}
+	
 	
 }

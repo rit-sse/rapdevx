@@ -9,49 +9,55 @@ import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
 /**
- * POJO representing the location of a ship on the server side of 
- * things. Will be annotated in order to have Jackson data bindings.
- *
+ * POJO representing the location of a ship on the server side of things. Will
+ * be annotated in order to have Jackson data bindings.
+ * 
  * @author Ben Nicholas
  * @author Paul Cassidy
  */
 public class ShipPlacement {
 
-	private ObjectMapper mapper = new ObjectMapper();
-	
-	private int x;
-	private int y;
-	private int classid;
-	
+	private static ObjectMapper	mapper	= new ObjectMapper();
+
+	private int					x;
+	private int					y;
+	private String				classid;
+
 	public int getX() {
 		return x;
 	}
+
 	public void setX(int x) {
 		this.x = x;
 	}
+
 	public int getY() {
 		return y;
 	}
+
 	public void setY(int y) {
 		this.y = y;
 	}
-	public int getClassid() {
+
+	public String getClassid() {
 		return classid;
 	}
-	public void setClassid(int classid) {
+
+	public void setClassid(String classid) {
 		this.classid = classid;
 	}
-	
 
 	/**
 	 * Creates and maps to an ShipPlacement object.
 	 * 
-	 * @return The mapped ShipPlacement as an ShipPlacement object. or null if error.
+	 * @return The mapped ShipPlacement as an ShipPlacement object. or null if
+	 *         error.
 	 */
-	public ShipPlacement fromJSON(){
+	public static ShipPlacement fromJSON(String incomingJson) {
 
 		try {
-			ShipPlacement shipPlacement = mapper.readValue(new File("ShipPlacementToJava.json"), ShipPlacement.class);
+			ShipPlacement shipPlacement = mapper.readValue(incomingJson,
+					ShipPlacement.class);
 			return shipPlacement;
 		} catch (JsonParseException e) {
 			// TODO Auto-generated catch block
@@ -65,15 +71,16 @@ public class ShipPlacement {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Creates a JSON file from an ShipPlacement object.
 	 * 
 	 * @param ShipPlacement
 	 */
-	public void toJSON(ShipPlacement shipPlacement){
+	public void toJSON(ShipPlacement shipPlacement) {
 		try {
-			mapper.writeValue(new File("ShipPlacementFromJava.json"), shipPlacement);
+			mapper.writeValue(new File("ShipPlacementFromJava.json"),
+					shipPlacement);
 		} catch (JsonGenerationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -85,10 +92,9 @@ public class ShipPlacement {
 			e.printStackTrace();
 		}
 	}
-	
-	public ShipPlacement(){
-		
-	}
-	
-}
 
+	public ShipPlacement() {
+
+	}
+
+}

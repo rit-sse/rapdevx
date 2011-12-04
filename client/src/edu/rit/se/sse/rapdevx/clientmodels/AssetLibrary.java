@@ -36,6 +36,8 @@ public class AssetLibrary {
 	 * @return images for the current game
 	 */
 	public static List<AssetImage> getImages() {
+		if (assets == null)
+			return null;
 		return AssetLibrary.assets.getImages();
 	}
 
@@ -43,6 +45,8 @@ public class AssetLibrary {
 	 * @return a list of possible ship classes
 	 */
 	public static List<ShipClass> getShipClasses() {
+		if (assets == null)
+			return null;
 		return AssetLibrary.assets.getShipClasses();
 	}
 

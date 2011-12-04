@@ -9,6 +9,8 @@ import java.awt.geom.Area;
 import java.util.ArrayList;
 
 import edu.rit.se.sse.rapdevx.clientmodels.Ship;
+import edu.rit.se.sse.rapdevx.clientstate.AttackState;
+import edu.rit.se.sse.rapdevx.clientstate.GameSession;
 import edu.rit.se.sse.rapdevx.events.StateEvent;
 import edu.rit.se.sse.rapdevx.events.StateListener;
 import edu.rit.se.sse.rapdevx.gui.Screen;
@@ -36,6 +38,8 @@ public class MoveScreen extends Screen implements StateListener {
 	public MoveScreen(Camera camera, int width, int height) {
 		super(width, height);
 		this.camera = camera;
+		
+		GameSession.get().addStateListener(this);
 		
 		shipList = new ArrayList<DrawableShip>();
 		Ship ship = new Ship();
@@ -191,15 +195,19 @@ public class MoveScreen extends Screen implements StateListener {
 				setShipSelected(ship, false);
 		}
 		
-		if ( movePath != null )
+		if ( movePath != null ) {
 			// update movePath to let know that the mouse has moved
 			movePath.setMouseLocation( new Point( e.getX() + camera.getX(), e.getY() + camera.getY()) );
+		}
 		
 		e.consume();
 	}
 	
 	public void stateChanged(StateEvent e) {
-		//TODO Switch to move phase, etc
+		if (e.getNewState() instanceof AttackState) {
+			ScreenStack.get().addScreenAfter(this, new AttackScreen(camera, screenWidth, screenHeight));
+			ScreenStack.get().removeScreen(this);
+		}
 	}
 
 }
