@@ -7,6 +7,9 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import edu.rit.se.sse.rapdevx.gui.RectangleBackground;
 import edu.rit.se.sse.rapdevx.gui.drawable.Text;
@@ -35,6 +38,8 @@ public class MenuButton {
 	private int lastDrawnHeight = 0;
 
 	private boolean pressed;
+
+	private ConcurrentLinkedQueue<ActionListener> listeners = new ConcurrentLinkedQueue<ActionListener>();
 
 	/**
 	 * Create a button for a menu screen
@@ -247,9 +252,7 @@ public class MenuButton {
 	}
 
 	public void clicked() {
-		// TODO make some visual or audio changes to show that we were
-		// clicked
-		System.out.println("MenuButton: clicked: " + getText());
+		notifyActionListeners();
 	}
 
 	public void setPressed(boolean pressed) {
@@ -265,4 +268,28 @@ public class MenuButton {
 
 		pressed = false;
 	}
+	
+	/**
+	 * @param listener
+	 *              the listener to add
+	 */
+	public synchronized void addActionListener(ActionListener listener) {
+		listeners.add(listener);
+	}
+
+	/**
+	 * @param observer
+	 *              the observer to remove
+	 */
+	public synchronized void removeActionListener(ActionListener listener) {
+		listeners.remove(listener);
+	}
+
+	private synchronized void notifyActionListeners() {
+		for (ActionListener listener : listeners) {
+			ActionEvent event = new ActionEvent(this, 0, text);
+			listener.actionPerformed(event);
+		}
+	}
+	
 }
