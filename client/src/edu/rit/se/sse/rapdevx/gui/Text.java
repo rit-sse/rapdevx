@@ -3,14 +3,11 @@ package edu.rit.se.sse.rapdevx.gui;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
-
-import com.sun.tools.example.debug.gui.SourceModel.Line;
 
 public class Text extends DrawableObject {
 
