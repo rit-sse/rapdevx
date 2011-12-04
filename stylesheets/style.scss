@@ -21,26 +21,123 @@ html {
 }
 
 body {
-    margin: 0 auto;
+    margin: 0 auto; padding: 20px 0;
     max-width: 820px;
 }
 
-h1, h2 { 
-    color: #7f7f7f;
+
+header {
+    padding-left: 84px;
+    height: 64px;
+    color: #f5f5f5;
+    font-size: 2em;
     font-family: "SilkscreenNormal", "Impact", "sans-serif";
+    background: url( ../images/logo.png ) no-repeat left center;
+    line-height: 64px;
+}
+
+.column {
+    margin-right: 2%;
+    width: 48%;
+    float: left;
+
+}
+
+.left {
+    @extend .column;
+}
+
+.right {
+    @extend .column;
+    margin-right: none;
 }
 
 
-.gray-box {
+h1, h2 { 
+    color: #aaaaaa;
+    font-family: SilkscreenNormal, Impact, sans-serif;
+}
+
+
+.block {
+    margin: 0 0 1em; padding: 1em;
     background-color: #494949;
     border: 5px outset #545454;
+
+    h2 {
+        margin: 0 0 0.5em;
+        font-size: 1.4em;
+    }
 }
 
+a {
+    color: #f5f5f5;
+}
 
-.crash {
-    @extend .gray-box;
+.jenkins a {
+    margin: 0 0 0 0.3em; padding: 0.3em;
+    font-size: 0.9em;
+    font-family: SilkscreenNormal, Impact, sans-serif;
+    border: 3px outset #545454;
+    text-decoration: none;
+    background-color: #494949;
 }
 
 .repos {
-    @extend .gray-box;
+
+    ul {
+        margin: 0; padding: 0;
+    }
+
+    li {
+        list-style: none;
+        display: inline-block;
+    }
+
+    a {
+        margin: 0 0 0 0.3em; padding: 0.3em;
+        float: right;
+        font-size: 0.9em;
+        font-family: SilkscreenNormal, Impact, sans-serif;
+        border: 3px outset #545454;
+        text-decoration: none;
+    }
+}
+
+.ewcc {
+    article {
+        height: 2em;
+        overflow: hidden;
+        font-size: 0.9em;
+        vertical-align: middle;
+
+        h1 {
+            margin: 0; padding: 0;
+            font-size: 1.2em;
+            color: #000002;
+            display: inline-block;
+            line-height: 2em;
+        }
+
+        a {
+            margin: 0 0 0 0.3em; padding: 0.3em;
+            float: right;
+            font-size: 0.9em;
+            font-family: SilkscreenNormal, Impact, sans-serif;
+            border: 3px outset #545454;
+            text-decoration: none;
+
+            &[href$="ppt"] {
+                $color: darken( #af2d00, 15% );
+                background-color: $color;
+                border-color: lighten( $color, 5% );
+            }
+
+            &[href$="pdf"] {
+                $color: darken( #af0000, 15% );
+                background-color: $color;
+                border-color: lighten( $color, 5% );
+            }
+        }
+    }
 }
