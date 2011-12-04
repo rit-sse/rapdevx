@@ -15,6 +15,7 @@
     <property name="test.build.classes" value="${test.build}/classes" />
     <property name="test.reports" value="reports" />
     <property name="test.reports.junit" value="reports/junit" />
+    <property name="test.reports.pyunit" value="reports/pyunit" />
     <property name="test.reports.pmd" value="reports/pmd" />
     <property name="lib" value="lib" />
     <property name="javadoc" value="${client}/doc" />
@@ -102,7 +103,7 @@
         </javac>
     </target>
 
-    <target name="test" depends="client.test, server.test" />
+    <target name="test" depends="client.test" />
     
     <target name="client.test" depends="build-test" 
         description="Run unit test suite">
@@ -129,14 +130,6 @@
         </junitreport>
     </target>
 
-    <target name="server.test" description="Run Python unit tests">
-        <mkdir dir="${test.reports}" />
-        <exec dir="server" executable="python">
-            <arg value="-m" />
-            <arg value="unittest" />
-        </exec>
-    </target>
-    
     <target name="javadoc" description="Create Documentation">
         <delete dir="${javadoc}" />
         <mkdir dir="${javadoc}" />
