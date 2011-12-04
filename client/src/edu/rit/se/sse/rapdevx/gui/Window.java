@@ -15,6 +15,11 @@ import edu.rit.se.sse.rapdevx.gui.screens.menus.MenuButton;
 
 public class Window {
 	
+	private int insetLeft;
+	private int insetTop;
+	private int insetRight;
+	private int insetBottom;
+	
 	private JFrame window;
 	
 	private GraphicsDevice graphics;
@@ -39,6 +44,14 @@ public class Window {
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setVisible(true);
 		
+		insetLeft = window.getInsets().left;
+		insetTop = window.getInsets().top;
+		insetRight = window.getInsets().right;
+		insetBottom = window.getInsets().bottom;
+		
+		int windowWidth = window.getWidth() - insetLeft - insetRight;
+		int windowHeight = window.getHeight() - insetTop - insetBottom;
+		
 		// Setup double buffering (makes graphics faster)
 		window.createBufferStrategy(2);
 		bufferStrategy = window.getBufferStrategy();
@@ -48,11 +61,13 @@ public class Window {
 		screenStack = new ScreenStack();
 		
 		// Add a map screen on startup
-		MapScreen mapScreen = new MapScreen(window.getWidth(), window.getHeight());
+		MapScreen mapScreen = new MapScreen(windowWidth, windowHeight);
 		screenStack.addScreen(mapScreen);
 		
 		// Start with the move phase on the map
 		screenStack.addScreen(new MoveScreen(mapScreen.getCamera(), window.getWidth(), window.getHeight()));
+
+		screenStack.addScreen(new OverlayScreen(windowWidth, windowHeight));
 		
 		//TODO remove after testing
 		Menu testMenu = new Menu(300, 300);
@@ -65,7 +80,7 @@ public class Window {
 		//screenStack.addScreen(testMenu);
 		
 		//Testing a ship screen
-		StatsScreen testStatsScreen = new StatsScreen(300, 200, window.getWidth(), window.getHeight(), null);
+		StatsScreen testStatsScreen = new StatsScreen(300, 200, windowWidth, windowHeight, null);
 		screenStack.addScreen(testStatsScreen);
 		
 		//screenStack.addScreen(new PathTestScreen(window.getWidth(), window.getHeight()));
@@ -90,6 +105,7 @@ public class Window {
 		try {
 			gPen = bufferStrategy.getDrawGraphics();
 			if (!bufferStrategy.contentsLost()) {
+				gPen.translate(window.getInsets().left, window.getInsets().top);
 				screenStack.draw((Graphics2D)gPen);
 				bufferStrategy.show();
 			}

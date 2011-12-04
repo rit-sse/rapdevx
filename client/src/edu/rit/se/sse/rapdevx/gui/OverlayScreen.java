@@ -90,22 +90,20 @@ public class OverlayScreen extends Screen implements StateListener {
 		
 		// Bottom part, conditional, playback buttons
 		beginning.draw(gPen);
-//		backfast.draw(gPen);
-//		back.draw(gPen);
-//		pause.draw(gPen);
-//		forward.draw(gPen);
-//		forwardfast.draw(gPen);
-//		skip.draw(gPen);
+		backfast.draw(gPen);
+		back.draw(gPen);
+		pause.draw(gPen);
+		forward.draw(gPen);
+		forwardfast.draw(gPen);
+		skip.draw(gPen);
 		
 		// Top part, under phase bar
-//		undo.draw(gPen);
-//		redo.draw(gPen);
-//		readyEnabled.draw(gPen);
+		undo.draw(gPen);
+		redo.draw(gPen);
+		readyEnabled.draw(gPen);
 		
 		// Top part, phase bar
 		phase.draw(gPen);
-
-		readyEnabled.draw(gPen);
 	}
 	
 	public void mouseReleased(MouseEvent e) {
