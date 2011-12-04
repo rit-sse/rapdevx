@@ -21,7 +21,7 @@ public class GameSession {
 	private static GameSession						instance		= new GameSession();
 	private ConcurrentLinkedQueue<StateListener>	listeners		= new ConcurrentLinkedQueue<StateListener>();
 
-	private StateBase								currentState	= new MoveState();
+	private StateBase								currentState	= new UnitPlacementState();
 	private Session									session;
 
 	private List<ShipClass>							shipClasses		= new Vector<ShipClass>();

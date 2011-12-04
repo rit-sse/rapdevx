@@ -8,6 +8,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 import edu.rit.se.sse.rapdevx.clientmodels.Ship;
+import edu.rit.se.sse.rapdevx.clientstate.GameSession;
 import edu.rit.se.sse.rapdevx.clientstate.MoveState;
 import edu.rit.se.sse.rapdevx.events.StateEvent;
 import edu.rit.se.sse.rapdevx.events.StateListener;
@@ -66,6 +67,7 @@ public class PlacementScreen extends Screen implements StateListener {
 			shipSelectSquares.add(square);
 		}
 		
+		GameSession.get().addStateListener(this);
 	}
 
 	public void draw(Graphics2D gPen) {

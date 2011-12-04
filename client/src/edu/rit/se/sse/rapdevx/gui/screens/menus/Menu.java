@@ -27,8 +27,8 @@ public class Menu extends Screen {
 	private static final int spacing = 6; // space between buttons
 	private static final int scale = 1;
 
-	private static final int emptyWidth = border*2;
-	private static final int emptyHeight = border;
+	private static final int emptyWidth = border * 2;
+	private static final int emptyHeight = border * 2;
 
 	// true if this menu shouldn't be displayed, else false
 	private boolean isHidden = false; // TODO make a getter
@@ -79,7 +79,9 @@ public class Menu extends Screen {
 			Dimension screen = getSize();
 
 			// update height
-			int height = button.getSize().height + spacing;
+			int height = button.getSize().height;
+			if (!buttons.isEmpty())
+				height += spacing;
 
 			// update width
 			int width = button.getSize().width + border*2;
