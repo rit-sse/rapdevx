@@ -1,7 +1,9 @@
 package edu.rit.se.sse.rapdevx.gui;
 
+import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 
 import edu.rit.se.sse.rapdevx.audio.AudioManager;
@@ -18,8 +20,7 @@ import edu.rit.se.sse.rapdevx.gui.images.IGrayableImage;
 
 public class OverlayScreen extends Screen implements StateListener
 {
-
-	private static final int STARTING_X_MODIFIER = 212;
+	private static final Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
 
 	private static final int UNDO_MODIFIER_X = 3;
 	private static final int REDO_MODIFIER_X = 35;
@@ -48,8 +49,8 @@ public class OverlayScreen extends Screen implements StateListener
 	public OverlayScreen(int width, int height, int insetLeft, int insetTop)
 	{
 		super(width, height);
-
-		int STARTING_X = (width / 2) - STARTING_X_MODIFIER;
+		
+		int STARTING_X = width / 2 - 128 - 64;
 		int STARTING_Y = 0;
 
 		isReady = false;
