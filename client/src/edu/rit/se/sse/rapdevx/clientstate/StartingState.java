@@ -24,8 +24,13 @@ public class StartingState extends StateBase {
 			e.printStackTrace();
 			System.err.println("Failed to create session");
 		}
-		AssetLibrary.setAssets(GameApi
-				.getAssets(GameSession.get().getSession()));
+		try {
+			AssetLibrary.setAssets(GameApi.getAssets(GameSession.get()
+					.getSession()));
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.err.println("Failed to pull down assets");
+		}
 
 		poll();
 
