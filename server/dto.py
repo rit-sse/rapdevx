@@ -40,7 +40,7 @@ class DTO_ShipClass:
         r['imageid'] = self.imageid
         r['gid'] = self.gid
         return json.dumps(r)
-    
+
         
 class DTO_Ability:
     #radius is an int
@@ -208,6 +208,25 @@ class DTO_Status:
         r['phase'] = self.phase
         r['player_list'] = self.player_list
         r['me'] = self.me
+        return json.dumps(r)
+
+class DTO_Session:
+    #gid is an int
+    #nickName is a string;
+    #gameID is an int;
+    #active is a boolean;
+    def __init__(self, gid, nickName, gameID, active):
+        self.gid = gid
+        self.nickName = nickName
+        self.gameID = gameID
+        self.active = active
+
+    def encode(self):
+        r = {}
+        r['gid'] = self.gid
+        r['nickName'] = self.nickName
+        r['gameID'] = self.gameID
+        r['active'] = self.active
         return json.dumps(r)
 
 def JSON_Construct_DTO_AssetImage(jsonstring):
