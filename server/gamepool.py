@@ -13,7 +13,7 @@ class GamePool:
         games - A list of all known games
         last_id - The most recent game id.
         '''
-        self.games = []
+        self.games = {}
         self.last_id = 0
 
     def next_game_id(self):
@@ -67,6 +67,6 @@ class GamePool:
         '''
         Return a list of all registered games waiting for more players
         '''
-        return [game for game in self.games.values() if game.phase == "waiting"]
+        return [game for game in self.games.values() if game.getGameProgress(0).phase == "waiting"]
 
         
