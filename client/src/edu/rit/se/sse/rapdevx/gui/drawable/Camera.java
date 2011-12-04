@@ -1,6 +1,8 @@
-package edu.rit.se.sse.rapdevx.gui;
+package edu.rit.se.sse.rapdevx.gui.drawable;
 
 import java.awt.Rectangle;
+
+import edu.rit.se.sse.rapdevx.gui.drawable.DrawableObject;
 
 public class Camera extends DrawableObject {
 	

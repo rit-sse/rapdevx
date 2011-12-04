@@ -24,7 +24,7 @@ public class Assets {
 	// needs to be changed to AssetImage once the object exists.
 	private List<AssetImage>	images;
 	private List<String>		abilities;
-	private ObjectMapper		mapper	= new ObjectMapper();
+	private static ObjectMapper		mapper	= new ObjectMapper();
 
 	public int getWidth() {
 		return width;
@@ -71,10 +71,10 @@ public class Assets {
 	 * 
 	 * @return The mapped Assets as an Assets object. or null if error.
 	 */
-	public Assets fromJSON() {
+	public static Assets fromJSON(String incomingJson) {
 
 		try {
-			Assets assets = mapper.readValue(new File("AssetsToJava.json"),
+			Assets assets = mapper.readValue(incomingJson,
 					Assets.class);
 			return assets;
 		} catch (JsonParseException e) {
