@@ -6,27 +6,73 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.util.ArrayList;
+import java.util.LinkedList;
 
-import javax.swing.JPanel;
-
-public class ScreenStack extends JPanel implements KeyListener, MouseListener, MouseMotionListener {
+public class ScreenStack implements KeyListener, MouseListener, MouseMotionListener {
 	
-	private static final long serialVersionUID = 1L;
-	private ArrayList<Screen> screenList;
+	private LinkedList<Screen> screenList;
 	
 	public ScreenStack() {
-		screenList = new ArrayList<Screen>();
+		screenList = new LinkedList<Screen>();
 	}
 	
+	/**
+	 * Adds screen to the top of the list
+	 * 
+	 * @param screen the screen to add
+	 */
 	public void addScreen(Screen screen) {
-		screenList.add(screen);
+		screenList.addLast(screen);
 	}
 	
+	/**
+	 * Adds a screen before another screen in the list.
+	 * 
+	 * @param referenceScreen the screen to add before
+	 * @param newScreen the new screen to add
+	 */
+	public void addScreenBefore(Screen referenceScreen, Screen newScreen) {
+		for (int i = 0; i < screenList.size(); i++) {
+			if (screenList.get(i) == referenceScreen) {
+				screenList.add(i, newScreen);
+				break;
+			}
+		}
+		
+		//TODO throw exception?
+	}
+	
+	/**
+	 * Adds a screen after another screen in the list.
+	 * 
+	 * @param referenceScreen the screen to add before
+	 * @param newScreen the new screen to add
+	 */
+	public void addScreenAfter(Screen referenceScreen, Screen newScreen) {
+		for (int i = 0; i < screenList.size(); i++) {
+			if (screenList.get(i) == referenceScreen) {
+				//TODO may need to do special casing for end of list?
+				screenList.add(i + 1, newScreen);
+				break;
+			}
+		}
+		
+		//TODO throw exception?
+	}
+	
+	/**
+	 * Remove a screen from the list.
+	 * 
+	 * @param screen the screen to remove
+	 */
 	public void removeScreen(Screen screen) {
 		screenList.remove(screen);
 	}
 	
+	/**
+	 * Updates the screens in the list.  Determines which screens should
+	 * have focus and are visible.
+	 */
 	public void update() {
 		boolean otherScreenHasFocus = false;
 		boolean coveredByOtherScreen = false;
@@ -39,6 +85,7 @@ public class ScreenStack extends JPanel implements KeyListener, MouseListener, M
 			if ((screen.getState() == Screen.State.ACTIVE) ||
 					(screen.getState() == Screen.State.TRANSITION_ON))
 			{
+				//TODO: combine if statements if nothing else is added here
 				if (!otherScreenHasFocus) {
 					otherScreenHasFocus = true;
 					
@@ -50,6 +97,11 @@ public class ScreenStack extends JPanel implements KeyListener, MouseListener, M
 		}
 	}
 	
+	/**
+	 * Draws all of the screens in the list from bottom to top.
+	 * 
+	 * @param gPen the graphics pen to draw with 
+	 */
 	public void draw(Graphics2D gPen) {
 		for (Screen screen : screenList) {
 			screen.draw(gPen);
@@ -63,7 +115,8 @@ public class ScreenStack extends JPanel implements KeyListener, MouseListener, M
 	 */
 	@Override
 	public void keyPressed(KeyEvent e) {
-		for (Screen screen : screenList) {
+		for (int i = screenList.size() - 1; i >= 0; i--) {
+			Screen screen = screenList.get(i);
 			if(e.isConsumed()) {
 				return;	//we're done if someone handled the event
 			}
@@ -77,7 +130,8 @@ public class ScreenStack extends JPanel implements KeyListener, MouseListener, M
 	 */
 	@Override
 	public void keyReleased(KeyEvent e) {
-		for (Screen screen : screenList) {
+		for (int i = screenList.size() - 1; i >= 0; i--) {
+			Screen screen = screenList.get(i);
 			if(e.isConsumed()) {
 				return;	//we're done if someone handled the event
 			}
@@ -90,7 +144,8 @@ public class ScreenStack extends JPanel implements KeyListener, MouseListener, M
 	 */
 	@Override
 	public void keyTyped(KeyEvent e) {
-		for(Screen screen: screenList) {
+		for (int i = screenList.size() - 1; i >= 0; i--) {
+			Screen screen = screenList.get(i);
 			if(e.isConsumed()) {
 				return;	//we're done if someone handled the event
 			}
@@ -104,7 +159,8 @@ public class ScreenStack extends JPanel implements KeyListener, MouseListener, M
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		//tell all the screens about this mouse event
-		for(Screen screen: screenList) {
+		for (int i = screenList.size() - 1; i >= 0; i--) {
+			Screen screen = screenList.get(i);
 			if(e.isConsumed()) {
 				return;	//we're done if someone handled the event
 			}
@@ -113,16 +169,10 @@ public class ScreenStack extends JPanel implements KeyListener, MouseListener, M
 	}
 	
 	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mouseEntered(MouseEvent e) {}
 	
 	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mouseExited(MouseEvent e) {}
 	
 	/* (non-Javadoc)
 	 * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
@@ -130,7 +180,8 @@ public class ScreenStack extends JPanel implements KeyListener, MouseListener, M
 	@Override
 	public void mousePressed(MouseEvent e) {
 		//tell all the screens about this mouse event
-		for(Screen screen: screenList) {
+		for (int i = screenList.size() - 1; i >= 0; i--) {
+			Screen screen = screenList.get(i);
 			if(e.isConsumed()) {
 				return;	//we're done if someone handled the event
 			}
@@ -144,7 +195,8 @@ public class ScreenStack extends JPanel implements KeyListener, MouseListener, M
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		//tell all the screens about this mouse event
-		for(Screen screen: screenList) {
+		for (int i = screenList.size() - 1; i >= 0; i--) {
+			Screen screen = screenList.get(i);
 			if(e.isConsumed()) {
 				return;	//we're done if someone handled the event
 			}
@@ -168,7 +220,8 @@ public class ScreenStack extends JPanel implements KeyListener, MouseListener, M
 		//TODO should we only send this to the screen with focus? (need to make the same choice for all the other events too)
 		
 		//tell all the screens about this mouse event
-		for(Screen screen: screenList) {
+		for (int i = screenList.size() - 1; i >= 0; i--) {
+			Screen screen = screenList.get(i);
 			if(e.isConsumed()) {
 				return;	//we're done if someone handled the event
 			}
