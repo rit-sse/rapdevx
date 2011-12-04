@@ -209,8 +209,6 @@ class MoveTurn:
                 unitShip = registry.getById(playerMove.shipid)
                 unitLoc = playerMove.path[-1]
                 unitShip.setLocation(unitLoc)
-
-
         
     def getResults(self):
         pass
