@@ -21,11 +21,11 @@ public class Text extends DrawableObject {
 	private String text;
 	private double scale;
 
-	public Text(String text, int x, int y) {
-		this(text, x, y, DEFAULT_SCALE);
+	public Text(String text, int x, int y, String color) {
+		this(text, x, y, color, DEFAULT_SCALE);
 	}
 
-	public Text(String text, int x, int y, double textSize) {
+	public Text(String text, int x, int y, String color, double textSize) {
 		super(x, y);
 
 		this.text = text.toUpperCase();
@@ -33,7 +33,11 @@ public class Text extends DrawableObject {
 
 		// TODO make font image static and load only once for all text
 		try {
-			largeImage = ImageIO.read(new File(FONT_FILE_WHITE));
+			if (color.toUpperCase().equals("BLACK")) {
+				largeImage = ImageIO.read(new File(FONT_FILE));
+			} else {
+				largeImage = ImageIO.read(new File(FONT_FILE_WHITE));
+			}
 		} catch (IOException e) {
 			System.err.println("Unable to load font file");
 		}
@@ -178,7 +182,7 @@ public class Text extends DrawableObject {
 
 			} else if (character == 32) {
 				isSpace = true;
-//				smallImage = colorize.getSubimage(0, 100, 7, 7);
+				// smallImage = colorize.getSubimage(0, 100, 7, 7);
 				// colorize = new ImageColorizer(smallImage);
 				// colorize.recolorStrong(replaceWith, toReplace);
 
@@ -197,10 +201,10 @@ public class Text extends DrawableObject {
 						(int) (smallImage.getWidth() * this.scale),
 						(int) (smallImage.getHeight() * this.scale),
 						null);
-				
+
 				gPen.fill(new Rectangle(tempX, y, (int) (smallImage
 						.getWidth() * this.scale), (int) scale));
-			} 
+			}
 			tempX += 6 * this.scale;
 			isSpace = false;
 
