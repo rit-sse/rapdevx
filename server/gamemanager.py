@@ -3,13 +3,14 @@ from context import *
 
 class GameManager:
     '''
+    A class containing all the games known to the system.
     '''
 
     def __init__(self):
         '''
         Constructor.
 
-        games - A list of active games?
+        games - A list of all known games
         last_id - The most recent game id.
         '''
         self.games = []
@@ -17,6 +18,7 @@ class GameManager:
 
     def next_game_id():
         '''
+        Provides a unique identifier for a game
         '''
 
         self.last_id += 1
@@ -53,6 +55,7 @@ class GameManager:
 
     def active_games():
         '''
+        Return a list of all registered games waiting for more players
         '''
         return [game for game in self.games.values() if game.phase == "waiting"]
 
