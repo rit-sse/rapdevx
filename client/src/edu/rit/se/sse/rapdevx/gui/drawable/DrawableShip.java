@@ -139,8 +139,8 @@ public class DrawableShip extends DrawableObject {
 		MovementOrder order = new MovementOrder();
 		
 		order.setPATH( getPath().getMovementOrderPath() );
-		order.setUnitID( ship.getClassID() );
-		order.setGid( ship.getgid() );
+		order.setUnitID( ship.getgid() );
+		order.setGid( "garbage" );
 		
 		return order;
 	}

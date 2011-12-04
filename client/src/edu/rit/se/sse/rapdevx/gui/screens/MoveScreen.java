@@ -94,7 +94,7 @@ public class MoveScreen extends Screen implements StateListener {
 	}
 	
 	private void deselectShip() {
-		setShipSelected(selectedShip, false);
+		// setShipSelected(selectedShip, false);
 		
 		selectedShip = null;
 		movePath = null;
