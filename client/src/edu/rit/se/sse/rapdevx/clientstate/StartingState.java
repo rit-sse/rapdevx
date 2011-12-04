@@ -45,7 +45,7 @@ public class StartingState extends StateBase {
 				}
 			}
 
-		}, 0, 1);
+		}, 0, 1000);
 	}
 
 	private void ready() {
