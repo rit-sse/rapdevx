@@ -45,7 +45,7 @@ class SessionManager:
             self.begin_matchmaking(session)
 
     """ Find the session object for the given session ID. """
-    def find_session(self, session_id):
+    def find_session(session_id):
         if session_id in SessionManager.sessions:
             session = SessionManager.sessions[session_id]
 
