@@ -5,10 +5,6 @@ from sessionmanager import *
 
 session_manager = SessionManager()
 
-class NotImplementedException(Exception):
-    def __init__(self):
-        super(NotImplementedException, self).__init__()
-
 def get_game(game_id):
     game = session_manager.game_pool.find_game(game_id)
 

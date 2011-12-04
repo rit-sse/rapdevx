@@ -1,6 +1,9 @@
-from server import *
 from session import *
 from gamepool import *
+
+class NotImplementedException(Exception):
+    def __init__(self):
+        super(NotImplementedException, self).__init__()
 
 class SessionManager:   
     """
@@ -27,7 +30,7 @@ class SessionManager:
         match = self.match(session)
 
         if match != None:
-            self.game_pool.create_game(session, match)
+            self.gamepool.create_game(session, match)
         else:
             self.add_session_to_pool(session)
 
