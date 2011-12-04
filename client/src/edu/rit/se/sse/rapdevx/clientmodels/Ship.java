@@ -47,17 +47,25 @@ public class Ship extends Unit {
 		Y = y;
 	}
 
+	public ShipClass getShipClass() {
+		List<ShipClass> classes = AssetLibrary.getShipClasses();
+		for (ShipClass c : classes) {
+			if (c.getGid().equals(this.getClassID()))
+				return c;
+		}
+
+		return null;
+	}
+
 	/**
 	 * Convenience method for getting a ship's class name.
 	 * 
 	 * @return The class name of the ship.
 	 */
 	public String getClassName() {
-		List<ShipClass> classes = AssetLibrary.getShipClasses();
-		for (ShipClass c : classes) {
-			if (c.getGid() == this.getClassID())
-				return "Awesome Ship!";
-		}
+		ShipClass sc = getShipClass();
+		if (sc != null)
+			return "Awesome Ship!";
 
 		return "Unknown Class";
 	}
@@ -75,5 +83,13 @@ public class Ship extends Unit {
 		placement.setY(this.Y);
 
 		return placement;
+	}
+
+	public int getMaxHp() {
+		ShipClass sc = getShipClass();
+		if (sc != null)
+			return sc.getMaxhp();
+
+		return 100;
 	}
 }
