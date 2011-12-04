@@ -8,13 +8,13 @@ class GameContext:
         self.playerlist = playerlist
         self.registry = GameRegistry()
         #todo real asset loading
-        atk = Ability(100,"attack", 10,{})
+        atk = Ability(1000,"attack", 10,{})
         self.registry.register(atk)
         
         sprite = Image("../assets/ship.png")
         self.registry.register(sprite)
         
-        unitClass = UnitClass([],[atk],200,100,10, sprite, "Scout")
+        unitClass = UnitClass([],[atk],200,10,10, sprite, "Scout")
         self.registry.register(unitClass)
         
         self.assets = DTO_Assets(1000,1000,[unitClass.to_dto()],[],[atk.to_dto()])

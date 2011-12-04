@@ -23,7 +23,8 @@ class DTO_ShipClass:
     #placement_cost is an int
     #imageid is an string
     #gid is a string
-    def __init__(self, abilities, maxhp, radius, placement_cost, imageid, gid):
+    def __init__(self, types, abilities, maxhp, radius, placement_cost, imageid, gid):
+        self.types = types
         self.abilities = abilities
         self.maxhp = maxhp
         self.radius = radius
