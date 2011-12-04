@@ -52,9 +52,10 @@ class TestMoveTurn( unittest.TestCase ):
         self.testTurn.addMoveOrder( moP1M1, 1, self.reg )
         self.testTurn.addMoveOrder( moP1M2, 1, self.reg )
 
-        self.testTurn.deleteMoveOrder( moP1M2.gid, 1, self.reg )
+        toBeDeleted = self.testTurn.player_move_list[1][1] #grab the second move_order
+        self.testTurn.deleteMoveOrder( toBeDeleted.gid, 1, self.reg )
 
-        self.tetsTurn.execute(self.reg)
+        self.testTurn.execute(self.reg)
         self.assertEqual( self.p1Ship.getLocation(), (5,5))
 
 if (__name__ == "__main__") :
