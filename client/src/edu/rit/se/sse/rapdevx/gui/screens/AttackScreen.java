@@ -9,9 +9,12 @@ import java.awt.geom.Area;
 import java.util.ArrayList;
 
 import edu.rit.se.sse.rapdevx.clientmodels.Ship;
+import edu.rit.se.sse.rapdevx.clientstate.GameSession;
+import edu.rit.se.sse.rapdevx.clientstate.MoveState;
 import edu.rit.se.sse.rapdevx.events.StateEvent;
 import edu.rit.se.sse.rapdevx.events.StateListener;
 import edu.rit.se.sse.rapdevx.gui.Screen;
+import edu.rit.se.sse.rapdevx.gui.ScreenStack;
 import edu.rit.se.sse.rapdevx.gui.drawable.Camera;
 import edu.rit.se.sse.rapdevx.gui.drawable.DrawableAttack;
 import edu.rit.se.sse.rapdevx.gui.drawable.DrawableShip;
@@ -32,6 +35,8 @@ public class AttackScreen extends Screen implements StateListener {
 		super(width, height);
 		this.camera = camera;
 
+		GameSession.get().addStateListener(this);
+		
 		Ship ship = new Ship();
 		ship.setX(150);
 		ship.setY(150);
@@ -158,7 +163,11 @@ public class AttackScreen extends Screen implements StateListener {
 	}
 
 	public void stateChanged(StateEvent e) {
-		// TODO Switch to move phase, etc
+		if (e.getNewState() instanceof MoveState) {
+			ScreenStack.get().addScreenAfter(this, new MoveScreen(camera, screenWidth, screenHeight));
+			ScreenStack.get().removeScreen(this);
+			GameSession.get().removeStateListener(this);
+		}
 	}
 	
 }
