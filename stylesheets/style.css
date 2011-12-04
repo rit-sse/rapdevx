@@ -2,19 +2,25 @@
 @font-face {
   font-family: 'SilkscreenNormal';
   src: url("../fonts/slkscr-webfont.eot");
-  src: url("../fonts/slkscr-webfont.eot?#iefix") format("embedded-opentype"), url("../fonts/slkscr-webfont.woff") format("woff"), url("../fonts/slkscr-webfont.ttf") format("truetype"), url("../fonts/slkscr-webfont.svg#SilkscreenNormal") format("svg");
+  src: url("../fonts/slkscr-webfont.eot?#iefix") format("embedded-opentype"),
+      url("../fonts/slkscr-webfont.woff") format("woff"),
+      url("../fonts/slkscr-webfont.ttf") format("truetype"),
+      url("../fonts/slkscr-webfont.svg#SilkscreenNormal") format("svg");
   font-weight: normal;
-  font-style: normal; }
+  font-style: normal;
+}
 
 html {
   margin: 0;
   padding: 0;
-  background: url(../images/bg.jpg) top center; }
+  background: url(../images/bg.jpg) top center;
+}
 
 body {
   margin: 0 auto;
   padding: 20px 0;
-  max-width: 820px; }
+  max-width: 820px;
+}
 
 header {
   padding-left: 84px;
@@ -23,32 +29,39 @@ header {
   font-size: 2em;
   font-family: "SilkscreenNormal", "Impact", "sans-serif";
   background: url(../images/logo.png) no-repeat left center;
-  line-height: 64px; }
+  line-height: 64px;
+}
 
 .left, .right {
   margin-right: 2%;
   width: 48%;
-  float: left; }
+  float: left;
+}
 
 .right {
-  margin-right: none; }
+  margin-right: none;
+}
 
 h1, h2 {
   color: #aaaaaa;
-  font-family: SilkscreenNormal, Impact, sans-serif; }
+  font-family: SilkscreenNormal, Impact, sans-serif;
+}
 
 .block {
   margin: 0 0 1em;
   padding: 1em;
   background-color: #494949;
-  border: 5px outset #545454; }
+  border: 5px outset #545454;
+}
 
 .block h2 {
   margin: 0 0 0.5em;
-  font-size: 1.4em; }
+  font-size: 1.4em;
+}
 
 a {
-  color: #f5f5f5; }
+  color: #f5f5f5;
+}
 
 .jenkins a {
   margin: 0 0 0 0.3em;
@@ -57,15 +70,18 @@ a {
   font-family: SilkscreenNormal, Impact, sans-serif;
   border: 3px outset #545454;
   text-decoration: none;
-  background-color: #494949; }
+  background-color: #494949;
+}
 
 .repos ul {
   margin: 0;
-  padding: 0; }
+  padding: 0;
+}
 
 .repos li {
   list-style: none;
-  display: inline-block; }
+  display: inline-block;
+}
 
 .repos a {
   margin: 0 0 0 0.3em;
@@ -74,13 +90,15 @@ a {
   font-size: 0.9em;
   font-family: SilkscreenNormal, Impact, sans-serif;
   border: 3px outset #545454;
-  text-decoration: none; }
+  text-decoration: none;
+}
 
 .ewcc article {
   height: 2em;
   overflow: hidden;
   font-size: 0.9em;
-  vertical-align: middle; }
+  vertical-align: middle;
+}
 
 .ewcc article h1 {
   margin: 0;
@@ -88,7 +106,8 @@ a {
   font-size: 1.2em;
   color: #000002;
   display: inline-block;
-  line-height: 2em; }
+  line-height: 2em;
+}
 
 .ewcc article a {
   margin: 0 0 0 0.3em;
@@ -97,12 +116,15 @@ a {
   font-size: 0.9em;
   font-family: SilkscreenNormal, Impact, sans-serif;
   border: 3px outset #545454;
-  text-decoration: none; }
+  text-decoration: none;
+}
 
 .ewcc article a[href$="ppt"] {
   background-color: #621900;
-  border-color: #7c2000; }
+  border-color: #7c2000;
+}
 
 .ewcc article a[href$="pdf"] {
   background-color: #620000;
-  border-color: #7c0000; }
+  border-color: #7c0000;
+}

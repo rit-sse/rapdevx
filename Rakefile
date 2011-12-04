@@ -1,7 +1,7 @@
 task :default => [:build]
 
 task :build do
-  system( "ejekyll" )
+  system( "jekyll" )
 end
 
 task :deploy => [:build] do
