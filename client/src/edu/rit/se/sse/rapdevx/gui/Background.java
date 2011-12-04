@@ -99,15 +99,28 @@ public class Background
 	 */
 	public void drawGrid(Graphics2D gPen, Rectangle2D bounds)
 	{
+		drawGridPart(gPen, bounds, GRID_COLOR_2, (GRID_SIZE));
+		drawGridPart(gPen, bounds, GRID_COLOR_1, (GRID_SIZE * 3));
+	}
+
+	/**
+	 * draws one layer of the grid
+	 * @param gPen
+	 * @param bounds
+	 * @param color
+	 * @param grid
+	 */
+	private void drawGridPart(Graphics2D gPen, Rectangle2D bounds, Color color, int grid)
+	{
 		int x = (int) bounds.getX();
 		int y = (int) bounds.getY();
 		int width = (int) bounds.getWidth();
 		int height = (int) bounds.getHeight();
-
-		gPen.setColor(GRID_COLOR_2);
+		
+		gPen.setColor(color);
 		for (int x1 = x; x1 < x + width; x1++)
 		{
-			if (x1 % GRID_SIZE == 0)
+			if (x1 % grid == 0)
 			{
 				gPen.fill(new Rectangle(x1, y, 4, height));
 			}
@@ -115,30 +128,13 @@ public class Background
 
 		for (int y1 = y; y1 < y + height; y1++)
 		{
-			if (y1 % GRID_SIZE == 0)
-			{
-				gPen.fill(new Rectangle(x, y1, width, 4));
-			}
-		}
-
-		gPen.setColor(GRID_COLOR_1);
-		for (int x1 = x; x1 < x + width; x1++)
-		{
-			if (x1 % (GRID_SIZE * 3) == 0)
-			{
-				gPen.fill(new Rectangle(x1, y, 4, height));
-			}
-		}
-
-		for (int y1 = y; y1 < y + height; y1++)
-		{
-			if (y1 % (GRID_SIZE * 3) == 0)
+			if (y1 % grid == 0)
 			{
 				gPen.fill(new Rectangle(x, y1, width, 4));
 			}
 		}
 	}
-
+	
 	/**
 	 * Swaps the color from gray to other gray
 	 * 
