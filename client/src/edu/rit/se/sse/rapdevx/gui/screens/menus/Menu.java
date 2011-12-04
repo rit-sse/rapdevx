@@ -22,13 +22,13 @@ public class Menu extends Screen {
 	private final ArrayList<MenuButton> buttons = new ArrayList<MenuButton>();
 
 	// spacing vars
-	private static final int Border = 6; // space between menu and button
+	private static final int border = 6; // space between menu and button
 								// edges
-	private static final int Spacing = 6; // space between buttons
-	private static final int Scale = 1;
+	private static final int spacing = 6; // space between buttons
+	private static final int scale = 1;
 
-	private static final int EmptyWidth = Border + Border;
-	private static final int EmptyHeight = Border + Border;
+	private static final int emptyWidth = border*2;
+	private static final int emptyHeight = border;
 
 	// true if this menu shouldn't be displayed, else false
 	private boolean isHidden = false; // TODO make a getter
@@ -48,7 +48,7 @@ public class Menu extends Screen {
 	 *              The y-axis position of this menu's top left corner
 	 */
 	public Menu(int x, int y) {
-		super(EmptyWidth, EmptyHeight);
+		super(emptyWidth, emptyHeight);
 		this.cornerX = x;
 		this.cornerY = y;
 	}
@@ -79,12 +79,10 @@ public class Menu extends Screen {
 			Dimension screen = getSize();
 
 			// update height
-			int height = button.getSize().height;
-			if (!buttons.isEmpty())
-				height += Spacing;
-			
+			int height = button.getSize().height + spacing;
+
 			// update width
-			int width = button.getSize().width + Border + Border;
+			int width = button.getSize().width + border*2;
 			if (width <= screen.width) {
 				width = 0;
 			} else {
@@ -126,9 +124,8 @@ public class Menu extends Screen {
 				.draw(gPen);
 
 		// location of where to draw the buttons
-		int x = cornerX + Border;
-		int y = cornerY + Border;
-		int scale = Scale;
+		int x = cornerX + border;
+		int y = cornerY + border;
 
 		// draw each button
 		for (MenuButton button : buttons) {
@@ -138,10 +135,10 @@ public class Menu extends Screen {
 			}
 
 			button.draw(gPen, x, y, scale);
-			y += button.getSize().height + Spacing; // moving down for the
+			y += button.getSize().height + spacing; // moving down for the
 										// next button
-			// TODO what about the last button? should it use Spacing or
-			// Border?
+			// TODO what about the last button? should it use spacing or
+			// border?
 		}
 
 		// TODO if we don't have focus, draw transparent, light gray myst

@@ -39,7 +39,7 @@ import edu.rit.se.sse.rapdevx.api.dataclasses.Session;
  * @author Ben Nicholas
  */
 public class SessionApi {
-	public static String SERVER_URL = "http://localhost:8080";
+	public static String SERVER_URL = "localhost";
 	
 	private static HttpClient HTTP_CLIENT = new DefaultHttpClient();
 	private static ResponseHandler<String> HANDLER = new BasicResponseHandler();
@@ -75,10 +75,13 @@ public class SessionApi {
 			//if there is a gameID
 			if(gameID != null)data += "&" + URLEncoder.encode("gameID", "UTF-8") + "=" + URLEncoder.encode(gameID, "UTF-8");
 			//url...
-			URL url = new URL(SERVER_URL);
+			URL url = new URL("http", SERVER_URL, 8080, "/sessions");
 		    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 		    conn.setDoOutput(true);
 		    conn.setRequestMethod("POST");
+
+            conn.connect();
+
 		    OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
 		    wr.write(data);
 		    wr.flush();

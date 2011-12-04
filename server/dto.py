@@ -233,7 +233,7 @@ def JSON_Construct_DTO_AssetImage(jsonstring):
 
 def JSON_Construct_DTO_ShipClass(jsonstring):
     attribute_dictionary = json.loads(jsonstring)
-    return DTO_ShipClass(attribute_dictionary.pop('abilities'), attribute_dictionary.pop('maxhp'), attribute_dictionary.pop('radius'), attribute_dictionary.pop('placement_cost'), attribute_dictionary.pop('imageid'), attribute_dictionary.pop('gid'))
+    return DTO_ShipClass(attribute_dictionary.pop('types'), attribute_dictionary.pop('abilities'), attribute_dictionary.pop('maxhp'), attribute_dictionary.pop('radius'), attribute_dictionary.pop('placement_cost'), attribute_dictionary.pop('imageid'), attribute_dictionary.pop('gid'))
 
 def JSON_Construct_DTO_Ability(jsonstring):
     attribute_dictionary = json.loads(jsonstring)
