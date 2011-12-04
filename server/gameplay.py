@@ -33,7 +33,7 @@ class Unit:
 
     '''
 
-    def __init__(self, abilities, maxhp, owning_player, types, location, radius):
+    def __init__(self, abilities=[], maxhp=100, owning_player=0, types=[], location=(0,0), radius=1):
         '''
         Constructor.
         

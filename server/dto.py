@@ -5,6 +5,9 @@ import base64
 
 class DTO_ReprMixin:
     def __repr__(self):
+        return self.__class__.__name__+":"+DTO_Encoder().encode(self)
+    
+    def toJSON(self):
         return DTO_Encoder().encode(self)
     
 class DTO_AssetImage(DTO_ReprMixin):
@@ -16,7 +19,7 @@ class DTO_AssetImage(DTO_ReprMixin):
     
     def encode(self):
         r = {}
-        r['file'] = str(base64.encodebytes(self.file))
+        r['file'] = base64.encodebytes(self.file).decode()
         r['gid'] = self.gid
         return r
     
