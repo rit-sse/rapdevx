@@ -37,7 +37,7 @@ public class AttackScreen extends Screen implements StateListener
 		Ship ship2 = new Ship();
 		ship2.setX(300);
 		ship2.setY(300);
-		shipList.add(new DrawableShip(ship2, new Color(100,130,130)));
+		shipList.add(new DrawableShip(ship2, new Color(100,255,130)));
 
 
 	}
@@ -108,6 +108,8 @@ public class AttackScreen extends Screen implements StateListener
 			}
 		}
 
+		currAttack = selectedShip != null ? new DrawableAttack(selectedShip, this) : null;
+		
 		e.consume();
 	}
 
@@ -115,7 +117,6 @@ public class AttackScreen extends Screen implements StateListener
 	{
 		if (selectedShip != null)
 		{
-			currAttack = new DrawableAttack(selectedShip);
 			currAttack.setMouseLocation(e.getPoint());
 		}
 		
@@ -143,5 +144,23 @@ public class AttackScreen extends Screen implements StateListener
 	public void stateChanged(StateEvent e)
 	{
 		// TODO Switch to move phase, etc
+	}
+	
+	/**
+	 * get the shipList, should only be used by DrawableAttack at this time
+	 * @return
+	 */
+	public ArrayList<DrawableShip> getShipList()
+	{
+		return shipList;
+	}
+	
+	/**
+	 * get the Camera, should only be used by DrawableAttack at this time
+	 * @return
+	 */
+	public Camera getCamera()
+	{
+		return camera;
 	}
 }
