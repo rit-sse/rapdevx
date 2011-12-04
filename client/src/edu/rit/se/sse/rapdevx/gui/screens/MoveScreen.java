@@ -107,7 +107,7 @@ public class MoveScreen extends Screen implements StateListener {
 			if (statsScreen == null) {
 				statsScreen = new StatsScreen(/*300, 200,*/ screenWidth, screenHeight, ship.getShip());
 				ScreenStack.get().addScreenAfter(this, statsScreen);
-			} else if (statsScreen != null && statsScreen.getShip() != ship.getShip()) {
+			} else if (statsScreen != null && statsScreen.getShip() != ship.getShip() && movePath == null) {
 				ScreenStack.get().removeScreen(statsScreen);
 				statsScreen = null;
 			}
@@ -184,11 +184,23 @@ public class MoveScreen extends Screen implements StateListener {
 	}
 	
 	public void mouseMoved(MouseEvent e) {
+		
+		
+		
+		if ( movePath != null ) {
+			// update movePath to let know that the mouse has moved
+			movePath.setMouseLocation( new Point( e.getX() + camera.getX(), e.getY() + camera.getY()) );
+			setShipSelected( movePath.getDrawableShip(), true);
+			movePath.setMouseLocationValid();
+		}
+		
 		// Check all ships to see if the mouse is hovered over it
 		boolean found = false;
 		for (DrawableShip ship : shipList) {
 			if (!found && new Area(ship.getBounds()).contains(e.getX() + camera.getX(), e.getY() + camera.getY())) {
 				setShipSelected(ship, true);
+				if ( movePath != null && selectedShip != ship )
+					movePath.setMouseLocationInvalid();
 				found = true;
 				continue;
 			}
@@ -196,11 +208,6 @@ public class MoveScreen extends Screen implements StateListener {
 			// Another ship is hovered
 			if (ship != selectedShip)
 				setShipSelected(ship, false);
-		}
-		
-		if ( movePath != null ) {
-			// update movePath to let know that the mouse has moved
-			movePath.setMouseLocation( new Point( e.getX() + camera.getX(), e.getY() + camera.getY()) );
 		}
 		
 		e.consume();

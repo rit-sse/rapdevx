@@ -28,6 +28,8 @@ public class DrawableMovePath extends DrawableObject {
 	
 	private Point mouseLocation;
 	
+	private boolean mouseLocationValid;
+	
 	/**
 	 * constructor
 	 * 
@@ -41,6 +43,8 @@ public class DrawableMovePath extends DrawableObject {
 		drawablePath = new DrawablePath( path, drawableShip.getColor() );
 		
 		acceptInput = true;
+		
+		mouseLocationValid = true;
 	}
 	
 	/**
@@ -51,12 +55,16 @@ public class DrawableMovePath extends DrawableObject {
 		return path;
 	}
 	
+	public DrawableShip getDrawableShip() {
+		return drawableShip;
+	}
+	
 	/**
 	 * add a move to the path
 	 * @param point - the point to add to the path
 	 */
 	public void addMove( Point point ) {
-		if ( acceptInput )
+		if ( acceptInput && mouseLocationValid )
 			path.addPoint( point );
 	}
 	
@@ -142,6 +150,22 @@ public class DrawableMovePath extends DrawableObject {
 			return true;
 		else
 			return false;
+	}
+	
+	/**
+	 * this makes the mouse line red and disables the ability to add points.
+	 */
+	public void setMouseLocationInvalid() {
+		mouseLocationValid = false;
+		drawablePath.setMouseLocationInvalid();
+	}
+	
+	/**
+	 * this makes the mouse line the pathColor and enables the ability to add points.
+	 */
+	public void setMouseLocationValid() {
+		mouseLocationValid = true;
+		drawablePath.setMouseLocationValid();
 	}
 
 }
