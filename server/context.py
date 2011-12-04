@@ -17,7 +17,7 @@ class GameContext:
         unitClass = UnitClass([],[atk],200,10,10, sprite, "Scout")
         self.registry.register(unitClass)
         
-        self.assets = DTO_Assets(1000,1000,[unitClass.to_dto()],[],[atk.to_dto()])
+        self.assets = DTO_Assets(1000,1000,[unitClass.to_dto()],[sprite.to_dto()],[atk.to_dto()])
         self.phase = WaitingPhase(self)
     
         self.turns = {}
@@ -115,7 +115,7 @@ class WaitingPhase(GamePhase):
         self.ready = [False for x in context.playerlist]
 
     def getGameProgress(self, calling_player):
-        return Status(None, "waiting", self.context.playerlist, calling_player)
+        return DTO_Status(None, "waiting", self.context.playerlist, calling_player)
 
     def setReady(self, player_num, val):
         self.ready[player_num] = val
@@ -137,7 +137,7 @@ class PlacementPhase(GamePhase):
         self.assignments[calling_player] = ship_place_list
         
     def getGameProgress(self, calling_player):
-        return Status(None, "placement", self.context.playerlist, calling_player)
+        return DTO_Status(None, "placement", self.context.playerlist, calling_player)
         
     def getNextPhase(self):
         if(None in self.assignments):
@@ -177,7 +177,7 @@ class MovementPhase(GamePhase):
             Exception("Movement phase is in order, attack orders not allowed")
 
     def getGameProgress(self, calling_player):
-        return Status(self.turn.turn_num, "move", self.context.playerlist, calling_player)
+        return DTO_Status(self.turn.turn_num, "move", self.context.playerlist, calling_player)
 
     def setReady(self, player_num, val):
         self.ready[player_num] = val
@@ -219,13 +219,13 @@ class AttackPhase(GamePhase):
 
 
     def getGameProgress(self, calling_player):
-        return Status(self.turn.turn_num, "attack", self.context.playerlist, calling_player)
+        return DTO_Status(self.turn.turn_num, "attack", self.context.playerlist, calling_player)
 
     def setReady(self, player_num, val):
         self.ready[player_num] = val
 
     def getNextPhase(self):
-        if(self.ready.contains(False)):
+        if(False in self.ready):
             return self
         else:
             self.turn.attack.execute()
@@ -240,12 +240,8 @@ class WonPhase(GamePhase):
         self.turn = turn
 
     def getGameProgress(self, calling_player):
-        return Status(self.turn, "win", self.context.playerlist, calling_player)
+        return DTO_Status(self.turn, "win", self.context.playerlist, calling_player)
     
     def getNextPhase(self):
         return self
-
-c = None
-
-    
     
