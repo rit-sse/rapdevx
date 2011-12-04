@@ -3,6 +3,9 @@
  */
 package edu.rit.se.sse.rapdevx.clientmodels;
 
+import java.util.List;
+
+import edu.rit.se.sse.rapdevx.api.dataclasses.ShipClass;
 import edu.rit.se.sse.rapdevx.api.dataclasses.Unit;
 
 /**
@@ -41,5 +44,20 @@ public class Ship extends Unit {
 	 */
 	public void setY(int y) {
 		Y = y;
+	}
+
+	/**
+	 * Convenience method for getting a ship's class name.
+	 * 
+	 * @return The class name of the ship.
+	 */
+	public String getClassName() {
+		List<ShipClass> classes = AssetLibrary.getShipClasses();
+		for (ShipClass c : classes) {
+			if (c.getGid() == this.getClassID())
+				return "Awesome Ship!";
+		}
+
+		return "Unknown Class";
 	}
 }
