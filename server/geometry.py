@@ -1,16 +1,32 @@
+from math import *
+
 DEFAULT_TOLERANCE_FACTOR = 0.005
 
 def distance( point1, point2 ):
 	'''
 	Get the distance between two points.
 
-	point1 - Tuple containing (x,y) coordinates for the first point.
-	point2 - Tuple containing (x,y) coordinates for the second point.
+	point1 - A tuple containing (x,y) coordinates for the first point.
+	point2 - A tuple containing (x,y) coordinates for the second point.
 	'''
 	deltax = point2[0] - point1[0]
 	deltay = point2[1] - point1[1]
 
 	return ( deltax**2 + deltay**2 ) ** 0.5
+
+def slope( point1, point2 ):
+	'''
+	Get the slope of the line segment defined by the given two points.
+
+	point1 - A tuple containing (x,y) coordinates for the first point.
+	point2 - A tuple containing (x,y) coordinates for the second point.
+	'''
+	x1 = point1[0]
+	x2 = point2[0]
+	y1 = point1[1]
+	y2 = point2[1]
+
+	return ( y2 - y1 ) / ( x2 - x1 )
 
 def isPointOnSegment( source, destination, point, delta = DEFAULT_TOLERANCE_FACTOR ):
 	'''
@@ -37,7 +53,7 @@ def isPointOnSegment( source, destination, point, delta = DEFAULT_TOLERANCE_FACT
 
 	return False
 
-def dropPoint( source, destination, point, delta = DEFAULT_TOLERANCE_FACTOR ):
+def dropPoint( source, destination, point ):
 	'''
 	Finds the shortest line segment that intersects with a line segment
 	starting at source and ending at destination.
@@ -48,9 +64,45 @@ def dropPoint( source, destination, point, delta = DEFAULT_TOLERANCE_FACTOR ):
 				  the line segment.
 	point - A tuple containing the (x,y) coordinates from which the short line
 			segment is projected.
-	delta - Tolerance factor. Uses DEFAULT_TOLERANCE_FACTOR by default.
 	'''
-	pass
+	a = distance( destination, point )
+	b = distance( source, point )
+	c = distance( source, destination )
+
+	# Find angle between c and a
+	numerator = ( b ** 2 ) - ( a ** 2 ) - ( c ** 2 )
+	denominator = -2 * a * c
+	tau = acos( numerator / denominator )
+
+	# Get the distance between point and the projected point on the
+	# line segment.
+	x = a * sin( tau )
+
+	# Get the distance between the source point and the projected point on
+	# the line segment.
+	c1 = ( ( b ** 2 ) - ( x ** 2 ) ) ** 0.5
+
+	# Get the y-coordinate of the projected point.
+	destinationY = destination[1]
+	dy = ( c1 * destinationY ) / c
+
+	# Get the x-coordinate of the projected point.
+	sourceY = source[1]
+	m = slope( source, destination )
+	dx = ( dy - sourceY ) / m
+
+	d = dx, dy
+	return d
+
+# if __name__ == "__main__":
+# 	source = 0, 0
+# 	dest = 11, 11
+
+# 	for x in range( 0, 20 ):
+# 		for y in range( 0, 20 ):
+# 			point = x, y
+# 			if( not isPointOnSegment( source, dest, point ) ):
+# 				print( "Point (" + str(x) +", " + str(y) + "):" + str( dropPoint( source, dest, point ) ) )
 
 def getCollisionPoint( source, destination, point, sourceRadius, pointRadius, radiusBuffer = 0, delta = DEFAULT_TOLERANCE_FACTOR ):
 	'''
