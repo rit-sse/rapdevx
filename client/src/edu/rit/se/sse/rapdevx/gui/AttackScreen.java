@@ -115,9 +115,9 @@ public class AttackScreen extends Screen implements StateListener
 
 	public void mouseMoved(MouseEvent e)
 	{
-		if (selectedShip != null)
+		if (currAttack != null)
 		{
-			currAttack.setMouseLocation(e.getPoint());
+			currAttack.setMouseLocation(e.getPoint(), false);
 		}
 
 		e.consume();

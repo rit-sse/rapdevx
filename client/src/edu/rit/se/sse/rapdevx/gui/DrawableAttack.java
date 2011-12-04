@@ -30,7 +30,7 @@ public class DrawableAttack extends DrawableObject
 	{
 		if (selectedShip != null)
 		{
-			setMouseLocation(selectedShip.getCenter());
+			setMouseLocation(selectedShip.getCenter(), true);
 		}
 
 		float[] f1 = { 10.0f };
@@ -56,11 +56,20 @@ public class DrawableAttack extends DrawableObject
 		gPen.setClip(null);
 	}
 
-	public void setMouseLocation(Point location)
+	public void setMouseLocation(Point location, boolean snapped)
 	{
 		if (!lockedOn)
 		{
-			this.mouseLocation = location;
+			if (snapped)
+			{
+				this.mouseLocation = new Point(location.x, location.y);
+			}
+			else
+			{
+				this.mouseLocation = new Point(location.x
+						+ parent.getCamera().getX(), location.y
+						+ parent.getCamera().getY());
+			}
 		}
 	}
 
