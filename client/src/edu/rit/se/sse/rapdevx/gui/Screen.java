@@ -89,13 +89,6 @@ public abstract class Screen implements ScreenEvents {
 	}
 	
 	/* (non-Javadoc)
-	 * @see edu.rit.se.sse.rapdevx.gui.ScreenEvents#mouseClicked(java.awt.event.MouseEvent)
-	 */
-	public void mouseClicked(MouseEvent e) {
-		
-	}
-	
-	/* (non-Javadoc)
 	 * @see edu.rit.se.sse.rapdevx.gui.ScreenEvents#mousePressed(java.awt.event.MouseEvent)
 	 */
 	public void mousePressed(MouseEvent e) {
