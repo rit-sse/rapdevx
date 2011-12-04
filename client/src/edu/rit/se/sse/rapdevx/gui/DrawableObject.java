@@ -1,6 +1,8 @@
 package edu.rit.se.sse.rapdevx.gui;
 
 import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.geom.Rectangle2D;
 
 public abstract class DrawableObject implements Drawable {
 
@@ -23,40 +25,56 @@ public abstract class DrawableObject implements Drawable {
 	}
 
 	/**
-	 * @return the x
+	 * @return the x position of the object
 	 */
 	public int getX() {
 		return x;
 	}
 
 	/**
-	 * @param x the x to set
+	 * @param x the x position to set
 	 */
 	public void setX(int x) {
 		this.x = x;
 	}
 
 	/**
-	 * @return the y
+	 * @return the y position of the object
 	 */
 	public int getY() {
 		return y;
 	}
 
 	/**
-	 * @param y the y to set
+	 * @param y the y position to set
 	 */
 	public void setY(int y) {
 		this.y = y;
 	}
 	
+	/**
+	 * Positions the object so that the object's center is located at the
+	 * provided coordinates.
+	 * 
+	 * @param x the x position to set
+	 * @param y the y position to set
+	 */
 	public void setCenter(int x, int y) {
 		this.x = x - (width/2);
 		this.y = y - (height/2);
 	}
+	
+	/**
+	 * returns Point of the center of this object. 
+	 * @return Point of the center of this object
+	 */
+	public Point getCenter()
+	{
+		return new Point(x + width/2, y + height/2);
+	}
 
 	/**
-	 * @return the width
+	 * @return the width of the object
 	 */
 	public int getWidth() {
 		return width;
@@ -70,7 +88,7 @@ public abstract class DrawableObject implements Drawable {
 	}
 
 	/**
-	 * @return the height
+	 * @return the height of the object
 	 */
 	public int getHeight() {
 		return height;
@@ -84,39 +102,47 @@ public abstract class DrawableObject implements Drawable {
 	}
 
 	/**
-	 * @return the xVel
+	 * @return the x velocity of the object
 	 */
 	public int getxVel() {
 		return xVel;
 	}
 
 	/**
-	 * @param xVel the xVel to set
+	 * @param xVel the x velocity to set
 	 */
 	public void setxVel(int xVel) {
 		this.xVel = xVel;
 	}
 
 	/**
-	 * @return the yVel
+	 * @return the y velocity of the object
 	 */
 	public int getyVel() {
 		return yVel;
 	}
 
 	/**
-	 * @param yVel the yVel to set
+	 * @param yVel the y velocity to set
 	 */
 	public void setyVel(int yVel) {
 		this.yVel = yVel;
 	}
 	
+	/**
+	 * Default update for a drawable object.  Moves the object according
+	 * to the current x and y velocities that are set.
+	 */
 	public void update() {
 		this.x += xVel;
 		this.y += yVel;
 	}
 	
 	public void draw(Graphics2D gPen) {
+		draw(gPen, new Rectangle2D.Double(x, y, width, height));
+	}
+	
+	public void draw(Graphics2D gPen, Rectangle2D bounds) {
 		
 	}
 }

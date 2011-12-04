@@ -11,6 +11,7 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import edu.rit.se.sse.rapdevx.gui.RectangleBackground;
 import edu.rit.se.sse.rapdevx.gui.Screen;
 
 
@@ -25,8 +26,8 @@ public class Menu extends Screen {
 	private final ArrayList<MenuButton> buttons = new ArrayList<MenuButton>();
 	
 	//spacing vars
-	private static final int Border = 5;	//space between menu and button edges
-	private static final int Spacing = 5;	//space between buttons
+	private static final int Border = 10;	//space between menu and button edges
+	private static final int Spacing = 10;	//space between buttons
 	private static final int Scale = 1;
 	
 	private static final int EmptyWidth = Border + Border;
@@ -115,8 +116,9 @@ public class Menu extends Screen {
 		
 		//draw the backgrond
 		Dimension size = getSize();
-		gPen.setColor(BackgroundColor);
-		gPen.fillRect(cornerX, cornerY, size.width, size.height);
+//		gPen.setColor(BackgroundColor);
+//		gPen.fillRect(cornerX, cornerY, size.width, size.height);
+		new RectangleBackground(cornerX, cornerY, size.width, size.height).draw(gPen);
 		
 		//location of where to draw the buttons
 		int x = cornerX + Border;
