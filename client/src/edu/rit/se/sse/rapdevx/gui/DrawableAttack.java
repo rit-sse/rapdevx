@@ -11,12 +11,12 @@ import java.awt.geom.Rectangle2D;
 public class DrawableAttack extends DrawableObject
 {
 	private Point mouseLocation;
-	
+
 	private DrawableShip source;
 	private DrawableShip selectedShip;
 
 	private AttackScreen parent;
-	
+
 	private boolean lockedOn = false;
 
 	public DrawableAttack(DrawableShip source, AttackScreen parent)
@@ -28,7 +28,7 @@ public class DrawableAttack extends DrawableObject
 
 	public void draw(Graphics2D gPen)
 	{
-		if (selectedShip != null || lockedOn)
+		if (selectedShip != null)
 		{
 			setMouseLocation(selectedShip.getCenter());
 		}
@@ -43,8 +43,8 @@ public class DrawableAttack extends DrawableObject
 			Point start = source.getCenter();
 			gPen.setColor(new Color(0, 255, 0));
 
-			Area outside = new Area(new Rectangle2D.Double(0, 0, parent.screenWidth,
-					parent.screenHeight));
+			Area outside = new Area(new Rectangle2D.Double(0, 0,
+					parent.screenWidth, parent.screenHeight));
 			outside.subtract(new Area(source.getBounds()));
 			gPen.setClip(outside);
 
@@ -58,7 +58,10 @@ public class DrawableAttack extends DrawableObject
 
 	public void setMouseLocation(Point location)
 	{
-		this.mouseLocation = location;
+		if (!lockedOn)
+		{
+			this.mouseLocation = location;
+		}
 	}
 
 	/**
@@ -96,7 +99,7 @@ public class DrawableAttack extends DrawableObject
 		// reset color
 		gPen.setColor(new Color(0, 255, 0));
 	}
-	
+
 	public void lockOn(DrawableShip target)
 	{
 		lockedOn = true;
