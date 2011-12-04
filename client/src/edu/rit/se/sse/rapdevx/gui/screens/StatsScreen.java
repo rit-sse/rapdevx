@@ -120,8 +120,6 @@ public class StatsScreen extends Screen
 
 		double hp = ship.getHp();
 		double maxHp = ship.getMaxHp();
-		hpMaxHp.setText(hp + "/" + maxHp);
-		
 		
 		double scale = hp / maxHp * 195.0;
 		gPen.setColor(new Color(127, 127, 127));
