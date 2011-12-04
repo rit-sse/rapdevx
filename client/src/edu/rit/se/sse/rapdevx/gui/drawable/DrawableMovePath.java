@@ -1,12 +1,10 @@
 package edu.rit.se.sse.rapdevx.gui.drawable;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.geom.Rectangle2D;
 
 import edu.rit.se.sse.rapdevx.clientmodels.Path;
-import edu.rit.se.sse.rapdevx.clientmodels.Ship;
 
 /**
  * 
@@ -29,13 +27,6 @@ public class DrawableMovePath extends DrawableObject {
 	private boolean acceptInput;
 	
 	private Point mouseLocation;
-	
-//	public DrawableMovePath( Ship givenShip ) {
-//		ship = givenShip;
-//		path = new Path( new Point( ship.getX(), ship.getY() ) );
-//		
-//		drawablePath = new DrawablePath( path );
-//	}
 	
 	/**
 	 * constructor

@@ -14,7 +14,7 @@ import edu.rit.se.sse.rapdevx.gui.drawable.DrawableObject;
 public class Text extends DrawableObject {
 
 	private static final String FONT_FILE = "assets/FontPage.png";
-
+	private static final int FONT_REPLACE_COLOR = 0x1b39f5;
 	private static final double DEFAULT_SCALE = 2;
 
 	private BufferedImage largeImage;
@@ -43,7 +43,7 @@ public class Text extends DrawableObject {
 		try {
 			largeImage = ImageIO.read(new File(FONT_FILE));
 			ImageColorizer ic = new ImageColorizer(largeImage);
-			ic.recolor(color.getRGB(), 0x1b39f5);
+			ic.recolor(color.getRGB(), FONT_REPLACE_COLOR);
 		} catch (IOException e) {
 			System.err.println("Unable to load font file");
 		}

@@ -14,11 +14,11 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import edu.rit.se.sse.rapdevx.clientmodels.Ship;
+import edu.rit.se.sse.rapdevx.gui.Art;
 import edu.rit.se.sse.rapdevx.gui.ImageColorizer;
 
 public class DrawableShip extends DrawableObject {
 	
-	private static final int MAGIC_PINK = 0xd6007f;
 	private static final String SHIP_IMAGE = "assets/ship.png";
 	private static final String SHIP_CLEAR_IMAGE = "assets/clear_ship.png";
 	
@@ -51,10 +51,10 @@ public class DrawableShip extends DrawableObject {
 		
 		// Recolor the ship with the team color
 		ImageColorizer ic = new ImageColorizer(shipImage);
-		ic.recolorStrong(teamColor.getRGB(), MAGIC_PINK);
+		ic.recolorStrong(teamColor.getRGB(), Art.MAGIC_PINK);
 		
 		ic = new ImageColorizer(shipClearImage);
-		ic.recolorStrong(teamColor.getRGB(), MAGIC_PINK);
+		ic.recolorStrong(teamColor.getRGB(), Art.MAGIC_PINK);
 	}
 	
 //	public void setColor( Color newColor ) {
