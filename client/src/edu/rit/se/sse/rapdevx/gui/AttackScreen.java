@@ -2,6 +2,7 @@ package edu.rit.se.sse.rapdevx.gui;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Area;
@@ -10,9 +11,9 @@ import java.util.ArrayList;
 import edu.rit.se.sse.rapdevx.clientmodels.Ship;
 import edu.rit.se.sse.rapdevx.events.StateEvent;
 import edu.rit.se.sse.rapdevx.events.StateListener;
+import edu.rit.se.sse.rapdevx.gui.drawable.DrawableAttack;
 
-public class AttackScreen extends Screen implements StateListener
-{
+public class AttackScreen extends Screen implements StateListener {
 	/** A reference to the map camera for positioning objects in world space */
 	private Camera camera;
 
@@ -23,8 +24,7 @@ public class AttackScreen extends Screen implements StateListener
 	/** Current attack path */
 	private DrawableAttack currAttack = null;
 
-	public AttackScreen(Camera camera, int width, int height)
-	{
+	public AttackScreen(Camera camera, int width, int height) {
 		super(width, height);
 		this.camera = camera;
 
@@ -38,22 +38,20 @@ public class AttackScreen extends Screen implements StateListener
 		ship2.setX(300);
 		ship2.setY(300);
 		shipList.add(new DrawableShip(ship2, new Color(100, 255, 130)));
-
 	}
 
-	public void update(boolean hasFocus, boolean isVisible)
-	{
+	public void update(boolean hasFocus, boolean isVisible) {
+		// Make sure the selected ship shows a selected indicator
 		if (selectedShip != null)
 			selectedShip.setSelected(true);
 
-		for (DrawableShip ship : shipList)
-		{
+		// Update all the ships on screen
+		for (DrawableShip ship : shipList) {
 			ship.update();
 		}
 	}
 
-	public void draw(Graphics2D gPen)
-	{
+	public void draw(Graphics2D gPen) {
 		// Translate the coordinates based on the camera
 		Rectangle cameraBounds = camera.getBounds();
 		gPen.translate(-cameraBounds.getX(), -cameraBounds.getY());
@@ -61,90 +59,82 @@ public class AttackScreen extends Screen implements StateListener
 		/** Draw things based on the camera here **/
 
 		// Draw all the ships on the map
-		for (DrawableShip ship : shipList)
-		{
+		for (DrawableShip ship : shipList) {
 			ship.draw(gPen, cameraBounds);
 		}
-		if (currAttack != null)
-		{
-			currAttack.draw(gPen);
+		
+		// Draw all the attack targets
+		if (currAttack != null) {
+			currAttack.draw(gPen, cameraBounds);
 		}
 
 		// Change the drawing back to screen based coordinates
 		gPen.translate(cameraBounds.getX(), cameraBounds.getY());
 	}
 
-	public void mouseReleased(MouseEvent e)
-	{
+	public void mouseReleased(MouseEvent e) {
 		// Check to see if one of the ships was clicked
-		for (DrawableShip ship : shipList)
-		{
+		for (DrawableShip ship : shipList) {
 			if (new Area(ship.getBounds()).contains(e.getX() + camera.getX(),
 					e.getY() + camera.getY()))
 			{
-				// Select a non-selected ship and deselect a selected ship
-				if (ship == selectedShip)
-				{
+				if (ship == selectedShip) {
+					// This ship was previously selected.  Deselect it and stop the attack.
 					selectedShip.setSelected(false);
 					selectedShip = null;
-				}
-				else if (selectedShip != null)
-				{
-					currAttack.lockOn(ship);
-				}
-				else
-				{
+					currAttack = null;
+				} else if (selectedShip != null) {
+					// Another ship was selected, attack it
+					currAttack.setTarget(ship, camera.getBounds());
+				} else {
+					// No other ship was selected, select this one and start an attack
 					selectedShip = ship;
 					selectedShip.setSelected(true);
+					currAttack = new DrawableAttack(ship);
 				}
 			}
-			// If no ship is clicked, move any selected ship to the mouse
-			// coordinates
-			else if (selectedShip != null)
-			{
-			}
 		}
+
 		
-		if(selectedShip == null)
+		if (selectedShip == null)
 			currAttack = null;
-		else if(currAttack == null)
-			currAttack = new DrawableAttack(selectedShip, this);
-		
+		else if (currAttack == null)
+			currAttack = new DrawableAttack(selectedShip);
+
 		e.consume();
 	}
 
-	public void mouseMoved(MouseEvent e)
-	{
-		if (currAttack != null)
-		{
-			currAttack.setMouseLocation(e.getPoint(), false);
+	public void mouseMoved(MouseEvent e) {
+		if (currAttack != null) {
+			// Snap the reticle to a ship if we are hovering over one
+			for (DrawableShip ship : shipList) {
+				if (ship == selectedShip)
+					continue;
+				
+				if (new Area(ship.getBounds()).contains(e.getX() + camera.getX(),
+						e.getY() + camera.getY()))
+				{
+					currAttack.setMouseLocation(ship.getCenter());
+					currAttack.setSnapped(true);
+					
+					e.consume();
+					return;
+				}
+			}
+			
+			// No ship under the mouse, clear snapping
+			currAttack.setSnapped(false);
+			
+			// If there is an attack selection in progress, update the reticle
+			currAttack.setMouseLocation(new Point(e.getX() + camera.getX(),
+					e.getY() + camera.getY()));
 		}
 
 		e.consume();
 	}
 
-	public void stateChanged(StateEvent e)
-	{
+	public void stateChanged(StateEvent e) {
 		// TODO Switch to move phase, etc
 	}
-
-	/**
-	 * get the shipList, should only be used by DrawableAttack at this time
-	 * 
-	 * @return
-	 */
-	public ArrayList<DrawableShip> getShipList()
-	{
-		return shipList;
-	}
-
-	/**
-	 * get the Camera, should only be used by DrawableAttack at this time
-	 * 
-	 * @return
-	 */
-	public Camera getCamera()
-	{
-		return camera;
-	}
+	
 }

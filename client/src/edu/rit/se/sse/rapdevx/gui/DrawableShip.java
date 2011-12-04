@@ -29,6 +29,7 @@ public class DrawableShip extends DrawableObject {
 		super(ship.getX() * 2, ship.getY() * 2, 64, 64);
 		this.isSelected = false;
 		this.teamColor = teamColor;
+		this.ship = ship;
 		
 		// Load the ship image
 		try {
@@ -70,6 +71,10 @@ public class DrawableShip extends DrawableObject {
 	public Ellipse2D getBounds() {
 		// TODO get ship radius (2 * scale)
 		return new Ellipse2D.Double(x - 5, y + 2, 68, 68);
+	}
+
+	public Ship getShip() {
+		return ship;
 	}
 
 }
