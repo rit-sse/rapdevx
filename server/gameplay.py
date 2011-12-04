@@ -45,6 +45,9 @@ class Unit:
         self.types = types
         self.location = location
         self.radius = radius
+        self.classid = None
+    def setClassid(self,classid):
+        self.classid = classid
     
     def getMaxHP(self):
         '''
@@ -87,6 +90,11 @@ class Unit:
         Get the unit's location.
         '''
         return self.location
+        
+    def to_dto(self):
+        return DTO_Unit(self.owning_player, self.hp, self.classid, self.gid)
+    
+
 
 class Ability:
     '''
@@ -144,6 +152,7 @@ class Turn:
     '''
 
     def __init__(self, turn_num):
+        self.turn_num = turn_num
         self.attack = AttackTurn(turn_num)
         self.move = MoveTurn(turn_num)
         self.gid = None #set on registry
@@ -220,10 +229,25 @@ class AttackTurn:
         #setup a list of attacks for a player if there isn't one yet
         if calling_player not in self.player_attack_lists:
             self.player_attack_lists[calling_player]=[]
-        
+
+
         order = AttackOrder(dto_attack_order.srcid,dto_attack_order.targetid, dto_attack_order.ability)
-        registry.register(order)
+
+        target = registry.getById(dto_attack_order.srcid)
+
+        if registry.getById(dto_attack_order.srcid) == None:
+            raise Exception("Attacking ship not in registry")
+
+        if registry.getById(dto_attack_order.targetid) == None:
+            raise Exception("Target Ship not in registry")
         
+        if registry.getById(dto_attack_order.ability) == None:
+            raise Exception("Ability not in registry")
+
+        if calling_player != target.getPlayer():
+            raise Exception("Player does not own ship")
+
+        registry.register(order)
         self.player_attack_lists.append(order)
         
     def deleteAttackOrder(self, move_order_gid, calling_player, registry):
@@ -297,6 +321,7 @@ class UnitClass:
     
     def makeUnit(self,location,player_id):
         unit = Unit(self.abilities[:],self.maxhp,player_id, self.types, location, self.radius)
+        unit.setClassid(self.gid)
         return unit
     
     def to_dto(self):
