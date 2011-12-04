@@ -36,18 +36,26 @@ public class DrawablePath extends DrawableObject {
 	}
 	
 	public void draw(Graphics2D gPen) {
+		gPen.setColor( pathColor );
+		
 		// Draw a line between the last coordinate and the mouse cursor
 		if (mouseLocation != null && path.getLastPoint() != null) {
 			Point lastLocation = path.getLastPoint();
-			gPen.setColor(new Color(0, 255, 0));
+			
+			// Create a dashed line
+			float[] f1 = { 10.0f };
+			gPen.setStroke(new BasicStroke(2.0f, BasicStroke.CAP_BUTT,
+					BasicStroke.JOIN_MITER, 10.0f, f1, 0.0f));
+			
 			gPen.drawLine(lastLocation.x, lastLocation.y,
 					mouseLocation.x, mouseLocation.y);
+			
+			// Reset the line style
+			gPen.setStroke(new BasicStroke());
 		}
 		
 		// Draw all of the saved path segments
 		Point prevLocation = null;
-		
-		gPen.setColor( pathColor );
 		for (Point location : path.getPath()) {
 			// Draw a square marking the point
 			gPen.fillRect(location.x - 4, location.y - 4, 8, 8);
