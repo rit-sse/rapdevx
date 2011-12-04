@@ -228,17 +228,17 @@ def JSON_Construct_DTO_Assets(jsonstring):
     jsonlist = attribute_dictionary.pop('ship_classes')
     shipclasslist = []
     for v in jsonlist:
-        shipclasslist.append(json.loads(v))
+        shipclasslist.append(JSON_Construct_DTO_ShipClass(v))
 
     jsonlist = attribute_dictionary.pop('images')
     imageslist = []
     for v in jsonlist:
-        imageslist.append(json.loads(v))
+        imageslist.append(JSON_Construct_DTO_AssetImage(v))
 
     jsonlist = attribute_dictionary.pop('abilities')
     abilitieslist = []
     for v in jsonlist:
-        abilitieslist.append(json.loads(v))
+        abilitieslist.append(JSON_Construct_DTO_Ability(v))
 
     return DTO_Assets(attribute_dictionary.pop('width'),attribute_dictionary.pop('height'),shipclasslist,imageslist,abilitieslist)
 
