@@ -3,8 +3,6 @@
  */
 package edu.rit.se.sse.rapdevx.clientstate;
 
-import java.util.Timer;
-
 import edu.rit.se.sse.rapdevx.api.GameApi;
 import edu.rit.se.sse.rapdevx.api.SessionApi;
 import edu.rit.se.sse.rapdevx.clientmodels.AssetLibrary;
@@ -14,9 +12,6 @@ import edu.rit.se.sse.rapdevx.clientmodels.AssetLibrary;
  * 
  */
 public class StartingState extends StateBase {
-	private Timer	timer	= new Timer();
-	private int		phaseNum;
-
 	public StartingState() {
 		this.nextState = UnitPlacementState.class;
 
