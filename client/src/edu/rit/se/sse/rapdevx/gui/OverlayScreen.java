@@ -25,7 +25,6 @@ public class OverlayScreen extends Screen implements StateListener
 	private static final int REDO_MODIFIER_X = 32;
 	private static final int PHASE_MODIFIER_X = 64;
 	private static final int READY_MODIFIER_X = 290;
-	private static final int BEG_MODIFIER_X = 52;
 
 	private static final int TURN_CONTROL_Y = 0;
 
@@ -34,13 +33,6 @@ public class OverlayScreen extends Screen implements StateListener
 	private IGrayableImage phase;
 	private IGrayableImage readyEnabled;
 	private IGrayableImage readyDisabled;
-	private IGrayableImage beginning;
-	private IGrayableImage backfast;
-	private IGrayableImage back;
-	private IGrayableImage pause;
-	private IGrayableImage forward;
-	private IGrayableImage forwardfast;
-	private IGrayableImage skip;
 
 	private IGrayableImage[] turnControlImages = new IGrayableImage[7];
 	private String[] turnControlImageStr = { "beginning", "backfast", "back",
@@ -142,26 +134,11 @@ public class OverlayScreen extends Screen implements StateListener
 		// if playback controls are active TODO
 		else if (playbackBounds.contains(e.getPoint()))
 		{
-			if (beginning.containsPoint(e.getPoint()))
+			for(IGrayableImage img : turnControlImages)
 			{
-			}
-			else if (backfast.containsPoint(e.getPoint()))
-			{
-			}
-			else if (back.containsPoint(e.getPoint()))
-			{
-			}
-			else if (pause.containsPoint(e.getPoint()))
-			{
-			}
-			else if (forward.containsPoint(e.getPoint()))
-			{
-			}
-			else if (forwardfast.containsPoint(e.getPoint()))
-			{
-			}
-			else if (skip.containsPoint(e.getPoint()))
-			{
+				if(img.containsPoint(e.getPoint()))
+				{
+				}
 			}
 		}
 	}
