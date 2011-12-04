@@ -1,4 +1,5 @@
 from dto import *
+from geometry import *
 
 def swizzle(lists):
     lists = [x[:] for x in lists]
@@ -35,7 +36,7 @@ class Unit:
         owning_player - An integer refering to the player which owns this unit.
         types - List of strings which tell what kind of thing the unit is.
         location - The unit's location.
-        radius - An integer which represents a units size
+        radius - An integer which represents a unit's size
         '''
 
         self.gid = None #set on registry
@@ -47,6 +48,7 @@ class Unit:
         self.location = location
         self.radius = radius
         self.classid = None
+
     def setClassid(self,classid):
         self.classid = classid
     
@@ -100,8 +102,6 @@ class Unit:
         
     def to_dto(self):
         return DTO_Unit(self.owning_player, self.hp, self.classid, self.gid)
-    
-
 
 class Ability:
     '''
@@ -180,7 +180,10 @@ class MoveTurn:
         if calling_player not in self.player_move_list:
             self.player_move_list[calling_player] = []
         print("add")
+
+        #moveOrderObj = MoveOrder(move_order.unitid, move_order.path) 
         moveOrderObj = MoveOrder(move_order.unitid, move_order.path) 
+
         self.player_move_list[calling_player].append( moveOrderObj )
         registry.register(moveOrderObj)
     
@@ -197,12 +200,17 @@ class MoveTurn:
         '''
         return [x.to_dto() for x in self.player_move_list[calling_player]]
         
-    #any existing move orders should be evaluated
-    #(going round robin on submitting players, in order)
-    #R1: No collision checking
-    #R2: Stop short of offending segment
-    #R3: Stop tangent to offending unit
     def execute(self, registry):
+        '''
+        Evaluate move orders.
+
+        #any existing move orders should be evaluated
+        #(going round robin on submitting players, in order)
+        #R1: No collision checking
+        #R2: Stop short of offending segment
+        #R3: Stop tangent to offending unit
+        '''
+
         player_nums = sorted(self.player_move_list.keys())
         #todo: "rotate" player nums based on the turn number, so 
         #a different player gets to go "first" every turn
@@ -213,11 +221,13 @@ class MoveTurn:
         self.results = {}
         
         for playerMove in combined_list:
-            print(playerMove)
-            unitShip = registry.getById(playerMove.shipid)
-            unitLoc = playerMove.path[-1]
-            unitShip.setLocation(unitLoc)
-            self.results[unitShip.gid] = playerMove.path
+            #print(playerMove)
+            unit = registry.getById(playerMove.unitid)
+            unitLoc = playerMove.path
+
+            #print("SETTING LOCATION FOR SHIP TO:", unitLoc)
+            unit.setLocation(unitLoc)
+            self.results[unit.gid] = playerMove.path
         
     def getResults(self):
         return DTO_Results(self.results)
@@ -360,13 +370,13 @@ class UnitClass:
         return unit
     
     def to_dto(self):
-    #types, abilities, maxhp, radius, placement_cost, imageid, gid):
+        #types, abilities, maxhp, radius, placement_cost, imageid, gid):
         return DTO_ShipClass(self.types, [x.to_dto() for x in self.abilities], 
             self.maxhp, self.radius, self.placement_cost, self.image.gid, self.gid)
             
 class Image:
     def __init__(self, filename):
-        self.contents = open(filename).read()
+        self.contents = open(filename,'rb').read()
         self.gid = None
     
     def to_dto(self):
@@ -385,11 +395,11 @@ class AttackOrder:
         return DTO_AbilityUseOrder(self.srcid, self.targetid, self.ability, self.gid)
         
 class MoveOrder:
-    def __init__(self, shipid, path):
-        self.shipid = shipid
+    def __init__(self, unitid, path):
+        self.unitid = unitid
         self.path = path
         self.gid = None
         
     def to_dto(self):
-        return DTO_MovementOrder(self.shipid, self.path, self.gid)
+        return DTO_MovementOrder(self.unitid, self.path, self.gid)
         
