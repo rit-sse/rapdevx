@@ -67,7 +67,7 @@ public class ImageColorizer extends BufferedImage{
 				// System.out.println(Integer.toHexString(0xFFFFFF &
 				// image.getRGB(i, j)));
 				rgbValue = result.getRGB(i, j);
-				rgbValue &= 0x00FFFFFF;
+				rgbValue &= 0xFFFFFF;
 				if (rgbValue == colorReplaced) {
 					result.setRGB(i, j, color);
 					//System.out.println("Found some magenta");

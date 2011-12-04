@@ -5,12 +5,11 @@ package edu.rit.se.sse.rapdevx.gui.screens.menus;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
 import edu.rit.se.sse.rapdevx.gui.RectangleBackground;
-import edu.rit.se.sse.rapdevx.gui.Text;
+import edu.rit.se.sse.rapdevx.gui.drawable.Text;
 
 /**
  * @author dpk3062
@@ -18,34 +17,9 @@ import edu.rit.se.sse.rapdevx.gui.Text;
  */
 public class MenuButton {
 
-	// colors
-	private final Color ErrorColor = Color.magenta;
-
-	private final Color UnpressedBackgroundColor = Color.gray.brighter();
-	private final Color PressedBackgroundColor = Color.gray.darker();
-	private Color backgroundColor = UnpressedBackgroundColor;
-
-	private final Color UnselectedBorderColor = UnpressedBackgroundColor
-			.darker();
-	private final Color SelectedBorderColor = UnpressedBackgroundColor
-			.brighter();
-	private Color borderColor = UnselectedBorderColor;
-
-	private final Color UnselectedTextColor = Color.white;
-	private final Color SelectedTextColor = Color.red.darker().darker();
-	private Color textColor = UnselectedTextColor;
-
-	private final Font TextFont = new Font("Helvetica", Font.BOLD, 20);
-
-	// original sizes before scaling. Scaling is absolute from these sizes,
-	// not dynamic from the button's current size //TODO should scaling be
-	// dynamic instead?
 	private Dimension DefaultSize = new Dimension(200, 50);
-	private Dimension DefaultArc = new Dimension(20, 20);
 
 	private Dimension size = DefaultSize;
-	private Dimension arc = DefaultArc; // Note: use null to prevent rounding
-							// of the button's corners
 
 	private static final String DefaultText = "???";
 	private static final String DefaultHelp = "I don't know what this is too";
@@ -55,18 +29,12 @@ public class MenuButton {
 
 	private boolean selected = false;
 
-	// need to keep track of what was displayed to the user. These values
-	// could change from a set() before the screen is redrawn
 	private int lastDrawnFromX = 0;
 	private int lastDrawnFromY = 0;
 	private int lastDrawnWidth = 0;
 	private int lastDrawnHeight = 0;
 
 	private boolean pressed;
-
-	// --------------------------------------------------------------------------
-	// Constructors
-	// --------------------------------------------------------------------------
 
 	/**
 	 * Create a button for a menu screen
@@ -80,10 +48,6 @@ public class MenuButton {
 		setText(text);
 		setHelp(help);
 	}
-
-	// --------------------------------------------------------------------------
-	// Setters
-	// --------------------------------------------------------------------------
 
 	/**
 	 * Sets the text/title of this button
@@ -127,69 +91,6 @@ public class MenuButton {
 	}
 
 	/**
-	 * Configure the button's rounded corners
-	 * 
-	 * @param width
-	 * @param height
-	 * @param createNewArc
-	 *              true if rounded courners should be added if this button
-	 *              doesn't already have them
-	 */
-	private void setArc(int width, int height, boolean createNewArc) {
-		if (!hasArc() && !createNewArc) {
-			return; // this button isn't using arcs
-		}
-
-		arc = new Dimension(width, height);
-	}
-
-	/**
-	 * Sets the button text/title color
-	 * 
-	 * @param text
-	 *              The button's new text color. Should not be null
-	 */
-	private void setTextColor(Color text) {
-		if (text == null) {
-			text = ErrorColor;
-		}
-
-		textColor = text;
-	}
-
-	/**
-	 * Sets the button border color
-	 * 
-	 * @param border
-	 *              The button's new border color. Should not be null
-	 */
-	private void setBorderColor(Color border) {
-		if (border == null) {
-			border = ErrorColor;
-		}
-
-		borderColor = border;
-	}
-
-	/**
-	 * Sets the button background color
-	 * 
-	 * @param border
-	 *              The button's new background color. Should not be null
-	 */
-	private void setBackgroundColor(Color background) {
-		if (background == null) {
-			background = ErrorColor;
-		}
-
-		backgroundColor = background;
-	}
-
-	// --------------------------------------------------------------------------
-	// Getters
-	// --------------------------------------------------------------------------
-
-	/**
 	 * Gets the title/text of this button
 	 * 
 	 * @return A non-null String
@@ -229,47 +130,6 @@ public class MenuButton {
 	}
 
 	/**
-	 * Gets the current arc size of this button
-	 * 
-	 * @return This button's arc size. Will be null if the button has no arc
-	 */
-	public Dimension getArc() {
-		return arc;
-	}
-
-	/**
-	 * @return true if this button has an arc, else false
-	 */
-	public boolean hasArc() {
-		return arc != null;
-	}
-
-	/**
-	 * @return The button's text/title color
-	 */
-	private Color getTextColor() {
-		return textColor;
-	}
-
-	/**
-	 * @return The button's border color
-	 */
-	private Color getBorderColor() {
-		return borderColor;
-	}
-
-	/**
-	 * @return The button's background color
-	 */
-	private Color getBackgroundColor() {
-		return backgroundColor;
-	}
-
-	// --------------------------------------------------------------------------
-	// Graphics
-	// --------------------------------------------------------------------------
-
-	/**
 	 * Scales the button based off of it's original size and the given scale
 	 * value
 	 * 
@@ -286,12 +146,6 @@ public class MenuButton {
 		setSize(width, height);
 
 		// adjust arcs
-		if (!hasArc()) {
-			return;
-		}
-		width = (int) (DefaultArc.width * scale);
-		height = (int) (DefaultArc.height * scale);
-		setArc(width, height, false);
 	}
 
 	/**
@@ -318,7 +172,7 @@ public class MenuButton {
 
 		// draw the main button and remember where we put it for event
 		// handling
-		new RectangleBackground(x, y, size.width, size.height).draw( gPen);
+		new RectangleBackground(x, y, size.width, size.height).draw(gPen);
 		if (selected) {
 			gPen.setColor(new Color(30, 127, 255));
 			gPen.fill(new Rectangle(x, y, 12, 4));
@@ -326,32 +180,36 @@ public class MenuButton {
 			gPen.fill(new Rectangle(x + size.width - 12, y, 12, 4));
 			gPen.fill(new Rectangle(x + size.width - 4, y, 4, 12));
 			gPen.fill(new Rectangle(x, y + size.height - 12, 4, 12));
-			gPen.fill(new Rectangle(x, y + size.height -4, 12, 4));
-			gPen.fill(new Rectangle(x+ size.width - 12, y + size.height -4, 12, 4));
-			gPen.fill(new Rectangle(x + size.width -4, y+ size.height -12, 4, 12));
+			gPen.fill(new Rectangle(x, y + size.height - 4, 12, 4));
+			gPen.fill(new Rectangle(x + size.width - 12, y + size.height
+					- 4, 12, 4));
+			gPen.fill(new Rectangle(x + size.width - 4, y + size.height
+					- 12, 4, 12));
 		}
-		if(pressed){
-			//right
+		if (pressed) {
+			// right
 			Color color1 = new Color(76, 76, 76);
-			//bottom
+			// bottom
 			Color color2 = new Color(84, 84, 84);
-			//bottom left
+			// bottom left
 			Color color3 = new Color(72, 72, 72);
-			//top left
+			// top left
 			Color color4 = new Color(66, 66, 66);
-			//background
+			// background
 			Color color5 = new Color(73, 73, 73);
 			gPen.setColor(color4);
-			gPen.fill(new Rectangle(x, y, 4, size.height-4));
+			gPen.fill(new Rectangle(x, y, 4, size.height - 4));
 			gPen.fill(new Rectangle(x + 4, y, size.width - 4, 4));
 			gPen.setColor(color1);
 			gPen.fill(new Rectangle(x + size.width - 4, y, 4, size.height));
 			gPen.setColor(color3);
-			gPen.fill(new Rectangle(x , y+size.height -4, 4, 4));
+			gPen.fill(new Rectangle(x, y + size.height - 4, 4, 4));
 			gPen.setColor(color2);
-			gPen.fill(new Rectangle(x + 4, y + size.height - 4, size.width - 8, 4));
+			gPen.fill(new Rectangle(x + 4, y + size.height - 4,
+					size.width - 8, 4));
 			gPen.setColor(color5);
-			gPen.fill(new Rectangle(x + 4, y + 4, size.width - 8, size.height - 8));
+			gPen.fill(new Rectangle(x + 4, y + 4, size.width - 8,
+					size.height - 8));
 		}
 		lastDrawnFromX = x;
 		lastDrawnFromY = y;
@@ -364,14 +222,10 @@ public class MenuButton {
 		// gPen.setColor(getTextColor());
 		// gPen.setFont(TextFont);
 		int textY = y + size.height / 2 - 10;
-		new Text(getText(), x + 10, textY, 3).drawColor(gPen,0xFFFF0000);
+		new Text(getText(), x + 10, textY, 3, Color.WHITE).draw(gPen);
 
 		// TODO adjust the border depending on if selected or not
 	}
-
-	// --------------------------------------------------------------------------
-	// Actions
-	// --------------------------------------------------------------------------
 
 	public boolean includesPoint(int x, int y) {
 		// TODO handle when width or height is negative and thus x or y
@@ -390,7 +244,6 @@ public class MenuButton {
 	public void setSelected(boolean selected) {
 		this.selected = selected;
 
-
 	}
 
 	public void clicked() {
@@ -400,18 +253,16 @@ public class MenuButton {
 	}
 
 	public void setPressed(boolean pressed) {
-		this.pressed=pressed;
-		setBackgroundColor(PressedBackgroundColor);
+		this.pressed = pressed;
 
 	}
 
 	public void released(int x, int y) {
 		// check to see if we were 'clicked'
-		if (getBackgroundColor() == PressedBackgroundColor
-				&& includesPoint(x, y)) {
+		if (pressed && includesPoint(x, y)) {
 			clicked();
 		}
 
-		setBackgroundColor(UnpressedBackgroundColor);
+		pressed = false;
 	}
 }

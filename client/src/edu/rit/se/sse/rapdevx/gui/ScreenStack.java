@@ -10,10 +10,22 @@ import java.util.LinkedList;
 
 public class ScreenStack implements KeyListener, MouseListener, MouseMotionListener {
 	
-	private LinkedList<Screen> screenList;
+	private static ScreenStack instance = new ScreenStack();
 	
-	public ScreenStack() {
+	private LinkedList<Screen> screenList;
+	int xShift, yShift;
+	
+	private ScreenStack() {
 		screenList = new LinkedList<Screen>();
+	}
+	
+	public static ScreenStack get() {
+		return instance;
+	}
+	
+	public void setOffsets(int xShift, int yShift) {
+		this.xShift = xShift;
+		this.yShift = yShift;
 	}
 	
 	/**
@@ -21,7 +33,7 @@ public class ScreenStack implements KeyListener, MouseListener, MouseMotionListe
 	 * 
 	 * @param screen the screen to add
 	 */
-	public void addScreen(Screen screen) {
+	public synchronized void addScreen(Screen screen) {
 		screenList.addLast(screen);
 	}
 	
@@ -31,7 +43,7 @@ public class ScreenStack implements KeyListener, MouseListener, MouseMotionListe
 	 * @param referenceScreen the screen to add before
 	 * @param newScreen the new screen to add
 	 */
-	public void addScreenBefore(Screen referenceScreen, Screen newScreen) {
+	public synchronized void addScreenBefore(Screen referenceScreen, Screen newScreen) {
 		for (int i = 0; i < screenList.size(); i++) {
 			if (screenList.get(i) == referenceScreen) {
 				screenList.add(i, newScreen);
@@ -48,7 +60,7 @@ public class ScreenStack implements KeyListener, MouseListener, MouseMotionListe
 	 * @param referenceScreen the screen to add before
 	 * @param newScreen the new screen to add
 	 */
-	public void addScreenAfter(Screen referenceScreen, Screen newScreen) {
+	public synchronized void addScreenAfter(Screen referenceScreen, Screen newScreen) {
 		for (int i = 0; i < screenList.size(); i++) {
 			if (screenList.get(i) == referenceScreen) {
 				//TODO may need to do special casing for end of list?
@@ -65,7 +77,7 @@ public class ScreenStack implements KeyListener, MouseListener, MouseMotionListe
 	 * 
 	 * @param screen the screen to remove
 	 */
-	public void removeScreen(Screen screen) {
+	public synchronized void removeScreen(Screen screen) {
 		screenList.remove(screen);
 	}
 	
@@ -73,7 +85,7 @@ public class ScreenStack implements KeyListener, MouseListener, MouseMotionListe
 	 * Updates the screens in the list.  Determines which screens should
 	 * have focus and are visible.
 	 */
-	public void update() {
+	public synchronized void update() {
 		boolean otherScreenHasFocus = false;
 		boolean coveredByOtherScreen = false;
 		
@@ -102,7 +114,7 @@ public class ScreenStack implements KeyListener, MouseListener, MouseMotionListe
 	 * 
 	 * @param gPen the graphics pen to draw with 
 	 */
-	public void draw(Graphics2D gPen) {
+	public synchronized void draw(Graphics2D gPen) {
 		for (Screen screen : screenList) {
 			screen.draw(gPen);
 		}
@@ -158,6 +170,8 @@ public class ScreenStack implements KeyListener, MouseListener, MouseMotionListe
 	 */
 	@Override
 	public void mouseClicked(MouseEvent e) {
+		adjustMouseCoords(e);
+		
 		//tell all the screens about this mouse event
 		for (int i = screenList.size() - 1; i >= 0; i--) {
 			Screen screen = screenList.get(i);
@@ -179,6 +193,8 @@ public class ScreenStack implements KeyListener, MouseListener, MouseMotionListe
 	 */
 	@Override
 	public void mousePressed(MouseEvent e) {
+		adjustMouseCoords(e);
+		
 		//tell all the screens about this mouse event
 		for (int i = screenList.size() - 1; i >= 0; i--) {
 			Screen screen = screenList.get(i);
@@ -194,6 +210,8 @@ public class ScreenStack implements KeyListener, MouseListener, MouseMotionListe
 	 */
 	@Override
 	public void mouseReleased(MouseEvent e) {
+		adjustMouseCoords(e);
+		
 		//tell all the screens about this mouse event
 		for (int i = screenList.size() - 1; i >= 0; i--) {
 			Screen screen = screenList.get(i);
@@ -219,6 +237,8 @@ public class ScreenStack implements KeyListener, MouseListener, MouseMotionListe
 	public void mouseMoved(MouseEvent e) {
 		//TODO should we only send this to the screen with focus? (need to make the same choice for all the other events too)
 		
+		adjustMouseCoords(e);
+		
 		//tell all the screens about this mouse event
 		for (int i = screenList.size() - 1; i >= 0; i--) {
 			Screen screen = screenList.get(i);
@@ -227,6 +247,10 @@ public class ScreenStack implements KeyListener, MouseListener, MouseMotionListe
 			}
 			screen.mouseMoved(e);
 		}
+	}
+	
+	private void adjustMouseCoords(MouseEvent e) {
+		e.translatePoint(-xShift, -yShift);
 	}
 	
 }
