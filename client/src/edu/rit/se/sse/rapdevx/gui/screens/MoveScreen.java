@@ -45,11 +45,13 @@ public class MoveScreen extends Screen implements StateListener {
 		Ship ship = new Ship();
 		ship.setX(150);
 		ship.setY(150);
+		ship.setHp(50);
 		shipList.add(new DrawableShip(ship, new Color(48, 129, 233)));
 		
 		Ship ship2 = new Ship();
 		ship2.setX(200);
 		ship2.setY(300);
+		ship.setHp(75);
 		shipList.add(new DrawableShip(ship2, new Color(108, 200, 47)));
 	}
 

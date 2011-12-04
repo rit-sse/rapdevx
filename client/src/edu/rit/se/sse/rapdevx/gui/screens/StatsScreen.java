@@ -54,13 +54,12 @@ public class StatsScreen extends Screen
 		y = screenHeight - 200;
 		this.ship = ship;
 		
-		name = new Text("Awesome Ship", x + 10, y + 10, 2.5);
+		name = new Text(ship.getClassName(), x + 10, y + 10, 2.5);
 		HP = new Text("HP", x + 25, y + 38, 2.0);
 		moveRadius = new Text("Move Radius: 5", x + 10, y + 65, 2.5);
 
-		double hp = 5; //ship.getHp();
-		double maxHp = 20;//GameSession.get().findByClassId(ship.getClassID());
-				//.getMaxhp();
+		double hp = ship.getHp();
+		double maxHp = ship.getMaxHp();
 
 		hpMaxHp = new Text((int) hp + "/" + (int) maxHp, x + 65 + 145, y + 20,
 				1.5);
@@ -68,10 +67,13 @@ public class StatsScreen extends Screen
 		abilitiesWord = new Text("Abilites:", x + 10, y + 95, 2.5);
 		
 		int yPosition = 115;
+		
 		List<Ability> abilities = new ArrayList<Ability>();
 		abilities.add(new Ability());
 		abilities.add(new Ability());
+		
 		//GameSession.get().findByClassId(ship.getClassID()).getAbilities();
+		
 		for (Ability ability : abilities)
 		{
 			this.abilities.add(new Text(ability.getName() + ": Radius: "
@@ -110,16 +112,12 @@ public class StatsScreen extends Screen
 	{
 		Color startColor = gPen.getColor();
 		HP.draw(gPen);
-		// sample value
-		double hp = 5.0;
-		double maxHp = 20.0;
-		
-		hpMaxHp.setText(hp + "/" + maxHp);
 
-		// real stuff
-		// double hp = ship.getHp();
-		// double maxHp = GameSession.get().findByClassId(ship.getClassID())
-		// .getMaxhp();
+		double hp = ship.getHp();
+		double maxHp = ship.getMaxHp();
+		hpMaxHp.setText(hp + "/" + maxHp);
+		
+		
 		double scale = hp / maxHp * 195.0;
 		gPen.setColor(new Color(127, 127, 127));
 		gPen.fill(new Rectangle(x + 65, y + 35, 195, 20));
