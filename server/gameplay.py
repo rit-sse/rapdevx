@@ -305,7 +305,7 @@ class AttackTurn:
                     registry.removeById(target.gid)
             
     def getResults(self):
-        return self.results
+        return DTO_AttackResults(self.results)
 
         
 class UnitClass:
