@@ -17,6 +17,7 @@ public class RectangleBackground {
 	private int x;
 	private int y;
 	private boolean pressed;
+	private boolean hover;
 
 	/**
 	 * Constructor for the rectangle background
@@ -30,13 +31,52 @@ public class RectangleBackground {
 	 * @param height
 	 *              the height
 	 */
+	public RectangleBackground(int x, int y, int width, int height) {
+		this(x, y, width, height, false, false);
+	}
+	
+	/**
+	 * Constructor for the rectangle background
+	 * 
+	 * @param x
+	 *              the starting x coordinate
+	 * @param y
+	 *              the starting y coordinate
+	 * @param width
+	 *              the width
+	 * @param height
+	 *              the height
+	 * @param pressed
+	 * 				pressed state
+	 */
 	public RectangleBackground(int x, int y, int width, int height,
 			boolean pressed) {
+		this(x, y, width, height, pressed, false);
+	}
+	
+	/**
+	 * Constructor for the rectangle background
+	 * 
+	 * @param x
+	 *              the starting x coordinate
+	 * @param y
+	 *              the starting y coordinate
+	 * @param width
+	 *              the width
+	 * @param height
+	 *              the height
+	 * @param pressed
+	 * 				pressed state
+	 * @param hover
+	 * 				pressed state
+	 */
+	public RectangleBackground(int x, int y, int width, int height, boolean pressed, boolean hover) {
 		this.width = width;
 		this.height = height;
 		this.x = x;
 		this.y = y;
 		this.pressed = pressed;
+		this.hover = hover;
 	}
 
 	/**
@@ -77,9 +117,27 @@ public class RectangleBackground {
 			gPen.setColor(color5);
 			gPen.fill(new Rectangle(x + 4, y + 4, width - 8, height - 8));
 		}
+		
+		if (hover) {
+			gPen.setColor(new Color(30, 127, 255));
+			gPen.fill(new Rectangle(x, y, 12, 4));
+			gPen.fill(new Rectangle(x, y, 4, 12));
+			gPen.fill(new Rectangle(x + width - 12, y, 12, 4));
+			gPen.fill(new Rectangle(x + width - 4, y, 4, 12));
+			gPen.fill(new Rectangle(x, y + height - 12, 4, 12));
+			gPen.fill(new Rectangle(x, y + height - 4, 12, 4));
+			gPen.fill(new Rectangle(x + width - 12, y + height
+					- 4, 12, 4));
+			gPen.fill(new Rectangle(x + width - 4, y + height
+					- 12, 4, 12));
+		}
 	}
 
 	public void setPressed(boolean isPressed) {
 		pressed = isPressed;
+	}
+	
+	public void setHover(boolean hover) {
+		this.hover = hover;
 	}
 }
