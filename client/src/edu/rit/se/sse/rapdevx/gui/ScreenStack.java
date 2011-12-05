@@ -239,4 +239,8 @@ public class ScreenStack implements KeyListener, MouseListener, MouseMotionListe
 		e.translatePoint(-xShift, -yShift);
 	}
 	
+	public boolean hasScreen(Screen scr){
+		return screenList.contains(scr);
+	}
+	
 }

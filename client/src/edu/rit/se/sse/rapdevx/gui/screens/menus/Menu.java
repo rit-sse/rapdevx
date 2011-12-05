@@ -292,5 +292,9 @@ public class Menu extends Screen {
 	public boolean isHidden() {
 		return isHidden;
 	}
+	
+	public ArrayList<MenuButton> getButtons(){
+		return buttons;
+	}
 
 }

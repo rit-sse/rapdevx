@@ -28,10 +28,10 @@ public class OptionsScreen extends Screen implements ActionListener {
 		
 		menu = new Menu(width / 2 - 100, height / 2 - 200);
 		
-		continueButton = new MenuButton("Continue", "Go back to the game!");
-		settingsButton = new MenuButton("Settings", "Adjust game settings");
-		helpButton = new MenuButton("Help", "Click this if you are lost!");
-		exitButton = new MenuButton("Exit", "Click this to Quit!");
+		continueButton = new MenuButton(menu,"Continue", "Go back to the game!");
+		settingsButton = new MenuButton(menu,"Settings", "Adjust game settings");
+		helpButton = new MenuButton(menu,"Help", "Click this if you are lost!");
+		exitButton = new MenuButton(menu,"Exit", "Click this to Quit!");
 		
 		continueButton.addActionListener(this);
 		settingsButton.addActionListener(this);

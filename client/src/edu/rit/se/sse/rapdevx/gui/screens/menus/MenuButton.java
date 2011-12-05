@@ -12,6 +12,7 @@ import java.awt.event.ActionListener;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import edu.rit.se.sse.rapdevx.gui.RectangleBackground;
+import edu.rit.se.sse.rapdevx.gui.Screen;
 import edu.rit.se.sse.rapdevx.gui.drawable.Text;
 
 /**
@@ -22,6 +23,8 @@ public class MenuButton {
 
 	private Dimension DefaultSize = new Dimension(200, 50);
 
+	private Menu menu;
+	
 	private Dimension size = DefaultSize;
 
 	private static final String DefaultText = "???";
@@ -49,9 +52,10 @@ public class MenuButton {
 	 * @param help
 	 *              A user visible description of the button
 	 */
-	public MenuButton(String text, String help) {
+	public MenuButton(Menu menu, String text, String help) {
 		setText(text);
 		setHelp(help);
+		this.menu=menu;
 	}
 
 	/**
@@ -290,6 +294,10 @@ public class MenuButton {
 			ActionEvent event = new ActionEvent(this, 0, text);
 			listener.actionPerformed(event);
 		}
+	}
+
+	public Screen getMenu() {
+		return menu;
 	}
 	
 }
