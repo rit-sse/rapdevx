@@ -23,7 +23,8 @@ import edu.rit.se.sse.rapdevx.gui.drawable.DrawableShip;
 import edu.rit.se.sse.rapdevx.gui.screens.menus.Menu;
 import edu.rit.se.sse.rapdevx.gui.screens.menus.MenuButton;
 
-public class AttackScreen extends Screen implements StateListener, ActionListener {
+public class AttackScreen extends Screen implements StateListener,
+		ActionListener {
 	/** A reference to the map camera for positioning objects in world space */
 	private Camera camera;
 
@@ -117,6 +118,8 @@ public class AttackScreen extends Screen implements StateListener, ActionListene
 					selectedShip = null;
 					curAttack = null;
 					abilitiesMenu = null;
+				} else if (ScreenStack.get().hasScreen(abilitiesMenu)) {
+
 				} else if (selectedShip != null) {
 					// Another ship was selected, complete the attack
 					// and deselect the ship
@@ -126,7 +129,7 @@ public class AttackScreen extends Screen implements StateListener, ActionListene
 
 					// Save the completed attack
 					attackList.add(curAttack);
-					curAttack = null; 
+					curAttack = null;
 				} else {
 					// No other ship was selected, select this one and
 					// start an attack
@@ -135,7 +138,7 @@ public class AttackScreen extends Screen implements StateListener, ActionListene
 					abilitiesMenu = new Menu(
 							selectedShip.getX() + 50,
 							selectedShip.getY() + 20);
-					ScreenStack.get().addScreen(abilitiesMenu);
+					
 					// for (Ability b:
 					// selectedShip.getShip().getShipClass().getAbilities()){
 					// // abilitiesMenu.addButton(new
@@ -156,6 +159,8 @@ public class AttackScreen extends Screen implements StateListener, ActionListene
 							.addButton(new MenuButton(
 									abilitiesMenu,
 									"Hypnotize", "attack"));
+
+					ScreenStack.get().addScreen(abilitiesMenu);
 					for (MenuButton button : abilitiesMenu
 							.getButtons()) {
 						button.addActionListener(this);
@@ -261,9 +266,10 @@ public class AttackScreen extends Screen implements StateListener, ActionListene
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		ScreenStack.get().removeScreen(((MenuButton) e.getSource()).getMenu());
+		ScreenStack.get().removeScreen(
+				((MenuButton) e.getSource()).getMenu());
 		curAttack = new DrawableAttack(selectedShip);
-		
+
 	}
 
 }
