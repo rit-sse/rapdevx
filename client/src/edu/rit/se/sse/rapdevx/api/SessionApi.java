@@ -147,27 +147,17 @@ public class SessionApi {
 	 */
 	public static boolean destroySession(Session sessionToDestroy) {
 		try {
-			HttpURLConnection conn = (HttpURLConnection) (new URL(SERVER_URL)
-					.openConnection());
+			URL url = new URL("http", SERVER_URL, 8080, "/session/"
+					+ sessionToDestroy.getsession_id());
+
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setDoInput(true);
+			conn.setDoOutput(true);
 			conn.setRequestMethod("DELETE");
 
 			conn.connect();
 
-			// Get the response
-			BufferedReader rd = new BufferedReader(new InputStreamReader(
-					conn.getInputStream()));
-			String line;
-			String incomingJson = "";
-
-			while ((line = rd.readLine()) != null) {
-				incomingJson += line;
-			}
-
-			rd.close();
-
-			if (!incomingJson.equals(""))
-				return true;
+			return conn.getResponseCode() == 200;
 
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
