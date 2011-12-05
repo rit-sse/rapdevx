@@ -10,18 +10,15 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.Area;
 import java.util.ArrayList;
 
-import edu.rit.se.sse.rapdevx.api.dataclasses.Ability;
 import edu.rit.se.sse.rapdevx.clientmodels.Ship;
 import edu.rit.se.sse.rapdevx.clientstate.GameSession;
 import edu.rit.se.sse.rapdevx.clientstate.MoveState;
-import edu.rit.se.sse.rapdevx.events.AbilitiesListener;
 import edu.rit.se.sse.rapdevx.events.StateEvent;
 import edu.rit.se.sse.rapdevx.events.StateListener;
 import edu.rit.se.sse.rapdevx.gui.Screen;
 import edu.rit.se.sse.rapdevx.gui.ScreenStack;
 import edu.rit.se.sse.rapdevx.gui.drawable.Camera;
 import edu.rit.se.sse.rapdevx.gui.drawable.DrawableAttack;
-import edu.rit.se.sse.rapdevx.gui.drawable.DrawableMovePath;
 import edu.rit.se.sse.rapdevx.gui.drawable.DrawableShip;
 import edu.rit.se.sse.rapdevx.gui.screens.menus.Menu;
 import edu.rit.se.sse.rapdevx.gui.screens.menus.MenuButton;
