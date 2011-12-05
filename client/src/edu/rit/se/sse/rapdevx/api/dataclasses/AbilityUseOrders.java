@@ -1,6 +1,8 @@
 package edu.rit.se.sse.rapdevx.api.dataclasses;
+
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.JsonParseException;
@@ -8,41 +10,34 @@ import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
 /**
- * POJO representing the asset image on the server side of 
+ * POJO representing the status of a Game on the server side of 
  * things. Will be annotated in order to have Jackson data bindings.
  *
  * @author Ben Nicholas
- * @author Paul Cassidy
  */
-public class AssetImage {
-
-	private static ObjectMapper mapper = new ObjectMapper();
-	private String file;
-	private String gid;
+public class AbilityUseOrders {
 	
-	public String getFile() {
-		return file;
-	}
-	public void setFile(String file) {
-		this.file = file;
-	}
-	public String getGid() {
-		return gid;
-	}
-	public void setGid(String gid) {
-		this.gid = gid;
-	}
+	private static ObjectMapper mapper = new ObjectMapper();
+	
+	private List<AbilityUseOrder> orders;
+	
+    public List<AbilityUseOrder> getOrders() {
+        return orders;
+    }
+    public void setGames(List<AbilityUseOrder> orders) {
+        this.orders = orders;
+    }
 	
 	/**
-	 * Creates and maps to an AssetImage object.
+	 * Creates and maps to an Status object.
 	 * 
-	 * @return The mapped AssetImage as an AssetImage object. or null if error.
+	 * @return The mapped Status as an Status object. or null if error.
 	 */
-	public static AssetImage fromJSON(String incomingJson){
+	public static AbilityUseOrders fromJSON(String incomingJson){
 
 		try {
-			AssetImage assets = mapper.readValue(incomingJson, AssetImage.class);
-			return assets;
+			AbilityUseOrders orders = mapper.readValue(incomingJson, AbilityUseOrders.class);
+			return orders;
 		} catch (JsonParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -57,13 +52,13 @@ public class AssetImage {
 	}
 	
 	/**
-	 * Creates a JSON file from an Assets object.
+	 * Creates a JSON file from an Status object.
 	 * 
-	 * @param assets
+	 * @param Status
 	 */
-	public void toJSON(AssetImage assets){
+	public void toJSON(AbilityUseOrders orders){
 		try {
-			mapper.writeValue(new File("AssetImageFromJava.json"), assets);
+			mapper.writeValue(new File("AbilityUseOrdersFromJava.json"), orders);
 		} catch (JsonGenerationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -76,13 +71,7 @@ public class AssetImage {
 		}
 	}
 	
-	public AssetImage(){
-		
-	}
-	
-	public boolean equals(Object other) {
-		AssetImage ot = (AssetImage) other;
-		return file.equals(ot.getFile()) && gid.equals(ot.getGid());
-	}
-	
 }
+
+
+
