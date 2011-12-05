@@ -39,13 +39,19 @@ def create_session():
     else:
         game_id = None
 
+    print("Past pulling data from forms")
+
     # scrub data from forms
     if game_id == '':
         game_id = None
     
     session = Session(nickname)
 
+    print("created session")
+
     session_manager.register_session(session, game_id)
+
+    print("registered session")
 
     return session.to_json
 
