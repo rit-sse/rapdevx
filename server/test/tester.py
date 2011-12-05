@@ -1,7 +1,7 @@
 import xmlrunner
 import unittest
 
-myListOfClasses=["TestAttackTurn","TestJSON", "TestRegistry", "TestGameplay" ]
+myListOfClasses=["TestAttackTurn","TestJSON", "TestRegistry", "TestGameplay","TestGeometry","TestMoveTurn" ]
 for aClass in myListOfClasses:
     try:
         exec("from "+str(aClass)+ " import *")

@@ -237,8 +237,11 @@ class MoveTurn:
         # "rotate" player nums based on the turn number, so 
         # a different player gets to go "first" every turn
         num_of_players = len(player_nums)
+<<<<<<< HEAD
+=======
         if not num_of_players:
             return
+>>>>>>> 091fb16daebefdc8c405e2d8e8b3719ce67145a3
         num_of_shuffles = self.turn_num % num_of_players
         for x in range(num_of_shuffles):
             player_num.append(player_num.pop(0))
@@ -396,8 +399,11 @@ class AttackTurn:
 
         # Shuffle the play priority based on turn num (shifting which player moves first)
         num_of_players = len(player_nums)
+<<<<<<< HEAD
+=======
         if not num_of_players:
             return
+>>>>>>> 091fb16daebefdc8c405e2d8e8b3719ce67145a3
         num_of_shuffles = self.turn_num % num_of_players
         for x in range(num_of_shuffles):
             player_nums.append(player_nums.pop(0))

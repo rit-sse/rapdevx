@@ -1,7 +1,5 @@
 AssetImage:  {"gid": "testTheGid", "file": "YWltZ3Rlc3QucG5n\n"}
-ShipClass:  {"abilities": ["this is a gid"], "imageid": "imgtest.png", "placement_cost": 5, "gid": "thisisanid", "radius": 10, "maxhp": 999}
 Ability:  {"special_damages": {"two": 2, "one": 1}, "gid": "this is a gid", "radius": 10, "name": "name", "default_damage": 5}
-Assets:  {"images": [{"gid": "testTheGid", "file": "YWltZ3Rlc3QucG5n\n"}], "width": 12, "ship_classes": [{"abilities": ["this is a gid"], "imageid": "imgtest.png", "placement_cost": 5, "gid": "thisisanid", "radius": 10, "maxhp": 999}], "abilities": [{"special_damages": {"two": 2, "one": 1}, "gid": "this is a gid", "radius": 10, "name": "name", "default_damage": 5}], "height": 53}
 ShipPlacement:  {"y": 62, "x": 23, "classid": "thisisanid"}
 Results:  {"results": {"thisisanid": [23, 62]}}
 MovementOrder:  {"path": [[23, 62]], "gid": "thisisagid", "unitid": "thisisanid"}
@@ -9,3 +7,5 @@ AbilityUse:  {"targetid": "targetidtest", "gid": "gidtest", "srcid": "srcidtest"
 AttackResults:  {"results": [{"targetid": "targetidtest", "gid": "gidtest", "srcid": "srcidtest", "ability": "this is an ability"}]}
 Unit:  {"player_num": 23, "classid": "idtest", "hp": 43, "gid": "thisisgid"}
 Status:  {"phase": "phase2", "turn": 3, "player_list": ["p1", "p2"], "me": 22}
+ShipClass:  {"abilities": [{"special_damages": {"two": 2, "one": 1}, "gid": "this is a gid", "radius": 10, "name": "name", "default_damage": 5}], "imageid": "imgtest.png", "placement_cost": 5, "gid": "thisisanid", "radius": 10, "maxhp": 999}
+Assets:  {"images": [{"gid": "testTheGid", "file": "YWltZ3Rlc3QucG5n\n"}], "width": 12, "ship_classes": [{"abilities": [{"special_damages": {"two": 2, "one": 1}, "gid": "this is a gid", "radius": 10, "name": "name", "default_damage": 5}], "imageid": "imgtest.png", "placement_cost": 5, "gid": "thisisanid", "radius": 10, "maxhp": 999}], "abilities": [{"special_damages": {"two": 2, "one": 1}, "gid": "this is a gid", "radius": 10, "name": "name", "default_damage": 5}], "height": 53}

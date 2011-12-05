@@ -2,22 +2,13 @@ from dto import DTO_Status
 from gameplay import *
 from registry import GameRegistry
 from dto import *
+import ListOfAssets
 
 class GameContext:
     def __init__(self,playerlist):
         self.playerlist = playerlist
         self.registry = GameRegistry()
-        #todo real asset loading
-        atk = Ability(1000,"attack", 10,{})
-        self.registry.register(atk)
-        
-        sprite = Image("../assets/ship.png")
-        self.registry.register(sprite)
-        
-        unitClass = UnitClass([],[atk],200,10,10, sprite, "Scout")
-        self.registry.register(unitClass)
-        
-        self.assets = DTO_Assets(1000,1000,[unitClass.to_dto()],[sprite.to_dto()],[atk.to_dto()])
+        self.assets = ListOfAssets.genListOfAssets(self.registry)
         self.phase = WaitingPhase(self)
     
         self.turns = {}
@@ -228,7 +219,7 @@ class AttackPhase(GamePhase):
         if(False in self.ready):
             return self
         else:
-            self.turn.attack.execute()
+            self.turn.attack.execute(self.context.registry)
             #todo: check of any player lost all ships, and move to won
             #if so
             return MovementPhase(self.context, Turn(self.turn.turn_num + 1))

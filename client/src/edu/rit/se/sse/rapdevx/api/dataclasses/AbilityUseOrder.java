@@ -97,6 +97,11 @@ public class AbilityUseOrder {
 		
 	}
 	
+	public boolean equals(Object other) {
+		AbilityUseOrder ot = (AbilityUseOrder) other;
+		return (srcid.equals(ot.getSrcid())) && (targetid.equals(ot.getTargetid())) && ability.equals(ot.getAbility()) && gid.equals(ot.getgid());
+	}
+	
 	
 }
 

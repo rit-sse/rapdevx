@@ -1,5 +1,5 @@
 from dto import *
-import geometry
+from geometry import *
 
 def swizzle(lists):
     ''' swizzle: List of lists -> List
@@ -110,7 +110,7 @@ class Unit:
         return self.location
         
     def to_dto(self):
-        return DTO_Unit(self.owning_player, self.hp, self.classid, self.location, self.gid)
+        return DTO_Unit(self.owning_player, self.hp, self.classid, self.gid)
 
 class Ability:
     '''
@@ -188,33 +188,24 @@ class MoveTurn:
         '''
         if calling_player not in self.player_move_list:
             self.player_move_list[calling_player] = []
-        
-        
+        print("add")
+
+        #moveOrderObj = MoveOrder(move_order.unitid, move_order.path) 
         moveOrderObj = MoveOrder(move_order.unitid, move_order.path) 
 
-        #unit must exist:
-        unit = registry.getById(moveOrderObj.unitid)
-        
-        if unit == None:
-            raise Exception("unit does not exist")
-            
-        #path must go somewhere
-        if len(moveOrderObj.path)<2:
-            raise Exception("Path is not a path")
-        
-        #path must start at current location:
-        if moveOrderObj.path[0]!=unit.location:
-            raise Exception("Path does not start at unit")
-        
         self.player_move_list[calling_player].append( moveOrderObj )
         registry.register(moveOrderObj)
     
     def deleteMoveOrder(self, move_order_gid, calling_player, registry):
         '''
         '''
+        print("MOVE_GID:", move_order_gid)
         move_order = registry.getById(move_order_gid)
         registry.removeById(move_order_gid)
         
+        print("MOVE_LIST_FOR_CALLING_PLAYER:", self.player_move_list[calling_player])
+        print("MOVE_ORDER TO BE REMOVED:", move_order)
+
         self.player_move_list[calling_player].remove(move_order)
 
     def getPlayerMoveList(self, calling_player, registry):
@@ -237,8 +228,6 @@ class MoveTurn:
         # "rotate" player nums based on the turn number, so 
         # a different player gets to go "first" every turn
         num_of_players = len(player_nums)
-        if not num_of_players:
-            return
         num_of_shuffles = self.turn_num % num_of_players
         for x in range(num_of_shuffles):
             player_num.append(player_num.pop(0))
@@ -249,35 +238,13 @@ class MoveTurn:
         self.results = {}
         
         for playerMove in combined_list:
-            
+            #print(playerMove)
             unit = registry.getById(playerMove.unitid)
-            path_pairs = [(playerMove.path[i-1],playerMove.path[i]) for i in range(1,len(playerMove.path))]
-            path_taken = [playerMove.path[0]]
-            for start,end in path_pairs:
-                intersecting = []
-                for other in registry.getAllByType(Unit):
-                    if unit!=other:
-                        if geometry.shipsWillCollideOnSegment(start, end, unit, other):
-                            intersecting.append(other)
-                
-                if not intersecting:
-                    unit.setLocation(end)
-                    path_taken.append(end)
-                else:
-                    shortest = geometry.distance(start,end)
-                    shortest_point = end
-                    
-                    for other in intersecting:
-                        pt = geometry.whereWillItStop(start, end, unit, other)
-                        if geometry.distance(start,pt)<shortest:
-                            shortest = geometry.distance(start,pt)
-                            shortest_point = pt
-                        
-                    unit.setLocation(shortest_point)
-                    path_taken.append(shortest_point)
-                    break
-            
-            self.results[unit.gid] = path_taken
+            unitLoc = playerMove.path
+
+            #print("SETTING LOCATION FOR SHIP TO:", unitLoc)
+            unit.setLocation(unitLoc)
+            self.results[unit.gid] = playerMove.path
         
     def getResults(self):
         return DTO_Results(self.results)
@@ -297,7 +264,6 @@ class AttackTurn:
         self.turn_num = turn_num
         self.player_attack_lists = {}
         self.results = None
-        self.registered_ids = {}
 
     def addAttackOrder(self, dto_attack_order, calling_player, registry):
         '''
@@ -341,11 +307,7 @@ class AttackTurn:
             dist = tar.getLocation() - source.getLocation()
         if dist > dto_attack_order.ability.getRadius():
             raise Exception("Target is not in range")
-
-        if source in self.registered_ids:
-            raise Exception("Unit already registered an attack")
-        else:
-            self.registered_ids.append(calling_player)
+        
            
         registry.register(order)
         self.player_attack_lists.append(order)
@@ -360,15 +322,6 @@ class AttackTurn:
         registry - the ID registry to remove the move from
         '''
         move_order = registry.getById(move_order_gid)
-
-        if calling_player != move_order.srcid:
-            raise Exception("Move does not belong to player")
-        else:
-            if calling_player in self.registered_ids:
-                self.registered.remove(calling_player)
-            else:
-                raise Exception("Player doesn't have a move to remove")
-        
         registry.removeById(move_order_gid)
         
         self.player_attack_lists[calling_player].remove(move_order)
@@ -396,8 +349,6 @@ class AttackTurn:
 
         # Shuffle the play priority based on turn num (shifting which player moves first)
         num_of_players = len(player_nums)
-        if not num_of_players:
-            return
         num_of_shuffles = self.turn_num % num_of_players
         for x in range(num_of_shuffles):
             player_nums.append(player_nums.pop(0))
