@@ -126,7 +126,6 @@ public class TestJSONSync {
 		// DTO_Assests
 		Assets as = new Assets();
 
-		// TODO: HERE
 		ArrayList<Ability> as_abl_lst = new ArrayList<Ability>();
 		as_abl_lst.add(ab);
 
