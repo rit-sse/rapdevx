@@ -8,6 +8,7 @@ import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 
+import edu.rit.se.sse.rapdevx.api.dataclasses.AbilityUseOrder;
 import edu.rit.se.sse.rapdevx.clientmodels.Attack;
 
 public class DrawableAttack extends DrawableObject {
@@ -17,7 +18,7 @@ public class DrawableAttack extends DrawableObject {
 	private Attack attack;
 	private DrawableShip sourceShip;
 	private DrawableShip targetShip;
-	
+
 	private boolean snapped;
 
 	public DrawableAttack(DrawableShip sourceShip) {
@@ -49,8 +50,9 @@ public class DrawableAttack extends DrawableObject {
 			gPen.setClip(outside);
 
 			// Draw the line and reticle
-			gPen.drawLine(sourceShip.getCenter().x, sourceShip.getCenter().y,
-					targetLocation.x, targetLocation.y);
+			gPen.drawLine(sourceShip.getCenter().x,
+					sourceShip.getCenter().y, targetLocation.x,
+					targetLocation.y);
 			drawRecticule(gPen, targetLocation.x, targetLocation.y);
 		}
 
@@ -64,7 +66,7 @@ public class DrawableAttack extends DrawableObject {
 		if (attack.getTargetShip() == null)
 			this.targetLocation = location;
 	}
-	
+
 	public void setSnapped(boolean snapped) {
 		this.snapped = snapped;
 	}
@@ -74,9 +76,9 @@ public class DrawableAttack extends DrawableObject {
 	 * 
 	 * @param gPen
 	 * @param x
-	 *            x coordinate
+	 *              x coordinate
 	 * @param y
-	 *            y coordinate
+	 *              y coordinate
 	 */
 	private void drawRecticule(Graphics2D gPen, int x, int y) {
 		// Set the line thickness
@@ -99,5 +101,14 @@ public class DrawableAttack extends DrawableObject {
 		this.attack.setTargetShip(target.getShip());
 		this.targetLocation = target.getCenter();
 	}
-	
+
+	public AbilityUseOrder makeAbilityUseOrder() {
+		AbilityUseOrder order = new AbilityUseOrder();
+		order.setAbility("we don't have these yet");
+		order.setSrcid(sourceShip.getShip().getgid());
+		order.setTargetid(targetShip.getShip().getgid());
+		order.setgid("nothing here");
+		return order;
+	}
+
 }

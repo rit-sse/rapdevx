@@ -121,7 +121,7 @@ public class Menu extends Screen {
 
 		// draw the backgrond
 		Dimension size = getSize();
-		new RectangleBackground(cornerX, cornerY, size.width, size.height)
+		new RectangleBackground(cornerX, cornerY, size.width, size.height, false)
 				.draw(gPen);
 
 		// location of where to draw the buttons

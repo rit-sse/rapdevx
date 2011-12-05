@@ -31,6 +31,7 @@ public class StatsScreen extends Screen
 	private Text hpMaxHp;
 	private Text abilitiesWord;
 	private ArrayList<Text> abilities = new ArrayList<Text>();
+	private RectangleBackground background;
 
 	// private Ship ship;
 
@@ -51,6 +52,7 @@ public class StatsScreen extends Screen
 		super(wWidth, wHeight);
 		x = screenWidth - 300;
 		y = screenHeight - 200;
+		background = new RectangleBackground(x, y, wWidth, wHeight, false);
 		
 		this.ship = ship;
 		
@@ -106,7 +108,7 @@ public class StatsScreen extends Screen
 
 	public void draw(Graphics2D gPen)
 	{
-		new RectangleBackground(x, y, 300, 200).draw(gPen);
+		new RectangleBackground(x, y, 300, 200, true).draw(gPen);
 		gPen.setColor(Color.BLACK);
 		name.draw(gPen);
 		drawHPBar(gPen);
