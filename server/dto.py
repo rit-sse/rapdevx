@@ -1,10 +1,17 @@
 # Data Transfer Objects - Primarily used to communicate between API team 
 # and the Server Objects. Any class in here is to be exclusively as a struct
 import json
+import base64
 
-class DTO_AssetImage:
+class DTO_ReprMixin:
+    def __repr__(self):
+        return self.__class__.__name__+":"+DTO_Encoder().encode(self)
+    
+    def toJSON(self):
+        return DTO_Encoder().encode(self)
+    
+class DTO_AssetImage(DTO_ReprMixin):
     #file is a string that contains contents of file (base64) (may change)
-    #name is a string
     #gid is a string
     def __init__(self, file, gid):
         self.file = file
@@ -12,16 +19,17 @@ class DTO_AssetImage:
     
     def encode(self):
         r = {}
-        r['file'] = self.file
+        r['file'] = base64.encodebytes(self.file).decode()
         r['gid'] = self.gid
-        return json.dumps(r)
+        return r
+    
 
-class DTO_ShipClass:
-    #types is a list of strings
+class DTO_ShipClass(DTO_ReprMixin):
     #abilities is a list of strings which are DTO_Ability ids
     #maxhp is an int
     #radius is an int
     #placement_cost is an int
+    #imageid is an string
     #gid is a string
     def __init__(self, types, abilities, maxhp, radius, placement_cost, imageid, gid):
         self.types = types
@@ -34,36 +42,40 @@ class DTO_ShipClass:
     
     def encode(self):
         r = {}
+        r['abilities'] = self.abilities
+        r['maxhp'] = self.maxhp
+        r['radius'] = self.radius
+        r['placement_cost'] = self.placement_cost
+        r['imageid'] = self.imageid
+        r['gid'] = self.gid
+        
+        return r
+    
+        
+class DTO_Ability(DTO_ReprMixin):
+    #radius is an int
+    #name is a string
+    #default_damage is an int
+    #special_damages is a dictionary from string to int
+    #gid is a string
+    def __init__(self, radius, name, default_damage, special_damages, gid):
+        self.radius = radius
+        self.name = name
+        self.default_damage = default_damage
+        self.special_damages = special_damages
+        self.gid = gid
+        
+    def encode(self):
+        r = {}
         r['radius'] = self.radius
         r['name'] = self.name
         r['default_damage'] = self.default_damage
         r['special_damages'] = self.special_damages
         r['gid'] = self.gid
-        return json.dumps(r)
-        
-        
-class DTO_Ability:
-    #default_damage is int
-    #special_damage map from string to int
-    def __init__(self, radius, name, default_damage, special_damages, id):
-        self.radius = radius
-        self.name = name
-        self.default_damage = default_damage
-        self.special_damages = special_damages
-        self.gid = id
-
-    def encode(self):
-        r = {}
-        r['types'] = self.types
-        r['abilities'] = self.abilities
-        r['maxhp'] = self.maxhp
-        r['radius'] = self.radius
-        r['placement_cost'] = self.placement_cost
-        r['gid'] = self.gid
-        return json.dumps(r)
-
+        return r
     
-class DTO_Assets:
+    
+class DTO_Assets(DTO_ReprMixin):
     #width is an int
     #height is an int
     #ship_classes is a list of ShipClass instances
@@ -92,11 +104,10 @@ class DTO_Assets:
         r['abilities'] = []
         for ab in self.abilities:
             r['abilities'].append(ab.encode())
-        print(r)
-        return json.dumps(r)
+        return r
     
 
-class DTO_ShipPlacement:
+class DTO_ShipPlacement(DTO_ReprMixin):
     #x is an int
     #y is an int
     #classid is a string
@@ -110,14 +121,21 @@ class DTO_ShipPlacement:
         r['x'] = self.x
         r['y'] = self.y
         r['classid'] = self.classid
-        return json.dumps(r)
+        return r
    
-class DTO_AttackResults:
+class DTO_AttackResults(DTO_ReprMixin):
     #results = list of DTO_AbilityUseOrders that were executed
     def __init__(self,results):
         self.results = results
+
+    def encode(self):
+        r = {}
+        r['results'] = []
+        for auo in self.results:
+            r['results'].append(auo.encode())
+        return r
    
-class DTO_Results:
+class DTO_Results(DTO_ReprMixin):
     #results = map of ship id to PATH of ship
     #   PATH = list of x,y tuples
     def __init__(self,results):
@@ -126,9 +144,9 @@ class DTO_Results:
     def encode(self):
         r = {}
         r['results'] = self.results
-        return json.dumps(r)    
+        return r  
     
-class DTO_MovementOrder:
+class DTO_MovementOrder(DTO_ReprMixin):
     #unitid is a string
     #PATH is a list of x,y tuples
     #gid is a string
@@ -142,9 +160,9 @@ class DTO_MovementOrder:
         r['unitid'] = self.unitid
         r['path'] = self.path
         r['gid'] = self.gid
-        return json.dumps(r)
+        return r
         
-class DTO_AbilityUseOrder:
+class DTO_AbilityUseOrder(DTO_ReprMixin):
     #srcid is a string
     #targetid is a string
     #ability is a string
@@ -161,9 +179,9 @@ class DTO_AbilityUseOrder:
         r['targetid'] = self.targetid
         r['ability'] = self.ability
         r['gid'] = self.gid
-        return json.dumps(r)
+        return r
 
-class DTO_Unit:
+class DTO_Unit(DTO_ReprMixin):
     #player_num is an int
     #hp is an int
     #classid is a string
@@ -178,12 +196,12 @@ class DTO_Unit:
         r['player_num'] = self.player_num
         r['hp'] = self.hp
         r['classid'] = self.classid
-        r['gid'] = self.gid
-        return json.dumps(r)
+        r['gid'] = self.gid 
+        return r
         
-class DTO_Status:
+class DTO_Status(DTO_ReprMixin):
     #turn is an int
-    #phase is an int
+    #phase is a string
     #player_list is list of strings
     #me is an int
     #   me is the playerid of the asking player
@@ -199,15 +217,25 @@ class DTO_Status:
         r['phase'] = self.phase
         r['player_list'] = self.player_list
         r['me'] = self.me
-        return json.dumps(r)
+        return r
 
+        
+class DTO_Encoder(json.JSONEncoder):
+    def default(self, o):
+        if(o.__class__.__name__.startswith("DTO_")):
+            return o.encode()
+        else:
+            return json.JSONEncoder.default(self, o)
+        
 def JSON_Construct_DTO_AssetImage(jsonstring):
+    print("loading json from:\n",jsonstring)
     attribute_dictionary = json.loads(jsonstring)
-    return DTO_AssetImage(attribute_dictionary.pop('file'), attribute_dictionary.pop('gid'))
+    print("fuck")
+    return DTO_AssetImage(base64.decodebytes(attribute_dictionary.pop('file').encode()), attribute_dictionary.pop('gid'))
 
 def JSON_Construct_DTO_ShipClass(jsonstring):
     attribute_dictionary = json.loads(jsonstring)
-    return DTO_ShipClass(attribute_dictionary.pop('types'), attribute_dictionary.pop('abilities'), attribute_dictionary.pop('maxhp'), attribute_dictionary.pop('radius'), attribute_dictionary.pop('placement_cost'), attribute_dictionary.pop('gid'))
+    return DTO_ShipClass(attribute_dictionary.pop('abilities'), attribute_dictionary.pop('maxhp'), attribute_dictionary.pop('radius'), attribute_dictionary.pop('placement_cost'), attribute_dictionary.pop('imageid'), attribute_dictionary.pop('gid'))
 
 def JSON_Construct_DTO_Ability(jsonstring):
     attribute_dictionary = json.loads(jsonstring)
@@ -219,30 +247,37 @@ def JSON_Construct_DTO_Assets(jsonstring):
     jsonlist = attribute_dictionary.pop('ship_classes')
     shipclasslist = []
     for v in jsonlist:
-        shipclasslist.append(json.loads(v))
+        shipclasslist.append(JSON_Construct_DTO_ShipClass(v))
 
     jsonlist = attribute_dictionary.pop('images')
     imageslist = []
     for v in jsonlist:
-        imageslist.append(json.loads(v))
+        imageslist.append(JSON_Construct_DTO_AssetImage(v))
 
     jsonlist = attribute_dictionary.pop('abilities')
     abilitieslist = []
     for v in jsonlist:
-        abilitieslist.append(json.loads(v))
+        abilitieslist.append(JSON_Construct_DTO_Ability(v))
 
     return DTO_Assets(attribute_dictionary.pop('width'),attribute_dictionary.pop('height'),shipclasslist,imageslist,abilitieslist)
 
 def JSON_Construct_DTO_ShipPlacement(jsonstring):
+    attribute_dictionary = json.loads(jsonstring)    
+    return DTO_ShipPlacement(attribute_dictionary.pop('x'), attribute_dictionary.pop('y'), attribute_dictionary.pop('classid'))
+
+def JSON_Construct_DTO_AttackResults(jsonstring):
     attribute_dictionary = json.loads(jsonstring)
-    return DTO_ShipPlacement(attribute_dictionary.pop('x'),attribute_dictionary.pop('y'),attribute_dictionary.pop('classid'))
+    newabilityuseorderlist = []
+    for v in newabilityuseorderlist:
+        newabilityuseorderlist.append(json.loads(v))
+    return DTO_AttackResults(newabilityuseorderlist)
 
 def JSON_Construct_DTO_Results(jsonstring):
     attribute_dictionary = json.loads(jsonstring)
     resultslist = attribute_dictionary.pop('results')
-    newresultslistoftuples = []
+    newresultslistoftuples = {}
     for v in resultslist:
-        newresultslistoftuples.append(tuple(v))
+        newresultslistoftuples[v] = tuple(resultslist[v])
     return DTO_Results(newresultslistoftuples)
 
 def JSON_Construct_DTO_MovementOrder(jsonstring):

@@ -1,7 +1,8 @@
 import xmlrunner
 import unittest
 
-myListOfClasses=["TestAttackTurn","TestJSON", "TestRegistry", "TestGameplay" ]
+
+myListOfClasses=["TestAttackTurn","TestJSON", "TestRegistry", "TestGameplay","TestGeometry","TestMoveTurn" ]
 for aClass in myListOfClasses:
     try:
         exec("from "+str(aClass)+ " import *")
@@ -9,4 +10,4 @@ for aClass in myListOfClasses:
         print("Can not import "+str(aClass))
 
 if __name__ == '__main__':
-    unittest.main(testRunner=xmlrunner.XMLTestRunner(output='test-reports'))
+    unittest.main(testRunner=xmlrunner.XMLTestRunner(output='reports/pyunit'))

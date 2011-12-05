@@ -4,6 +4,7 @@
 package edu.rit.se.sse.rapdevx.clientmodels;
 
 import java.util.List;
+import java.util.Vector;
 
 import edu.rit.se.sse.rapdevx.api.dataclasses.AssetImage;
 import edu.rit.se.sse.rapdevx.api.dataclasses.Assets;
@@ -36,6 +37,8 @@ public class AssetLibrary {
 	 * @return images for the current game
 	 */
 	public static List<AssetImage> getImages() {
+		if (assets == null)
+			return new Vector<AssetImage>();
 		return AssetLibrary.assets.getImages();
 	}
 
@@ -43,6 +46,8 @@ public class AssetLibrary {
 	 * @return a list of possible ship classes
 	 */
 	public static List<ShipClass> getShipClasses() {
+		if (assets == null)
+			return new Vector<ShipClass>();
 		return AssetLibrary.assets.getShipClasses();
 	}
 

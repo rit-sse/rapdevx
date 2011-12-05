@@ -1,11 +1,14 @@
-package edu.rit.se.sse.rapdevx.gui;
+package edu.rit.se.sse.rapdevx.gui.screens;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
+
+import edu.rit.se.sse.rapdevx.gui.Background;
+import edu.rit.se.sse.rapdevx.gui.Screen;
+import edu.rit.se.sse.rapdevx.gui.ScreenStack;
+import edu.rit.se.sse.rapdevx.gui.drawable.Camera;
 
 public class MapScreen extends Screen {
 	
@@ -13,23 +16,19 @@ public class MapScreen extends Screen {
 	
 	private Camera camera;
 	private Background background;
-	private ArrayList<DrawableShip> shipList;
-
+	
 	public MapScreen(int width, int height) {
 		super(width, height);
 		
-		background = new Background(0, 0, screenWidth, screenHeight);
+		background = new Background();
 		camera = new Camera(0, 0, screenWidth, screenHeight);
-		
-		shipList = new ArrayList<DrawableShip>();
-		shipList.add(new DrawableShip(300, 300));
+	}
+	
+	public Camera getCamera() {
+		return camera;
 	}
 
 	public void update(boolean hasFocus, boolean isVisible) {
-		for (DrawableShip ship : shipList) {
-			ship.update();
-		}
-		
 		camera.update();
 	}
 	
@@ -40,38 +39,36 @@ public class MapScreen extends Screen {
 		gPen.setColor(Color.BLACK);
 		gPen.fillRect(0, 0, screenWidth, screenHeight);
 		
+		gPen.translate(-cameraBounds.getX(), -cameraBounds.getY());
+		
 		// Draw the real background
 		background.draw(gPen, cameraBounds);
 		
-		// Draw all the ships on the map
-		for (DrawableShip ship : shipList) {
-			ship.draw(gPen, cameraBounds);
-		}
+		gPen.translate(cameraBounds.getX(), cameraBounds.getY());
 	}
 	
 	public void keyPressed(KeyEvent e) {
 		if (e.getKeyCode() == KeyEvent.VK_UP) {
-			camera.yVel = CAMERA_SPEED;
+			camera.setyVel(-CAMERA_SPEED);
 		} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-			camera.yVel = -CAMERA_SPEED;
+			camera.setyVel(CAMERA_SPEED);
 		} else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-			camera.xVel = CAMERA_SPEED;
+			camera.setxVel(-CAMERA_SPEED);
 		} else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-			camera.xVel = -CAMERA_SPEED;
+			camera.setxVel(CAMERA_SPEED);
+		} else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+			OptionsScreen options = new OptionsScreen(screenWidth, screenHeight);
+			ScreenStack.get().addScreen(options);
+			options.init();
 		}
 	}
 	
 	public void keyReleased(KeyEvent e) {
 		if ((e.getKeyCode() == KeyEvent.VK_UP) || (e.getKeyCode() == KeyEvent.VK_DOWN)) {
-			camera.yVel = 0;
+			camera.setyVel(0);
 		} else if ((e.getKeyCode() == KeyEvent.VK_LEFT) || (e.getKeyCode() == KeyEvent.VK_RIGHT)) {
-			camera.xVel = 0;
+			camera.setxVel(0);
 		}
 	}
 	
-	public void mouseClicked(MouseEvent e) {
-		shipList.get(0).setCenter(e.getX(), e.getY());
-		e.consume();
-	}
-
 }

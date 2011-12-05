@@ -8,16 +8,16 @@ class GameContext:
         self.playerlist = playerlist
         self.registry = GameRegistry()
         #todo real asset loading
-        atk = Ability(100,"attack", 10,{})
+        atk = Ability(1000,"attack", 10,{})
         self.registry.register(atk)
         
         sprite = Image("../assets/ship.png")
         self.registry.register(sprite)
         
-        klass = UnitClass([],[atk],200,100,10, sprite, "Scout")
-        self.registry.register(klass)
+        unitClass = UnitClass([],[atk],200,10,10, sprite, "Scout")
+        self.registry.register(unitClass)
         
-        self.assets = DTO_Assets(1000,1000,[klass.to_dto()],[],[atk.to_dto()])
+        self.assets = DTO_Assets(1000,1000,[unitClass.to_dto()],[sprite.to_dto()],[atk.to_dto()])
         self.phase = WaitingPhase(self)
     
         self.turns = {}
@@ -79,7 +79,6 @@ class GameContext:
         self.phase = self.phase.getNextPhase()
         return x
     
-
 class GamePhase:
     #abstract superclass for all phases
     def __init__(self, context):
@@ -116,7 +115,7 @@ class WaitingPhase(GamePhase):
         self.ready = [False for x in context.playerlist]
 
     def getGameProgress(self, calling_player):
-        return Status(None, "waiting", self.context.playerlist, calling_player)
+        return DTO_Status(None, "waiting", self.context.playerlist, calling_player)
 
     def setReady(self, player_num, val):
         self.ready[player_num] = val
@@ -138,7 +137,7 @@ class PlacementPhase(GamePhase):
         self.assignments[calling_player] = ship_place_list
         
     def getGameProgress(self, calling_player):
-        return Status(None, "placement", self.context.playerlist, calling_player)
+        return DTO_Status(None, "placement", self.context.playerlist, calling_player)
         
     def getNextPhase(self):
         if(None in self.assignments):
@@ -159,8 +158,8 @@ class MovementPhase(GamePhase):
         self.context._register_turn(turn.turn_num,turn)
 
     def addPlayerMove(self, action_order, calling_player):
-        if (isinstance(action_order, MovementOrder)):
-            self.turn.addMoveOrder(action_order)
+        if (isinstance(action_order, DTO_MovementOrder)):
+            self.turn.move.addMoveOrder(action_order,calling_player, self.context.registry)
         else:
             Exception("Movement phase is in order, attack orders not allowed")
         
@@ -178,7 +177,7 @@ class MovementPhase(GamePhase):
             Exception("Movement phase is in order, attack orders not allowed")
 
     def getGameProgress(self, calling_player):
-        return Status(self.turn.turn_num, "move", self.context.playerlist, calling_player)
+        return DTO_Status(self.turn.turn_num, "move", self.context.playerlist, calling_player)
 
     def setReady(self, player_num, val):
         self.ready[player_num] = val
@@ -187,7 +186,7 @@ class MovementPhase(GamePhase):
         if(False in self.ready):
             return self
         else:
-            self.turn.move.execute(self.context)
+            self.turn.move.execute(self.context.registry)
             return AttackPhase(self.context, self.turn)
     
 
@@ -220,13 +219,13 @@ class AttackPhase(GamePhase):
 
 
     def getGameProgress(self, calling_player):
-        return Status(self.turn.turn_num, "attack", self.context.playerlist, calling_player)
+        return DTO_Status(self.turn.turn_num, "attack", self.context.playerlist, calling_player)
 
     def setReady(self, player_num, val):
         self.ready[player_num] = val
 
     def getNextPhase(self):
-        if(self.ready.contains(False)):
+        if(False in self.ready):
             return self
         else:
             self.turn.attack.execute()
@@ -241,35 +240,8 @@ class WonPhase(GamePhase):
         self.turn = turn
 
     def getGameProgress(self, calling_player):
-        return Status(self.turn, "win", self.context.playerlist, calling_player)
+        return DTO_Status(self.turn, "win", self.context.playerlist, calling_player)
     
     def getNextPhase(self):
         return self
-
-c = None
-if __name__ == '__main__':
-    c = GameContext(['a','b'])
-    c.setReady(1,True)
-    c.setReady(0,True)
-
-    print(c.phase)
-
-    import dto
-
-    place = dto.DTO_ShipPlacement(10,10,'UnitClass0')
-
-    c.setShipPlacement([place],1)
-    c.setShipPlacement([place],0)
-    
-    print(c.phase)
-    #should be "movement"
-
-    print(c.getAllDTOShips(0))
-    print(c.getTurnMoveResults(0))
-
-    c.setReady(1,True)
-    c.setReady(0,True)
-
-    print(c.getTurnMoveResults(0))
-    print(c.phase)    
     

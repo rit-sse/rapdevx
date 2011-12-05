@@ -1,83 +1,131 @@
+from math import acos, sin, ceil
+
 DEFAULT_TOLERANCE_FACTOR = 0.005
 
 def distance( point1, point2 ):
-	'''
-	Get the distance between two points.
+    '''
+    Get the distance between two points.
 
-	point1 - Tuple containing (x,y) coordinates for the first point.
-	point2 - Tuple containing (x,y) coordinates for the second point.
-	'''
-	deltax = point2[0] - point1[0]
-	deltay = point2[1] - point1[1]
+    point1 - A tuple containing (x,y) coordinates for the first point.
+    point2 - A tuple containing (x,y) coordinates for the second point.
+    '''
+    deltax = point2[0] - point1[0]
+    deltay = point2[1] - point1[1]
 
-	return ( deltax**2 + deltay**2 ) ** 0.5
+    return ( deltax ** 2 + deltay ** 2 ) ** 0.5
 
 def isPointOnSegment( source, destination, point, delta = DEFAULT_TOLERANCE_FACTOR ):
-	'''
-	Determine if a point is on the line segment between source and destination.
+    '''
+    Determine if a point is on the line segment defined by source and destination.
 
-	source - Tuple containing (x, y) coordinates for the first point of the
-			 line segment.
-	destination - Tuple containing (x,y) coordinates for the second point
-				  of the line segment.
-	point - Tuple containing (x,y) coordinates for the point to check against.
-	delta - Tolerance factor. Uses DEFAULT_TOLERANCE_FACTOR by default.
-	'''
-	s2dDistance = distance( source, destination )
-	d2pDistance = distance( destination, point )
-	s2pDistance = distance( source, point )
+    source - Tuple containing (x, y) coordinates for the first point of the
+             line segment.
+    destination - Tuple containing (x,y) coordinates for the second point
+                  of the line segment.
+    point - Tuple containing (x,y) coordinates for the point to check against.
+    delta - Tolerance factor. Uses DEFAULT_TOLERANCE_FACTOR by default.
+    '''
+    s2dDistance = distance( source, destination )
+    d2pDistance = distance( destination, point )
+    s2pDistance = distance( source, point )
 
-	difference = ( s2dDistance + d2pDistance ) - s2pDistance
+    difference = ( s2dDistance + d2pDistance ) - s2pDistance
 
-	# If the difference between the two line segment lengths is within the 
-	# range [-delta, delta], then the point is considered to be on the line
-	# segment.
-	if( ( -1 * delta <= difference ) and ( difference <= delta ) ):
-		return True
+    return abs( s2dDistance -d2pDistance - s2pDistance)<delta
+    
+def dropPointInOrOutSegment(P1, P2, P3):
+    '''
+    given a line with points P1 and P2 on it, find the closest point on the
+    line to P3
+    '''
+    x1,y1 = P1
+    x2,y2 = P2
+    
+    xp,yp = P3
+    
+    dx = x2-x1
+    dy = y2-y1
 
-	return False
+    t = float(dx*(xp-x1)+dy*(yp-y1))/(dx*dx + dy*dy)
+    return (x1+dx*t,y1+dy*t)
 
-def dropPoint( source, destination, point, delta = DEFAULT_TOLERANCE_FACTOR ):
-	'''
-	Finds the shortest line segment that intersects with a line segment
-	starting at source and ending at destination.
 
-	source - A tuple containing the first pair of (x,y) coordinates for the
-			 line segment.
-	destination - A tuple containing the other pair of (x,y) coordinates for
-				  the line segment.
-	point - A tuple containing the (x,y) coordinates from which the short line
-			segment is projected.
-	delta - Tolerance factor. Uses DEFAULT_TOLERANCE_FACTOR by default.
-	'''
-	pass
+def dropPointInSegment( source, destination, point ):
+    '''
+    returns the closest point to "point" on the line segment [source,destination]
+    '''
+    onLine = dropPointInOrOutSegment(source,destination,point)
+    if isPointOnSegment(source,destination,onLine):
+        return onLine
+    else:
+        #closest is one of the end points
+        if distance(source,onLine)<distance(destination,onLine):
+            return source
+        else:
+            return destination
 
-def getCollisionPoint( source, destination, point, sourceRadius, pointRadius, radiusBuffer = 0, delta = DEFAULT_TOLERANCE_FACTOR ):
-	'''
-	Find the (x,y) coordinates where a moving point (source) with a given
-	collision radius (source radius) will stop if it is going to collide
-	with some obstacle (point) with its own collision radius (pointRadius).
+def shipsWillCollideOnSegment(source, destination, travelingShip, stationaryShip):
+    '''
+    returns True if a traveling ship a (gameplay.Unit) would collide with
+    stationary ship (another gameplay.Unit) when traveling from (x,y) source
+    to (x,y) destination
+    
+    If travelingShip when located at source would collide with stationaryShip
+    at the source point, this will return false, as to allow ships that are
+    colliding already to escape one another'''
+    radius_sum = travelingShip.radius + stationaryShip.radius
+    
+    #ships start colliding, let them escape
+    if distance(source, stationaryShip.location)<radius_sum:
+        return False
+    
+    closest_pass = dropPointInSegment(source,destination,stationaryShip.location)
+    return distance(closest_pass,stationaryShip.location) < radius_sum
+    
+def whereWillItStop(source, destination, travelingShip, stationaryShip):
+    '''
+    Precondition: shipsWillCollideOnSegment with the same parameters must be True
+    
+    finds the final resting point of a traveling ship so that it stops before it hits 
+    stationaryShip when traveling from source to destination.
+    '''
+    drop = dropPointInOrOutSegment(source, destination, stationaryShip.location)
+    
+    dropSourceDist = distance(drop,source)
+    
+    height = distance(stationaryShip.location, drop)
+    hypotenuse = ceil(travelingShip.radius + stationaryShip.radius)
+    
+    distFromDrop = (hypotenuse**2 - height**2)**0.5
+    
+    portion = 1-distFromDrop/dropSourceDist
+    dx = portion*(drop[0]-source[0])
+    dy = portion*(drop[1]-source[1])
+    r = (round(source[0]+dx),round(source[1]+dy))
+    return r
 
-	NOTE: This function assumes that there will be a collision and doesn't
-	perform any checks to see if there will actually be a collision.
+if __name__ == "__main__":
+    import gameplay
+    u1 = gameplay.Unit(location=(0,0),radius=1)
+    u2 = gameplay.Unit(location=(11,0),radius=3)
+    print(whereWillItStop((0,0),(10,0),u1,u2))
 
-	source - A tuple oontaining the (x,y) coordinates for the first point of
-			 the line segment. This point is the moving point.
-	destination - A tuple containing (x,y) coordinates for the final location
-				  of the moving point.
-	point - A tuple containg (x,y) coordinates of the obstacle.
-	sourceRadius - The collision radius of the moving point.
-	pointRadius - The collision radius of the obstacle.
-	radiusBuffer - An extra buffer between the source and point radii.
-	delta - Tolerance factor. Uses DEFAULT_TOLERANCE_FACTOR by default.
-	'''
-	pass
+    u1 = gameplay.Unit(location=(10,0),radius=1)
+    u2 = gameplay.Unit(location=(-1,0),radius=3)
+    print(whereWillItStop((10,0),(0,0),u1,u2))
 
-def getClosestPointOnSegment( source, destination, point, delta ):
-	'''
-	Given three points on the same line segment, determine which point is closest to 
+    u1 = gameplay.Unit(location=(0,0),radius=1)
+    u2 = gameplay.Unit(location=(0,11),radius=3)
+    print(whereWillItStop((0,0),(0,10),u1,u2))
 
-	Note: This function assumes that point is on the line segment and doesn't
-	actually verify if it is or not.
-	'''
-	pass
+    u1 = gameplay.Unit(location=(0,0),radius=1)
+    u2 = gameplay.Unit(location=(0,-1),radius=3)
+    print(whereWillItStop((0,10),(0,0),u1,u2))
+
+    u1 = gameplay.Unit(location=(0,0),radius=1)
+    u2 = gameplay.Unit(location=(11,11),radius=3)
+    print(whereWillItStop((0,0),(10,10),u1,u2))
+
+    u1 = gameplay.Unit(location=(0,0),radius=1)
+    u2 = gameplay.Unit(location=(10,10),radius=3)
+    print(whereWillItStop((0,0),(10,10),u1,u2))

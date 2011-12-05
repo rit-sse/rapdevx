@@ -18,8 +18,21 @@ public class Sprite {
 			e.printStackTrace();
 		}
 	}
+	
+	public int getImageWidth() { 
+		return image.getWidth();
+	}
+	
+	public int getImageHeight() { 
+		return image.getHeight();
+	}
 
 	public void draw(Graphics2D gPen, int x, int y, int scale) {
 		gPen.drawImage(image, x, y, 64, 64, null);
+	}
+	
+	public void draw(Graphics2D gPen, int x, int y) {
+		gPen.drawImage(image, x, y, image.getWidth(), 
+				image.getHeight(), null);
 	}
 }

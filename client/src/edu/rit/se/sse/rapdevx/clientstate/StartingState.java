@@ -16,31 +16,44 @@ import edu.rit.se.sse.rapdevx.clientmodels.AssetLibrary;
  */
 public class StartingState extends StateBase {
 	private Timer	timer	= new Timer();
+	private int		phaseNum;
 
 	public StartingState() {
 		this.nextState = UnitPlacementState.class;
 
-		GameSession.setSession(SessionApi.createSession("nickname", null));
-		AssetLibrary.setAssets(GameApi.getAssets(
-		/* get the game from where? */null, GameSession.getSession()));
+		// TODO here we'll need to include some "game picking" logic -- passing
+		// in null will, in effect, request matchmaking
+		try {
+			GameSession.get().setSession(
+					SessionApi.createSession("nickname", null));
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.err.println("Failed to create session");
+		}
+		AssetLibrary.setAssets(GameApi
+				.getAssets(GameSession.get().getSession()));
 
-		// TODO set ready here
+		phaseNum = Integer.parseInt(GameApi.getStatus(GameSession.get().getSession()).getPhase());
+
+		// yay, we're ready!
+		GameApi.setReady(GameSession.get().getSession());
 
 		timer.scheduleAtFixedRate(new TimerTask() {
 
 			@Override
 			public void run() {
-				// TODO poll for phase # change
-
-				// once phase # has changed, we're ready to change states
-				this.cancel();
-				ready();
+				if (Integer.parseInt(GameApi.getStatus(GameSession.get().getSession())
+						.getPhase()) != phaseNum) {
+					// once phase # has changed, we're ready to change states
+					this.cancel();
+					ready();
+				}
 			}
 
-		}, 0, 1);
+		}, 0, 1000);
 	}
 
 	private void ready() {
-		GameSession.advanceState();
+		GameSession.get().advanceState();
 	}
 }

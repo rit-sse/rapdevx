@@ -29,7 +29,7 @@ public class Main {
 	 */
 	public void run() {
 		// Create a new window
-		Window window = new Window("RapdevX");
+		Window window = new Window("RapdevX", false);
 		
 		// Save the current system time
 		long nextUpdate = System.currentTimeMillis();

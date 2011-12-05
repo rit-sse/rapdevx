@@ -6,28 +6,86 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.util.ArrayList;
+import java.util.LinkedList;
 
-import javax.swing.JPanel;
-
-public class ScreenStack extends JPanel implements KeyListener, MouseListener, MouseMotionListener {
+public class ScreenStack implements KeyListener, MouseListener, MouseMotionListener {
 	
-	private static final long serialVersionUID = 1L;
-	private ArrayList<Screen> screenList;
+	private static ScreenStack instance = new ScreenStack();
 	
-	public ScreenStack() {
-		screenList = new ArrayList<Screen>();
+	private LinkedList<Screen> screenList;
+	int xShift, yShift;
+	
+	private ScreenStack() {
+		screenList = new LinkedList<Screen>();
 	}
 	
-	public void addScreen(Screen screen) {
-		screenList.add(screen);
+	public static ScreenStack get() {
+		return instance;
 	}
 	
-	public void removeScreen(Screen screen) {
+	public void setOffsets(int xShift, int yShift) {
+		this.xShift = xShift;
+		this.yShift = yShift;
+	}
+	
+	/**
+	 * Adds screen to the top of the list
+	 * 
+	 * @param screen the screen to add
+	 */
+	public synchronized void addScreen(Screen screen) {
+		screenList.addLast(screen);
+	}
+	
+	/**
+	 * Adds a screen before another screen in the list.
+	 * 
+	 * @param referenceScreen the screen to add before
+	 * @param newScreen the new screen to add
+	 */
+	public synchronized void addScreenBefore(Screen referenceScreen, Screen newScreen) {
+		for (int i = 0; i < screenList.size(); i++) {
+			if (screenList.get(i) == referenceScreen) {
+				screenList.add(i, newScreen);
+				break;
+			}
+		}
+		
+		//TODO throw exception?
+	}
+	
+	/**
+	 * Adds a screen after another screen in the list.
+	 * 
+	 * @param referenceScreen the screen to add before
+	 * @param newScreen the new screen to add
+	 */
+	public synchronized void addScreenAfter(Screen referenceScreen, Screen newScreen) {
+		for (int i = 0; i < screenList.size(); i++) {
+			if (screenList.get(i) == referenceScreen) {
+				//TODO may need to do special casing for end of list?
+				screenList.add(i + 1, newScreen);
+				break;
+			}
+		}
+		
+		//TODO throw exception?
+	}
+	
+	/**
+	 * Remove a screen from the list.
+	 * 
+	 * @param screen the screen to remove
+	 */
+	public synchronized void removeScreen(Screen screen) {
 		screenList.remove(screen);
 	}
 	
-	public void update() {
+	/**
+	 * Updates the screens in the list.  Determines which screens should
+	 * have focus and are visible.
+	 */
+	public synchronized void update() {
 		boolean otherScreenHasFocus = false;
 		boolean coveredByOtherScreen = false;
 		
@@ -39,6 +97,7 @@ public class ScreenStack extends JPanel implements KeyListener, MouseListener, M
 			if ((screen.getState() == Screen.State.ACTIVE) ||
 					(screen.getState() == Screen.State.TRANSITION_ON))
 			{
+				//TODO: combine if statements if nothing else is added here
 				if (!otherScreenHasFocus) {
 					otherScreenHasFocus = true;
 					
@@ -50,7 +109,12 @@ public class ScreenStack extends JPanel implements KeyListener, MouseListener, M
 		}
 	}
 	
-	public void draw(Graphics2D gPen) {
+	/**
+	 * Draws all of the screens in the list from bottom to top.
+	 * 
+	 * @param gPen the graphics pen to draw with 
+	 */
+	public synchronized void draw(Graphics2D gPen) {
 		for (Screen screen : screenList) {
 			screen.draw(gPen);
 		}
@@ -62,8 +126,9 @@ public class ScreenStack extends JPanel implements KeyListener, MouseListener, M
 	 * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
 	 */
 	@Override
-	public void keyPressed(KeyEvent e) {
-		for (Screen screen : screenList) {
+	public synchronized void keyPressed(KeyEvent e) {
+		for (int i = screenList.size() - 1; i >= 0; i--) {
+			Screen screen = screenList.get(i);
 			if(e.isConsumed()) {
 				return;	//we're done if someone handled the event
 			}
@@ -76,8 +141,9 @@ public class ScreenStack extends JPanel implements KeyListener, MouseListener, M
 	 * @see java.awt.event.KeyListener#keyReleased(java.awt.event.KeyEvent)
 	 */
 	@Override
-	public void keyReleased(KeyEvent e) {
-		for (Screen screen : screenList) {
+	public synchronized void keyReleased(KeyEvent e) {
+		for (int i = screenList.size() - 1; i >= 0; i--) {
+			Screen screen = screenList.get(i);
 			if(e.isConsumed()) {
 				return;	//we're done if someone handled the event
 			}
@@ -89,8 +155,9 @@ public class ScreenStack extends JPanel implements KeyListener, MouseListener, M
 	 * @see java.awt.event.KeyListener#keyTyped(java.awt.event.KeyEvent)
 	 */
 	@Override
-	public void keyTyped(KeyEvent e) {
-		for(Screen screen: screenList) {
+	public synchronized void keyTyped(KeyEvent e) {
+		for (int i = screenList.size() - 1; i >= 0; i--) {
+			Screen screen = screenList.get(i);
 			if(e.isConsumed()) {
 				return;	//we're done if someone handled the event
 			}
@@ -98,39 +165,25 @@ public class ScreenStack extends JPanel implements KeyListener, MouseListener, M
 		}
 	}
 	
-	/* (non-Javadoc)
-	 * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
-	 */
 	@Override
-	public void mouseClicked(MouseEvent e) {
-		//tell all the screens about this mouse event
-		for(Screen screen: screenList) {
-			if(e.isConsumed()) {
-				return;	//we're done if someone handled the event
-			}
-			screen.mouseClicked(e);
-		}
-	}
+	public void mouseClicked(MouseEvent e) {}
 	
 	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mouseEntered(MouseEvent e) {}
 	
 	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void mouseExited(MouseEvent e) {}
 	
 	/* (non-Javadoc)
 	 * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
 	 */
 	@Override
-	public void mousePressed(MouseEvent e) {
+	public synchronized void mousePressed(MouseEvent e) {
+		adjustMouseCoords(e);
+		
 		//tell all the screens about this mouse event
-		for(Screen screen: screenList) {
+		for (int i = screenList.size() - 1; i >= 0; i--) {
+			Screen screen = screenList.get(i);
 			if(e.isConsumed()) {
 				return;	//we're done if someone handled the event
 			}
@@ -142,9 +195,12 @@ public class ScreenStack extends JPanel implements KeyListener, MouseListener, M
 	 * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
 	 */
 	@Override
-	public void mouseReleased(MouseEvent e) {
+	public synchronized void mouseReleased(MouseEvent e) {
+		adjustMouseCoords(e);
+		
 		//tell all the screens about this mouse event
-		for(Screen screen: screenList) {
+		for (int i = screenList.size() - 1; i >= 0; i--) {
+			Screen screen = screenList.get(i);
 			if(e.isConsumed()) {
 				return;	//we're done if someone handled the event
 			}
@@ -164,16 +220,23 @@ public class ScreenStack extends JPanel implements KeyListener, MouseListener, M
 	 * @see java.awt.event.MouseMotionListener#mouseMoved(java.awt.event.MouseEvent)
 	 */
 	@Override
-	public void mouseMoved(MouseEvent e) {
+	public synchronized void mouseMoved(MouseEvent e) {
 		//TODO should we only send this to the screen with focus? (need to make the same choice for all the other events too)
 		
+		adjustMouseCoords(e);
+		
 		//tell all the screens about this mouse event
-		for(Screen screen: screenList) {
+		for (int i = screenList.size() - 1; i >= 0; i--) {
+			Screen screen = screenList.get(i);
 			if(e.isConsumed()) {
 				return;	//we're done if someone handled the event
 			}
 			screen.mouseMoved(e);
 		}
+	}
+	
+	private void adjustMouseCoords(MouseEvent e) {
+		e.translatePoint(-xShift, -yShift);
 	}
 	
 }

@@ -12,15 +12,15 @@ import org.codehaus.jackson.map.ObjectMapper;
 
 public class Results {
 
-	private ObjectMapper mapper = new ObjectMapper();
+	private static ObjectMapper mapper = new ObjectMapper();
 	
-	private Map<Integer,LinkedList<Integer>> results = new Hashtable<Integer,LinkedList<Integer>>();
+	private Map<String,LinkedList<Hashtable<Integer,Integer>>> results = new Hashtable<String,LinkedList<Hashtable<Integer,Integer>>>();
 
-	public Map<Integer,LinkedList<Integer>> getResults() {
+	public Map<String, LinkedList<Hashtable<Integer, Integer>>> getResults() {
 		return results;
 	}
 
-	public void setResults(Map<Integer,LinkedList<Integer>> results) {
+	public void setResults(Map<String, LinkedList<Hashtable<Integer, Integer>>> results) {
 		this.results = results;
 	}
 	
@@ -30,10 +30,10 @@ public class Results {
 	 * 
 	 * @return The mapped Results as an Results object. or null if error.
 	 */
-	public Results fromJSON(){
+	public static Results fromJSON(String incomingJson){
 
 		try {
-			Results results = mapper.readValue(new File("ResultsToJava.json"), Results.class);
+			Results results = mapper.readValue(incomingJson, Results.class);
 			return results;
 		} catch (JsonParseException e) {
 			// TODO Auto-generated catch block
