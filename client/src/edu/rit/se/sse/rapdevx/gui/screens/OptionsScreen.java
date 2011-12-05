@@ -21,23 +21,27 @@ public class OptionsScreen extends Screen implements ActionListener {
 	private MenuButton continueButton;
 	private MenuButton settingsButton;
 	private MenuButton helpButton;
+	private MenuButton exitButton;
 	
 	public OptionsScreen(int width, int height) {
 		super(width, height);
 		
-		menu = new Menu(400, 200);
+		menu = new Menu(width / 2 - 100, height / 2 - 200);
 		
 		continueButton = new MenuButton("Continue", "Go back to the game!");
 		settingsButton = new MenuButton("Settings", "Adjust game settings");
 		helpButton = new MenuButton("Help", "Click this if you are lost!");
+		exitButton = new MenuButton("Exit", "Click this to Quit!");
 		
 		continueButton.addActionListener(this);
 		settingsButton.addActionListener(this);
 		helpButton.addActionListener(this);
+		exitButton.addActionListener(this);
 		
 		menu.addButton(continueButton);
 		menu.addButton(settingsButton);
 		menu.addButton(helpButton);
+		menu.addButton(exitButton);
 	}
 	
 	public void init() {
@@ -53,6 +57,11 @@ public class OptionsScreen extends Screen implements ActionListener {
 			System.out.println("Settings");
 		} else if (e.getSource() == helpButton) {
 			System.out.println("Help");
+		}
+		else if(e.getSource() == exitButton)
+		{
+			//TODO fix this
+			System.exit(0);
 		}
 	}
 	

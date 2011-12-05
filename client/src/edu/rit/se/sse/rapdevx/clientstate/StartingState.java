@@ -24,6 +24,7 @@ public class StartingState extends StateBase {
 			e.printStackTrace();
 			System.err.println("Failed to create session");
 		}
+
 		try {
 			AssetLibrary.setAssets(GameApi.getAssets(GameSession.get()
 					.getSession()));

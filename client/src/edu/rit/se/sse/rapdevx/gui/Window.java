@@ -75,15 +75,14 @@ public class Window {
 		MapScreen mapScreen = new MapScreen(windowWidth, windowHeight);
 		ScreenStack.get().addScreen(mapScreen);
 		
-		MoveScreen moveScreen = new MoveScreen(mapScreen.getCamera(),
-				windowWidth, windowHeight);
-		ScreenStack.get().addScreen(moveScreen);
+		//MoveScreen moveScreen = new MoveScreen(mapScreen.getCamera(),
+		//		windowWidth, windowHeight);
+		//ScreenStack.get().addScreen(moveScreen);
+		
+		ScreenStack.get().addScreen(new PlacementScreen(mapScreen.getCamera(), 100, 100));
 
 		// Add a control overlay to the window
 		ScreenStack.get().addScreen(new OverlayScreen(windowWidth, windowHeight));
-
-		//TODO this screen should be before move
-		//ScreenStack.get().addScreen(new PlacementScreen(mapScreen.getCamera(), 100, 100));
 		
 		window.requestFocusInWindow();
 	}
