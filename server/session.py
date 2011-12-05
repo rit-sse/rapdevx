@@ -1,3 +1,5 @@
+import json
+
 class Session:
     # Previously assigned session id, for use in unique ids
     last_id = 0

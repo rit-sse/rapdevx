@@ -79,7 +79,7 @@ public class Window {
 		//		windowWidth, windowHeight);
 		//ScreenStack.get().addScreen(moveScreen);
 		
-		ScreenStack.get().addScreen(new PlacementScreen(mapScreen.getCamera(), 100, 100));
+		ScreenStack.get().addScreen(new PlacementScreen(mapScreen.getCamera(), windowWidth, windowHeight));
 
 		// Add a control overlay to the window
 		ScreenStack.get().addScreen(new OverlayScreen(windowWidth, windowHeight));

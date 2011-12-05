@@ -51,6 +51,7 @@ public class StatsScreen extends Screen
 		super(wWidth, wHeight);
 		x = screenWidth - 300;
 		y = screenHeight - 200;
+		
 		this.ship = ship;
 		
 		name = new Text(ship.getClassName(), x + 10, y + 10, 2.5);
