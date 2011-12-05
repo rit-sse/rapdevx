@@ -40,10 +40,15 @@ public class AttackScreen extends Screen implements StateListener,
 	private StatsScreen statsScreen = null;
 
 	private Menu abilitiesMenu = null;
+	
+	private OverlayScreen overlay;
 
-	public AttackScreen(Camera camera, int width, int height) {
+	public AttackScreen(OverlayScreen overlay, Camera camera, int width, int height) {
 		super(width, height);
 		this.camera = camera;
+		this.overlay = overlay;
+		
+		overlay.addActionListener(this);
 
 		GameSession.get().addStateListener(this);
 
@@ -218,11 +223,10 @@ public class AttackScreen extends Screen implements StateListener,
 
 	public void stateChanged(StateEvent e) {
 		if (e.getNewState() instanceof MoveState) {
-			ScreenStack.get()
-					.addScreenAfter(
-							this,
-							new MoveScreen(camera, screenWidth,
-									screenHeight));
+			overlay.removeActionListener(this);
+			
+			ScreenStack.get().addScreenAfter(this,
+				new MoveScreen(overlay, camera, screenWidth, screenHeight));
 			ScreenStack.get().removeScreen(this);
 			GameSession.get().removeStateListener(this);
 		}

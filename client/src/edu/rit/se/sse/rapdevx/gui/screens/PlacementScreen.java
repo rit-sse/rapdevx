@@ -42,9 +42,13 @@ public class PlacementScreen extends Screen implements StateListener {
 	private ArrayList<ShipSelectSquare> shipSelectSquares;
 	private ShipSelectSquare selectedSquare;
 	
+	private OverlayScreen overlay;
+	
 	public PlacementScreen(Camera camera, int width, int height) {
 		super(width, height);
 		this.camera = camera;
+		
+		this.overlay = new OverlayScreen(width, height);
 		
 		placementArea = new Rectangle(88, 472);
 		placementArea.x = 96;
@@ -86,6 +90,10 @@ public class PlacementScreen extends Screen implements StateListener {
 		}
 		
 		GameSession.get().addStateListener(this);
+	}
+	
+	public void init() {
+		ScreenStack.get().addScreenAfter(this, overlay);
 	}
 
 	public void draw(Graphics2D gPen) {
@@ -205,7 +213,7 @@ public class PlacementScreen extends Screen implements StateListener {
 	
 	public void stateChanged(StateEvent e) {
 		if (e.getNewState() instanceof MoveState) {
-			ScreenStack.get().addScreenAfter(this, new MoveScreen(camera, screenWidth, screenHeight));
+			ScreenStack.get().addScreenAfter(this, new MoveScreen(overlay, camera, screenWidth, screenHeight));
 			ScreenStack.get().removeScreen(this);
 		}
 	}

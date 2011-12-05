@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Area;
 import java.util.ArrayList;
@@ -13,6 +15,7 @@ import edu.rit.se.sse.rapdevx.clientmodels.Ship;
 import edu.rit.se.sse.rapdevx.clientstate.AttackState;
 import edu.rit.se.sse.rapdevx.clientstate.GameSession;
 import edu.rit.se.sse.rapdevx.clientstate.MoveState;
+import edu.rit.se.sse.rapdevx.clientstate.StateBase;
 import edu.rit.se.sse.rapdevx.events.StateEvent;
 import edu.rit.se.sse.rapdevx.events.StateListener;
 import edu.rit.se.sse.rapdevx.gui.Screen;
@@ -21,7 +24,7 @@ import edu.rit.se.sse.rapdevx.gui.drawable.Camera;
 import edu.rit.se.sse.rapdevx.gui.drawable.DrawableMovePath;
 import edu.rit.se.sse.rapdevx.gui.drawable.DrawableShip;
 
-public class MoveScreen extends Screen implements StateListener {
+public class MoveScreen extends Screen implements StateListener, ActionListener {
 	
 	/** A reference to the map camera for positioning objects in world space */
 	private Camera camera;
@@ -36,10 +39,14 @@ public class MoveScreen extends Screen implements StateListener {
 	/** A stats screen that shows when a ship is moused over */
 	private StatsScreen statsScreen = null;
 	
+	private OverlayScreen overlay;
 	
-	public MoveScreen(Camera camera, int width, int height) {
+	public MoveScreen(OverlayScreen overlay, Camera camera, int width, int height) {
 		super(width, height);
 		this.camera = camera;
+		this.overlay = overlay;
+		
+		overlay.addActionListener(this);
 		
 		GameSession.get().addStateListener(this);
 		
@@ -223,7 +230,9 @@ public class MoveScreen extends Screen implements StateListener {
 	
 	public void stateChanged(StateEvent e) {
 		if (e.getNewState() instanceof AttackState) {
-			ScreenStack.get().addScreenAfter(this, new AttackScreen(camera, screenWidth, screenHeight));
+			overlay.removeActionListener(this);
+			
+			ScreenStack.get().addScreenAfter(this, new AttackScreen(overlay, camera, screenWidth, screenHeight));
 			ScreenStack.get().removeScreen(this);
 			GameSession.get().removeStateListener(this);
 			if(statsScreen != null)
@@ -247,6 +256,18 @@ public class MoveScreen extends Screen implements StateListener {
 		}
 		
 		return orders;
+	}
+	
+	public void actionPerformed(ActionEvent e) {
+		if ((e.getSource() instanceof OverlayScreen) &&
+				(e.getActionCommand().equals("ready")))
+		{
+			// Time to commit our moves to the server
+			StateBase state = GameSession.get().getCurrentState();
+			if (state instanceof MoveState) {
+				((MoveState)state).ready();
+			}
+		}
 	}
 
 }

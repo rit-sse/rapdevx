@@ -3,19 +3,22 @@ package edu.rit.se.sse.rapdevx.gui.screens;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import edu.rit.se.sse.rapdevx.clientstate.AttackState;
 import edu.rit.se.sse.rapdevx.clientstate.DoneState;
 import edu.rit.se.sse.rapdevx.clientstate.GameSession;
 import edu.rit.se.sse.rapdevx.clientstate.MoveState;
 import edu.rit.se.sse.rapdevx.clientstate.StartingState;
+import edu.rit.se.sse.rapdevx.clientstate.StateBase;
 import edu.rit.se.sse.rapdevx.clientstate.UnitPlacementState;
 import edu.rit.se.sse.rapdevx.events.StateEvent;
 import edu.rit.se.sse.rapdevx.events.StateListener;
 import edu.rit.se.sse.rapdevx.gui.Screen;
 import edu.rit.se.sse.rapdevx.gui.drawable.Text;
-import edu.rit.se.sse.rapdevx.gui.images.GrayableImage;
 import edu.rit.se.sse.rapdevx.gui.images.HoverableImage;
 import edu.rit.se.sse.rapdevx.gui.images.IGrayableImage;
 
@@ -51,14 +54,14 @@ public class OverlayScreen extends Screen implements StateListener
 
 	private Rectangle mainBounds;
 	private Rectangle playbackBounds;
-
-	private int center;
+	
 	private int turn = 0;
+	
+	private ConcurrentLinkedQueue<ActionListener> listeners = new ConcurrentLinkedQueue<ActionListener>();
 	
 	public OverlayScreen(int width, int height)
 	{
 		super(width, height);
-		center = width / 2;
 
 		int STARTING_X = width / 2 - 128 - 64;
 		int STARTING_Y = 1;
@@ -103,11 +106,6 @@ public class OverlayScreen extends Screen implements StateListener
 	}
 
 	public void update(boolean hasFocus, boolean isVisible)
-	{
-
-	}
-
-	public void updateTransition(double position, int direction)
 	{
 
 	}
@@ -157,7 +155,13 @@ public class OverlayScreen extends Screen implements StateListener
 				// TODO more shit
 				isReady = true;
 				readyText.setColor(Color.DARK_GRAY);
-				GameSession.get().advanceState();
+				
+				//StateBase state = GameSession.get().getCurrentState();
+				//if (state instanceof MoveState) {
+				//	notifyActionListeners("ready");
+				//} else {
+					GameSession.get().advanceState();
+				//}
 			}
 			e.consume();
 		}
@@ -292,6 +296,30 @@ public class OverlayScreen extends Screen implements StateListener
 		else if (e.getNewState() instanceof DoneState)
 		{
 			stateText.setText("Victory :" + turn);
+		}
+	}
+	
+	
+	/**
+	 * @param listener
+	 *              the listener to add
+	 */
+	public synchronized void addActionListener(ActionListener listener) {
+		listeners.add(listener);
+	}
+
+	/**
+	 * @param observer
+	 *              the observer to remove
+	 */
+	public synchronized void removeActionListener(ActionListener listener) {
+		listeners.remove(listener);
+	}
+
+	private synchronized void notifyActionListeners(String command) {
+		for (ActionListener listener : listeners) {
+			ActionEvent event = new ActionEvent(this, 0, command);
+			listener.actionPerformed(event);
 		}
 	}
 
