@@ -72,7 +72,7 @@ def get_game_assets(game_id=None):
 
     assets = game.getAssetSet()
 
-    return assets.encode()
+    return assets.toJSON()
 
 # Return game status (progress) as json
 @get('/game/:game_id')
@@ -81,7 +81,7 @@ def g_game(game_id=None):
 
     status = game.getGameProgress()
 
-    return status.encode()
+    return status.toJSON()
 
 # Indicate that the user is ready to start the game
 @post('/game/:game_id')
@@ -143,7 +143,7 @@ def g_game_turns_moves(game_id=None, turn_id=None):
 
     movement_orders = game.getPlayerMoveList(session.player_num)
 
-    orders_json_array = [order.encode() for order in movement_orders]
+    orders_json_array = [order.toJSON() for order in movement_orders]
     return json.dumps(orders_json_array)
 
 # Delete a move from the current turn
@@ -179,7 +179,7 @@ def g_game_turns_attacks(game_id=None, turn_id=None):
 
     attack_orders = game.getPlayerMoveList(session.player_num)
 
-    orders_json_array = [order.encode() for order in attack_orders]
+    orders_json_array = [order.toJSON() for order in attack_orders]
     return json.dumps(orders_json_array)
 
 # Delete an attack from the current turn
@@ -212,7 +212,7 @@ def g_game_turns_moves_results(game_id=None, turn_id=None):
 
     results = getTurnMoveResults(turn_id)
 
-    return results.encode
+    return results.toJSON()
 
 # Get the finalized attack orders of given turn as json
 @get('/game/:game_id/turns/:turn_id/attacks/results')
@@ -224,7 +224,7 @@ def g_game_turns_attacks_results(game_id=None, turn_id=None):
 
     results = getTurnAttackResults(turn_id)
 
-    return results.encode
+    return results.toJSON()
 
 if __name__ == "__main__":
     run(host='localhost', port=8080)
