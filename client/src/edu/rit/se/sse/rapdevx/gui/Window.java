@@ -102,7 +102,7 @@ public class Window
 
 	public void playBackground()
 	{
-		String filename = "assets/sounds/d1inter.mp3";
+		String filename = "assets/sounds/tardis.mp3";
 
 		try
 		{
@@ -118,7 +118,7 @@ public class Window
 		// run in new thread to play in background
 		Thread musicThread = new Thread()
 		{
-			String filename = "assets/sounds/d1inter.mp3";
+			String filename = "assets/sounds/tardis.mp3";
 
 			public void run()
 			{
