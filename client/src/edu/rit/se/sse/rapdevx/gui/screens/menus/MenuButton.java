@@ -188,7 +188,7 @@ public class MenuButton {
 
 		// draw the main button and remember where we put it for event
 		// handling
-		new RectangleBackground(x, y, size.width, size.height).draw(gPen);
+		new RectangleBackground(x, y, size.width, size.height, false).draw(gPen);
 		if (selected) {
 			gPen.setColor(new Color(30, 127, 255));
 			gPen.fill(new Rectangle(x, y, 12, 4));
@@ -203,29 +203,7 @@ public class MenuButton {
 					- 12, 4, 12));
 		}
 		if (pressed) {
-			// right
-			Color color1 = new Color(76, 76, 76);
-			// bottom
-			Color color2 = new Color(84, 84, 84);
-			// bottom left
-			Color color3 = new Color(72, 72, 72);
-			// top left
-			Color color4 = new Color(66, 66, 66);
-			// background
-			Color color5 = new Color(73, 73, 73);
-			gPen.setColor(color4);
-			gPen.fill(new Rectangle(x, y, 4, size.height - 4));
-			gPen.fill(new Rectangle(x + 4, y, size.width - 4, 4));
-			gPen.setColor(color1);
-			gPen.fill(new Rectangle(x + size.width - 4, y, 4, size.height));
-			gPen.setColor(color3);
-			gPen.fill(new Rectangle(x, y + size.height - 4, 4, 4));
-			gPen.setColor(color2);
-			gPen.fill(new Rectangle(x + 4, y + size.height - 4,
-					size.width - 8, 4));
-			gPen.setColor(color5);
-			gPen.fill(new Rectangle(x + 4, y + 4, size.width - 8,
-					size.height - 8));
+			new RectangleBackground(x,y, size.width, size.height, true).draw(gPen);
 		}
 		lastDrawnFromX = x;
 		lastDrawnFromY = y;

@@ -16,6 +16,7 @@ public class RectangleBackground {
 	private int height;
 	private int x;
 	private int y;
+	private boolean pressed;
 
 	/**
 	 * Constructor for the rectangle background
@@ -29,11 +30,12 @@ public class RectangleBackground {
 	 * @param height
 	 *              the height
 	 */
-	public RectangleBackground(int x, int y, int width, int height) {
+	public RectangleBackground(int x, int y, int width, int height,boolean pressed) {
 		this.width = width;
 		this.height = height;
 		this.x = x;
 		this.y = y;
+		this.pressed = pressed;
 	}
 
 	/**
@@ -49,16 +51,33 @@ public class RectangleBackground {
 		Color color4 = new Color(66, 66, 66);
 		Color color5 = new Color(73, 73, 73);
 
-		gPen.setColor(color1);
-		gPen.fill(new Rectangle(x, y, 4, height));
-		gPen.setColor(color2);
-		gPen.fill(new Rectangle(x + 4, y, width - 4, 4));
-		gPen.setColor(color3);
-		gPen.fill(new Rectangle(x + width - 4, y, 4, 4));
-		gPen.setColor(color4);
-		gPen.fill(new Rectangle(x + width - 4, y + 4, 4, height - 4));
-		gPen.fill(new Rectangle(x + 4, y + height - 4, width - 4, 4));
-		gPen.setColor(color5);
-		gPen.fill(new Rectangle(x + 4, y + 4, width - 8, height - 8));
+		
+		if(pressed){
+			gPen.setColor(color4);
+			gPen.fill(new Rectangle(x, y, 4, height - 4));
+			gPen.fill(new Rectangle(x + 4, y, width - 4, 4));
+			gPen.setColor(color1);
+			gPen.fill(new Rectangle(x + width - 4, y, 4, height));
+			gPen.setColor(color3);
+			gPen.fill(new Rectangle(x, y + height - 4, 4, 4));
+			gPen.setColor(color2);
+			gPen.fill(new Rectangle(x + 4, y + height - 4,
+					width - 8, 4));
+			gPen.setColor(color5);
+			gPen.fill(new Rectangle(x + 4, y + 4, width - 8,
+					height - 8));
+		}else{
+			gPen.setColor(color1);
+			gPen.fill(new Rectangle(x, y, 4, height));
+			gPen.setColor(color2);
+			gPen.fill(new Rectangle(x + 4, y, width - 4, 4));
+			gPen.setColor(color3);
+			gPen.fill(new Rectangle(x + width - 4, y, 4, 4));
+			gPen.setColor(color4);
+			gPen.fill(new Rectangle(x + width - 4, y + 4, 4, height - 4));
+			gPen.fill(new Rectangle(x + 4, y + height - 4, width - 4, 4));
+			gPen.setColor(color5);
+			gPen.fill(new Rectangle(x + 4, y + 4, width - 8, height - 8));
+		}
 	}
 }
