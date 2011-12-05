@@ -188,8 +188,6 @@ class MoveTurn:
         '''
         if calling_player not in self.player_move_list:
             self.player_move_list[calling_player] = []
-        print("add")
-
         
         
         moveOrderObj = MoveOrder(move_order.unitid, move_order.path) 
@@ -214,13 +212,9 @@ class MoveTurn:
     def deleteMoveOrder(self, move_order_gid, calling_player, registry):
         '''
         '''
-        print("MOVE_GID:", move_order_gid)
         move_order = registry.getById(move_order_gid)
         registry.removeById(move_order_gid)
         
-        print("MOVE_LIST_FOR_CALLING_PLAYER:", self.player_move_list[calling_player])
-        print("MOVE_ORDER TO BE REMOVED:", move_order)
-
         self.player_move_list[calling_player].remove(move_order)
 
     def getPlayerMoveList(self, calling_player, registry):
@@ -275,13 +269,10 @@ class MoveTurn:
                     
                     for other in intersecting:
                         pt = geometry.whereWillItStop(start, end, unit, other)
-                        print(pt)
                         if geometry.distance(start,pt)<shortest:
                             shortest = geometry.distance(start,pt)
-                            print("shortest",shortest)
                             shortest_point = pt
                         
-                    print("using:",shortest_point,"on:",unit.gid)
                     unit.setLocation(shortest_point)
                     path_taken.append(shortest_point)
                     break
