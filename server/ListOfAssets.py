@@ -1,17 +1,17 @@
 
-from gameplay import Ability
-from gameplay import GameRegistry
+from gameplay import *
+from registry import GameRegistry
 
 abilityRegistry = GameRegistry()
 
-def genListOfAssets(self, reg):
+def genListOfAssets(reg):
 
     #list of Abilities
     atk = Ability(1000,"attack", 10, {})
     reg.register(atk)
 
     pntBlankMissile = Ability(10, "point_blank_missile", {})
-    reg.register(pntBlankMissle)
+    reg.register(pntBlankMissile)
 
     fwShot = Ability(5000, "firework_shot", 1, {})
     reg.register(fwShot)
@@ -28,15 +28,16 @@ def genListOfAssets(self, reg):
 
     #list of Images
     sprite = Image("../assets/ship.png")
-    self.registry.register(sprite)
+    reg.register(sprite)
 
     #list of Ships
 
 
-    scout = UnitClass([],[atk],200,10,10, sprite, "Scout")
-    self.registry.register(scout)       
+    scout = UnitClass([],[atk,fwShot],200,10,10, sprite, "Scout")
+    bb = UnitClass([],[stdMissile,pntBlankMissile],400,20,40, sprite, "Big Boy")
+    reg.register(scout)
+    reg.register(bb)
 
     #DTO_Assets
-    self.assets = []
-    self.assets.append(DTO_Assets(1000,1000,[scout.to_dto()],[sprite.to_dto()],[atk.to_dto()]))
+    return DTO_Assets(1000,1000,[scout.to_dto(),bb.to_dto()],[sprite.to_dto()],[atk.to_dto(),pntBlankMissile.to_dto(),fwShot.to_dto()])
 
