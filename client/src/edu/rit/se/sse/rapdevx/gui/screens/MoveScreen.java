@@ -106,7 +106,7 @@ public class MoveScreen extends Screen implements StateListener {
 		
 		if (isSelected) {
 			if (statsScreen == null) {
-				statsScreen = new StatsScreen(/*300, 200,*/ screenWidth, screenHeight, ship.getShip());
+				statsScreen = new StatsScreen(screenWidth, screenHeight, ship.getShip());
 				ScreenStack.get().addScreenAfter(this, statsScreen);
 			} else if (statsScreen != null && statsScreen.getShip() != ship.getShip() && movePath == null) {
 				ScreenStack.get().removeScreen(statsScreen);
@@ -154,7 +154,8 @@ public class MoveScreen extends Screen implements StateListener {
 							selectedShip.setSelected(false);
 						// No other ship is selected so select this one
 						} else {
-							selectShip(ship);
+							if (!ship.hasPath())
+								selectShip(ship);
 						}
 					}
 				
@@ -167,14 +168,23 @@ public class MoveScreen extends Screen implements StateListener {
 				
 				Point point = new Point( e.getX() + camera.getX(), e.getY() + camera.getY() );
 				
+				// if the user clicked the same spot twice, stop making the path
 				if ( movePath.hasPointCloseToPrevious( point, 32 /*the 'radius' of the ship*/ ) ) {
+					// stop accepting input
 					movePath.stopInput();
+					
+					// send move to the queue
+					((MoveState)GameSession.get().getCurrentState()).makeMove( selectedShip.getMovementOrder() );
+					
+					// move the ship
 					selectedShip.setCenter( (int)movePath.getPath().getLastPoint().getX(), 
 							(int)movePath.getPath().getLastPoint().getY() );
-					// selectedShip.setSelected( false );
+					
+					// make the ship and path null
 					selectedShip = null;
 					movePath = null;
 				} else {
+					// otherwise, add the move
 					movePath.addMove( point );
 				}
 			}
@@ -185,9 +195,6 @@ public class MoveScreen extends Screen implements StateListener {
 	}
 	
 	public void mouseMoved(MouseEvent e) {
-		
-		
-		
 		if ( movePath != null ) {
 			// update movePath to let know that the mouse has moved
 			movePath.setMouseLocation( new Point( e.getX() + camera.getX(), e.getY() + camera.getY()) );
@@ -216,11 +223,13 @@ public class MoveScreen extends Screen implements StateListener {
 	
 	public void stateChanged(StateEvent e) {
 		if (e.getNewState() instanceof AttackState) {
-			sendMovementOrdersToServer( (MoveState)e.getOldState() );
-			
 			ScreenStack.get().addScreenAfter(this, new AttackScreen(camera, screenWidth, screenHeight));
 			ScreenStack.get().removeScreen(this);
 			GameSession.get().removeStateListener(this);
+			if(statsScreen != null)
+			{
+				ScreenStack.get().removeScreen(statsScreen);
+			}
 		}
 	}
 	
@@ -228,7 +237,7 @@ public class MoveScreen extends Screen implements StateListener {
 	 * get a list of MovementOrders to send to the server
 	 * @return an ArrayList of MovementOrder types
 	 */
-	private ArrayList<MovementOrder> getMovementOrders() {
+	public ArrayList<MovementOrder> getMovementOrders() {
 		ArrayList<MovementOrder> orders = new ArrayList<MovementOrder>();
 		
 		for ( DrawableShip ship : shipList ) {
@@ -238,15 +247,6 @@ public class MoveScreen extends Screen implements StateListener {
 		}
 		
 		return orders;
-	}
-	
-	/**
-	 * send the moves to the server
-	 */
-	private void sendMovementOrdersToServer( MoveState state ) {
-		for ( MovementOrder order : getMovementOrders() ) {
-			state.makeMove( order );
-		}
 	}
 
 }

@@ -16,16 +16,20 @@ import edu.rit.se.sse.rapdevx.events.StateListener;
 import edu.rit.se.sse.rapdevx.gui.Screen;
 import edu.rit.se.sse.rapdevx.gui.drawable.Text;
 import edu.rit.se.sse.rapdevx.gui.images.GrayableImage;
+import edu.rit.se.sse.rapdevx.gui.images.HoverableImage;
 import edu.rit.se.sse.rapdevx.gui.images.IGrayableImage;
 
 public class OverlayScreen extends Screen implements StateListener
 {
-	private static final int UNDO_MODIFIER_X = 3;
+	private static final int UNDO_MODIFIER_X = -1;
 	private static final int REDO_MODIFIER_X = 35;
 	private static final int PHASE_MODIFIER_X = 64;
-	private static final int READY_MODIFIER_X = 287;
+	private static final int READY_MODIFIER_X = 283;
+	private static final int PLAY_CONTROLS_MODIFIER_X = -23;
 
 	private static final int TURN_CONTROL_Y = 0;
+	private static final int TURN_CONTROL_SIZE_X = 40;
+	private static final int TURN_CONTROL_END_SIZE_X = 115;
 
 	private IGrayableImage undo;
 	private IGrayableImage redo;
@@ -69,23 +73,25 @@ public class OverlayScreen extends Screen implements StateListener
 		playbackBounds.x = STARTING_X + 52;
 		playbackBounds.y = 32;
 
+		int curX = STARTING_X + PLAY_CONTROLS_MODIFIER_X;
 		for (int x = 0; x < 7; ++x)
 		{
-			turnControlImageStr[x] = "assets/Play-" + turnControlImageStr[x]
-					+ ".png";
-			turnControlImages[x] = new GrayableImage(turnControlImageStr[x],
-					STARTING_X + 40 * x + 52, STARTING_Y + TURN_CONTROL_Y);
+			turnControlImageStr[x] = "assets/Play-" + turnControlImageStr[x];
+			turnControlImages[x] = new HoverableImage(turnControlImageStr[x],
+					curX, STARTING_Y + TURN_CONTROL_Y);
+			
+			curX += (x == 0) ? TURN_CONTROL_END_SIZE_X : TURN_CONTROL_SIZE_X;
 		}
 
-		undo = new GrayableImage("assets/Undo.png", STARTING_X
+		undo = new HoverableImage("assets/Undo", STARTING_X
 				+ UNDO_MODIFIER_X, STARTING_Y);
-		redo = new GrayableImage("assets/Redo.png", STARTING_X
+		redo = new HoverableImage("assets/Redo", STARTING_X
 				+ REDO_MODIFIER_X, STARTING_Y);
-		phase = new GrayableImage("assets/StatusBar.png", STARTING_X
+		phase = new HoverableImage("assets/StatusBar", STARTING_X
 				+ PHASE_MODIFIER_X, STARTING_Y);
-		readyEnabled = new GrayableImage("assets/Ready-enabled.png", STARTING_X
+		readyEnabled = new HoverableImage("assets/Ready-enabled", STARTING_X
 				+ READY_MODIFIER_X, STARTING_Y);
-		readyDisabled = new GrayableImage("assets/Ready-disabled.png",
+		readyDisabled = new HoverableImage("assets/Ready-disabled",
 				STARTING_X + READY_MODIFIER_X, STARTING_Y);
 
 		readyText = new Text("Ready", STARTING_X + READY_MODIFIER_X + 28,
@@ -132,7 +138,7 @@ public class OverlayScreen extends Screen implements StateListener
 		readyText.draw(gPen);
 		stateText.draw(gPen);
 	}
-
+	
 	public void mouseReleased(MouseEvent e)
 	{
 		if (mainBounds.contains(e.getPoint()))
@@ -164,6 +170,57 @@ public class OverlayScreen extends Screen implements StateListener
 					//GameSession.get().advanceState();
 				}
 			}
+			e.consume();
+		}
+		
+		undo.setPressed(false);
+		redo.setPressed(false);
+		readyEnabled.setPressed(false);
+		for (IGrayableImage img : turnControlImages) {
+			img.setPressed(false);
+		}
+	}
+	
+	public void mousePressed(MouseEvent e)
+	{
+		IGrayableImage currentlyOver = null;
+
+		if (mainBounds.contains(e.getPoint()))
+		{
+			if (undo.containsPoint(e.getPoint()))
+			{
+				currentlyOver = undo;
+			}
+			else if (redo.containsPoint(e.getPoint()))
+			{
+				currentlyOver = redo;
+			}
+			else if (readyEnabled.containsPoint(e.getPoint()))
+			{
+				currentlyOver = readyEnabled;
+			}
+			e.consume();
+		}
+		else if (displayPlayback && playbackBounds.contains(e.getPoint()))
+		{
+			for (IGrayableImage img : turnControlImages)
+			{
+				if (img.containsPoint(e.getPoint()))
+				{
+					currentlyOver = img;
+				}
+			}
+			e.consume();
+		}
+
+		if (selectedImage != null)
+		{
+			selectedImage.setPressed(false);
+		}
+		if (currentlyOver != null)
+		{
+			currentlyOver.setPressed(true);
+			selectedImage = currentlyOver;
 			e.consume();
 		}
 	}

@@ -12,6 +12,7 @@ import java.awt.event.ActionListener;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import edu.rit.se.sse.rapdevx.gui.RectangleBackground;
+import edu.rit.se.sse.rapdevx.gui.Screen;
 import edu.rit.se.sse.rapdevx.gui.drawable.Text;
 
 /**
@@ -20,9 +21,11 @@ import edu.rit.se.sse.rapdevx.gui.drawable.Text;
  */
 public class MenuButton {
 
-	private Dimension DefaultSize = new Dimension(200, 50);
+	private static Dimension DEFAULT_SIZE = new Dimension(200, 50);
 
-	private Dimension size = DefaultSize;
+	private Menu menu;
+
+	private Dimension size = DEFAULT_SIZE;
 
 	private static final String DefaultText = "???";
 	private static final String DefaultHelp = "I don't know what this is too";
@@ -49,9 +52,11 @@ public class MenuButton {
 	 * @param help
 	 *              A user visible description of the button
 	 */
-	public MenuButton(String text, String help) {
+	public MenuButton(Menu menu, String text, String help) {
 		setText(text);
 		setHelp(help);
+		this.menu = menu;
+
 	}
 
 	/**
@@ -146,8 +151,8 @@ public class MenuButton {
 		// TODO support different amounts of width and height scaling?
 
 		// adjust main button
-		int width = (int) (DefaultSize.width * scale);
-		int height = (int) (DefaultSize.height * scale);
+		int width = (int) (DEFAULT_SIZE.width * scale);
+		int height = (int) (DEFAULT_SIZE.height * scale);
 		setSize(width, height);
 
 		// adjust arcs
@@ -172,7 +177,13 @@ public class MenuButton {
 		// TODO cache the last scaling value to reduce calculations while
 		// drawing. When setArc() or setSize() is called again or the
 		// scaling value is changed, clear the cache
-		adjustSize(scale);
+		int textY = y + size.height / 2 - 10;
+		Text t = new Text(getText(), x + 10, textY, 3, Color.WHITE);
+		if (t.getSizeOnScreen() + 5 >= DEFAULT_SIZE.getWidth()) {
+			size.setSize(t.getSizeOnScreen(),
+					DEFAULT_SIZE.getHeight());
+		}
+//		adjustSize(scale);
 		Dimension size = getSize();
 
 		// draw the main button and remember where we put it for event
@@ -225,11 +236,10 @@ public class MenuButton {
 		// TODO better adjust x and y so text isn't right up against button
 		// edge
 		// gPen.setColor(getTextColor());
-		// gPen.setFont(TextFont);
-		int textY = y + size.height / 2 - 10;
-		new Text(getText(), x + 10, textY, 3, Color.WHITE).draw(gPen);
+		// gPen.setFont(TextFont)
 
 		// TODO adjust the border depending on if selected or not
+		t.draw(gPen);
 	}
 
 	public boolean includesPoint(int x, int y) {
@@ -268,7 +278,7 @@ public class MenuButton {
 
 		pressed = false;
 	}
-	
+
 	/**
 	 * @param listener
 	 *              the listener to add
@@ -291,5 +301,9 @@ public class MenuButton {
 			listener.actionPerformed(event);
 		}
 	}
-	
+
+	public Screen getMenu() {
+		return menu;
+	}
+
 }
