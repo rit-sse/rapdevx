@@ -6,10 +6,15 @@ import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.image.BufferStrategy;
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
 
 import javax.swing.JFrame;
 
-import edu.rit.se.sse.rapdevx.gui.screens.*;
+import javazoom.jl.player.Player;
+import edu.rit.se.sse.rapdevx.gui.screens.MapScreen;
+import edu.rit.se.sse.rapdevx.gui.screens.OverlayScreen;
+import edu.rit.se.sse.rapdevx.gui.screens.PlacementScreen;
 
 public class Window {
 
@@ -85,6 +90,41 @@ public class Window {
 		ScreenStack.get().addScreen(new OverlayScreen(windowWidth, windowHeight));
 		
 		window.requestFocusInWindow();
+		
+		playBackground();
+	}
+
+	private Player player; 
+	
+	public void playBackground()
+	{
+		try 
+		{
+            FileInputStream fis     = new FileInputStream("assets/sounds/tardis.mp3");
+            BufferedInputStream bis = new BufferedInputStream(fis);
+            player = new Player(bis);
+        }
+        catch (Exception e) 
+        {
+            System.out.println("Problem playing file assets/tardis.mp3");
+            System.out.println(e);
+        }
+
+        // run in new thread to play in background
+        new Thread() 
+        {
+            public void run() 
+            {
+                try 
+                {
+                	player.play(); 
+                }
+                catch (Exception e) 
+                { 
+                	System.out.println(e); 
+                }
+            }
+        }.start();
 	}
 
 	public void update() {
