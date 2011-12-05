@@ -34,12 +34,11 @@ def list_active_games():
 def create_session():
     # pull data out of request
     nickname = request.forms.nickname
-    game_id = request.forms.game_id
-
-    # scrub data from forms
-    if game_id == '':
+    if hasattr(request.forms, "game_id"):
+        game_id = request.forms.game_id
+    else:
         game_id = None
-    
+
     session = Session(nickname)
 
     session_manager.register_session(session, game_id)
