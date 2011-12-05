@@ -20,10 +20,10 @@ import edu.rit.se.sse.rapdevx.gui.images.IGrayableImage;
 
 public class OverlayScreen extends Screen implements StateListener
 {
-	private static final int UNDO_MODIFIER_X = 3;
+	private static final int UNDO_MODIFIER_X = -1;
 	private static final int REDO_MODIFIER_X = 35;
 	private static final int PHASE_MODIFIER_X = 64;
-	private static final int READY_MODIFIER_X = 287;
+	private static final int READY_MODIFIER_X = 283;
 
 	private static final int TURN_CONTROL_Y = 0;
 
