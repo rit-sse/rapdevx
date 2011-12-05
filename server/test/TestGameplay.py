@@ -6,27 +6,46 @@ import sys
 path = os.path.abspath(__file__)
 sys.path.append(os.path.join(os.path.dirname(path), "../"))
 
-import gameplay
+from gameplay import *
+import registry
+
+reg = registry.GameRegistry()
+
+TestUnit1 = Unit(abilities=[Ability()], owning_player=0, location=(0, 0))
+reg.register(TestUnit1)
+TestUnit2 = Unit(abilities=[Ability()], owning_player=1, location=(100, 100))
+reg.register(TestUnit2)
+
+move1 = MoveOrder(TestUnit1.gid, (100, 0))
+move2 = MoveOrder(TestUnit2.gid, (0, 100))
 
 class TestGameplay( unittest.TestCase ):
+    def test_swizzle1(self):
+        lists = [ [0, 1, 2] , [3, 4, 5] ]
+        swizList = swizzle(lists)
+        self.assertEqual([0, 3, 1, 4, 2, 5], swizList)
     
-    def test_MakeUnit( self ):
-        testUnit = gameplay.Unit( [], 0, 0, [], (0,0), 0 )
+    def test_swizzle2(self):
+        lists = [ [1, 2, 3, 4] , [] ]
+        swizList = swizzle(lists)
+        self.assertEqual([1, 2, 3, 4], swizList)
+    
+    def test_swizzle3(self):
+        lists = [ [] , [1, 2, 3, 4] ]
+        swizList = swizzle(lists)
+        self.assertEqual([1, 2, 3, 4], swizList)
 
-    # # Is this still needed?
-    # def test_Collisions( self ):
-    #     moveTurnObject = gameplay.MoveTurn(0)
-    #     locations1 = [(0,0), (2,2), (5,5), (2,2)]
-    #     locations2 = [(5,5), (5,5), (2,2), (5,5)]
-    #     endingLocation = [(10,10), (10,2), (5,10), (10,2)]
-    #     radius1 = [2,3,1,1]
-    #     radius2 = [2,2,1,1]
-    #     assertBool = [True,True,False,False]
-    #     for i in range(4):
-    #         print("TEST_CASE_NUMBER_"+str(i))
-    #         ship1 = gameplay.Unit( [], 1, 0, [], locations1[i], radius1[i] )
-    #         ship2 = gameplay.Unit( [], 1, 0, [], locations2[i], radius2[i] )
-    #         self.assertTrue( moveTurnObject.collisionCheck(ship1, ship2, endingLocation[i]) == assertBool[i] )
+    def test_swizzle4(self):
+        lists = [ [] , [] ]
+        swizList = swizzle(lists)
+        self.assertEqual([], swizList)
+
+    def test_MoveTurn_execute(self):
+        turn = Turn(0)
+        turn.move.addMoveOrder(move1, 0, reg)
+        turn.move.addMoveOrder(move2, 1, reg)
+        turn.move.execute(reg)
+        self.assertTrue(TestUnit1.location == (100, 0) and TestUnit2.location == (0, 100))
 
 if __name__ == "__main__":
     unittest.main()
