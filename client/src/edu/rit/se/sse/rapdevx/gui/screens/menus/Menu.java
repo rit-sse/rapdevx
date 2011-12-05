@@ -70,28 +70,27 @@ public class Menu extends Screen {
 			return;
 		}
 
-		{ // TODO update Menu screen size based on button, take into account
-			// the button's hidden/visible status too?. This needs to be
-			// refactored into draw to take into account buttons that
-			// change sizes due to scaling or other reasons
-			// TODO menu should be able to shrink too, right now it can
-			// only grow
-			Dimension screen = getSize();
+		// TODO update Menu screen size based on button, take into account
+		// the button's hidden/visible status too?. This needs to be
+		// refactored into draw to take into account buttons that
+		// change sizes due to scaling or other reasons
+		// TODO menu should be able to shrink too, right now it can
+		// only grow
+		Dimension screen = getSize();
 
-			// update height
-			int height = button.getSize().height;
-			if (!buttons.isEmpty())
-				height += spacing;
+		// update height
+		int height = button.getSize().height;
+		if (!buttons.isEmpty())
+			height += spacing;
 
-			// update width
-			int width = button.getSize().width + border*2;
-			if (width <= screen.width) {
-				width = 0;
-			} else {
-				width = width - screen.width;
-			}
-			adjustSize(width, height);
+		// update width
+		int width = button.getSize().width + border * 2;
+		if (width <= screen.width) {
+			width = screenWidth;
+		} else{
 		}
+		screenWidth = width;
+		screenHeight += height;
 
 		buttons.add(button);
 	}
@@ -142,6 +141,7 @@ public class Menu extends Screen {
 			// TODO what about the last button? should it use spacing or
 			// border?
 		}
+		System.out.println(size.getWidth());
 
 		// TODO if we don't have focus, draw transparent, light gray myst
 		// over ourself
@@ -292,8 +292,8 @@ public class Menu extends Screen {
 	public boolean isHidden() {
 		return isHidden;
 	}
-	
-	public ArrayList<MenuButton> getButtons(){
+
+	public ArrayList<MenuButton> getButtons() {
 		return buttons;
 	}
 
