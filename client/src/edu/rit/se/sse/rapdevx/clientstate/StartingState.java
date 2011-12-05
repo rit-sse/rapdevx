@@ -3,9 +3,6 @@
  */
 package edu.rit.se.sse.rapdevx.clientstate;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
 import edu.rit.se.sse.rapdevx.api.GameApi;
 import edu.rit.se.sse.rapdevx.api.SessionApi;
 import edu.rit.se.sse.rapdevx.clientmodels.AssetLibrary;
@@ -15,9 +12,6 @@ import edu.rit.se.sse.rapdevx.clientmodels.AssetLibrary;
  * 
  */
 public class StartingState extends StateBase {
-	private Timer	timer	= new Timer();
-	private int		phaseNum;
-
 	public StartingState() {
 		this.nextState = UnitPlacementState.class;
 
@@ -30,30 +24,26 @@ public class StartingState extends StateBase {
 			e.printStackTrace();
 			System.err.println("Failed to create session");
 		}
-		AssetLibrary.setAssets(GameApi
-				.getAssets(GameSession.get().getSession()));
+		try {
+			AssetLibrary.setAssets(GameApi.getAssets(GameSession.get()
+					.getSession()));
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.err.println("Failed to pull down assets");
+		}
 
-		phaseNum = Integer.parseInt(GameApi.getStatus(GameSession.get().getSession()).getPhase());
+		poll();
 
 		// yay, we're ready!
 		GameApi.setReady(GameSession.get().getSession());
-
-		timer.scheduleAtFixedRate(new TimerTask() {
-
-			@Override
-			public void run() {
-				if (Integer.parseInt(GameApi.getStatus(GameSession.get().getSession())
-						.getPhase()) != phaseNum) {
-					// once phase # has changed, we're ready to change states
-					this.cancel();
-					ready();
-				}
-			}
-
-		}, 0, 1000);
 	}
 
-	private void ready() {
+	/*
+	 * (non-Javadoc)
+	 * @see edu.rit.se.sse.rapdevx.clientstate.StateBase#finishedPolling()
+	 */
+	@Override
+	protected void finishedPolling() {
 		GameSession.get().advanceState();
 	}
 }
