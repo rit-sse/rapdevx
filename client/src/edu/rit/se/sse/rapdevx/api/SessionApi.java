@@ -71,9 +71,10 @@ public class SessionApi {
 			// if there is a gameID
 			if (gameID != null)
 				data += "&"
-						+ URLEncoder.encode("gameID", "UTF-8")
+						+ URLEncoder.encode("game_id", "UTF-8")
 						+ "="
 						+ URLEncoder.encode(gameID, "UTF-8");
+
 			// url...
 			URL url = new URL("http", SERVER_URL, 8080, "/sessions");
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
