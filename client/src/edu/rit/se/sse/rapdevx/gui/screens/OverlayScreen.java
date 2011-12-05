@@ -25,8 +25,11 @@ public class OverlayScreen extends Screen implements StateListener
 	private static final int REDO_MODIFIER_X = 35;
 	private static final int PHASE_MODIFIER_X = 64;
 	private static final int READY_MODIFIER_X = 283;
+	private static final int PLAY_CONTROLS_MODIFIER_X = 52;
 
 	private static final int TURN_CONTROL_Y = 0;
+	private static final int TURN_CONTROL_SIZE_X = 40;
+	private static final int TURN_CONTROL_END_SIZE_X = 40;
 
 	private IGrayableImage undo;
 	private IGrayableImage redo;
@@ -70,11 +73,14 @@ public class OverlayScreen extends Screen implements StateListener
 		playbackBounds.x = STARTING_X + 52;
 		playbackBounds.y = 32;
 
+		int curX = STARTING_X + PLAY_CONTROLS_MODIFIER_X;
 		for (int x = 0; x < 7; ++x)
 		{
 			turnControlImageStr[x] = "assets/Play-" + turnControlImageStr[x];
 			turnControlImages[x] = new HoverableImage(turnControlImageStr[x],
-					STARTING_X + 40 * x + 52, STARTING_Y + TURN_CONTROL_Y);
+					curX, STARTING_Y + TURN_CONTROL_Y);
+			
+			curX += (x == 0) ? TURN_CONTROL_END_SIZE_X : TURN_CONTROL_SIZE_X;
 		}
 
 		undo = new HoverableImage("assets/Undo", STARTING_X
