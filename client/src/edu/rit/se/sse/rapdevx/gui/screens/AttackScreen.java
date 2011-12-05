@@ -22,6 +22,7 @@ import edu.rit.se.sse.rapdevx.gui.drawable.DrawableAttack;
 import edu.rit.se.sse.rapdevx.gui.drawable.DrawableShip;
 import edu.rit.se.sse.rapdevx.gui.screens.menus.Menu;
 import edu.rit.se.sse.rapdevx.gui.screens.menus.MenuButton;
+import edu.rit.se.sse.rapdevx.clientstate.AttackState;
 
 public class AttackScreen extends Screen implements StateListener,
 		ActionListener {
@@ -114,6 +115,12 @@ public class AttackScreen extends Screen implements StateListener,
 				if (ship == selectedShip) {
 					// This ship was previously selected. Deselect it
 					// and stop the attack.
+					if (curAttack != null) {
+						((AttackState) GameSession.get()
+								.getCurrentState())
+								.makeAttack(curAttack
+										.makeAbilityUseOrder());
+					}
 					selectedShip.setSelected(false);
 					selectedShip = null;
 					curAttack = null;
@@ -138,7 +145,7 @@ public class AttackScreen extends Screen implements StateListener,
 					abilitiesMenu = new Menu(
 							selectedShip.getX() + 50,
 							selectedShip.getY() + 20);
-					
+
 					// for (Ability b:
 					// selectedShip.getShip().getShipClass().getAbilities()){
 					// // abilitiesMenu.addButton(new
