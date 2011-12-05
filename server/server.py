@@ -39,6 +39,10 @@ def create_session():
     else:
         game_id = None
 
+    # scrub data from forms
+    if game_id == '':
+        game_id = None
+    
     session = Session(nickname)
 
     session_manager.register_session(session, game_id)
