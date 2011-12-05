@@ -5,7 +5,6 @@ import unittest
 from TestJSON import *
 from TestRegistry import *
 from TestGameplay import *
-from TestServer import *
 from TestGeometry import *
 from TestMoveTurn import *
 from TestAttackTurn import *
