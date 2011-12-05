@@ -10,13 +10,17 @@ import java.net.URLEncoder;
 import java.util.List;
 
 import edu.rit.se.sse.rapdevx.api.dataclasses.AbilityUseOrder;
+import edu.rit.se.sse.rapdevx.api.dataclasses.AbilityUseOrders;
+import edu.rit.se.sse.rapdevx.api.dataclasses.AttackResults;
 import edu.rit.se.sse.rapdevx.api.dataclasses.Assets;
 import edu.rit.se.sse.rapdevx.api.dataclasses.MovementOrder;
+import edu.rit.se.sse.rapdevx.api.dataclasses.MovementOrders;
 import edu.rit.se.sse.rapdevx.api.dataclasses.Session;
 import edu.rit.se.sse.rapdevx.api.dataclasses.ShipPlacement;
 import edu.rit.se.sse.rapdevx.api.dataclasses.ShipPlacements;
 import edu.rit.se.sse.rapdevx.api.dataclasses.Status;
 import edu.rit.se.sse.rapdevx.api.dataclasses.Statuses;
+import edu.rit.se.sse.rapdevx.api.dataclasses.Results;
 
 /**
  * API access to the Status object on the server side
@@ -237,9 +241,40 @@ public class GameApi {
 		}
 	}
 
-	public static List<MovementOrder> getCurrentMoves(Session userSession,
-			int currentTurn) {
-		return null;
+	public static MovementOrders getCurrentMoves(Session userSession,
+			int currentTurn) throws Exception {
+		String incomingJson = "";
+
+		try {
+			URL url = new URL("http", SERVER_URL, 8080, URLEncoder.encode(
+					"/game/" + userSession.getgame_id() + "/turns/" + 
+                    currentTurn + "/moves", "UTF-8"));
+
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			conn.setDoOutput(false);
+			conn.setRequestMethod("GET");
+
+			conn.connect();
+
+			// Get response
+			BufferedReader rd = new BufferedReader(new InputStreamReader(
+					conn.getInputStream()));
+			String line;
+
+			while ((line = rd.readLine()) != null) {
+				incomingJson += line;
+			}
+			rd.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+
+		if (incomingJson.equals("")) {
+			throw new Exception("No data recieved");
+		} else {
+			return MovementOrders.fromJSON(incomingJson);
+		}
 	}
 
 	public static boolean removeMovementOrder(Session userSession,
@@ -323,9 +358,40 @@ public class GameApi {
 		}
 	}
 
-	public static List<AbilityUseOrder> getCurrentAttacks(Session userSession,
-			int currentTurn) {
-		return null;
+	public static AbilityUseOrders getCurrentAttacks(Session userSession,
+			int currentTurn) throws Exception {
+		String incomingJson = "";
+
+		try {
+			URL url = new URL("http", SERVER_URL, 8080, URLEncoder.encode(
+					"/game/" + userSession.getgame_id() + "/turns/" + 
+                    currentTurn + "/attacks", "UTF-8"));
+
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			conn.setDoOutput(false);
+			conn.setRequestMethod("GET");
+
+			conn.connect();
+
+			// Get response
+			BufferedReader rd = new BufferedReader(new InputStreamReader(
+					conn.getInputStream()));
+			String line;
+
+			while ((line = rd.readLine()) != null) {
+				incomingJson += line;
+			}
+			rd.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+
+		if (incomingJson.equals("")) {
+			throw new Exception("No data recieved");
+		} else {
+			return AbilityUseOrders.fromJSON(incomingJson);
+		}
 	}
 
 	public static boolean removeAbilityUseOrder(Session userSession,
@@ -361,23 +427,160 @@ public class GameApi {
 	}
 
 	public static boolean finishedWithTurn(Session userSession, int currentTurn) {
-		return false;
+		int respcode = 0;
+
+		try {
+			String data = URLEncoder.encode("session_id", "UTF-8")
+					+ "="
+					+ URLEncoder.encode(userSession.getsession_id());
+
+			URL url = new URL("http", SERVER_URL, 8080, URLEncoder.encode(
+                            "/game/"
+							+ userSession.getgame_id()
+							+ "/turns/"
+							+ currentTurn
+							+ "/ready", "UTF-8"));
+
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			conn.setDoOutput(true);
+			conn.setRequestMethod("POST");
+
+			conn.connect();
+
+			OutputStreamWriter wr = new OutputStreamWriter(
+            conn.getOutputStream());
+			wr.write(data);
+			wr.flush();
+
+			respcode = conn.getResponseCode();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+
+		if (respcode == 200) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
-	public static List<MovementOrder> getResultMoves(Session userSession,
-			int currentTurn) {
-		return null;
+	public static Results getResultMoves(Session userSession,
+			int currentTurn) throws Exception {
+		String incomingJson = "";
+
+		try {
+			URL url = new URL("http", SERVER_URL, 8080, URLEncoder.encode(
+					"/game/" + 
+                    userSession.getgame_id() + 
+                    "/turns/" + 
+                    currentTurn + 
+                    "/moves/results", "UTF-8"));
+
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			conn.setDoOutput(false);
+			conn.setRequestMethod("GET");
+
+			conn.connect();
+
+			// Get response
+			BufferedReader rd = new BufferedReader(new InputStreamReader(
+					conn.getInputStream()));
+			String line;
+
+			while ((line = rd.readLine()) != null) {
+				incomingJson += line;
+			}
+			rd.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+
+		if (incomingJson.equals("")) {
+			throw new Exception("No data recieved");
+		} else {
+			return Results.fromJSON(incomingJson);
+		}
 	}
 
-	public static List<AbilityUseOrder> getResultAttacks(Session userSession,
-			int currentTurn) {
-		return null;
+	public static AttackResults getResultAttacks(Session userSession,
+			int currentTurn) throws Exception {
+		String incomingJson = "";
+
+		try {
+			URL url = new URL("http", SERVER_URL, 8080, URLEncoder.encode(
+					"/game/" + 
+                    userSession.getgame_id() + 
+                    "/turns/" + 
+                    currentTurn + 
+                    "/attacks/results", "UTF-8"));
+
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			conn.setDoOutput(false);
+			conn.setRequestMethod("GET");
+
+			conn.connect();
+
+			// Get response
+			BufferedReader rd = new BufferedReader(new InputStreamReader(
+					conn.getInputStream()));
+			String line;
+
+			while ((line = rd.readLine()) != null) {
+				incomingJson += line;
+			}
+			rd.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+
+		if (incomingJson.equals("")) {
+			throw new Exception("No data recieved");
+		} else {
+			return AttackResults.fromJSON(incomingJson);
+		}
 	}
 
 	// General calls
 
 	public static void setReady(Session userSession) {
-		// TODO
+		int respcode = 0;
+
+		try {
+			String data = URLEncoder.encode("session_id", "UTF-8")
+					+ "="
+					+ URLEncoder.encode(userSession.getsession_id()
+                    + "&"
+                    + URLEncoder.encode("ready=true"));
+
+			URL url = new URL("http", SERVER_URL, 8080, URLEncoder.encode(
+                            "/game/"
+							+ userSession.getgame_id(), "UTF-8"));
+
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			conn.setDoOutput(true);
+			conn.setRequestMethod("POST");
+
+			conn.connect();
+
+			OutputStreamWriter wr = new OutputStreamWriter(
+            conn.getOutputStream());
+			wr.write(data);
+			wr.flush();
+
+			respcode = conn.getResponseCode();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return;
+		}
+
+		if (respcode == 200) {
+			return;
+		} else {
+			return;
+		}
 	}
 
 	private static String readFileAsString(String filePath)
