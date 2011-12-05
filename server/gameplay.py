@@ -264,6 +264,7 @@ class AttackTurn:
         self.turn_num = turn_num
         self.player_attack_lists = {}
         self.results = None
+        self.registered_ids = {}
 
     def addAttackOrder(self, dto_attack_order, calling_player, registry):
         '''
@@ -307,7 +308,11 @@ class AttackTurn:
             dist = tar.getLocation() - source.getLocation()
         if dist > dto_attack_order.ability.getRadius():
             raise Exception("Target is not in range")
-        
+
+        if source in self.registered_ids:
+            raise Exception("Unit already registered an attack")
+        else:
+            self.registered_ids.append(calling_player)
            
         registry.register(order)
         self.player_attack_lists.append(order)
@@ -322,6 +327,15 @@ class AttackTurn:
         registry - the ID registry to remove the move from
         '''
         move_order = registry.getById(move_order_gid)
+
+        if calling_player != move_order.srcid:
+            raise Exception("Move does not belong to player")
+        else:
+            if calling_player in self.registered_ids:
+                self.registered.remove(calling_player)
+            else:
+                raise Exception("Player doesn't have a move to remove")
+        
         registry.removeById(move_order_gid)
         
         self.player_attack_lists[calling_player].remove(move_order)
