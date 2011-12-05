@@ -16,8 +16,8 @@ reg.register(TestUnit1)
 TestUnit2 = Unit(abilities=[Ability()], owning_player=1, location=(100, 100))
 reg.register(TestUnit2)
 
-move1 = MoveOrder(TestUnit1.gid, (100, 0))
-move2 = MoveOrder(TestUnit2.gid, (0, 100))
+move1 = MoveOrder(TestUnit1.gid, [(0,0),(100, 0)])
+move2 = MoveOrder(TestUnit2.gid, [(100,100),(0, 100)])
 
 class TestGameplay( unittest.TestCase ):
     def test_swizzle1( self ):
