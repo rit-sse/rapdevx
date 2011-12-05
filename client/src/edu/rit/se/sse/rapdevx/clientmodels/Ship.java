@@ -17,10 +17,9 @@ public class Ship extends Unit {
 	private int	X;
 	private int	Y;
 
-	public Ship()
-	{
+	public Ship() {
 	}
-	
+
 	/**
 	 * @return the x
 	 */
@@ -59,7 +58,7 @@ public class Ship extends Unit {
 	public ShipClass getShipClass() {
 		List<ShipClass> classes = AssetLibrary.getShipClasses();
 		for (ShipClass c : classes) {
-			if (c.getGid().equals(this.getClassID()))
+			if (c.getGid().equals(this.getClassid()))
 				return c;
 		}
 
@@ -87,7 +86,7 @@ public class Ship extends Unit {
 	public ShipPlacement getShipPlacement() {
 		ShipPlacement placement = new ShipPlacement();
 
-		placement.setClassid(this.getClassID());
+		placement.setClassid(this.getClassid());
 		placement.setX(this.X);
 		placement.setY(this.Y);
 

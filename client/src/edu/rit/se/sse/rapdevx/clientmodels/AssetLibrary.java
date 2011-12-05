@@ -48,7 +48,7 @@ public class AssetLibrary {
 	public static List<ShipClass> getShipClasses() {
 		if (assets == null)
 			return new Vector<ShipClass>();
-		return AssetLibrary.assets.getShipClasses();
+		return AssetLibrary.assets.getShip_classes();
 	}
 
 }

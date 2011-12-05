@@ -24,11 +24,11 @@ public class AbilityUseOrder {
 	private String ability;
 	private String gid;
 	
-	public String getSrcID() {
+	public String getSrcid() {
 		return srcid;
 	}
-	public void setSrcID(String srcID) {
-		this.srcid = srcID;
+	public void setSrcid(String srcid) {
+		this.srcid = srcid;
 	}
 	public String getAbility() {
 		return ability;
@@ -36,16 +36,16 @@ public class AbilityUseOrder {
 	public void setAbility(String ability) {
 		this.ability = ability;
 	}
-	public String getTargetID() {
+	public String getTargetid() {
 		return targetid;
 	}
-	public void setTargetID(String targetID) {
-		this.targetid = targetID;
+	public void setTargetid(String targetid) {
+		this.targetid = targetid;
 	}
-	public String getgID() {
+	public String getgid() {
 		return gid;
 	}
-	public void setgID(String gid) {
+	public void setgid(String gid) {
 		this.gid = gid;
 	}
 	

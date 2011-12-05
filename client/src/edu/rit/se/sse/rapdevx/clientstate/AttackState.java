@@ -3,9 +3,6 @@
  */
 package edu.rit.se.sse.rapdevx.clientstate;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
 import edu.rit.se.sse.rapdevx.api.GameApi;
 
 /**
@@ -13,9 +10,6 @@ import edu.rit.se.sse.rapdevx.api.GameApi;
  * 
  */
 public class AttackState extends StateBase {
-	private Timer	timer	= new Timer();
-	private int		phaseNum;
-
 	public AttackState() {
 		this.nextState = MoveState.class;
 
@@ -34,25 +28,16 @@ public class AttackState extends StateBase {
 	 * Call this when the player is done with their attack stack.
 	 */
 	public void ready() {
-		phaseNum = Integer.parseInt(GameApi.getStatus(GameSession.get().getSession()).getPhase());
-
+		poll();
 		GameApi.setReady(GameSession.get().getSession());
-
-		timer.scheduleAtFixedRate(new TimerTask() {
-
-			@Override
-			public void run() {
-				if (Integer.parseInt(GameApi.getStatus(GameSession.get().getSession())
-						.getPhase()) != phaseNum) {
-					this.cancel();
-					readyReady();
-				}
-			}
-
-		}, 0, 1000);
 	}
 
-	private void readyReady() {
+	/*
+	 * (non-Javadoc)
+	 * @see edu.rit.se.sse.rapdevx.clientstate.StateBase#finishedPolling()
+	 */
+	@Override
+	protected void finishedPolling() {
 		GameSession.get().advanceState();
 	}
 }

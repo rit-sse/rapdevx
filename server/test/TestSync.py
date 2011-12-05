@@ -17,7 +17,7 @@ def testAll():
         sct=dto.DTO_ShipClass(['goodShip','badShip','SpecialShip','NotSpecialShip'],['this is a gid'], 999, 10, 5, 'imgtest.png','thisisanid')
         f.write('ShipClass:  '+str(encoder.encode(sct))+'\n')
         """ability"""
-        at=dto.DTO_Ability(10,'name',5,20,'this is a gid')
+        at=dto.DTO_Ability(10,'name',5,{'one': 1, 'two': 2},'this is a gid')
         f.write('Ability:  '+str(encoder.encode(at))+'\n')
         """Assets"""
         ast=dto.DTO_Assets(12,53,[sct],[aidt],[at])

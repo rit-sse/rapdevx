@@ -16,7 +16,7 @@ public class Ability {
 	private int radius;
 	private String name;
 	private int default_damage;
-	private Map<String,Integer> special_damage = new Hashtable<String,Integer>();
+	private Map<String,Integer> special_damages = new Hashtable<String,Integer>();
 	private String gid;
 	
 	public int getRadius() {
@@ -31,11 +31,11 @@ public class Ability {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public Map<String,Integer> getSpecial_damage() {
-		return special_damage;
+	public Map<String,Integer> getSpecial_damages() {
+		return special_damages;
 	}
-	public void setSpecial_damage(Map<String,Integer> special_damage) {
-		this.special_damage = special_damage;
+	public void setSpecial_damages(Map<String,Integer> special_damages) {
+		this.special_damages = special_damages;
 	}
 	public int getDefault_damage() {
 		return default_damage;

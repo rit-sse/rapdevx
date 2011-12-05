@@ -12,6 +12,7 @@ import edu.rit.se.sse.rapdevx.api.dataclasses.MovementOrder;
 import edu.rit.se.sse.rapdevx.clientmodels.Ship;
 import edu.rit.se.sse.rapdevx.clientstate.AttackState;
 import edu.rit.se.sse.rapdevx.clientstate.GameSession;
+import edu.rit.se.sse.rapdevx.clientstate.MoveState;
 import edu.rit.se.sse.rapdevx.events.StateEvent;
 import edu.rit.se.sse.rapdevx.events.StateListener;
 import edu.rit.se.sse.rapdevx.gui.Screen;
@@ -215,6 +216,8 @@ public class MoveScreen extends Screen implements StateListener {
 	
 	public void stateChanged(StateEvent e) {
 		if (e.getNewState() instanceof AttackState) {
+			sendMovementOrdersToServer( (MoveState)e.getOldState() );
+			
 			ScreenStack.get().addScreenAfter(this, new AttackScreen(camera, screenWidth, screenHeight));
 			ScreenStack.get().removeScreen(this);
 			GameSession.get().removeStateListener(this);
@@ -225,7 +228,7 @@ public class MoveScreen extends Screen implements StateListener {
 	 * get a list of MovementOrders to send to the server
 	 * @return an ArrayList of MovementOrder types
 	 */
-	public ArrayList<MovementOrder> getMovementOrdersForStateChange() {
+	private ArrayList<MovementOrder> getMovementOrders() {
 		ArrayList<MovementOrder> orders = new ArrayList<MovementOrder>();
 		
 		for ( DrawableShip ship : shipList ) {
@@ -235,6 +238,15 @@ public class MoveScreen extends Screen implements StateListener {
 		}
 		
 		return orders;
+	}
+	
+	/**
+	 * send the moves to the server
+	 */
+	private void sendMovementOrdersToServer( MoveState state ) {
+		for ( MovementOrder order : getMovementOrders() ) {
+			state.makeMove( order );
+		}
 	}
 
 }
