@@ -9,6 +9,8 @@ public interface IGrayableImage {
 		
 	public void setHovering(boolean hovering);
 	
+	public void setPressed(boolean pressed);
+	
 	public boolean containsPoint(Point point);
 	
 }
