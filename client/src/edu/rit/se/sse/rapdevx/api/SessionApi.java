@@ -18,8 +18,6 @@ import org.apache.http.client.ResponseHandler;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.codehaus.jackson.JsonFactory;
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 
@@ -130,7 +128,7 @@ public class SessionApi {
 	 */
 	public static Session updateSession(Session sessionToCheck) {
 		String json = getResponse("/session/"
-				+ sessionToCheck.getgid());
+				+ sessionToCheck.getsession_id());
 
 		Session session = Session.fromJSON(json);
 
@@ -149,27 +147,17 @@ public class SessionApi {
 	 */
 	public static boolean destroySession(Session sessionToDestroy) {
 		try {
-			HttpURLConnection conn = (HttpURLConnection) (new URL(SERVER_URL)
-					.openConnection());
+			URL url = new URL("http", SERVER_URL, 8080, "/session/"
+					+ sessionToDestroy.getsession_id());
+
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setDoInput(true);
+			conn.setDoOutput(true);
 			conn.setRequestMethod("DELETE");
 
 			conn.connect();
 
-			// Get the response
-			BufferedReader rd = new BufferedReader(new InputStreamReader(
-					conn.getInputStream()));
-			String line;
-			String incomingJson = "";
-
-			while ((line = rd.readLine()) != null) {
-				incomingJson += line;
-			}
-
-			rd.close();
-
-			if (!incomingJson.equals(""))
-				return true;
+			return conn.getResponseCode() == 200;
 
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
@@ -217,23 +205,6 @@ public class SessionApi {
 			return incomingJson;
 
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		return null;
-	}
-
-	private static Map<String, String> getJsonMap(String content) {
-		try {
-			return MAPPER.readValue(content, STRING_MAP_TYPE);
-		} catch (JsonParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {

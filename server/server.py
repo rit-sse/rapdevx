@@ -56,7 +56,7 @@ def create_session():
 def get_session_info(session_id=None):
     session = get_session(session_id)
     
-    return session.to_json
+    return session.to_json()
 
 # Mark a session as closed
 @delete('/session/:session_id')
