@@ -16,6 +16,7 @@ import edu.rit.se.sse.rapdevx.events.StateListener;
 import edu.rit.se.sse.rapdevx.gui.Screen;
 import edu.rit.se.sse.rapdevx.gui.drawable.Text;
 import edu.rit.se.sse.rapdevx.gui.images.GrayableImage;
+import edu.rit.se.sse.rapdevx.gui.images.HoverableImage;
 import edu.rit.se.sse.rapdevx.gui.images.IGrayableImage;
 
 public class OverlayScreen extends Screen implements StateListener
@@ -71,21 +72,20 @@ public class OverlayScreen extends Screen implements StateListener
 
 		for (int x = 0; x < 7; ++x)
 		{
-			turnControlImageStr[x] = "assets/Play-" + turnControlImageStr[x]
-					+ ".png";
-			turnControlImages[x] = new GrayableImage(turnControlImageStr[x],
+			turnControlImageStr[x] = "assets/Play-" + turnControlImageStr[x];
+			turnControlImages[x] = new HoverableImage(turnControlImageStr[x],
 					STARTING_X + 40 * x + 52, STARTING_Y + TURN_CONTROL_Y);
 		}
 
-		undo = new GrayableImage("assets/Undo.png", STARTING_X
+		undo = new HoverableImage("assets/Undo", STARTING_X
 				+ UNDO_MODIFIER_X, STARTING_Y);
-		redo = new GrayableImage("assets/Redo.png", STARTING_X
+		redo = new HoverableImage("assets/Redo", STARTING_X
 				+ REDO_MODIFIER_X, STARTING_Y);
-		phase = new GrayableImage("assets/StatusBar.png", STARTING_X
+		phase = new HoverableImage("assets/StatusBar", STARTING_X
 				+ PHASE_MODIFIER_X, STARTING_Y);
-		readyEnabled = new GrayableImage("assets/Ready-enabled.png", STARTING_X
+		readyEnabled = new HoverableImage("assets/Ready-enabled", STARTING_X
 				+ READY_MODIFIER_X, STARTING_Y);
-		readyDisabled = new GrayableImage("assets/Ready-disabled.png",
+		readyDisabled = new HoverableImage("assets/Ready-disabled",
 				STARTING_X + READY_MODIFIER_X, STARTING_Y);
 
 		readyText = new Text("Ready", STARTING_X + READY_MODIFIER_X + 28,
