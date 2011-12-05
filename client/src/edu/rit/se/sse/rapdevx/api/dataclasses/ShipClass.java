@@ -13,7 +13,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 public class ShipClass {
 
 	private static ObjectMapper	mapper		= new ObjectMapper();
-	private List<Ability>		abilities	= new Vector<Ability>();
+	private List<Ability>		abilities;
 	private List<String>		types = new Vector<String>();
 	private int					maxhp;
 	private int					radius;
@@ -105,7 +105,7 @@ public class ShipClass {
 	}
 
 	public ShipClass() {
-
+		abilities	= new Vector<Ability>();
 	}
 	public void setImageid(String imageid) {
 		this.imageid = imageid;
@@ -118,6 +118,11 @@ public class ShipClass {
 	}
 	public List<String> getTypes() {
 		return types;
+	}
+	
+	public boolean equals(Object other) {
+		ShipClass ot = (ShipClass) other;
+		return (abilities.equals(ot.getAbilities()) && (types.equals(ot.getTypes())) && (maxhp == ot.getMaxhp()) && (radius == ot.getRadius()) && (imageid.equals(ot.getImageid())) && (gid.equals(ot.getGid())));
 	}
 	
 }

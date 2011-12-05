@@ -98,4 +98,29 @@ public class Ability {
 		
 	}
 	
+	public Ability(String incomingJson) {
+		try {
+			Ability ability = mapper.readValue(incomingJson, Ability.class);
+			this.radius = ability.getRadius();
+			this.name = ability.getName();
+			this.default_damage = ability.getDefault_damage();
+			this.special_damages = ability.getSpecial_damages();
+			this.gid = ability.getGid();
+		} catch (JsonParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public boolean equals(Object other) {
+		Ability ot = (Ability) other;
+		return (radius == ot.getRadius()) && (name.equals(ot.getName())) && (default_damage == ot.getDefault_damage()) && (special_damages.equals(ot.getSpecial_damages())) && (gid.equals(ot.getGid()));	
+	}
+	
 }

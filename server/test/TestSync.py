@@ -13,15 +13,9 @@ def testAll():
         """Asset Image"""
         aidt=dto.DTO_AssetImage(b'aimgtest.png','testTheGid')
         f.write('AssetImage:  '+str(encoder.encode(aidt))+'\n')
-        """shipclass"""
-        sct=dto.DTO_ShipClass(['goodShip','badShip','SpecialShip','NotSpecialShip'],['this is a gid'], 999, 10, 5, 'imgtest.png','thisisanid')
-        f.write('ShipClass:  '+str(encoder.encode(sct))+'\n')
         """ability"""
         at=dto.DTO_Ability(10,'name',5,{'one': 1, 'two': 2},'this is a gid')
         f.write('Ability:  '+str(encoder.encode(at))+'\n')
-        """Assets"""
-        ast=dto.DTO_Assets(12,53,[sct],[aidt],[at])
-        f.write('Assets:  '+str(encoder.encode(ast))+'\n')
         """ShipPlacement"""
         spt=dto.DTO_ShipPlacement(23,62,'thisisanid')
         f.write('ShipPlacement:  '+str(encoder.encode(spt))+'\n')
@@ -43,6 +37,12 @@ def testAll():
         """status"""
         st=dto.DTO_Status(3,'phase2',['p1','p2'],22)
         f.write('Status:  '+str(encoder.encode(st))+'\n')
+        """shipclass"""
+        sct=dto.DTO_ShipClass(['goodShip','badShip','SpecialShip','NotSpecialShip'],[at],999, 10, 5, 'imgtest.png','thisisanid')
+        f.write('ShipClass:  '+str(encoder.encode(sct))+'\n')
+        """Assets"""
+        ast=dto.DTO_Assets(12,53,[sct],[aidt],[at])
+        f.write('Assets:  '+str(encoder.encode(ast))+'\n')
         f.close()
 
 

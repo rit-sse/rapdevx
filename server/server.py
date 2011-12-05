@@ -6,7 +6,7 @@ from sessionmanager import *
 session_manager = SessionManager()
 
 def get_game(game_id):
-    game = session_manager.game_pool.find_game(game_id)
+    game = session_manager.gamepool.find_game(game_id)
 
     if game == None:
         abort(404, "Game not found")
@@ -34,24 +34,29 @@ def list_active_games():
 def create_session():
     # pull data out of request
     nickname = request.forms.nickname
-    game_id = request.forms.game_id
+    if hasattr(request.forms, "game_id"):
+        game_id = request.forms.game_id
+    else:
+        game_id = None
 
     # scrub data from forms
     if game_id == '':
         game_id = None
     
-    session = Session(nickname, game_id)
+    session = Session(nickname)
 
     session_manager.register_session(session, game_id)
 
-    return session.to_json
+    sess_json = session.to_json()
+
+    return  sess_json
 
 # Return session itself as json
 @get('/session/:session_id')
 def get_session_info(session_id=None):
     session = get_session(session_id)
     
-    return session.to_json
+    return session.to_json()
 
 # Mark a session as closed
 @delete('/session/:session_id')

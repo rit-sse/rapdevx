@@ -1,2 +1,1 @@
-{"abilities": ["this is a gid"], "imageid": "imgtest.png", "placement_cost": 5, "gid": "thisisanid", "radius": 10, "maxhp": 999}
-
+{"abilities": [{"special_damages": {"two": 2, "one": 1}, "gid": "this is a gid", "radius": 10, "name": "name", "default_damage": 5}], "imageid": "imgtest.png", "placement_cost": 5, "gid": "thisisanid", "radius": 10, "maxhp": 999}

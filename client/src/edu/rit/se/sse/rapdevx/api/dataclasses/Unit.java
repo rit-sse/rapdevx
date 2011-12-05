@@ -2,6 +2,7 @@ package edu.rit.se.sse.rapdevx.api.dataclasses;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Hashtable;
 
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.JsonParseException;
@@ -22,6 +23,8 @@ public class Unit {
 	private int hp;
 	private String classid;
 	private String gid;
+	private Hashtable<Integer, Integer> location;
+	
 	
 	public int getPlayer_num() {
 		return player_num;
@@ -94,6 +97,12 @@ public class Unit {
 	
 	public Unit(){
 		
+	}
+	public void setTuple(Hashtable<Integer, Integer> tuple) {
+		this.location = tuple;
+	}
+	public Hashtable<Integer, Integer> getTuple() {
+		return location;
 	}
 	
 }

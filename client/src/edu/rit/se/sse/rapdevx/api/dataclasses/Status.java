@@ -96,5 +96,9 @@ public class Status {
 		return player_list;
 	}
 	
+	public boolean equals(Object other) {
+		Status ot = (Status) other;
+		return (turn == ot.getTurn()) && (phase.equals(ot.getPhase())) && (player_list.equals(ot.getPlayer_list())) && (me == ot.getMe());
+	}
 }
 

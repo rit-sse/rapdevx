@@ -96,5 +96,10 @@ public class ShipPlacement {
 	public ShipPlacement() {
 
 	}
+	
+	public boolean equals(Object other) {
+		ShipPlacement ot = (ShipPlacement) other;
+		return (x == ot.getX()) && (y == ot.getY()) && (classid.equals(ot.getClassid()));
+	}
 
 }
