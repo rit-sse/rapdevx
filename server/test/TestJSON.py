@@ -53,9 +53,9 @@ class TestJSON(unittest.TestCase):
         obj1 = dto.JSON_Construct_DTO_AbilityUseOrder(obj.toJSON())
         self.assertEqual(pickle.dumps(obj),pickle.dumps(obj1))
     def test_DTO_Unit(self):
-        obj = dto.DTO_Unit(5, 6, "one", "two")
+        obj = dto.DTO_Unit(5, 6, "one", (0,0), "two")
         obj1 = dto.JSON_Construct_DTO_Unit(obj.toJSON())
-        self.assertEqual(pickle.dumps(obj),pickle.dumps(obj1))
+        self.assertEqual(repr(obj),repr(obj1))
     def test_DTO_Status(self):
         obj = dto.DTO_Status(5, 6, [1,2,3,4], 7)
         obj1 = dto.JSON_Construct_DTO_Status(obj.toJSON())

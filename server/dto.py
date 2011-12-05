@@ -294,7 +294,7 @@ def JSON_Construct_DTO_AbilityUseOrder(jsonstring):
 
 def JSON_Construct_DTO_Unit(jsonstring):
     attribute_dictionary = json.loads(jsonstring)
-    return DTO_Unit(attribute_dictionary.pop('player_num'),attribute_dictionary.pop('hp'),attribute_dictionary.pop('classid'),attribute_dictionayr.pop('location'),attribute_dictionary.pop('gid'))
+    return DTO_Unit(attribute_dictionary.pop('player_num'),attribute_dictionary.pop('hp'),attribute_dictionary.pop('classid'),attribute_dictionary.pop('location'),attribute_dictionary.pop('gid'))
 
 def JSON_Construct_DTO_Status(jsonstring):
     attribute_dictionary = json.loads(jsonstring)
