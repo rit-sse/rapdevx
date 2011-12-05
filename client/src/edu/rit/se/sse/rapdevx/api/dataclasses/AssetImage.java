@@ -80,4 +80,9 @@ public class AssetImage {
 		
 	}
 	
+	public boolean equals(Object other) {
+		AssetImage ot = (AssetImage) other;
+		return file.equals(ot.getFile()) && gid.equals(ot.getGid());
+	}
+	
 }
