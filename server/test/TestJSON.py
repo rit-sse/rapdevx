@@ -15,7 +15,7 @@ class TestJSON(unittest.TestCase):
         self.assertEqual(pickle.dumps(obj),pickle.dumps(obj1))
     def test_DTO_ShipClass(self):
         strlist = ["One","Two","Three"]
-        obj = dto.DTO_ShipClass(strlist, 5, 5, 5, "Four", "five")
+        obj = dto.DTO_ShipClass(strlist,[], 5, 5, 5, "Four", "five")
         obj1 = dto.JSON_Construct_DTO_ShipClass(obj.toJSON())
         self.assertEqual(pickle.dumps(obj),pickle.dumps(obj1))
     def test_DTO_Ability(self):

@@ -229,7 +229,6 @@ class DTO_Encoder(json.JSONEncoder):
             return json.JSONEncoder.default(self, o)
         
 def JSON_Construct_DTO_AssetImage(jsonstring):
-    print("loading json from:\n",jsonstring)
     attribute_dictionary = json.loads(jsonstring)
     return DTO_AssetImage(base64.decodebytes(attribute_dictionary.pop('file').encode()), attribute_dictionary.pop('gid'))
 
@@ -243,7 +242,6 @@ def JSON_Construct_DTO_Ability(jsonstring):
 
 def JSON_Construct_DTO_Assets(jsonstring):
     attribute_dictionary = json.loads(jsonstring)
-    print(attribute_dictionary)
     jsonlist = attribute_dictionary.pop('ship_classes')
     shipclasslist = []
     for v in jsonlist:
