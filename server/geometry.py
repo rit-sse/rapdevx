@@ -129,3 +129,9 @@ if __name__ == "__main__":
     u1 = gameplay.Unit(location=(0,0),radius=1)
     u2 = gameplay.Unit(location=(10,10),radius=3)
     print(whereWillItStop((0,0),(10,10),u1,u2))
+
+    u1 = gameplay.Unit(location=(0,0),radius=10)
+    u2 = gameplay.Unit(location=(1000,0),radius=10)
+    print(whereWillItStop((0,0),(1000,0),u1,u2))
+
+    

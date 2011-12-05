@@ -228,7 +228,7 @@ class AttackPhase(GamePhase):
         if(False in self.ready):
             return self
         else:
-            self.turn.attack.execute()
+            self.turn.attack.execute(self.context.registry)
             #todo: check of any player lost all ships, and move to won
             #if so
             return MovementPhase(self.context, Turn(self.turn.turn_num + 1))
