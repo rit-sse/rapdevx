@@ -31,10 +31,10 @@ public class AttackResults {
 	 * 
 	 * @return The mapped AttackResults as an AttackResults object. or null if error.
 	 */
-	public static AttackResults fromJSON(){
+	public static AttackResults fromJSON(String incomingJson){
 
 		try {
-			AttackResults attackResults = mapper.readValue(new File("AttackResultsToJava.json"), AttackResults.class);
+			AttackResults attackResults = mapper.readValue(incomingJson, AttackResults.class);
 			return attackResults;
 		} catch (JsonParseException e) {
 			// TODO Auto-generated catch block

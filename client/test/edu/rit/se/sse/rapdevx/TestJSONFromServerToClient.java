@@ -4,13 +4,16 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Scanner;
 
 import org.junit.Test;
 
 import edu.rit.se.sse.rapdevx.api.dataclasses.Ability;
 import edu.rit.se.sse.rapdevx.api.dataclasses.AssetImage;
+import edu.rit.se.sse.rapdevx.api.dataclasses.Assets;
 import edu.rit.se.sse.rapdevx.api.dataclasses.ShipClass;
 
 public class TestJSONFromServerToClient {
@@ -68,13 +71,24 @@ public class TestJSONFromServerToClient {
 	@Test
 	public void testShipClass() {
 		ShipClass fromClient = new ShipClass();
+		// DTO_Ability:
+		Ability ab = new Ability();
 
-		// ArrayList<String> sc_ab_lst = new ArrayList<String>();
-		// sc_ab_lst.add("this is a gid");
+		HashMap<String, Integer> ab_spec_damage = new HashMap<String, Integer>();
+		ab_spec_damage.put("one", 1);
+		ab_spec_damage.put("two", 2);
+
+		ab.setRadius(10);
+		ab.setName("name");
+		ab.setDefault_damage(5);
+		ab.setSpecial_damages(ab_spec_damage);
+		ab.setGid("this is a gid");
+		List<Ability> sc_ab_lst = new ArrayList<Ability>();
+		sc_ab_lst.add(ab);
 
 		fromClient.setGid("thisisanid");
 		fromClient.setImageid("imgtest.png");
-		// fromClient.setAbilities(sc_ab_lst);
+		fromClient.setAbilities(sc_ab_lst);
 		fromClient.setMaxhp(999);
 		fromClient.setRadius(10);
 		fromClient.setPlacement_cost(5);
@@ -93,6 +107,56 @@ public class TestJSONFromServerToClient {
 	}
 
 	public void testAssets() {
+		Ability ab = new Ability();
 
+		HashMap<String, Integer> ab_spec_damage = new HashMap<String, Integer>();
+		ab_spec_damage.put("one", 1);
+		ab_spec_damage.put("two", 2);
+
+		ab.setRadius(10);
+		ab.setName("name");
+		ab.setDefault_damage(5);
+		ab.setSpecial_damages(ab_spec_damage);
+		ab.setGid("this is a gid");
+		
+		ShipClass sc = new ShipClass();
+
+		// ArrayList<String> sc_ab_lst = new ArrayList<String>();
+		// sc_ab_lst.add("this is a gid");
+
+		sc.setGid("thisisanid");
+		sc.setImageid("imgtest.png");
+		// sc.setAbilities(sc_ab_lst);
+		sc.setMaxhp(999);
+		sc.setRadius(10);
+		sc.setPlacement_cost(5);
+		
+		AssetImage ai = new AssetImage();
+		ai.setFile("YWltZ3Rlc3QucG5n\n");
+		ai.setGid("testTheGid");
+		
+		Assets fromClient = new Assets();
+
+		ArrayList<Ability> as_abl_lst = new ArrayList<Ability>();
+		as_abl_lst.add(ab);
+
+		ArrayList<AssetImage> as_ai_lst = new ArrayList<AssetImage>();
+		as_ai_lst.add(ai);
+
+		ArrayList<ShipClass> as_sc_lst = new ArrayList<ShipClass>();
+		as_sc_lst.add(sc);
+
+		fromClient.setWidth(12);
+		fromClient.setHeight(53);
+		
+		Assets fromServer = Assets.fromJSON(readFile("client/test/edu/rit/se/sse/rapdevx/json_sync/AssetsFromServer.json"));
+	
+		assertEquals(fromServer.getAbilities(), fromClient.getAbilities());
+		assertEquals(fromServer.getWidth(), fromClient.getWidth());
+		assertEquals(fromServer.getHeight(), fromClient.getHeight());
+		assertEquals(fromServer.getImages(), fromClient.getImages());
+		assertEquals(fromServer.getShip_classes(), fromClient.getShip_classes());
 	}
+
+	
 }
