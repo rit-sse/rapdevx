@@ -2,7 +2,16 @@ from dto import *
 from geometry import *
 
 def swizzle(lists):
-    lists = [x[:] for x in lists]
+    ''' swizzle: List of lists -> List
+    Returns a list whose elements are alternating elements of the lists passed.
+    Example: swizzle( [0, 1, 2] , [3, 4, 5] ) -> [0, 3, 1, 4, 2, 5]
+    '''
+    nonEmptyLists = []
+    for x in range(len(lists)):
+        if not len(lists[x]) == 0:
+            # Remove empty lists; they fizzle the swizzle (infinite loop) and don't affect the result
+            nonEmptyLists.append(lists[x])
+    lists = nonEmptyLists
     results = []
     i = 0
     while lists:
@@ -109,7 +118,7 @@ class Ability:
     an "offensive" attack or a "healing" attack.
     '''
 
-    def __init__(self, radius, name, default_damage, special_damages):
+    def __init__(self, radius=50, name="default", default_damage=10, special_damages={}):
         '''
         Constructor.
 
@@ -216,8 +225,12 @@ class MoveTurn:
         '''
 
         player_nums = sorted(self.player_move_list.keys())
-        #todo: "rotate" player nums based on the turn number, so 
-        #a different player gets to go "first" every turn
+        # "rotate" player nums based on the turn number, so 
+        # a different player gets to go "first" every turn
+        num_of_players = len(player_nums)
+        num_of_shuffles = self.turn_num % num_of_players
+        for x in range(num_of_shuffles):
+            player_num.append(player_num.pop(0))
         
         lists = [self.player_move_list[x] for x in player_nums]
         combined_list = swizzle(lists)
@@ -333,8 +346,12 @@ class AttackTurn:
         '''
         
         player_nums = sorted(self.player_attack_lists.keys())
-        #todo: "rotate" player nums based on the turn number, so 
-        #a different player gets to go "first" every turn
+
+        # Shuffle the play priority based on turn num (shifting which player moves first)
+        num_of_players = len(player_nums)
+        num_of_shuffles = self.turn_num % num_of_players
+        for x in range(num_of_shuffles):
+            player_nums.append(player_nums.pop(0))
         
         lists = [self.player_attack_lists[x] for x in player_nums]
         combined_list = swizzle(lists)
