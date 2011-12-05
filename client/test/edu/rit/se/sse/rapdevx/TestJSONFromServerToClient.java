@@ -158,5 +158,5 @@ public class TestJSONFromServerToClient {
 		assertEquals(fromServer.getShip_classes(), fromClient.getShip_classes());
 	}
 
-
+	
 }
