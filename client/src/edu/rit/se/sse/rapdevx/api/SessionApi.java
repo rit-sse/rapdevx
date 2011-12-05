@@ -128,7 +128,7 @@ public class SessionApi {
 	 */
 	public static Session updateSession(Session sessionToCheck) {
 		String json = getResponse("/session/"
-				+ sessionToCheck.getgid());
+				+ sessionToCheck.getsession_id());
 
 		Session session = Session.fromJSON(json);
 
