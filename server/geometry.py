@@ -56,6 +56,7 @@ def dropPointInSegment( source, destination, point ):
     '''
     onLine = dropPointInOrOutSegment(source,destination,point)
     if isPointOnSegment(source,destination,onLine):
+        print("is on line:",onLine)
         return onLine
     else:
         #closest is one of the end points
@@ -77,9 +78,11 @@ def shipsWillCollideOnSegment(source, destination, travelingShip, stationaryShip
     
     #ships start colliding, let them escape
     if distance(source, stationaryShip.location)<radius_sum:
+        print("collides on start")
         return False
     
     closest_pass = dropPointInSegment(source,destination,stationaryShip.location)
+    print("closest pass",closest_pass,":",stationaryShip.location)
     return distance(closest_pass,stationaryShip.location) < radius_sum
     
 def whereWillItStop(source, destination, travelingShip, stationaryShip):
@@ -129,3 +132,9 @@ if __name__ == "__main__":
     u1 = gameplay.Unit(location=(0,0),radius=1)
     u2 = gameplay.Unit(location=(10,10),radius=3)
     print(whereWillItStop((0,0),(10,10),u1,u2))
+
+    u1 = gameplay.Unit(location=(0,0),radius=10)
+    u2 = gameplay.Unit(location=(1000,0),radius=10)
+    print(whereWillItStop((0,0),(1000,0),u1,u2))
+
+    

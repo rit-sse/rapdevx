@@ -1,5 +1,5 @@
 from dto import *
-from geometry import *
+import geometry
 
 def swizzle(lists):
     ''' swizzle: List of lists -> List
@@ -110,7 +110,7 @@ class Unit:
         return self.location
         
     def to_dto(self):
-        return DTO_Unit(self.owning_player, self.hp, self.classid, self.gid)
+        return DTO_Unit(self.owning_player, self.hp, self.classid, self.location, self.gid)
 
 class Ability:
     '''
@@ -190,9 +190,24 @@ class MoveTurn:
             self.player_move_list[calling_player] = []
         print("add")
 
-        #moveOrderObj = MoveOrder(move_order.unitid, move_order.path) 
+        
+        
         moveOrderObj = MoveOrder(move_order.unitid, move_order.path) 
 
+        #unit must exist:
+        unit = registry.getById(moveOrderObj.unitid)
+        
+        if unit == None:
+            raise Exception("unit does not exist")
+            
+        #path must go somewhere
+        if len(moveOrderObj.path)<2:
+            raise Exception("Path is not a path")
+        
+        #path must start at current location:
+        if moveOrderObj.path[0]!=unit.location:
+            raise Exception("Path does not start at unit")
+        
         self.player_move_list[calling_player].append( moveOrderObj )
         registry.register(moveOrderObj)
     
@@ -228,6 +243,8 @@ class MoveTurn:
         # "rotate" player nums based on the turn number, so 
         # a different player gets to go "first" every turn
         num_of_players = len(player_nums)
+        if not num_of_players:
+            return
         num_of_shuffles = self.turn_num % num_of_players
         for x in range(num_of_shuffles):
             player_num.append(player_num.pop(0))
@@ -238,13 +255,38 @@ class MoveTurn:
         self.results = {}
         
         for playerMove in combined_list:
-            #print(playerMove)
+            
             unit = registry.getById(playerMove.unitid)
-            unitLoc = playerMove.path
-
-            #print("SETTING LOCATION FOR SHIP TO:", unitLoc)
-            unit.setLocation(unitLoc)
-            self.results[unit.gid] = playerMove.path
+            path_pairs = [(playerMove.path[i-1],playerMove.path[i]) for i in range(1,len(playerMove.path))]
+            path_taken = [playerMove.path[0]]
+            for start,end in path_pairs:
+                intersecting = []
+                for other in registry.getAllByType(Unit):
+                    if unit!=other:
+                        if geometry.shipsWillCollideOnSegment(start, end, unit, other):
+                            intersecting.append(other)
+                
+                if not intersecting:
+                    unit.setLocation(end)
+                    path_taken.append(end)
+                else:
+                    shortest = geometry.distance(start,end)
+                    shortest_point = end
+                    
+                    for other in intersecting:
+                        pt = geometry.whereWillItStop(start, end, unit, other)
+                        print(pt)
+                        if geometry.distance(start,pt)<shortest:
+                            shortest = geometry.distance(start,pt)
+                            print("shortest",shortest)
+                            shortest_point = pt
+                        
+                    print("using:",shortest_point,"on:",unit.gid)
+                    unit.setLocation(shortest_point)
+                    path_taken.append(shortest_point)
+                    break
+            
+            self.results[unit.gid] = path_taken
         
     def getResults(self):
         return DTO_Results(self.results)
@@ -349,6 +391,8 @@ class AttackTurn:
 
         # Shuffle the play priority based on turn num (shifting which player moves first)
         num_of_players = len(player_nums)
+        if not num_of_players:
+            return
         num_of_shuffles = self.turn_num % num_of_players
         for x in range(num_of_shuffles):
             player_nums.append(player_nums.pop(0))

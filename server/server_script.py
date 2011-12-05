@@ -12,7 +12,7 @@ if __name__ == '__main__':
 
     import dto
 
-    place1 = dto.DTO_ShipPlacement(100,100,'UnitClass0')
+    place1 = dto.DTO_ShipPlacement(1000,0,'UnitClass0')
     place0 = dto.DTO_ShipPlacement(0,0,'UnitClass0')
     
     c.setShipPlacement([place1],1)
@@ -32,8 +32,8 @@ if __name__ == '__main__':
     print("team0ship id:",team0ship)
     print("team1ship id:",team1ship)
 
-    dto_move1 = DTO_MovementOrder(team1ship,[(200,200)],None)
-    dto_move0 = DTO_MovementOrder(team0ship,[(300,300)],None)
+    dto_move1 = DTO_MovementOrder(team1ship,[(1000,0),(0,0)],None)
+    dto_move0 = DTO_MovementOrder(team0ship,[(0,0),(1000,0)],None)
     
     c.addPlayerMove(dto_move1,1)
     c.addPlayerMove(dto_move0,0)
@@ -50,5 +50,14 @@ if __name__ == '__main__':
     print(c.getTurnMoveResults(0))
     print(c.getGameProgress(0))
 
-    assets = c.getAssetSet()
-    print(assets)
+    c.setReady(1,True)
+    c.setReady(0,True)
+
+    print("\nskipping attack, should be on move")
+    print(c.getTurnMoveResults(0))
+    print(c.getGameProgress(0))
+    ships = c.getAllDTOShips(0)
+    print(ships[0].location)
+    print(ships[1].location)
+    
+    
