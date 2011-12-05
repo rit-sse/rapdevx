@@ -1,5 +1,6 @@
 package edu.rit.se.sse.rapdevx;
 
+import edu.rit.se.sse.rapdevx.clientstate.GameSession;
 import edu.rit.se.sse.rapdevx.gui.Window;
 
 /**
@@ -28,6 +29,9 @@ public class Main {
 	 * renders the screen.
 	 */
 	public void run() {
+		// Initialize a game session
+		GameSession.get().init();
+		
 		// Create a new window
 		Window window = new Window("RapdevX", false);
 		

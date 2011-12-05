@@ -7,6 +7,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import edu.rit.se.sse.rapdevx.api.GameApi;
+import edu.rit.se.sse.rapdevx.api.dataclasses.Session;
 
 /**
  * @author Cody Krieger
@@ -38,8 +39,10 @@ public abstract class StateBase {
 
 	protected void poll() {
 		try {
+			Session session = GameSession.get().getSession();
+			
 			phaseNum = Integer.parseInt(GameApi.getStatus(
-					GameSession.get().getSession()).getPhase());
+					session).getPhase());
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.err.println("Couldn't get session");
