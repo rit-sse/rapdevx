@@ -25,11 +25,11 @@ public class OverlayScreen extends Screen implements StateListener
 	private static final int REDO_MODIFIER_X = 35;
 	private static final int PHASE_MODIFIER_X = 64;
 	private static final int READY_MODIFIER_X = 283;
-	private static final int PLAY_CONTROLS_MODIFIER_X = 52;
+	private static final int PLAY_CONTROLS_MODIFIER_X = -23;
 
 	private static final int TURN_CONTROL_Y = 0;
 	private static final int TURN_CONTROL_SIZE_X = 40;
-	private static final int TURN_CONTROL_END_SIZE_X = 40;
+	private static final int TURN_CONTROL_END_SIZE_X = 115;
 
 	private IGrayableImage undo;
 	private IGrayableImage redo;
