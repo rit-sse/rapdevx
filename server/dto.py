@@ -42,6 +42,7 @@ class DTO_ShipClass(DTO_ReprMixin):
     
     def encode(self):
         r = {}
+        r['types'] = self.types
         r['abilities'] = self.abilities
         r['maxhp'] = self.maxhp
         r['radius'] = self.radius
@@ -186,17 +187,19 @@ class DTO_Unit(DTO_ReprMixin):
     #hp is an int
     #classid is a string
     #gid is a string
-    def __init__(self, player_num, hp, classid, gid):
+    def __init__(self, player_num, hp, classid, location, gid):
         self.player_num = player_num
         self.hp = hp
         self.classid = classid
         self.gid = gid
+        self.location = location
     def encode(self):
         r = {}
         r['player_num'] = self.player_num
         r['hp'] = self.hp
         r['classid'] = self.classid
         r['gid'] = self.gid 
+        r['location'] = self.location
         return r
         
 class DTO_Status(DTO_ReprMixin):
@@ -228,9 +231,7 @@ class DTO_Encoder(json.JSONEncoder):
             return json.JSONEncoder.default(self, o)
         
 def JSON_Construct_DTO_AssetImage(jsonstring):
-    print("loading json from:\n",jsonstring)
     attribute_dictionary = json.loads(jsonstring)
-    print("fuck")
     return DTO_AssetImage(base64.decodebytes(attribute_dictionary.pop('file').encode()), attribute_dictionary.pop('gid'))
 
 def JSON_Construct_DTO_ShipClass(jsonstring):
@@ -243,21 +244,20 @@ def JSON_Construct_DTO_Ability(jsonstring):
 
 def JSON_Construct_DTO_Assets(jsonstring):
     attribute_dictionary = json.loads(jsonstring)
-
     jsonlist = attribute_dictionary.pop('ship_classes')
     shipclasslist = []
     for v in jsonlist:
-        shipclasslist.append(JSON_Construct_DTO_ShipClass(v))
+        shipclasslist.append(JSON_Construct_DTO_ShipClass(json.dumps(v)))
 
     jsonlist = attribute_dictionary.pop('images')
     imageslist = []
     for v in jsonlist:
-        imageslist.append(JSON_Construct_DTO_AssetImage(v))
+        imageslist.append(JSON_Construct_DTO_AssetImage(json.dumps(v)))
 
     jsonlist = attribute_dictionary.pop('abilities')
     abilitieslist = []
     for v in jsonlist:
-        abilitieslist.append(JSON_Construct_DTO_Ability(v))
+        abilitieslist.append(JSON_Construct_DTO_Ability(json.dumps(v)))
 
     return DTO_Assets(attribute_dictionary.pop('width'),attribute_dictionary.pop('height'),shipclasslist,imageslist,abilitieslist)
 
@@ -294,7 +294,7 @@ def JSON_Construct_DTO_AbilityUseOrder(jsonstring):
 
 def JSON_Construct_DTO_Unit(jsonstring):
     attribute_dictionary = json.loads(jsonstring)
-    return DTO_Unit(attribute_dictionary.pop('player_num'),attribute_dictionary.pop('hp'),attribute_dictionary.pop('classid'),attribute_dictionary.pop('gid'))
+    return DTO_Unit(attribute_dictionary.pop('player_num'),attribute_dictionary.pop('hp'),attribute_dictionary.pop('classid'),attribute_dictionary.pop('location'),attribute_dictionary.pop('gid'))
 
 def JSON_Construct_DTO_Status(jsonstring):
     attribute_dictionary = json.loads(jsonstring)
