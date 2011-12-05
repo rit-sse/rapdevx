@@ -156,12 +156,12 @@ public class OverlayScreen extends Screen implements StateListener
 				isReady = true;
 				readyText.setColor(Color.DARK_GRAY);
 				
-				//StateBase state = GameSession.get().getCurrentState();
-				//if (state instanceof MoveState) {
-				//	notifyActionListeners("ready");
-				//} else {
+				StateBase state = GameSession.get().getCurrentState();
+				if (state instanceof MoveState) {
+					notifyActionListeners("ready");
+				} else {
 					GameSession.get().advanceState();
-				//}
+				}
 			}
 			e.consume();
 		}
