@@ -1,13 +1,12 @@
 import xmlrunner
 import unittest
 
-# Import all tests here
-from TestJSON import *
-from TestRegistry import *
-from TestGameplay import *
-from TestGeometry import *
-from TestMoveTurn import *
-from TestAttackTurn import *
+myListOfClasses=["TestAttackTurn","TestJSON", "TestRegistry", "TestGameplay","TestGeometry","TestMoveTurn" ]
+for aClass in myListOfClasses:
+    try:
+        exec("from "+str(aClass)+ " import *")
+    except:
+        print("Can not import "+str(aClass))
 
 if __name__ == '__main__':
     unittest.main(testRunner=xmlrunner.XMLTestRunner(output='reports/pyunit'))
