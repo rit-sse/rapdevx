@@ -26,7 +26,7 @@ public class OptionsScreen extends Screen implements ActionListener {
 	public OptionsScreen(int width, int height) {
 		super(width, height);
 		
-		menu = new Menu(400, 200);
+		menu = new Menu(width / 2 - 100, height / 2 - 200);
 		
 		continueButton = new MenuButton("Continue", "Go back to the game!");
 		settingsButton = new MenuButton("Settings", "Adjust game settings");
