@@ -18,45 +18,42 @@ class TestMoveTurn( unittest.TestCase ):
         self.p2Ship = gameplay.Unit( [], 10, 2, None, (20,20), 5)
         self.reg.register(self.p1Ship)
         self.reg.register(self.p2Ship)
-        print("DOING A TEST")
 
     def test_genericMove(self):
-        moP1M1 = gameplay.MoveOrder( self.p1Ship.gid, (5,5) )
-        moP1M2 = gameplay.MoveOrder( self.p1Ship.gid, (15,15) )
+        moP1M1 = gameplay.MoveOrder( self.p1Ship.gid, [(0,0),(5,5)] )
+        moP1M2 = gameplay.MoveOrder( self.p2Ship.gid, [(20,20),(15,15)] )
 
         self.testTurn.addMoveOrder( moP1M1, 1, self.reg )
         self.testTurn.addMoveOrder( moP1M2, 1, self.reg )
 
         self.testTurn.execute(self.reg)
-        self.assertEqual( self.p1Ship.getLocation(), (15,15))
+        self.assertEqual( self.p2Ship.getLocation(), (15,15))
 
     def test_twoPlayers(self):
-        moP1M1 = gameplay.MoveOrder( self.p1Ship.gid, (5,5))
-        moP2M1 = gameplay.MoveOrder( self.p2Ship.gid, (30,30))
-        moP1M2 = gameplay.MoveOrder( self.p1Ship.gid, (15,15))
-        moP2M2 = gameplay.MoveOrder( self.p2Ship.gid, (35,50))
+        moP1M1 = gameplay.MoveOrder( self.p1Ship.gid, [(0,0),(5,5)] )
+        moP2M1 = gameplay.MoveOrder( self.p2Ship.gid, [(20,20),(15,15)] )
+        
+        self.testTurn.addMoveOrder( moP1M1, 1, self.reg )
+        self.testTurn.addMoveOrder( moP2M1, 2, self.reg )
+        
+        self.testTurn.execute(self.reg)
+        
+        self.assertEqual( self.p1Ship.getLocation(), (5,5))
+        self.assertEqual( self.p2Ship.getLocation(), (15,15))
+
+    def test_removeMoves(self):
+        moP1M1 = gameplay.MoveOrder( self.p1Ship.gid, [(0,0),(5,5)] )
+        moP2M1 = gameplay.MoveOrder( self.p2Ship.gid, [(20,20),(15,15)] )
 
         self.testTurn.addMoveOrder( moP1M1, 1, self.reg )
         self.testTurn.addMoveOrder( moP2M1, 2, self.reg )
-        self.testTurn.addMoveOrder( moP1M2, 1, self.reg )
-        self.testTurn.addMoveOrder( moP2M2, 2, self.reg )
 
-        self.testTurn.execute(self.reg)
-        self.assertEqual( self.p1Ship.getLocation(), (15,15))
-        self.assertEqual( self.p2Ship.getLocation(), (35,50))
-
-    def test_removeMoves(self):
-        moP1M1 = gameplay.MoveOrder( self.p1Ship.gid, (5,5) )
-        moP1M2 = gameplay.MoveOrder( self.p1Ship.gid, (15,15) )
-
-        self.testTurn.addMoveOrder( moP1M1, 1, self.reg )
-        self.testTurn.addMoveOrder( moP1M2, 1, self.reg )
-
-        toBeDeleted = self.testTurn.player_move_list[1][1] #grab the second move_order
+        moveOrders = self.reg.getAllByType(gameplay.MoveOrder)
+        toBeDeleted = [x for x in moveOrders if x.unitid == self.p1Ship.gid][0]
         self.testTurn.deleteMoveOrder( toBeDeleted.gid, 1, self.reg )
 
         self.testTurn.execute(self.reg)
-        self.assertEqual( self.p1Ship.getLocation(), (5,5))
+        self.assertEqual( self.p1Ship.getLocation(), (0,0))
 
 if (__name__ == "__main__") :
     unittest.main()

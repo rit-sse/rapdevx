@@ -187,17 +187,19 @@ class DTO_Unit(DTO_ReprMixin):
     #hp is an int
     #classid is a string
     #gid is a string
-    def __init__(self, player_num, hp, classid, gid):
+    def __init__(self, player_num, hp, classid, location, gid):
         self.player_num = player_num
         self.hp = hp
         self.classid = classid
         self.gid = gid
+        self.location = location
     def encode(self):
         r = {}
         r['player_num'] = self.player_num
         r['hp'] = self.hp
         r['classid'] = self.classid
         r['gid'] = self.gid 
+        r['location'] = self.location
         return r
         
 class DTO_Status(DTO_ReprMixin):
@@ -292,7 +294,7 @@ def JSON_Construct_DTO_AbilityUseOrder(jsonstring):
 
 def JSON_Construct_DTO_Unit(jsonstring):
     attribute_dictionary = json.loads(jsonstring)
-    return DTO_Unit(attribute_dictionary.pop('player_num'),attribute_dictionary.pop('hp'),attribute_dictionary.pop('classid'),attribute_dictionary.pop('gid'))
+    return DTO_Unit(attribute_dictionary.pop('player_num'),attribute_dictionary.pop('hp'),attribute_dictionary.pop('classid'),attribute_dictionary.pop('location'),attribute_dictionary.pop('gid'))
 
 def JSON_Construct_DTO_Status(jsonstring):
     attribute_dictionary = json.loads(jsonstring)
