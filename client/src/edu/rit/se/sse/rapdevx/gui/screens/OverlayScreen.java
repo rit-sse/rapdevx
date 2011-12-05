@@ -132,7 +132,7 @@ public class OverlayScreen extends Screen implements StateListener
 		readyText.draw(gPen);
 		stateText.draw(gPen);
 	}
-
+	
 	public void mouseReleased(MouseEvent e)
 	{
 		if (mainBounds.contains(e.getPoint()))
@@ -164,6 +164,57 @@ public class OverlayScreen extends Screen implements StateListener
 					//GameSession.get().advanceState();
 				}
 			}
+			e.consume();
+		}
+		
+		undo.setPressed(false);
+		redo.setPressed(false);
+		readyEnabled.setPressed(false);
+		for (IGrayableImage img : turnControlImages) {
+			img.setPressed(false);
+		}
+	}
+	
+	public void mousePressed(MouseEvent e)
+	{
+		IGrayableImage currentlyOver = null;
+
+		if (mainBounds.contains(e.getPoint()))
+		{
+			if (undo.containsPoint(e.getPoint()))
+			{
+				currentlyOver = undo;
+			}
+			else if (redo.containsPoint(e.getPoint()))
+			{
+				currentlyOver = redo;
+			}
+			else if (readyEnabled.containsPoint(e.getPoint()))
+			{
+				currentlyOver = readyEnabled;
+			}
+			e.consume();
+		}
+		else if (displayPlayback && playbackBounds.contains(e.getPoint()))
+		{
+			for (IGrayableImage img : turnControlImages)
+			{
+				if (img.containsPoint(e.getPoint()))
+				{
+					currentlyOver = img;
+				}
+			}
+			e.consume();
+		}
+
+		if (selectedImage != null)
+		{
+			selectedImage.setPressed(false);
+		}
+		if (currentlyOver != null)
+		{
+			currentlyOver.setPressed(true);
+			selectedImage = currentlyOver;
 			e.consume();
 		}
 	}

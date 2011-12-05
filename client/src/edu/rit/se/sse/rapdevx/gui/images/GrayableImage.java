@@ -69,6 +69,10 @@ public class GrayableImage implements IGrayableImage {
 		this.hovering = hovering;
 	}
 	
+	public void setPressed(boolean pressed) {
+		
+	}
+	
 	public boolean containsPoint(Point point) {
 		return this.rect.contains(point);
 	}
