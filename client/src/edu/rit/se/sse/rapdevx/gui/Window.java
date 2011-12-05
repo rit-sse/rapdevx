@@ -16,7 +16,8 @@ import edu.rit.se.sse.rapdevx.gui.screens.MapScreen;
 import edu.rit.se.sse.rapdevx.gui.screens.OverlayScreen;
 import edu.rit.se.sse.rapdevx.gui.screens.PlacementScreen;
 
-public class Window {
+public class Window
+{
 
 	private int insetLeft;
 	private int insetTop;
@@ -29,7 +30,8 @@ public class Window {
 	private GraphicsConfiguration graphicsConfig;
 	private BufferStrategy bufferStrategy;
 
-	public Window(String title, boolean fullscreen) {
+	public Window(String title, boolean fullscreen)
+	{
 		GraphicsEnvironment env = GraphicsEnvironment
 				.getLocalGraphicsEnvironment();
 		graphics = env.getDefaultScreenDevice();
@@ -39,26 +41,27 @@ public class Window {
 		window = new JFrame(title, graphicsConfig);
 
 		// Set some window properties
-		if (fullscreen) {
+		if (fullscreen)
+		{
 			window.setExtendedState(JFrame.MAXIMIZED_BOTH);
 			window.setUndecorated(true);
-		} else {
+		}
+		else
+		{
 			window.setSize(1024, 768);
 		}
-		
+
 		window.setLocationRelativeTo(null);
 		window.setResizable(false);
 		window.setIgnoreRepaint(true);
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setVisible(true);
-		
-		
+
 		// Set the screen stack to handle input
 		window.addKeyListener(ScreenStack.get());
 		window.addMouseListener(ScreenStack.get());
 		window.addMouseMotionListener(ScreenStack.get());
 
-		
 		// Adjust the coordinates to account for window decorations
 		insetLeft = window.getInsets().left;
 		insetTop = window.getInsets().top;
@@ -67,87 +70,110 @@ public class Window {
 
 		int windowWidth = window.getWidth() - insetLeft - insetRight;
 		int windowHeight = window.getHeight() - insetTop - insetBottom;
-		
+
 		ScreenStack.get().setOffsets(insetLeft, insetTop);
 
-		
 		// Setup double buffering (makes graphics faster)
 		window.createBufferStrategy(2);
 		bufferStrategy = window.getBufferStrategy();
 
-		
 		// Start with the move phase on the map
 		MapScreen mapScreen = new MapScreen(windowWidth, windowHeight);
 		ScreenStack.get().addScreen(mapScreen);
-		
-		//MoveScreen moveScreen = new MoveScreen(mapScreen.getCamera(),
-		//		windowWidth, windowHeight);
-		//ScreenStack.get().addScreen(moveScreen);
-		
-		ScreenStack.get().addScreen(new PlacementScreen(mapScreen.getCamera(), windowWidth, windowHeight));
+
+		// MoveScreen moveScreen = new MoveScreen(mapScreen.getCamera(),
+		// windowWidth, windowHeight);
+		// ScreenStack.get().addScreen(moveScreen);
+
+		ScreenStack.get().addScreen(
+				new PlacementScreen(mapScreen.getCamera(), windowWidth,
+						windowHeight));
 
 		// Add a control overlay to the window
-		ScreenStack.get().addScreen(new OverlayScreen(windowWidth, windowHeight));
-		
+		ScreenStack.get().addScreen(
+				new OverlayScreen(windowWidth, windowHeight));
+
 		window.requestFocusInWindow();
-		
+
 		playBackground();
 	}
 
-	private Player player; 
-	
+	private Player player;
+
 	public void playBackground()
 	{
-		try 
-		{
-            FileInputStream fis     = new FileInputStream("assets/sounds/tardis.mp3");
-            BufferedInputStream bis = new BufferedInputStream(fis);
-            player = new Player(bis);
-        }
-        catch (Exception e) 
-        {
-            System.out.println("Problem playing file assets/tardis.mp3");
-            System.out.println(e);
-        }
+		String filename = "assets/sounds/d1inter.mp3";
 
-        // run in new thread to play in background
-        new Thread() 
-        {
-            public void run() 
-            {
-                try 
-                {
-                	player.play(); 
-                }
-                catch (Exception e) 
-                { 
-                	System.out.println(e); 
-                }
-            }
-        }.start();
+		try
+		{
+			player = new Player(new BufferedInputStream(new FileInputStream(
+					filename)));
+		}
+		catch (Exception e)
+		{
+			System.out.println("Problem playing file " + filename);
+			System.out.println(e);
+		}
+
+		// run in new thread to play in background
+		Thread musicThread = new Thread()
+		{
+			String filename = "assets/sounds/d1inter.mp3";
+
+			public void run()
+			{
+				try
+				{
+					player.play();
+					while (true)
+					{
+						if (player.isComplete())
+						{
+							player.close();
+							player = new Player(new BufferedInputStream(
+									new FileInputStream(filename)));
+							player.play();
+						}
+					}
+
+				}
+				catch (Exception e)
+				{
+					System.out.println(e);
+				}
+			}
+		};
+		musicThread.start();
 	}
 
-	public void update() {
+	public void update()
+	{
 		ScreenStack.get().update();
 	}
 
-	public void render() {
+	public void render()
+	{
 		// Create a graphics object from the buffer strategy
 		// and draw the screens
 		Graphics gPen = null;
 
-		try {
+		try
+		{
 			gPen = bufferStrategy.getDrawGraphics();
-			if (!bufferStrategy.contentsLost()) {
+			if (!bufferStrategy.contentsLost())
+			{
 				gPen.translate(window.getInsets().left, window.getInsets().top);
 				ScreenStack.get().draw((Graphics2D) gPen);
 				bufferStrategy.show();
 			}
-		} finally {
-			if (gPen != null) {
+		}
+		finally
+		{
+			if (gPen != null)
+			{
 				gPen.dispose();
 			}
 		}
 	}
-	
+
 }
