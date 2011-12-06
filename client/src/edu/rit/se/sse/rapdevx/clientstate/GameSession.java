@@ -27,9 +27,8 @@ public class GameSession {
 	private List<ShipClass>							shipClasses		= new Vector<ShipClass>();
 
 	private GameSession() {
-		StartingState state = new StartingState();
 		this.currentState = new StartingState();
-		this.session = state.getSession();
+		this.session = ((StartingState)currentState).getSession();
 	}
 
 	public static GameSession get() {
