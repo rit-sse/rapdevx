@@ -12,9 +12,11 @@ import java.io.FileInputStream;
 import javax.swing.JFrame;
 
 import javazoom.jl.player.Player;
+import edu.rit.se.sse.rapdevx.clientstate.GameSession;
 import edu.rit.se.sse.rapdevx.gui.screens.MapScreen;
 import edu.rit.se.sse.rapdevx.gui.screens.OverlayScreen;
 import edu.rit.se.sse.rapdevx.gui.screens.PlacementScreen;
+import edu.rit.se.sse.rapdevx.gui.screens.WaitingScreen;
 
 public class Window
 {
@@ -77,20 +79,27 @@ public class Window
 		window.createBufferStrategy(2);
 		bufferStrategy = window.getBufferStrategy();
 
-		// Start with the move phase on the map
-		MapScreen mapScreen = new MapScreen(windowWidth, windowHeight);
-		ScreenStack.get().addScreen(mapScreen);
-
-		// MoveScreen moveScreen = new MoveScreen(mapScreen.getCamera(),
-		// windowWidth, windowHeight);
-		// ScreenStack.get().addScreen(moveScreen);
-
-		PlacementScreen placement = new PlacementScreen(mapScreen.getCamera(),
-				windowWidth, windowHeight);
-		ScreenStack.get().addScreen(placement);
-		placement.init();
+		if (GameSession.get().getSession().getgame_id() != null) {
+			// Start with the move phase on the map
+			MapScreen mapScreen = new MapScreen(window.getWidth(), window.getHeight());
+			ScreenStack.get().addScreen(mapScreen);
+	
+			OverlayScreen overlay = new OverlayScreen(window.getWidth(), window.getHeight());
+	
+			// Start with a unit placement screen
+			PlacementScreen placement = new PlacementScreen(overlay,
+					mapScreen.getCamera(), window.getWidth(), window.getHeight());
+			ScreenStack.get().addScreen(placement);
+	
+			// Add the overlay last
+			ScreenStack.get().addScreen(overlay);
+		} else {
+			// Add a waiting screen to the window
+			WaitingScreen waitingScreen = new WaitingScreen(windowWidth, windowHeight);
+			ScreenStack.get().addScreen(waitingScreen);
+			waitingScreen.init();
+		}
 		
-
 		window.requestFocusInWindow();
 
 		playBackground();

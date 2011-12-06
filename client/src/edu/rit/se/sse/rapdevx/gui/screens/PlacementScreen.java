@@ -42,11 +42,12 @@ public class PlacementScreen extends Screen implements StateListener {
 	private OverlayScreen overlay;
 	RectangleBackground background;
 	
-	public PlacementScreen(Camera camera, int width, int height) {
+	public PlacementScreen(OverlayScreen overlay, Camera camera, int width, int height) {
 		super(width, height);
+		
 		this.camera = camera;
 		
-		this.overlay = new OverlayScreen(width, height);
+		this.overlay = overlay;
 		
 		background = new RectangleBackground(96, 128, 88, 483, false);
 		
@@ -92,10 +93,6 @@ public class PlacementScreen extends Screen implements StateListener {
 		}
 		
 		GameSession.get().addStateListener(this);
-	}
-	
-	public void init() {
-		ScreenStack.get().addScreenAfter(this, overlay);
 	}
 	
 	/**

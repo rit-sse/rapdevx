@@ -42,20 +42,15 @@ public class StartingState extends StateBase {
 	}
 	
 	protected void poll() {
-		// If we don't have a game yet, poll the server
-		try {
-			session = SessionApi.updateSession(session);
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.err.println("Failed to pull down assets");
-		}
-
 		timer.scheduleAtFixedRate(new TimerTask() {
 			public void run() {
 				try {
 					session = SessionApi.updateSession(session);
-					if (session.getgame_id() != null)
+					if (session.getgame_id() != null) {
+						GameSession.get().setSession(session);
 						this.cancel();
+						finishedPolling();
+					}
 				} catch (Exception e) {
 					e.printStackTrace();
 					System.err.println("Failed to pull down assets");
