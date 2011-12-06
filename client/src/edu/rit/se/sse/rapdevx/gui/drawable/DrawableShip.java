@@ -19,7 +19,7 @@ import edu.rit.se.sse.rapdevx.clientmodels.Ship;
 import edu.rit.se.sse.rapdevx.gui.Art;
 import edu.rit.se.sse.rapdevx.gui.ImageColorizer;
 
-public class DrawableShip extends DrawableObject {
+public class DrawableShip extends DrawableObject implements Cloneable {
 
 	private static final String	SHIP_IMAGE			= "assets/ship.png";
 	private static final String	SHIP_CLEAR_IMAGE	= "assets/clear_ship.png";
@@ -145,6 +145,28 @@ public class DrawableShip extends DrawableObject {
 		order.setGid("garbage");
 
 		return order;
+	}
+	
+	//TODO do this better
+	public DrawableShip clone() {
+		Ship newShip = ship.clone();
+		DrawableShip newDrawShip = new DrawableShip(newShip, teamColor);
+		newDrawShip.setX(getX());
+		newDrawShip.setY(getY());
+		newDrawShip.setxVel(getxVel());
+		newDrawShip.setyVel(getyVel());
+		
+		return newDrawShip;
+	}
+	
+	public void setX(int x) {
+		super.setX(x);
+		ship.setX(x);
+	}
+	
+	public void setY(int y) {
+		super.setY(y);
+		ship.setY(y);
 	}
 
 }

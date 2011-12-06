@@ -40,5 +40,9 @@ public class ShipSelectSquare extends RectangleBackground {
 		ship.setX(x + 6);
 		ship.setY(y + 6);
 	}
+
+	public Ship getShip() {
+		return ship.getShip();
+	}
 	
 }
