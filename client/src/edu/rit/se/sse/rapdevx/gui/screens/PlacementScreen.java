@@ -13,11 +13,11 @@ import edu.rit.se.sse.rapdevx.clientstate.GameSession;
 import edu.rit.se.sse.rapdevx.clientstate.MoveState;
 import edu.rit.se.sse.rapdevx.events.StateEvent;
 import edu.rit.se.sse.rapdevx.events.StateListener;
-import edu.rit.se.sse.rapdevx.gui.RectangleBackground;
 import edu.rit.se.sse.rapdevx.gui.Screen;
 import edu.rit.se.sse.rapdevx.gui.ScreenStack;
 import edu.rit.se.sse.rapdevx.gui.drawable.Camera;
 import edu.rit.se.sse.rapdevx.gui.drawable.DrawableShip;
+import edu.rit.se.sse.rapdevx.gui.images.RectangleBackground;
 
 public class PlacementScreen extends Screen implements StateListener {
 
@@ -127,14 +127,14 @@ public class PlacementScreen extends Screen implements StateListener {
 		background.draw(gPen);
 		
 		int buttonAlpha = 255;
-		upButton.setHover(false);
+		upButton.setHovering(false);
 		if (shownIndex == 0) {
 			buttonAlpha = 0;
 			upButton.setPressed(true);
 		} else {
 			upButton.setPressed(false);
 			if (hoveredRectangle == upArea)
-				upButton.setHover(true);
+				upButton.setHovering(true);
 		}
 		upButton.draw(gPen);
 		
@@ -143,7 +143,7 @@ public class PlacementScreen extends Screen implements StateListener {
 		gPen.fillPolygon(upTriangle);
 
 		buttonAlpha = 255;
-		downButton.setHover(false);
+		downButton.setHovering(false);
 		if  (shownIndex >= shipSelectSquares.size() - 5) {
 			buttonAlpha = 0;
 			downButton.setPressed(true);
@@ -151,7 +151,7 @@ public class PlacementScreen extends Screen implements StateListener {
 		else {
 			downButton.setPressed(false);
 			if (hoveredRectangle == downArea)
-				downButton.setHover(true);
+				downButton.setHovering(true);
 		}
 		
 		downButton.draw(gPen);
@@ -285,7 +285,7 @@ public class PlacementScreen extends Screen implements StateListener {
 			
 			background = new RectangleBackground(selectArea.x, selectArea.y, 72, 72);
 			background.setPressed(isSelected);
-			background.setHover(isHoveredOver || isSelected);
+			background.setHovering(isHoveredOver || isSelected);
 			background.draw(gPen);
 			
 			ship.draw(gPen, selectArea);

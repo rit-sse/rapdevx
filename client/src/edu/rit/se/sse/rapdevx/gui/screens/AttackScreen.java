@@ -20,8 +20,8 @@ import edu.rit.se.sse.rapdevx.gui.ScreenStack;
 import edu.rit.se.sse.rapdevx.gui.drawable.Camera;
 import edu.rit.se.sse.rapdevx.gui.drawable.DrawableAttack;
 import edu.rit.se.sse.rapdevx.gui.drawable.DrawableShip;
+import edu.rit.se.sse.rapdevx.gui.images.TextButton;
 import edu.rit.se.sse.rapdevx.gui.screens.menus.Menu;
-import edu.rit.se.sse.rapdevx.gui.screens.menus.MenuButton;
 import edu.rit.se.sse.rapdevx.clientstate.AttackState;
 
 public class AttackScreen extends Screen implements StateListener,
@@ -41,14 +41,15 @@ public class AttackScreen extends Screen implements StateListener,
 	private StatsScreen statsScreen = null;
 
 	private Menu abilitiesMenu = null;
-	
+
 	private OverlayScreen overlay;
 
-	public AttackScreen(OverlayScreen overlay, Camera camera, int width, int height) {
+	public AttackScreen(OverlayScreen overlay, Camera camera, int width,
+			int height) {
 		super(width, height);
 		this.camera = camera;
 		this.overlay = overlay;
-		
+
 		overlay.addActionListener(this);
 
 		GameSession.get().addStateListener(this);
@@ -156,24 +157,29 @@ public class AttackScreen extends Screen implements StateListener,
 					// // abilitiesMenu.addButton(new
 					// MenuButton(b.getName(), "abilitiy" ));
 					// }
-					abilitiesMenu.addButton(new MenuButton(
-							abilitiesMenu, "Fly", "attack"));
-					abilitiesMenu
-							.addButton(new MenuButton(
-									abilitiesMenu,
-									"Hydropump", "attack"));
-					abilitiesMenu.addButton(new MenuButton(
-							abilitiesMenu, "Tackle", "attack"));
-					abilitiesMenu.addButton(new MenuButton(
-							abilitiesMenu, "Quick Attack",
-							"attack"));
-					abilitiesMenu
-							.addButton(new MenuButton(
-									abilitiesMenu,
-									"Hypnotize", "attack"));
+					abilitiesMenu.addButton(new TextButton(
+							selectedShip.getX() + 50 + 5,
+							selectedShip.getY() + 20 + 10, 200,
+							50, "Fly", abilitiesMenu));
+					abilitiesMenu.addButton(new TextButton(
+							selectedShip.getX() + 50 + 5,
+							selectedShip.getY() + 20 + 50+ 10, 200,
+							50, "Hydropump", abilitiesMenu));
+					abilitiesMenu.addButton(new TextButton(
+							selectedShip.getX() + 50 + 5,
+							selectedShip.getY() + 20 + 100 + 10, 200,
+							50, "Tackle", abilitiesMenu));
+					abilitiesMenu.addButton(new TextButton(
+							selectedShip.getX() + 50 + 5,
+							selectedShip.getY() + 20 + 150 + 10, 200,
+							50, "Splash", abilitiesMenu));
+					abilitiesMenu.addButton(new TextButton(
+							selectedShip.getX() + 50 + 5,
+							selectedShip.getY() + 20 + 200+10, 200,
+							50, "Dig", abilitiesMenu));
 
 					ScreenStack.get().addScreen(abilitiesMenu);
-					for (MenuButton button : abilitiesMenu
+					for (TextButton button : abilitiesMenu
 							.getButtons()) {
 						button.addActionListener(this);
 					}
@@ -231,9 +237,11 @@ public class AttackScreen extends Screen implements StateListener,
 	public void stateChanged(StateEvent e) {
 		if (e.getNewState() instanceof MoveState) {
 			overlay.removeActionListener(this);
-			
-			ScreenStack.get().addScreenAfter(this,
-				new MoveScreen(overlay, camera, screenWidth, screenHeight));
+
+			ScreenStack.get().addScreenAfter(
+					this,
+					new MoveScreen(overlay, camera, screenWidth,
+							screenHeight));
 			ScreenStack.get().removeScreen(this);
 			GameSession.get().removeStateListener(this);
 		}
@@ -278,7 +286,7 @@ public class AttackScreen extends Screen implements StateListener,
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		ScreenStack.get().removeScreen(
-				((MenuButton) e.getSource()).getMenu());
+				((TextButton) e.getSource()).getMenu());
 		curAttack = new DrawableAttack(selectedShip);
 
 	}
