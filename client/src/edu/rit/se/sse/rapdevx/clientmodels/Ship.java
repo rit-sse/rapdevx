@@ -18,6 +18,8 @@ public class Ship extends Unit implements Cloneable {
 	private int	Y;
 
 	public Ship() {
+		//TODO actually set ship classes from placement screen
+		this.setClassid(AssetLibrary.getShipClasses().get(0).getGid());
 	}
 
 	/**
