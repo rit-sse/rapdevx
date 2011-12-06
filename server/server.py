@@ -96,7 +96,7 @@ def p_game(game_id=None):
     session = get_session(session_id)
 
     if ready:
-        game.setReady(session)
+        game.setReady(session.player_num, True)
 
 # Set the initial position of all units from given POST data
 @post('/game/:game_id/ships')
