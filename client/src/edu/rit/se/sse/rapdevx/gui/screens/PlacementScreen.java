@@ -33,9 +33,11 @@ public class PlacementScreen extends Screen implements StateListener {
 
 	private ArrayList<ShipSelectSquare> shipSelectSquares;
 	private DrawableShip selectedShip;
-	private boolean drawShip;
+	private boolean drawSelectedUnit;
 
 	private RectangleBackground background;
+	
+	private ArrayList<DrawableShip> placedShips;
 
 	public PlacementScreen(Camera camera, int width, int height) {
 		super(width, height);
@@ -44,7 +46,7 @@ public class PlacementScreen extends Screen implements StateListener {
 
 		background = new RectangleBackground(96, 128, 88, 483, false);
 		shownIndex = 0;
-		drawShip = false;
+		drawSelectedUnit = false;
 
 		placementArea = new Rectangle(88, 472);
 		placementArea.x = 96;
@@ -68,6 +70,8 @@ public class PlacementScreen extends Screen implements StateListener {
 
 			shipSelectSquares.add(square);
 		}
+		
+		placedShips = new ArrayList<DrawableShip>();
 
 		GameSession.get().addStateListener(this);
 	}
@@ -77,7 +81,12 @@ public class PlacementScreen extends Screen implements StateListener {
 	}
 
 	public void draw(Graphics2D gPen) {
-		if (drawShip && selectedShip != null)
+		gPen.translate(-camera.getX(), -camera.getY());
+		for (DrawableShip ship : placedShips)
+			ship.draw(gPen);
+		gPen.translate(camera.getX(), camera.getY());
+		
+		if (drawSelectedUnit && selectedShip != null)
 			selectedShip.draw(gPen);
 		
 		background.draw(gPen);
@@ -96,9 +105,6 @@ public class PlacementScreen extends Screen implements StateListener {
 
 	public void mouseReleased(MouseEvent e) {
 		// Clear passed pressed buttons
-		for (ShipSelectSquare square : shipSelectSquares) {
-			square.setPressed(false);
-		}
 		upButton.setPressed(false);
 		downButton.setPressed(false);
 		
@@ -109,11 +115,15 @@ public class PlacementScreen extends Screen implements StateListener {
 				shownIndex += 1;
 				for (ShipSelectSquare square : shipSelectSquares) {
 					square.moveUp();
+					square.setPressed(false);
+					selectedShip = null;
 				}
 			} else if (upButton.containsPoint(e.getPoint()) && shownIndex > 0) {
 				shownIndex -= 1;
 				for (ShipSelectSquare square : shipSelectSquares) {
 					square.moveDown();
+					square.setPressed(false);
+					selectedShip = null;
 				}
 			} else {
 				for (ShipSelectSquare square : shipSelectSquares) {
@@ -125,16 +135,18 @@ public class PlacementScreen extends Screen implements StateListener {
 						break;
 					}
 				}
-	
-				if (selectedShip != null) {
-					// TODO place a ship
-				}
 			}
 			
 			upButton.setEnabled(shownIndex >= shipSelectSquares.size() - 5);
 			downButton.setEnabled(shownIndex == 0);
 
 			e.consume();
+		} else if (selectedShip != null) {
+			// A ship is selected and the user has clicked the map
+			// so add a copy of the ship at the cursor location
+			DrawableShip newShip = (DrawableShip)selectedShip.clone();
+			newShip.setCenter(e.getX() + camera.getX(), e.getY() + camera.getY());
+			placedShips.add(newShip);
 		}
 	}
 
@@ -148,7 +160,7 @@ public class PlacementScreen extends Screen implements StateListener {
 		upButton.setHovering(inToolbar && upButton.containsPoint(e.getPoint()));
 		downButton.setHovering(inToolbar && downButton.containsPoint(e.getPoint()));
 		
-		drawShip = !inToolbar;
+		drawSelectedUnit = !inToolbar;
 		if (selectedShip != null) {
 			selectedShip.setCenter(e.getX(), e.getY());
 		}
