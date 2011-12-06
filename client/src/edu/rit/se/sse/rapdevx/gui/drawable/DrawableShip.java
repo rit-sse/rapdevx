@@ -71,6 +71,7 @@ public class DrawableShip extends DrawableObject {
 
 	@Override
 	public void draw(Graphics2D gPen, Rectangle2D bounds) {
+		//TODO remove bounds variable
 		if (isSelected) {
 			gPen.setColor(teamColor);
 			gPen.setRenderingHint(RenderingHints.KEY_ANTIALIASING,

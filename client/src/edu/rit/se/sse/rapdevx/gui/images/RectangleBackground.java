@@ -16,12 +16,13 @@ import java.util.ArrayList;
  */
 public class RectangleBackground implements IGrayableImage {
 
-	private int width;
-	private int height;
-	private int x;
-	private int y;
-	private boolean pressed;
-	private boolean hovering;
+	protected int width;
+	protected int height;
+	protected int x;
+	protected int y;
+	protected boolean pressed;
+	protected boolean hovering;
+	
 	private ArrayList<ActionListener> listeners = new ArrayList<ActionListener>();
 
 	/**
