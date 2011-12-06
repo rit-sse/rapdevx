@@ -3,10 +3,10 @@
  */
 package edu.rit.se.sse.rapdevx.clientstate;
 
-import edu.rit.se.sse.rapdevx.api.GameApi;
+import java.util.TimerTask;
+
 import edu.rit.se.sse.rapdevx.api.SessionApi;
 import edu.rit.se.sse.rapdevx.api.dataclasses.Session;
-import edu.rit.se.sse.rapdevx.clientmodels.AssetLibrary;
 
 /**
  * @author Cody Krieger
@@ -17,11 +17,14 @@ public class StartingState extends StateBase {
 	private Session session;
 	
 	public StartingState() {
-		this.nextState = UnitPlacementState.class;
+		this.nextState = LoadingState.class;
 		
-		// TODO here we'll need to include some "game picking" logic -- passing
-		// in null will, in effect, request matchmaking
+		// Get an initial session.  We can poll later to get
+		// a game match to play with someone.
+		
 		try {
+			// TODO here we'll need to include some "game picking" logic -- passing
+			// in null will, in effect, request matchmaking
 			this.session = SessionApi.createSession("nickname", null);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -30,17 +33,36 @@ public class StartingState extends StateBase {
 	}
 	
 	public void init() {
+		// Poll for a game to join if we don't have one yet.
+		// Otherwise, move to the asset loading state
+		if (session.getgame_id() == null)
+			poll();
+		else
+			finishedPolling();
+	}
+	
+	protected void poll() {
+		// If we don't have a game yet, poll the server
 		try {
-			AssetLibrary.setAssets(GameApi.getAssets(session));
+			session = SessionApi.updateSession(session);
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.err.println("Failed to pull down assets");
 		}
 
-		poll();
+		timer.scheduleAtFixedRate(new TimerTask() {
+			public void run() {
+				try {
+					session = SessionApi.updateSession(session);
+					if (session.getgame_id() != null)
+						this.cancel();
+				} catch (Exception e) {
+					e.printStackTrace();
+					System.err.println("Failed to pull down assets");
+				}
+			}
 
-		// yay, we're ready!
-		GameApi.setReady(session);
+		}, 0, 1000);
 	}
 
 	/*
@@ -55,4 +77,5 @@ public class StartingState extends StateBase {
 	public Session getSession() {
 		return session;
 	}
+	
 }

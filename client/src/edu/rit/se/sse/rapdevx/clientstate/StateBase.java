@@ -17,7 +17,7 @@ public abstract class StateBase {
 
 	protected Class<?> nextState;
 
-	private Timer timer = new Timer();
+	protected Timer timer = new Timer();
 	private String phase;
 
 	/**
