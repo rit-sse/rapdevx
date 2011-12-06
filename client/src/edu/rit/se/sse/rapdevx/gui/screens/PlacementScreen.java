@@ -2,13 +2,11 @@ package edu.rit.se.sse.rapdevx.gui.screens;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
-import edu.rit.se.sse.rapdevx.clientmodels.Ship;
 import edu.rit.se.sse.rapdevx.clientstate.GameSession;
 import edu.rit.se.sse.rapdevx.clientstate.MoveState;
 import edu.rit.se.sse.rapdevx.events.StateEvent;
@@ -16,8 +14,8 @@ import edu.rit.se.sse.rapdevx.events.StateListener;
 import edu.rit.se.sse.rapdevx.gui.Screen;
 import edu.rit.se.sse.rapdevx.gui.ScreenStack;
 import edu.rit.se.sse.rapdevx.gui.drawable.Camera;
-import edu.rit.se.sse.rapdevx.gui.drawable.DrawableShip;
 import edu.rit.se.sse.rapdevx.gui.images.RectangleBackground;
+import edu.rit.se.sse.rapdevx.gui.images.ShipSelectSquare;
 
 public class PlacementScreen extends Screen implements StateListener {
 
@@ -86,7 +84,7 @@ public class PlacementScreen extends Screen implements StateListener {
 		for (int i = 0; i < 6; i++) {
 			int x = 8;
 			int y = (32 + 8 * (i + 1)) + (72 * (i)) + 5;
-			ShipSelectSquare square = new ShipSelectSquare(x, y);
+			ShipSelectSquare square = new ShipSelectSquare(x + placementArea.x, y + placementArea.y);
 			
 			shipSelectSquares.add(square);
 		}
@@ -199,11 +197,11 @@ public class PlacementScreen extends Screen implements StateListener {
 		for (ShipSelectSquare square : shipSelectSquares) {
 			if (square.containsPoint(e.getPoint())) {
 				if (selectedSquare != null) {
-					selectedSquare.setSelected(false);
+					selectedSquare.setPressed(false);
 				}
 				
 				selectedSquare = square;
-				selectedSquare.setSelected(true);
+				selectedSquare.setPressed(true);
 				e.consume();
 				return;
 			}
@@ -211,7 +209,7 @@ public class PlacementScreen extends Screen implements StateListener {
 		
 		if (selectedSquare != null) {
 			// TODO place a ship
-			selectedSquare.setSelected(false);
+			selectedSquare.setPressed(false);
 			e.consume();
 		}
 		
@@ -226,7 +224,7 @@ public class PlacementScreen extends Screen implements StateListener {
 //		}
 		
 		for (ShipSelectSquare square : shipSelectSquares) {
-			square.setHoveredOver(square.containsPoint(e.getPoint()));
+			square.setHovering(square.containsPoint(e.getPoint()));
 		}
 		
 		if (upArea.contains(e.getPoint())) {
@@ -250,73 +248,6 @@ public class PlacementScreen extends Screen implements StateListener {
 		}
 	}
 	
-	private class ShipSelectSquare {
-		
-		private Rectangle selectArea;
-		private boolean isHoveredOver;
-		private boolean isSelected;
-		
-		// TODO Probably don't want to use drawable ship...
-		private DrawableShip ship;
-		
-		private RectangleBackground background;
-		
-		public ShipSelectSquare(int x, int y) {
-			
-			selectArea = new Rectangle(72, 72);
-			selectArea.x = x;
-			selectArea.y = y;
-			
-			selectArea.translate(placementArea.x, placementArea.y);
-			
-			Ship ship = new Ship();
-			ship.setX((selectArea.x / 2) + 3);
-			ship.setY((selectArea.y / 2) + 3);
-			ship.setHp(ship.getMaxHp());
-			this.ship = new DrawableShip(ship, new Color(48, 129, 233));
-			
-			background = new RectangleBackground(selectArea.x, selectArea.y, 72, 72, false );
-		}
-		
-		public boolean containsPoint(Point p) {
-			
-			return selectArea.contains(p);
-			
-		}
-		
-		public void draw(Graphics2D gPen) {
-			
-			background = new RectangleBackground(selectArea.x, selectArea.y, 72, 72);
-			background.setPressed(isSelected);
-			background.setHovering(isHoveredOver || isSelected);
-			background.draw(gPen);
-			
-			ship.draw(gPen, selectArea);
-			
-		}
-		
-		public void setHoveredOver(boolean isHoveredOver) {
-			this.isHoveredOver = isHoveredOver;
-		}
-		
-		public void setSelected(boolean selected) {
-			this.isSelected = selected;
-		}
-		
-		public int magicMoveConstant = 80;
-		
-		public void moveUp() {
-			selectArea.y -= magicMoveConstant;
-			ship.setX(selectArea.x + 6);
-			ship.setY(selectArea.y + 6);
-		}
-		
-		public void moveDown() {
-			selectArea.y += magicMoveConstant;
-			ship.setX(selectArea.x + 6);
-			ship.setY(selectArea.y + 6);
-		}
-		
-	}
+	
 	
 }
