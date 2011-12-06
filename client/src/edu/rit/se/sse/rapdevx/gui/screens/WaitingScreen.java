@@ -12,14 +12,14 @@ import edu.rit.se.sse.rapdevx.events.StateListener;
 import edu.rit.se.sse.rapdevx.gui.Screen;
 import edu.rit.se.sse.rapdevx.gui.ScreenStack;
 import edu.rit.se.sse.rapdevx.gui.drawable.Text;
+import edu.rit.se.sse.rapdevx.gui.images.TextButton;
 import edu.rit.se.sse.rapdevx.gui.screens.menus.Menu;
-import edu.rit.se.sse.rapdevx.gui.screens.menus.MenuButton;
 
 public class WaitingScreen extends Screen implements ActionListener,
 		StateListener {
 
 	private Menu menu;
-	private MenuButton exitButton;
+	private TextButton exitButton;
 
 	private Text waitingText;
 
@@ -29,7 +29,8 @@ public class WaitingScreen extends Screen implements ActionListener,
 		GameSession.get().addStateListener(this);
 
 		menu = new Menu(width / 2 - 100, height / 2 - 200);
-		exitButton = new MenuButton(menu, "Exit", "Click this to Quit!");
+		exitButton = new TextButton(width / 2 - 100 + 5, height / 2 - 200
+				+ 150 + 10, 200, 50, "Settings", menu);
 		exitButton.addActionListener(this);
 		menu.addButton(exitButton);
 
