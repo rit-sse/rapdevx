@@ -8,9 +8,9 @@ import java.util.List;
 
 import edu.rit.se.sse.rapdevx.api.dataclasses.Ability;
 import edu.rit.se.sse.rapdevx.clientmodels.Ship;
-import edu.rit.se.sse.rapdevx.gui.RectangleBackground;
 import edu.rit.se.sse.rapdevx.gui.Screen;
 import edu.rit.se.sse.rapdevx.gui.drawable.Text;
+import edu.rit.se.sse.rapdevx.gui.images.RectangleBackground;
 
 /**
  * The stats screen that shows up when you hover
