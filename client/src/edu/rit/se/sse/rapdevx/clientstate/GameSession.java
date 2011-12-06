@@ -25,12 +25,10 @@ public class GameSession {
 	private Session									session;
 
 	private List<ShipClass>							shipClasses		= new Vector<ShipClass>();
-	
-	private static StartingState					state;
 
 	private GameSession() {
-		state = new StartingState();
-		this.currentState = state;
+		StartingState state = new StartingState();
+		this.currentState = new StartingState();
 		this.session = state.getSession();
 	}
 
