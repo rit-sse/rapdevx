@@ -79,13 +79,16 @@ def get_game_assets(game_id=None):
 def g_game(game_id=None):
     game = get_game(game_id)
 
-    status = game.getGameProgress()
+    session_id = request.query.session_id
+    session = get_session(session_id)
+
+    status = game.getGameProgress(session.player_num)
 
     return status.toJSON()
 
 # Indicate that the user is ready to start the game
 @post('/game/:game_id')
-def g_game(game_id=None):
+def p_game(game_id=None):
     ready = request.forms.ready
     session_id = request.forms.session_id
 
