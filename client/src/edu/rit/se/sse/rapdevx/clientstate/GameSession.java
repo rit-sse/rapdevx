@@ -26,7 +26,6 @@ public class GameSession {
 
 	private List<ShipClass>							shipClasses		= new Vector<ShipClass>();
 	
-	private static boolean							initialized		= false;
 	private static StartingState					state;
 
 	private GameSession() {
