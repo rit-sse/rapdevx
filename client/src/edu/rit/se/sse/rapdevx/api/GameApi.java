@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.List;
 
 import edu.rit.se.sse.rapdevx.api.dataclasses.AbilityUseOrder;
@@ -151,15 +152,15 @@ public class GameApi {
 		int respcode = 0;
 
 		try {
-			String shipsJsonString = readFileAsString("ShipPlacementFromJava.json");
+			String shipsJsonString = readFileAsString("ShipPlacementsFromJava.json");
 
 			String data = "session_id"
 					+ "="
 					+ userSession.getsession_id()
 					+ "&"
 					+ "unit_layout"
-					+ "="
-					+ shipsJsonString;
+					+ "=\""
+					+ URLEncoder.encode(shipsJsonString, "UTF-8") + "\"";
 
 			URL url = new URL("http", SERVER_URL, 8080,
 					"/game/"
