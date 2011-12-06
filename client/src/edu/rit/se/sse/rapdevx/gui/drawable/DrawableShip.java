@@ -158,5 +158,15 @@ public class DrawableShip extends DrawableObject implements Cloneable {
 		
 		return newDrawShip;
 	}
+	
+	public void setX(int x) {
+		super.setX(x);
+		ship.setX(x);
+	}
+	
+	public void setY(int y) {
+		super.setY(y);
+		ship.setY(y);
+	}
 
 }

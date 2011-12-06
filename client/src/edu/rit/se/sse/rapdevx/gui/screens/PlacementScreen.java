@@ -3,12 +3,18 @@ package edu.rit.se.sse.rapdevx.gui.screens;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
+import edu.rit.se.sse.rapdevx.api.dataclasses.ShipPlacement;
 import edu.rit.se.sse.rapdevx.clientmodels.Ship;
 import edu.rit.se.sse.rapdevx.clientstate.GameSession;
 import edu.rit.se.sse.rapdevx.clientstate.MoveState;
+import edu.rit.se.sse.rapdevx.clientstate.UnitPlacementState;
 import edu.rit.se.sse.rapdevx.events.StateEvent;
 import edu.rit.se.sse.rapdevx.events.StateListener;
 import edu.rit.se.sse.rapdevx.gui.Screen;
@@ -19,7 +25,7 @@ import edu.rit.se.sse.rapdevx.gui.images.ArrowButton;
 import edu.rit.se.sse.rapdevx.gui.images.RectangleBackground;
 import edu.rit.se.sse.rapdevx.gui.images.ShipSelectSquare;
 
-public class PlacementScreen extends Screen implements StateListener {
+public class PlacementScreen extends Screen implements StateListener, ActionListener {
 
 	/** A reference to the map camera for positioning objects in world space */
 	private Camera camera;
@@ -43,6 +49,7 @@ public class PlacementScreen extends Screen implements StateListener {
 		super(width, height);
 		this.camera = camera;
 		this.overlay = new OverlayScreen(width, height);
+		overlay.addActionListener(this);
 
 		background = new RectangleBackground(96, 128, 88, 483, false);
 		shownIndex = 0;
@@ -180,9 +187,20 @@ public class PlacementScreen extends Screen implements StateListener {
 			e.consume();
 		}
 	}
+	
+	public void actionPerformed(ActionEvent e) {
+		if (e.getActionCommand().equals("ready")) {
+			List<ShipPlacement> placements = new LinkedList<ShipPlacement>();
+			for (DrawableShip ship : placedShips)
+				placements.add(ship.getShip().getShipPlacement());
+			
+			((UnitPlacementState)GameSession.get().getCurrentState()).ready(placements);
+		}
+	}
 
 	public void stateChanged(StateEvent e) {
 		if (e.getNewState() instanceof MoveState) {
+			overlay.removeActionListener(this);
 			ScreenStack.get().addScreenAfter(this,
 					new MoveScreen(overlay, camera, screenWidth, screenHeight));
 			ScreenStack.get().removeScreen(this);
