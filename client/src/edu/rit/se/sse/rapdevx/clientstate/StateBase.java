@@ -15,10 +15,10 @@ import edu.rit.se.sse.rapdevx.api.dataclasses.Session;
  */
 public abstract class StateBase {
 
-	protected Class<?>	nextState;
+	protected Class<?> nextState;
 
-	private Timer		timer	= new Timer();
-	private int			phaseNum;
+	private Timer timer = new Timer();
+	private String phase;
 
 	/**
 	 * @return the nextState
@@ -40,9 +40,8 @@ public abstract class StateBase {
 	protected void poll() {
 		try {
 			Session session = GameSession.get().getSession();
-			
-			phaseNum = Integer.parseInt(GameApi.getStatus(
-					session).getPhase());
+
+			phase = GameApi.getStatus(session).getPhase();
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.err.println("Couldn't get session");
@@ -53,8 +52,8 @@ public abstract class StateBase {
 			@Override
 			public void run() {
 				try {
-					if (Integer.parseInt(GameApi.getStatus(
-							GameSession.get().getSession()).getPhase()) != phaseNum) {
+					if (GameApi.getStatus(GameSession.get().getSession())
+							.getPhase() != phase) {
 						this.cancel();
 						finishedPolling();
 					}
