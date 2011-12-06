@@ -159,8 +159,8 @@ public class GameApi {
 					+ userSession.getsession_id()
 					+ "&"
 					+ "unit_layout"
-					+ "=\""
-					+ URLEncoder.encode(shipsJsonString, "UTF-8") + "\"";
+					+ "="
+					+ shipsJsonString;
 
 			URL url = new URL("http", SERVER_URL, 8080,
 					"/game/"

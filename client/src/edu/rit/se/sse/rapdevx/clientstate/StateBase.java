@@ -40,7 +40,6 @@ public abstract class StateBase {
 	protected void poll() {
 		try {
 			Session session = GameSession.get().getSession();
-
 			phase = GameApi.getStatus(session).getPhase();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -48,12 +47,10 @@ public abstract class StateBase {
 		}
 
 		timer.scheduleAtFixedRate(new TimerTask() {
-
-			@Override
 			public void run() {
 				try {
-					if (GameApi.getStatus(GameSession.get().getSession())
-							.getPhase() != phase) {
+					if (!GameApi.getStatus(GameSession.get().getSession())
+							.getPhase().equals(phase)) {
 						this.cancel();
 						finishedPolling();
 					}
