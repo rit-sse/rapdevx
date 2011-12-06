@@ -1,3 +1,6 @@
+
+import urllib
+
 from bottle import run, get, post, delete, request
 from bottle import *
 from session import *
@@ -109,7 +112,7 @@ def p_game_ships(game_id=None):
 
     unit_layout = JSON_Construct_DTO_ShipPlacement(unit_layout_json)
     
-    game.setShipPlacement(unit_layout, session_id.player_num)
+    game.setShipPlacement(unit_layout, session.player_num)
 
 # Return the location and type of all ships as json
 # { # Example
