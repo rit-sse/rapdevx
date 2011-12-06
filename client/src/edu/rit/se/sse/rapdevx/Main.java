@@ -9,9 +9,12 @@ import edu.rit.se.sse.rapdevx.gui.Window;
  */
 public class Main {
 
-	public static final int UPDATES_PER_SECOND = 25;
-	public static final int UDATE_TICKS = 1000 / UPDATES_PER_SECOND;
+	public static final int UPDATES_PER_SECOND = 40;
+	public static final int UDATE_TICK = 1000 / UPDATES_PER_SECOND;
 	public static final int MAX_UPDATE_SKIP = 5;
+	
+	public static final int DRAWS_PER_SECOND = 40;
+	public static final int DRAW_TICK = 1000 / DRAWS_PER_SECOND;
 	
 	private boolean done = false;
 	
@@ -33,20 +36,30 @@ public class Main {
 		
 		// Save the current system time
 		long nextUpdate = System.currentTimeMillis();
+		long nextDraw = nextUpdate;
 		
 		// The main game loop
 		while (!done) {
+			// Catch up on update loops
 			int loops = 0;
 			while (System.currentTimeMillis() > nextUpdate && loops < MAX_UPDATE_SKIP) {
 				// Update any movements and animations
 				window.update();
 				
-				// Update any movements and animations
-				window.render();
-				
-				nextUpdate += UDATE_TICKS;
+				nextUpdate += UDATE_TICK;
 				loops++;
 			}
+			
+			// Draw the screen
+			if (System.currentTimeMillis() >= nextDraw) {
+				window.render();
+				nextDraw = DRAW_TICK + System.currentTimeMillis();
+			}
+			
+			// Wait until about the next update time
+			try {
+				Thread.sleep(nextDraw - System.currentTimeMillis());
+			} catch (InterruptedException e) {}
 		}
 	}
 
