@@ -1,10 +1,12 @@
 package edu.rit.se.sse.rapdevx.gui.screens;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
+import edu.rit.se.sse.rapdevx.clientmodels.Ship;
 import edu.rit.se.sse.rapdevx.clientstate.GameSession;
 import edu.rit.se.sse.rapdevx.clientstate.MoveState;
 import edu.rit.se.sse.rapdevx.events.StateEvent;
@@ -12,6 +14,7 @@ import edu.rit.se.sse.rapdevx.events.StateListener;
 import edu.rit.se.sse.rapdevx.gui.Screen;
 import edu.rit.se.sse.rapdevx.gui.ScreenStack;
 import edu.rit.se.sse.rapdevx.gui.drawable.Camera;
+import edu.rit.se.sse.rapdevx.gui.drawable.DrawableShip;
 import edu.rit.se.sse.rapdevx.gui.images.ArrowButton;
 import edu.rit.se.sse.rapdevx.gui.images.RectangleBackground;
 import edu.rit.se.sse.rapdevx.gui.images.ShipSelectSquare;
@@ -29,7 +32,8 @@ public class PlacementScreen extends Screen implements StateListener {
 	private ArrowButton downButton;
 
 	private ArrayList<ShipSelectSquare> shipSelectSquares;
-	private ShipSelectSquare selectedSquare;
+	private DrawableShip selectedShip;
+	private boolean drawShip;
 
 	private RectangleBackground background;
 
@@ -40,6 +44,7 @@ public class PlacementScreen extends Screen implements StateListener {
 
 		background = new RectangleBackground(96, 128, 88, 483, false);
 		shownIndex = 0;
+		drawShip = false;
 
 		placementArea = new Rectangle(88, 472);
 		placementArea.x = 96;
@@ -72,6 +77,9 @@ public class PlacementScreen extends Screen implements StateListener {
 	}
 
 	public void draw(Graphics2D gPen) {
+		if (drawShip && selectedShip != null)
+			selectedShip.draw(gPen);
+		
 		background.draw(gPen);
 		upButton.draw(gPen);
 		downButton.draw(gPen);
@@ -110,18 +118,15 @@ public class PlacementScreen extends Screen implements StateListener {
 			} else {
 				for (ShipSelectSquare square : shipSelectSquares) {
 					if (square.containsPoint(e.getPoint())) {
-						if (selectedSquare != null) {
-							selectedSquare.setPressed(false);
-						}
-	
-						selectedSquare = square;
-						selectedSquare.setPressed(true);
+						//TODO team color selection
+						selectedShip = new DrawableShip((Ship)square.getShip().clone(), Color.RED);
+						square.setPressed(true);
 						
 						break;
 					}
 				}
 	
-				if (selectedSquare != null) {
+				if (selectedShip != null) {
 					// TODO place a ship
 				}
 			}
@@ -142,6 +147,11 @@ public class PlacementScreen extends Screen implements StateListener {
 
 		upButton.setHovering(inToolbar && upButton.containsPoint(e.getPoint()));
 		downButton.setHovering(inToolbar && downButton.containsPoint(e.getPoint()));
+		
+		drawShip = !inToolbar;
+		if (selectedShip != null) {
+			selectedShip.setCenter(e.getX(), e.getY());
+		}
 		
 		e.consume();
 	}

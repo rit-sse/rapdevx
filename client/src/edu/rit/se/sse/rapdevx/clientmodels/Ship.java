@@ -13,7 +13,7 @@ import edu.rit.se.sse.rapdevx.api.dataclasses.Unit;
  * @author Cody Krieger
  * 
  */
-public class Ship extends Unit {
+public class Ship extends Unit implements Cloneable {
 	private int	X;
 	private int	Y;
 
@@ -104,5 +104,15 @@ public class Ship extends Unit {
 			return sc.getMaxhp();
 
 		return 100;
+	}
+	
+	//TODO implement completely
+	public Ship clone() {
+		Ship ship = new Ship();
+		ship.setX(X);
+		ship.setY(Y);
+		ship.setHp(getHp());
+		
+		return ship;
 	}
 }
