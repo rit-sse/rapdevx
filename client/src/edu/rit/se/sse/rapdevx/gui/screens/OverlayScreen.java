@@ -97,10 +97,10 @@ public class OverlayScreen extends Screen implements StateListener
 		readyDisabled = new HoverableImage("assets/Ready-disabled",
 				STARTING_X + READY_MODIFIER_X, STARTING_Y);
 
-		readyText = new Text("Ready", STARTING_X + READY_MODIFIER_X + 28,
+		readyText = new Text("Ready", STARTING_X + READY_MODIFIER_X + 31,
 				STARTING_Y + 9, Color.BLACK);
 		stateText = new Text("Waiting : " + turn, STARTING_X + 100, 15, 2.5,
-				Color.BLACK);
+				Color.WHITE);
 		
 		GameSession.get().addStateListener(this);
 	}

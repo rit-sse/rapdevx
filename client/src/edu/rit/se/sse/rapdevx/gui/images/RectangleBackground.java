@@ -93,11 +93,11 @@ public class RectangleBackground implements IGrayableImage {
 	 *              the Graphics 2d pen
 	 */
 	public void draw(Graphics2D gPen) {
-		Color color1 = new Color(76, 76, 76);
-		Color color2 = new Color(84, 84, 84);
-		Color color3 = new Color(72, 72, 72);
-		Color color4 = new Color(66, 66, 66);
-		Color color5 = new Color(73, 73, 73);
+		Color color1 = new Color(76, 76, 76); // left
+		Color color2 = new Color(84, 84, 84); // top
+		Color color3 = new Color(72, 72, 72); // top right corner
+		Color color4 = new Color(66, 66, 66); // bottom and right
+		Color color5 = new Color(73, 73, 73); // background
 
 		if (pressed) {
 			gPen.setColor(color4);
