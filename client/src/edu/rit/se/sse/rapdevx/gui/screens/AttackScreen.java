@@ -157,26 +157,31 @@ public class AttackScreen extends Screen implements StateListener,
 					// // abilitiesMenu.addButton(new
 					// MenuButton(b.getName(), "abilitiy" ));
 					// }
-					abilitiesMenu.addButton(new TextButton(
-							selectedShip.getX() + 50 + 5,
-							selectedShip.getY() + 20 + 10, 200,
-							50, "Fly", abilitiesMenu));
-					abilitiesMenu.addButton(new TextButton(
-							selectedShip.getX() + 50 + 5,
-							selectedShip.getY() + 20 + 50+ 10, 200,
-							50, "Hydropump", abilitiesMenu));
-					abilitiesMenu.addButton(new TextButton(
-							selectedShip.getX() + 50 + 5,
-							selectedShip.getY() + 20 + 100 + 10, 200,
-							50, "Tackle", abilitiesMenu));
-					abilitiesMenu.addButton(new TextButton(
-							selectedShip.getX() + 50 + 5,
-							selectedShip.getY() + 20 + 150 + 10, 200,
-							50, "Splash", abilitiesMenu));
-					abilitiesMenu.addButton(new TextButton(
-							selectedShip.getX() + 50 + 5,
-							selectedShip.getY() + 20 + 200+10, 200,
-							50, "Dig", abilitiesMenu));
+//					abilitiesMenu.addButton(new TextButton(
+//							selectedShip.getX() + 50 + 5,
+//							selectedShip.getY() + 20 + 10, 200,
+//							50, "Fly", abilitiesMenu));
+//					abilitiesMenu.addButton(new TextButton(
+//							selectedShip.getX() + 50 + 5,
+//							selectedShip.getY() + 20 + 50+ 10, 200,
+//							50, "Hydropump", abilitiesMenu));
+//					abilitiesMenu.addButton(new TextButton(
+//							selectedShip.getX() + 50 + 5,
+//							selectedShip.getY() + 20 + 100 + 10, 200,
+//							50, "Tackle", abilitiesMenu));
+//					abilitiesMenu.addButton(new TextButton(
+//							selectedShip.getX() + 50 + 5,
+//							selectedShip.getY() + 20 + 150 + 10, 200,
+//							50, "Splash", abilitiesMenu));
+//					abilitiesMenu.addButton(new TextButton(
+//							selectedShip.getX() + 50 + 5,
+//							selectedShip.getY() + 20 + 200+10, 200,
+//							50, "Dig", abilitiesMenu));
+					abilitiesMenu.addButton("Fly");
+					abilitiesMenu.addButton("Hydropup");
+					abilitiesMenu.addButton("Tackle");
+					abilitiesMenu.addButton("Splash");
+					abilitiesMenu.addButton("Dig");
 
 					ScreenStack.get().addScreen(abilitiesMenu);
 					for (TextButton button : abilitiesMenu

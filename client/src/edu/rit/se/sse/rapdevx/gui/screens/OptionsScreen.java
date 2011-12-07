@@ -29,39 +29,43 @@ public class OptionsScreen extends Screen implements ActionListener {
 		menu = new Menu(width / 2 - 100, height / 2 - 200);
 
 		continueButton = new TextButton(width / 2 - 100 + 5,
-				height / 2 - 200 + 10, 200, 50, "Continue", menu);
+				height / 2 - 200 + 10, 160, 40, "Continue", menu);
 		settingsButton = new TextButton(width / 2 - 100 + 5, height / 2
-				- 200 + 50 + 10, 200, 50, "Settings", menu);
+				- 200 + 40 + 10, 160, 40, "Settings", menu);
 		helpButton = new TextButton(width / 2 - 100 + 5, height / 2 - 200
-				+ 100 + 10, 200, 50, "Help", menu);
+				+ 80 + 10, 160, 40, "Help", menu);
 		exitButton = new TextButton(width / 2 - 100 + 5, height / 2 - 200
-				+ 150 + 10, 200, 50, "Settings", menu);
+				+ 120 + 10, 160, 40, "Exit", menu);
 
 		continueButton.addActionListener(this);
 		settingsButton.addActionListener(this);
 		helpButton.addActionListener(this);
 		exitButton.addActionListener(this);
 
-		menu.addButton(continueButton);
-		menu.addButton(settingsButton);
-		menu.addButton(helpButton);
-		menu.addButton(exitButton);
+		menu.addButton("Continue");
+		menu.addButton("Settings");
+		menu.addButton("Help");
+		menu.addButton("Exit");
+		for(TextButton button: menu.getButtons()){
+			button.addActionListener(this);
+		}
 	}
 
 	public void init() {
 		ScreenStack.get().addScreen(menu);
 	}
 
+	//TODO Fix this so that it compares the buttons by text
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == continueButton) {
+		if (((TextButton)e.getSource()).getText().equals("Continue")) {
 			// Close this menu
 			ScreenStack.get().removeScreen(menu);
 			ScreenStack.get().removeScreen(this);
-		} else if (e.getSource() == settingsButton) {
+		} else if (((TextButton)e.getSource()).getText().equals("Settings")) {
 			System.out.println("Settings");
-		} else if (e.getSource() == helpButton) {
+		} else if (((TextButton)e.getSource()).getText().equals("Help")){
 			System.out.println("Help");
-		} else if (e.getSource() == exitButton) {
+		} else if (((TextButton)e.getSource()).getText().equals("Exit")){
 			// TODO fix this
 			System.exit(0);
 		}

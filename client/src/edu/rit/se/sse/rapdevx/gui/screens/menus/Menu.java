@@ -24,13 +24,13 @@ public class Menu extends Screen {
 	private final ArrayList<TextButton> buttons = new ArrayList<TextButton>();
 
 	// spacing vars
-	private static final int border = 6; // space between menu and button
+	private static final int border = 7; // space between menu and button
 								// edges
-	private static final int spacing = 6; // space between buttons
+	private static final int spacing = 7; // space between buttons
 	private static final int scale = 1;
 
-	private static final int emptyWidth = border * 2;
-	private static final int emptyHeight = border * 2;
+	private static final int emptyWidth = border + 5;
+	private static final int emptyHeight = border + 5;
 
 	// true if this menu shouldn't be displayed, else false
 	private boolean isHidden = false; // TODO make a getter
@@ -38,6 +38,8 @@ public class Menu extends Screen {
 	// position
 	private int cornerX = 0;
 	private int cornerY = 0;
+	private int drawX = 0;
+	private int drawY = 0;
 
 	// --------------------------------------------------------------------------
 	// Constructors
@@ -53,6 +55,8 @@ public class Menu extends Screen {
 		super(emptyWidth, emptyHeight);
 		this.cornerX = x;
 		this.cornerY = y;
+		this.drawY = y +border+5;
+		this.drawX = x + border;
 	}
 
 	/**
@@ -65,12 +69,12 @@ public class Menu extends Screen {
 	 * @throws IllegalStateException
 	 *               If the given button is null
 	 */
-	public void addButton(TextButton button) throws IllegalStateException {
-		if (button == null) {
-			throw new IllegalStateException("Button cannot be null");
-		} else if (buttons.contains(button)) {
-			return;
-		}
+	public void addButton(String text) throws IllegalStateException {
+//		if (button == null) {
+//			throw new IllegalStateException("Button cannot be null");
+//		} else if (buttons.contains(button)) {
+//			return;
+//		}
 
 		// TODO update Menu screen size based on button, take into account
 		// the button's hidden/visible status too?. This needs to be
@@ -79,21 +83,26 @@ public class Menu extends Screen {
 		// TODO menu should be able to shrink too, right now it can
 		// only grow
 		Dimension screen = getSize();
-
+		if (!buttons.isEmpty()){
+			drawY -= spacing;
+			screenHeight -=spacing ;
+		}
+		TextButton button = new TextButton(drawX, drawY, 140, 40, text,
+				this);
 		// update height
-		int height = button.getHeight();
-		if (!buttons.isEmpty())
-			height += spacing;
+		int height = button.getHeight() + spacing +5;
+		
 
 		// update width
 		int width = button.getWidth() + border * 2;
-		if (width <= screen.width) {
-			width = screenWidth;
-		} else{
-		}
+		// if (width <= screen.width) {
+		// width = screenWidth;
+		// } else{
+		// }
 		screenWidth = width;
 		screenHeight += height;
-
+		drawY += height;
+		
 		buttons.add(button);
 	}
 
@@ -123,8 +132,8 @@ public class Menu extends Screen {
 
 		// draw the backgrond
 		Dimension size = getSize();
-		new RectangleBackground(cornerX, cornerY, size.width, size.height, false)
-				.draw(gPen);
+		new RectangleBackground(cornerX, cornerY, size.width, size.height,
+				false).draw(gPen);
 
 		// location of where to draw the buttons
 		int x = cornerX + border;
@@ -133,13 +142,13 @@ public class Menu extends Screen {
 		// draw each button
 		for (TextButton button : buttons) {
 			// skip hidden buttons
-//			if (button.isHidden()) {
-//				continue;
-//			}
+			// if (button.isHidden()) {
+			// continue;
+			// }
 
 			button.draw(gPen);
 			y += button.getHeight() + spacing; // moving down for the
-										// next button
+									// next button
 			// TODO what about the last button? should it use spacing or
 			// border?
 		}
@@ -213,7 +222,7 @@ public class Menu extends Screen {
 
 		// don't matter what button we've over, release all of them
 		for (TextButton button : buttons) {
-			button.released(x,y);
+			button.released(x, y);
 			System.out.println("what?");
 		}
 		e.consume();

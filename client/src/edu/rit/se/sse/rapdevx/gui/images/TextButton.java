@@ -9,6 +9,7 @@ public class TextButton extends RectangleBackground {
 
 	Text buttonText;
 	Menu menu;
+	String text;
 
 	/**
 	 * Constructor for the rectangle background
@@ -63,8 +64,9 @@ public class TextButton extends RectangleBackground {
 	public TextButton(int x, int y, int width, int height, boolean pressed,
 			boolean hover, String text, Menu menu) {
 		super(x, y, width, height, pressed, hover);
-		buttonText = new Text(text, x + 5, y + 5);
+		buttonText = new Text(text, x + 10, y + 10);
 		this.menu = menu;
+		this.text = text;
 	}
 	
 	public void draw(Graphics2D gPen){
@@ -74,5 +76,9 @@ public class TextButton extends RectangleBackground {
 	
 	public Menu getMenu(){
 		return menu;
+	}
+	
+	public String getText(){
+		return text;
 	}
 }
