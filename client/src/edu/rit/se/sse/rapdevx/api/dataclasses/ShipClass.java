@@ -1,9 +1,12 @@
 package edu.rit.se.sse.rapdevx.api.dataclasses;
 
+import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Vector;
+
+import javax.imageio.ImageIO;
 
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.JsonParseException;
@@ -20,6 +23,8 @@ public class ShipClass {
 	private int					placement_cost;
 	private String				imageid;
 	private String				gid;
+	
+	private Image				image;
 
 	public List<Ability> getAbilities() {
 		return abilities;
@@ -59,6 +64,10 @@ public class ShipClass {
 
 	public void setGid(String gid) {
 		this.gid = gid;
+	}
+	
+	public Image getImage() {
+		return image;
 	}
 
 	/**
@@ -106,6 +115,13 @@ public class ShipClass {
 
 	public ShipClass() {
 		abilities	= new Vector<Ability>();
+		
+		//TODO load with json
+		try {
+			ImageIO.read(new File("assets/ship.png"));
+		} catch (IOException e) {
+			System.err.println("Unable to load ship image");
+		}
 	}
 	public void setImageid(String imageid) {
 		this.imageid = imageid;

@@ -1,17 +1,15 @@
 package edu.rit.se.sse.rapdevx.gui.screens;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import edu.rit.se.sse.rapdevx.api.dataclasses.ShipPlacement;
-import edu.rit.se.sse.rapdevx.clientmodels.Ship;
+import edu.rit.se.sse.rapdevx.clientmodels.AssetLibrary;
 import edu.rit.se.sse.rapdevx.clientstate.GameSession;
 import edu.rit.se.sse.rapdevx.clientstate.MoveState;
 import edu.rit.se.sse.rapdevx.clientstate.UnitPlacementState;
@@ -38,12 +36,12 @@ public class PlacementScreen extends Screen implements StateListener, ActionList
 	private ArrowButton downButton;
 
 	private ArrayList<ShipSelectSquare> shipSelectSquares;
-	private DrawableShip selectedShip;
+	private ShipPlacement curPlacement;
 	private boolean drawSelectedUnit;
 
 	private RectangleBackground background;
 	
-	private ArrayList<DrawableShip> placedShips;
+	private ArrayList<ShipPlacement> placedShips;
 
 	public PlacementScreen(OverlayScreen overlay, Camera camera, int width, int height) {
 		super(width, height);
@@ -70,16 +68,19 @@ public class PlacementScreen extends Screen implements StateListener, ActionList
 		shipSelectSquares = new ArrayList<ShipSelectSquare>();
 		// TODO actually load the ships
 		// Max 5 ships displayed at any time...
-		for (int i = 0; i < 6; i++) {
-			int x = 8;
-			int y = (32 + 8 * (i + 1)) + (72 * (i)) + 5;
-			ShipSelectSquare square = new ShipSelectSquare(x + placementArea.x,
+		int x = 8;
+		int y = 0;
+		for (int i = 0; i < AssetLibrary.getShipClasses().size(); i++) {
+			y = (32 + 8 * ((i % 5) + 1)) + (72 * (i % 5)) + 5;
+			ShipSelectSquare square = new ShipSelectSquare(
+					AssetLibrary.getShipClasses().get(i),
+					x + placementArea.x,
 					y + placementArea.y);
 
 			shipSelectSquares.add(square);
 		}
 		
-		placedShips = new ArrayList<DrawableShip>();
+		placedShips = new ArrayList<ShipPlacement>();
 
 		GameSession.get().addStateListener(this);
 	}
@@ -90,12 +91,12 @@ public class PlacementScreen extends Screen implements StateListener, ActionList
 
 	public void draw(Graphics2D gPen) {
 		gPen.translate(-camera.getX(), -camera.getY());
-		for (DrawableShip ship : placedShips)
+		for (ShipPlacement ship : placedShips)
 			ship.draw(gPen);
 		gPen.translate(camera.getX(), camera.getY());
 		
-		if (drawSelectedUnit && selectedShip != null)
-			selectedShip.draw(gPen);
+		if (drawSelectedUnit && curPlacement != null)
+			curPlacement.draw(gPen);
 		
 		background.draw(gPen);
 		upButton.draw(gPen);
@@ -122,24 +123,22 @@ public class PlacementScreen extends Screen implements StateListener, ActionList
 			{
 				shownIndex += 1;
 				for (ShipSelectSquare square : shipSelectSquares) {
-					square.moveUp();
 					square.setPressed(false);
-					selectedShip = null;
+					curPlacement = null;
 				}
 			} else if (upButton.containsPoint(e.getPoint()) && shownIndex > 0) {
 				shownIndex -= 1;
 				for (ShipSelectSquare square : shipSelectSquares) {
-					square.moveDown();
 					square.setPressed(false);
-					selectedShip = null;
+					curPlacement = null;
 				}
 			} else {
 				for (ShipSelectSquare square : shipSelectSquares) {
 					if (square.containsPoint(e.getPoint())) {
-						//TODO team color selection
-						selectedShip = new DrawableShip((Ship)square.getShip().clone(), Color.RED);
-						square.setPressed(true);
+						curPlacement = new ShipPlacement(e.getX() + camera.getX(),
+								e.getY() + camera.getY(), square.getShipClass());
 						
+						square.setPressed(true);
 						break;
 					}
 				}
@@ -149,12 +148,10 @@ public class PlacementScreen extends Screen implements StateListener, ActionList
 			downButton.setEnabled(shownIndex == 0);
 
 			e.consume();
-		} else if (selectedShip != null) {
+		} else if (curPlacement != null) {
 			// A ship is selected and the user has clicked the map
 			// so add a copy of the ship at the cursor location
-			DrawableShip newShip = (DrawableShip)selectedShip.clone();
-			newShip.setCenter(e.getX() + camera.getX(), e.getY() + camera.getY());
-			placedShips.add(newShip);
+			placedShips.add(curPlacement.clone());
 		}
 	}
 
@@ -169,8 +166,9 @@ public class PlacementScreen extends Screen implements StateListener, ActionList
 		downButton.setHovering(inToolbar && downButton.containsPoint(e.getPoint()));
 		
 		drawSelectedUnit = !inToolbar;
-		if (selectedShip != null) {
-			selectedShip.setCenter(e.getX(), e.getY());
+		if (curPlacement != null) {
+			curPlacement.setX(e.getX());
+			curPlacement.setY(e.getY());
 		}
 		
 		e.consume();
@@ -191,19 +189,23 @@ public class PlacementScreen extends Screen implements StateListener, ActionList
 	
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("ready")) {
-			List<ShipPlacement> placements = new LinkedList<ShipPlacement>();
-			for (DrawableShip ship : placedShips)
-				placements.add(ship.getShip().getShipPlacement());
-			
-			((UnitPlacementState)GameSession.get().getCurrentState()).ready(placements);
+			((UnitPlacementState)GameSession.get().getCurrentState()).ready(placedShips);
 		}
 	}
 
 	public void stateChanged(StateEvent e) {
 		if (e.getNewState() instanceof MoveState) {
+			List<DrawableShip> ships = new ArrayList<DrawableShip>();
+			try {
+				
+			} catch (Exception ex) {
+				ex.printStackTrace();
+				System.out.println("Unable to get ship placements from the server");
+			}
+			
 			overlay.removeActionListener(this);
 			ScreenStack.get().addScreenAfter(this,
-					new MoveScreen(overlay, camera, screenWidth, screenHeight));
+					new MoveScreen(ships, overlay, camera, screenWidth, screenHeight));
 			ScreenStack.get().removeScreen(this);
 		}
 	}

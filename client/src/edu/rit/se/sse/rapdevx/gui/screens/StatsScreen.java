@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.rit.se.sse.rapdevx.api.dataclasses.Ability;
-import edu.rit.se.sse.rapdevx.clientmodels.Ship;
+import edu.rit.se.sse.rapdevx.api.dataclasses.Unit;
 import edu.rit.se.sse.rapdevx.gui.Screen;
 import edu.rit.se.sse.rapdevx.gui.drawable.Text;
 import edu.rit.se.sse.rapdevx.gui.images.RectangleBackground;
@@ -21,7 +21,7 @@ import edu.rit.se.sse.rapdevx.gui.images.RectangleBackground;
 public class StatsScreen extends Screen
 {
 
-	private Ship ship;
+	private Unit ship;
 
 	private int x;
 	private int y;
@@ -47,7 +47,7 @@ public class StatsScreen extends Screen
 	 * @param wHeight
 	 *            the height of the window
 	 */
-	public StatsScreen(int wWidth, int wHeight, Ship ship)
+	public StatsScreen(int wWidth, int wHeight, Unit ship)
 	{
 		super(wWidth, wHeight);
 		x = screenWidth - 300;
@@ -62,7 +62,7 @@ public class StatsScreen extends Screen
 		moveRadius = new Text("Move Radius: 5", x + 10, y + 65, 2.5);
 
 		double hp = ship.getHp();
-		double maxHp = ship.getMaxHp();
+		double maxHp = ship.getMaxHP();
 
 		hpMaxHp = new Text((int) hp + "/" + (int) maxHp, x + 65 + 145, y + 20,
 				1.5);
@@ -122,7 +122,7 @@ public class StatsScreen extends Screen
 		HP.draw(gPen);
 
 		double hp = ship.getHp();
-		double maxHp = ship.getMaxHp();
+		double maxHp = ship.getMaxHP();
 		
 		double scale = hp / maxHp * 195.0;
 		gPen.setColor(new Color(127, 127, 127));
@@ -153,12 +153,12 @@ public class StatsScreen extends Screen
 		}
 	}
 
-	public Ship getShip()
+	public Unit getShip()
 	{
 		return ship;
 	}
 
-	public void setShip(Ship ship)
+	public void setShip(Unit ship)
 	{
 		this.ship = ship;
 	}

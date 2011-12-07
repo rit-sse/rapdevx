@@ -6,7 +6,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.util.List;
 
 import edu.rit.se.sse.rapdevx.api.dataclasses.AbilityUseOrder;
@@ -21,6 +20,7 @@ import edu.rit.se.sse.rapdevx.api.dataclasses.ShipPlacements;
 import edu.rit.se.sse.rapdevx.api.dataclasses.Status;
 import edu.rit.se.sse.rapdevx.api.dataclasses.Statuses;
 import edu.rit.se.sse.rapdevx.api.dataclasses.Results;
+import edu.rit.se.sse.rapdevx.api.dataclasses.Units;
 
 /**
  * API access to the Status object on the server side
@@ -188,6 +188,46 @@ public class GameApi {
 			return true;
 		} else {
 			return false;
+		}
+	}
+	
+	public static Units getUnits(Session userSession) throws Exception {
+		String incomingJson = "";
+
+		try {
+			String game_id = userSession.getgame_id();
+			String session_id = userSession.getsession_id();
+
+			URL url = new URL("http", SERVER_URL, 8080,
+					"/game/"
+							+ game_id
+							+ "/ships?session_id="
+							+ session_id);
+
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			conn.setDoOutput(false);
+			conn.setRequestMethod("GET");
+
+			conn.connect();
+
+			// Get response
+			BufferedReader rd = new BufferedReader(new InputStreamReader(
+					conn.getInputStream()));
+			String line;
+
+			while ((line = rd.readLine()) != null) {
+				incomingJson += line;
+			}
+			rd.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+
+		if (incomingJson.equals("")) {
+			throw new Exception("No data received");
+		} else {
+			return Units.fromJSON(incomingJson);
 		}
 	}
 

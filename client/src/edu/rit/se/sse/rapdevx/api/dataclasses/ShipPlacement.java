@@ -1,5 +1,6 @@
 package edu.rit.se.sse.rapdevx.api.dataclasses;
 
+import java.awt.Graphics2D;
 import java.io.File;
 import java.io.IOException;
 
@@ -8,6 +9,9 @@ import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 
+import edu.rit.se.sse.rapdevx.clientmodels.AssetLibrary;
+import edu.rit.se.sse.rapdevx.gui.Sprite;
+
 /**
  * POJO representing the location of a ship on the server side of things. Will
  * be annotated in order to have Jackson data bindings.
@@ -15,13 +19,16 @@ import org.codehaus.jackson.map.ObjectMapper;
  * @author Ben Nicholas
  * @author Paul Cassidy
  */
-public class ShipPlacement {
+public class ShipPlacement implements Cloneable {
 
 	private static ObjectMapper mapper = new ObjectMapper();
 	
 	private int x;
 	private int y;
-	private String classid;
+	private ShipClass shipClass;
+	
+	//TODO actually get from asset library
+	private final Sprite image = new Sprite("assets/ship.png");
 	
 	public int getX() {
 		return x;
@@ -40,11 +47,24 @@ public class ShipPlacement {
 	}
 
 	public String getClassid() {
-		return classid;
+		return shipClass.getGid();
 	}
 
 	public void setClassid(String classid) {
-		this.classid = classid;
+		this.shipClass = null;
+		
+		for (ShipClass shipClass : AssetLibrary.getShipClasses()) {
+			if (shipClass.getGid().equals(classid)) {
+				this.shipClass = shipClass;
+				return;
+			}
+		}
+		
+		//TODO throw/print error
+	}
+	
+	public void draw(Graphics2D gPen) {
+		image.draw(gPen, x, y, 4);
 	}
 
 	/**
@@ -97,9 +117,19 @@ public class ShipPlacement {
 
 	}
 	
+	public ShipPlacement(int x, int y, ShipClass shipClass) {
+		this.x = x;
+		this.y = y;
+		this.shipClass = shipClass;
+	}
+	
 	public boolean equals(Object other) {
 		ShipPlacement ot = (ShipPlacement) other;
-		return (x == ot.getX()) && (y == ot.getY()) && (classid.equals(ot.getClassid()));
+		return (x == ot.getX()) && (y == ot.getY()) && (shipClass.getGid().equals(ot.getClassid()));
+	}
+	
+	public ShipPlacement clone() {
+		return new ShipPlacement(x, y, shipClass);
 	}
 
 }

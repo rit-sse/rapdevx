@@ -1,5 +1,7 @@
 package edu.rit.se.sse.rapdevx.api.dataclasses;
 
+import java.awt.Graphics2D;
+import java.awt.Point;
 import java.io.File;
 import java.io.IOException;
 import java.util.Hashtable;
@@ -8,6 +10,9 @@ import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
+
+import edu.rit.se.sse.rapdevx.clientmodels.AssetLibrary;
+import edu.rit.se.sse.rapdevx.gui.Sprite;
 
 /**
  * POJO representing an instance of a unit/ship.
@@ -21,10 +26,13 @@ public class Unit {
 	
 	private int player_num;
 	private int hp;
-	private String classid;
 	private String gid;
-	private Hashtable<Integer, Integer> location;
+	private Point location;
 	
+	private ShipClass shipClass;
+	
+	//TODO load from asset library
+	private Sprite image = new Sprite("assets/ship.png");
 	
 	public int getPlayer_num() {
 		return player_num;
@@ -39,16 +47,58 @@ public class Unit {
 		this.hp = hp;
 	}
 	public String getClassid() {
-		return classid;
+		return shipClass.getGid();
 	}
 	public void setClassid(String classid) {
-		this.classid = classid;
+		this.shipClass = null;
+		
+		for (ShipClass shipClass : AssetLibrary.getShipClasses()) {
+			if (shipClass.getGid().equals(classid)) {
+				this.shipClass = shipClass;
+				return;
+			}
+		}
+		
+		//TODO throw/print error
 	}
 	public String getgid() {
 		return gid;
 	}
 	public void setgid(String gid) {
 		this.gid = gid;
+	}
+	
+	public int getX() {
+		return location.x;
+	}
+	public void setX(int x) {
+		this.location.x = x;
+	}
+	
+	public int getY() {
+		return location.y;
+	}
+	public void setY(int y) {
+		this.location.y = y;
+	}
+	
+	public Point getLocation() {
+		return this.location;
+	}
+	public void setLocation(Point location) {
+		this.location = location;
+	}
+	
+	public int getMaxHP() {
+		return shipClass.getMaxhp();
+	}
+	public String getClassName() {
+		//TODO real names?
+		return gid;
+	}
+	
+	public void draw(Graphics2D gPen) {
+		image.draw(gPen, location.x, location.y);
 	}
 	
 
@@ -99,10 +149,15 @@ public class Unit {
 		
 	}
 	public void setTuple(Hashtable<Integer, Integer> tuple) {
-		this.location = tuple;
+		int x = tuple.elements().nextElement();
+		int y = tuple.elements().nextElement();
+		
+		this.location = new Point(x, y);
 	}
 	public Hashtable<Integer, Integer> getTuple() {
-		return location;
+		Hashtable<Integer, Integer> tuple = new Hashtable<Integer, Integer>();
+		tuple.put(this.location.x, this.location.y);
+		return tuple;
 	}
 	
 }

@@ -1,6 +1,5 @@
 package edu.rit.se.sse.rapdevx.gui.screens;
 
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -9,8 +8,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Area;
 import java.util.ArrayList;
+import java.util.List;
 
-import edu.rit.se.sse.rapdevx.clientmodels.Ship;
 import edu.rit.se.sse.rapdevx.clientstate.GameSession;
 import edu.rit.se.sse.rapdevx.clientstate.MoveState;
 import edu.rit.se.sse.rapdevx.events.StateEvent;
@@ -30,7 +29,7 @@ public class AttackScreen extends Screen implements StateListener,
 	private Camera camera;
 
 	/** A list of ships currently on the field */
-	private ArrayList<DrawableShip> shipList = new ArrayList<DrawableShip>();
+	private List<DrawableShip> shipList = new ArrayList<DrawableShip>();
 	private DrawableShip selectedShip;
 
 	/** A list of all the attack paths on the field */
@@ -44,7 +43,7 @@ public class AttackScreen extends Screen implements StateListener,
 
 	private OverlayScreen overlay;
 
-	public AttackScreen(OverlayScreen overlay, Camera camera, int width,
+	public AttackScreen(List<DrawableShip> ships, OverlayScreen overlay, Camera camera, int width,
 			int height) {
 		super(width, height);
 		this.camera = camera;
@@ -54,27 +53,7 @@ public class AttackScreen extends Screen implements StateListener,
 
 		GameSession.get().addStateListener(this);
 
-		Ship ship = new Ship();
-		ship.setX(150);
-		ship.setY(150);
-
-		shipList.add(new DrawableShip(ship, new Color(48, 129, 233)));
-
-		ship = new Ship();
-		ship.setX(20);
-		ship.setY(50);
-
-		shipList.add(new DrawableShip(ship, new Color(48, 129, 233)));
-
-		Ship ship2 = new Ship();
-		ship2.setX(300);
-		ship2.setY(300);
-		shipList.add(new DrawableShip(ship2, new Color(100, 255, 130)));
-
-		ship2 = new Ship();
-		ship2.setX(10);
-		ship2.setY(200);
-		shipList.add(new DrawableShip(ship2, new Color(100, 255, 130)));
+		this.shipList = ships;
 	}
 
 	public void update(boolean hasFocus, boolean isVisible) {
@@ -240,7 +219,7 @@ public class AttackScreen extends Screen implements StateListener,
 
 			ScreenStack.get().addScreenAfter(
 					this,
-					new MoveScreen(overlay, camera, screenWidth,
+					new MoveScreen(shipList, overlay, camera, screenWidth,
 							screenHeight));
 			ScreenStack.get().removeScreen(this);
 			GameSession.get().removeStateListener(this);
@@ -266,17 +245,17 @@ public class AttackScreen extends Screen implements StateListener,
 			if (statsScreen == null) {
 				statsScreen = new StatsScreen(
 				/* 300, 200, */screenWidth, screenHeight,
-						ship.getShip());
+						ship.getUnit());
 				ScreenStack.get().addScreenAfter(this, statsScreen);
 			} else if (statsScreen != null
-					&& statsScreen.getShip() != ship.getShip()) {
+					&& statsScreen.getShip() != ship.getUnit()) {
 				ScreenStack.get().removeScreen(statsScreen);
 				statsScreen = null;
 			}
 		} else {
 			// If the there is a stats screen for this ship, get rid of it
 			if (statsScreen != null
-					&& statsScreen.getShip() == ship.getShip()) {
+					&& statsScreen.getShip() == ship.getUnit()) {
 				ScreenStack.get().removeScreen(statsScreen);
 				statsScreen = null;
 			}
