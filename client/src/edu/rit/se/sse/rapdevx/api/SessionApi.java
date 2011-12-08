@@ -108,7 +108,7 @@ public class SessionApi {
 		}
 
 		if (incomingJson.equals("")) {
-			throw new Exception("Something is REALLY FUCKED UP.");
+			throw new Exception("No JSON recieved from server");
 		} else {
 			// need to pull the change for the below method.
 			return Session.fromJSON(incomingJson);
