@@ -60,4 +60,5 @@ if __name__ == '__main__':
     print(ships[0].location)
     print(ships[1].location)
     
+    print(JSON_Construct_DTO_Assets(c.getAssetSet().toJSON()))
     

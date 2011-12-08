@@ -1,3 +1,6 @@
+
+import urllib
+
 from bottle import run, get, post, delete, request
 from bottle import *
 from session import *
@@ -72,20 +75,23 @@ def get_game_assets(game_id=None):
 
     assets = game.getAssetSet()
 
-    return assets.encode()
+    return assets.toJSON()
 
 # Return game status (progress) as json
 @get('/game/:game_id')
 def g_game(game_id=None):
     game = get_game(game_id)
 
-    status = game.getGameProgress()
+    session_id = request.query.session_id
+    session = get_session(session_id)
 
-    return status.encode()
+    status = game.getGameProgress(session.player_num)
+
+    return status.toJSON()
 
 # Indicate that the user is ready to start the game
 @post('/game/:game_id')
-def g_game(game_id=None):
+def p_game(game_id=None):
     ready = request.forms.ready
     session_id = request.forms.session_id
 
@@ -93,7 +99,7 @@ def g_game(game_id=None):
     session = get_session(session_id)
 
     if ready:
-        game.setReady(session)
+        game.setReady(session.player_num, True)
 
 # Set the initial position of all units from given POST data
 @post('/game/:game_id/ships')
@@ -106,7 +112,7 @@ def p_game_ships(game_id=None):
 
     unit_layout = JSON_Construct_DTO_ShipPlacement(unit_layout_json)
     
-    game.setShipPlacement(unit_layout, session_id.player_num)
+    game.setShipPlacement(unit_layout, session.player_num)
 
 # Return the location and type of all ships as json
 # { # Example
@@ -116,9 +122,16 @@ def p_game_ships(game_id=None):
 @get('/game/:game_id/ships')
 def g_game_ships(game_id=None):
     game = get_game(game_id)
-    # TODO: waiting on mitch integration
 
-    return "GET /game/" + str(game_id) + "/ships"
+    session_id = request.query.session_id
+    session = get_session(session_id)
+
+    unit_list = game.getAllDTOShips(session.player_num)
+    unit_list = [x.encode() for x in unit_list]
+
+    units = {"units" : unit_list}
+
+    return json.dumps(units)
 
 # Create a new movement order from POST data
 @post('/game/:game_id/turns/:turn_id/moves')
@@ -143,7 +156,7 @@ def g_game_turns_moves(game_id=None, turn_id=None):
 
     movement_orders = game.getPlayerMoveList(session.player_num)
 
-    orders_json_array = [order.encode() for order in movement_orders]
+    orders_json_array = [order.toJSON() for order in movement_orders]
     return json.dumps(orders_json_array)
 
 # Delete a move from the current turn
@@ -179,7 +192,7 @@ def g_game_turns_attacks(game_id=None, turn_id=None):
 
     attack_orders = game.getPlayerMoveList(session.player_num)
 
-    orders_json_array = [order.encode() for order in attack_orders]
+    orders_json_array = [order.toJSON() for order in attack_orders]
     return json.dumps(orders_json_array)
 
 # Delete an attack from the current turn
@@ -212,7 +225,7 @@ def g_game_turns_moves_results(game_id=None, turn_id=None):
 
     results = getTurnMoveResults(turn_id)
 
-    return results.encode
+    return results.toJSON()
 
 # Get the finalized attack orders of given turn as json
 @get('/game/:game_id/turns/:turn_id/attacks/results')
@@ -224,7 +237,7 @@ def g_game_turns_attacks_results(game_id=None, turn_id=None):
 
     results = getTurnAttackResults(turn_id)
 
-    return results.encode
+    return results.toJSON()
 
 if __name__ == "__main__":
     run(host='localhost', port=8080)
