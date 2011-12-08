@@ -34,7 +34,7 @@ public class DrawableShip extends DrawableObject implements Cloneable {
 	private DrawablePath		path;
 
 	public DrawableShip(Unit unit, Color teamColor) {
-		this(unit.getX() * 2, unit.getY() * 2, 64, 64, teamColor);
+		this(unit.getX(), unit.getY(), 64, 64, teamColor);
 		this.unit = unit;
 	}
 	

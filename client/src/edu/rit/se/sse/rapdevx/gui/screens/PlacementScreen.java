@@ -1,5 +1,6 @@
 package edu.rit.se.sse.rapdevx.gui.screens;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
@@ -8,7 +9,9 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.rit.se.sse.rapdevx.api.GameApi;
 import edu.rit.se.sse.rapdevx.api.dataclasses.ShipPlacement;
+import edu.rit.se.sse.rapdevx.api.dataclasses.Unit;
 import edu.rit.se.sse.rapdevx.clientmodels.AssetLibrary;
 import edu.rit.se.sse.rapdevx.clientstate.GameSession;
 import edu.rit.se.sse.rapdevx.clientstate.MoveState;
@@ -195,18 +198,21 @@ public class PlacementScreen extends Screen implements StateListener, ActionList
 
 	public void stateChanged(StateEvent e) {
 		if (e.getNewState() instanceof MoveState) {
-			List<DrawableShip> ships = new ArrayList<DrawableShip>();
 			try {
+				List<DrawableShip>ships = new ArrayList<DrawableShip>();
+				for (Unit unit : GameApi.getUnits(GameSession.get().getSession()).getUnits()) {
+					ships.add(new DrawableShip(unit, Color.RED));
+				}
+				
+				overlay.removeActionListener(this);
+				ScreenStack.get().addScreenAfter(this,
+						new MoveScreen(ships, overlay, camera, screenWidth, screenHeight));
+				ScreenStack.get().removeScreen(this);
 				
 			} catch (Exception ex) {
 				ex.printStackTrace();
 				System.out.println("Unable to get ship placements from the server");
 			}
-			
-			overlay.removeActionListener(this);
-			ScreenStack.get().addScreenAfter(this,
-					new MoveScreen(ships, overlay, camera, screenWidth, screenHeight));
-			ScreenStack.get().removeScreen(this);
 		}
 	}
 

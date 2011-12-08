@@ -73,7 +73,7 @@ public class StatsScreen extends Screen
 		
 		List<Ability> abilities = new ArrayList<Ability>();
 		abilities.add(new Ability());
-		abilities.get(0).setDefault_damage(5);
+		abilities.get(0).setDefaultDamage(5);
 		abilities.get(0).setName("Bob");
 		abilities.get(0).setRadius(9);
 		abilities.add(new Ability());
@@ -86,7 +86,7 @@ public class StatsScreen extends Screen
 		{
 			this.abilities.add(new Text(ability.getName() + ": Radius: "
 					+ ability.getRadius() + " Damage: "
-					+ ability.getDefault_damage(), x + 35, y + yPosition, 1.5));
+					+ ability.getDefaultDamage(), x + 35, y + yPosition, 1.5));
 			yPosition += 10;
 		}
 		
