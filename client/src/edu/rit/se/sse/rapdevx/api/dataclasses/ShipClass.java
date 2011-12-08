@@ -1,18 +1,18 @@
 package edu.rit.se.sse.rapdevx.api.dataclasses;
 
+import java.awt.Image;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 import java.util.Vector;
 
-import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
+import javax.imageio.ImageIO;
+
+import com.google.gson.Gson;
 
 public class ShipClass {
-
-	private static ObjectMapper	mapper		= new ObjectMapper();
+	
 	private List<Ability>		abilities;
 	private List<String>		types = new Vector<String>();
 	private int					maxhp;
@@ -20,6 +20,8 @@ public class ShipClass {
 	private int					placement_cost;
 	private String				imageid;
 	private String				gid;
+	
+	private transient Image		image;
 
 	public List<Ability> getAbilities() {
 		return abilities;
@@ -60,6 +62,10 @@ public class ShipClass {
 	public void setGid(String gid) {
 		this.gid = gid;
 	}
+	
+	public Image getImage() {
+		return image;
+	}
 
 	/**
 	 * Creates and maps to an ShipClass object.
@@ -67,21 +73,8 @@ public class ShipClass {
 	 * @return The mapped ShipClass as an ShipClass object. or null if error.
 	 */
 	public static ShipClass fromJSON(String incomingJson){
-
-		try {
-			ShipClass shipClass = mapper.readValue(incomingJson, ShipClass.class);
-			return shipClass;
-		} catch (JsonParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
+		Gson gson = new Gson();
+		return gson.fromJson(incomingJson, ShipClass.class);
 	}
 
 	/**
@@ -90,23 +83,29 @@ public class ShipClass {
 	 * @param shipClass
 	 */
 	public void toJSON(ShipClass shipClass) {
+		Gson gson = new Gson();
+		String json = gson.toJson(shipClass);
+		
 		try {
-			mapper.writeValue(new File("ShipClassFromJava.json"), shipClass);
-		} catch (JsonGenerationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			FileWriter file = new FileWriter(new File("ShipClassFromJava.json"));
+			file.write(json);
+			file.close();
+		} catch(IOException e) {
+			System.err.println("Unable to write units json to file");
 		}
 	}
 
 	public ShipClass() {
 		abilities	= new Vector<Ability>();
+		
+		//TODO load with json
+		try {
+			ImageIO.read(new File("assets/ship.png"));
+		} catch (IOException e) {
+			System.err.println("Unable to load ship image");
+		}
 	}
+	
 	public void setImageid(String imageid) {
 		this.imageid = imageid;
 	}

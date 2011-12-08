@@ -27,6 +27,8 @@ public abstract class Screen implements ScreenEvents {
 		this.screenHeight = height;
 	}
 	
+	public void init() {}
+	
 	/**
 	 * Adjusts this screen's dimensions
 	 * @param width Increaes this screen's width by this amount (negative numbers will decrease the width)

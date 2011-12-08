@@ -4,6 +4,7 @@
 package edu.rit.se.sse.rapdevx.clientstate;
 
 import edu.rit.se.sse.rapdevx.api.GameApi;
+import edu.rit.se.sse.rapdevx.api.dataclasses.AbilityUseOrder;
 
 /**
  * @author Cody Krieger
@@ -20,8 +21,8 @@ public class AttackState extends StateBase {
 	/**
 	 * Make an attack and send it to the server.
 	 */
-	public void makeAttack(/* TODO take in an attack from the GUI */) {
-		// TODO GameApi.submitAbilityUseOrder(userSession, attack)
+	public void makeAttack(AbilityUseOrder attack) {
+		GameApi.submitAbilityUseOrder(GameSession.get().getSession(),0, attack);
 	}
 
 	/**
@@ -40,4 +41,5 @@ public class AttackState extends StateBase {
 	protected void finishedPolling() {
 		GameSession.get().advanceState();
 	}
+
 }

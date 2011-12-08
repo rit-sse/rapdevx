@@ -5,13 +5,15 @@ package edu.rit.se.sse.rapdevx.gui.screens.menus;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import edu.rit.se.sse.rapdevx.gui.RectangleBackground;
 import edu.rit.se.sse.rapdevx.gui.Screen;
+import edu.rit.se.sse.rapdevx.gui.images.RectangleBackground;
+import edu.rit.se.sse.rapdevx.gui.images.TextButton;
 
 /**
  * @author dpk3062
@@ -19,16 +21,16 @@ import edu.rit.se.sse.rapdevx.gui.Screen;
 public class Menu extends Screen {
 
 	// Holds all of this menu's buttons
-	private final ArrayList<MenuButton> buttons = new ArrayList<MenuButton>();
+	private final ArrayList<TextButton> buttons = new ArrayList<TextButton>();
 
 	// spacing vars
-	private static final int border = 6; // space between menu and button
+	private static final int border = 7; // space between menu and button
 								// edges
-	private static final int spacing = 6; // space between buttons
+	private static final int spacing = 7; // space between buttons
 	private static final int scale = 1;
 
-	private static final int emptyWidth = border * 2;
-	private static final int emptyHeight = border * 2;
+	private static final int emptyWidth = border + 5;
+	private static final int emptyHeight = border + 5;
 
 	// true if this menu shouldn't be displayed, else false
 	private boolean isHidden = false; // TODO make a getter
@@ -36,6 +38,8 @@ public class Menu extends Screen {
 	// position
 	private int cornerX = 0;
 	private int cornerY = 0;
+	private int drawX = 0;
+	private int drawY = 0;
 
 	// --------------------------------------------------------------------------
 	// Constructors
@@ -51,6 +55,8 @@ public class Menu extends Screen {
 		super(emptyWidth, emptyHeight);
 		this.cornerX = x;
 		this.cornerY = y;
+		this.drawY = y +border+5;
+		this.drawX = x + border;
 	}
 
 	/**
@@ -63,12 +69,12 @@ public class Menu extends Screen {
 	 * @throws IllegalStateException
 	 *               If the given button is null
 	 */
-	public void addButton(MenuButton button) throws IllegalStateException {
-		if (button == null) {
-			throw new IllegalStateException("Button cannot be null");
-		} else if (buttons.contains(button)) {
-			return;
-		}
+	public void addButton(String text) throws IllegalStateException {
+//		if (button == null) {
+//			throw new IllegalStateException("Button cannot be null");
+//		} else if (buttons.contains(button)) {
+//			return;
+//		}
 
 		// TODO update Menu screen size based on button, take into account
 		// the button's hidden/visible status too?. This needs to be
@@ -77,21 +83,26 @@ public class Menu extends Screen {
 		// TODO menu should be able to shrink too, right now it can
 		// only grow
 		Dimension screen = getSize();
-
+		if (!buttons.isEmpty()){
+			drawY -= spacing;
+			screenHeight -=spacing ;
+		}
+		TextButton button = new TextButton(drawX, drawY, 140, 40, text,
+				this);
 		// update height
-		int height = button.getSize().height;
-		if (!buttons.isEmpty())
-			height += spacing;
+		int height = button.getHeight() + spacing +5;
+		
 
 		// update width
-		int width = button.getSize().width + border * 2;
-		if (width <= screen.width) {
-			width = screenWidth;
-		} else{
-		}
+		int width = button.getWidth() + border * 2;
+		// if (width <= screen.width) {
+		// width = screenWidth;
+		// } else{
+		// }
 		screenWidth = width;
 		screenHeight += height;
-
+		drawY += height;
+		
 		buttons.add(button);
 	}
 
@@ -121,27 +132,26 @@ public class Menu extends Screen {
 
 		// draw the backgrond
 		Dimension size = getSize();
-		new RectangleBackground(cornerX, cornerY, size.width, size.height)
-				.draw(gPen);
+		new RectangleBackground(cornerX, cornerY, size.width, size.height,
+				false).draw(gPen);
 
 		// location of where to draw the buttons
 		int x = cornerX + border;
 		int y = cornerY + border;
 
 		// draw each button
-		for (MenuButton button : buttons) {
+		for (TextButton button : buttons) {
 			// skip hidden buttons
-			if (button.isHidden()) {
-				continue;
-			}
+			// if (button.isHidden()) {
+			// continue;
+			// }
 
-			button.draw(gPen, x, y, scale);
-			y += button.getSize().height + spacing; // moving down for the
-										// next button
+			button.draw(gPen);
+			y += button.getHeight() + spacing; // moving down for the
+									// next button
 			// TODO what about the last button? should it use spacing or
 			// border?
 		}
-		System.out.println(size.getWidth());
 
 		// TODO if we don't have focus, draw transparent, light gray myst
 		// over ourself
@@ -167,8 +177,8 @@ public class Menu extends Screen {
 			return;
 		}
 
-		MenuButton button = buttons.get(number);
-		button.clicked();
+		TextButton button = buttons.get(number);
+		button.setPressed(true);
 	}
 
 	/*
@@ -187,8 +197,8 @@ public class Menu extends Screen {
 			return;
 		}
 
-		for (MenuButton button : getButtonsOver(x, y)) {
-			button.setPressed(button.includesPoint(x, y));
+		for (TextButton button : getButtonsOver(x, y)) {
+			button.setPressed(button.containsPoint(new Point(x, y)));
 		}
 		e.consume();
 	}
@@ -210,9 +220,9 @@ public class Menu extends Screen {
 		}
 
 		// don't matter what button we've over, release all of them
-		for (MenuButton button : buttons) {
+		for (TextButton button : buttons) {
 			button.released(x, y);
-			button.setPressed(false);
+			System.out.println("what?");
 		}
 		e.consume();
 	}
@@ -236,8 +246,8 @@ public class Menu extends Screen {
 		}
 
 		// a button is selected when the mouse is over it
-		for (MenuButton button : buttons) {
-			button.setSelected(button.includesPoint(x, y));
+		for (TextButton button : buttons) {
+			button.setHovering(button.containsPoint(new Point(x, y)));
 		}
 
 		e.consume();
@@ -258,11 +268,11 @@ public class Menu extends Screen {
 	 * @return A collection of MenuButtons. Will may be empty, but will never
 	 *         be null
 	 */
-	private Collection<MenuButton> getButtonsOver(int x, int y) {
-		Collection<MenuButton> overButtons = new ArrayList<MenuButton>();
+	private Collection<TextButton> getButtonsOver(int x, int y) {
+		Collection<TextButton> overButtons = new ArrayList<TextButton>();
 
-		for (MenuButton button : buttons) {
-			if (button.includesPoint(x, y)) {
+		for (TextButton button : buttons) {
+			if (button.containsPoint(new Point(x, y))) {
 				overButtons.add(button);
 			}
 		}
@@ -293,7 +303,7 @@ public class Menu extends Screen {
 		return isHidden;
 	}
 
-	public ArrayList<MenuButton> getButtons() {
+	public ArrayList<TextButton> getButtons() {
 		return buttons;
 	}
 

@@ -21,17 +21,22 @@ public class GameSession {
 	private static GameSession						instance		= new GameSession();
 	private ConcurrentLinkedQueue<StateListener>	listeners		= new ConcurrentLinkedQueue<StateListener>();
 
-	private StateBase								currentState	= new UnitPlacementState();
+	private StateBase								currentState;
 	private Session									session;
 
 	private List<ShipClass>							shipClasses		= new Vector<ShipClass>();
 
 	private GameSession() {
-
+		this.currentState = new StartingState();
+		this.session = ((StartingState)currentState).getSession();
 	}
 
 	public static GameSession get() {
 		return instance;
+	}
+	
+	public void init() {
+		((StartingState)currentState).init();
 	}
 
 	/**

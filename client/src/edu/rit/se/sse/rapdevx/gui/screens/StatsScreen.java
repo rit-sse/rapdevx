@@ -7,10 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.rit.se.sse.rapdevx.api.dataclasses.Ability;
-import edu.rit.se.sse.rapdevx.clientmodels.Ship;
-import edu.rit.se.sse.rapdevx.gui.RectangleBackground;
+import edu.rit.se.sse.rapdevx.api.dataclasses.Unit;
 import edu.rit.se.sse.rapdevx.gui.Screen;
 import edu.rit.se.sse.rapdevx.gui.drawable.Text;
+import edu.rit.se.sse.rapdevx.gui.images.RectangleBackground;
 
 /**
  * The stats screen that shows up when you hover
@@ -21,7 +21,7 @@ import edu.rit.se.sse.rapdevx.gui.drawable.Text;
 public class StatsScreen extends Screen
 {
 
-	private Ship ship;
+	private Unit ship;
 
 	private int x;
 	private int y;
@@ -31,6 +31,7 @@ public class StatsScreen extends Screen
 	private Text hpMaxHp;
 	private Text abilitiesWord;
 	private ArrayList<Text> abilities = new ArrayList<Text>();
+	private RectangleBackground background;
 
 	// private Ship ship;
 
@@ -46,11 +47,12 @@ public class StatsScreen extends Screen
 	 * @param wHeight
 	 *            the height of the window
 	 */
-	public StatsScreen(int wWidth, int wHeight, Ship ship)
+	public StatsScreen(int wWidth, int wHeight, Unit ship)
 	{
 		super(wWidth, wHeight);
 		x = screenWidth - 300;
 		y = screenHeight - 200;
+		background = new RectangleBackground(x, y, wWidth, wHeight, false);
 		
 		this.ship = ship;
 		
@@ -60,7 +62,7 @@ public class StatsScreen extends Screen
 		moveRadius = new Text("Move Radius: 5", x + 10, y + 65, 2.5);
 
 		double hp = ship.getHp();
-		double maxHp = ship.getMaxHp();
+		double maxHp = ship.getMaxHP();
 
 		hpMaxHp = new Text((int) hp + "/" + (int) maxHp, x + 65 + 145, y + 20,
 				1.5);
@@ -71,7 +73,7 @@ public class StatsScreen extends Screen
 		
 		List<Ability> abilities = new ArrayList<Ability>();
 		abilities.add(new Ability());
-		abilities.get(0).setDefault_damage(5);
+		abilities.get(0).setDefaultDamage(5);
 		abilities.get(0).setName("Bob");
 		abilities.get(0).setRadius(9);
 		abilities.add(new Ability());
@@ -84,7 +86,7 @@ public class StatsScreen extends Screen
 		{
 			this.abilities.add(new Text(ability.getName() + ": Radius: "
 					+ ability.getRadius() + " Damage: "
-					+ ability.getDefault_damage(), x + 35, y + yPosition, 1.5));
+					+ ability.getDefaultDamage(), x + 35, y + yPosition, 1.5));
 			yPosition += 10;
 		}
 		
@@ -106,7 +108,7 @@ public class StatsScreen extends Screen
 
 	public void draw(Graphics2D gPen)
 	{
-		new RectangleBackground(x, y, 300, 200).draw(gPen);
+		new RectangleBackground(x, y, 300, 200, true).draw(gPen);
 		gPen.setColor(Color.BLACK);
 		name.draw(gPen);
 		drawHPBar(gPen);
@@ -120,7 +122,7 @@ public class StatsScreen extends Screen
 		HP.draw(gPen);
 
 		double hp = ship.getHp();
-		double maxHp = ship.getMaxHp();
+		double maxHp = ship.getMaxHP();
 		
 		double scale = hp / maxHp * 195.0;
 		gPen.setColor(new Color(127, 127, 127));
@@ -151,12 +153,12 @@ public class StatsScreen extends Screen
 		}
 	}
 
-	public Ship getShip()
+	public Unit getShip()
 	{
 		return ship;
 	}
 
-	public void setShip(Ship ship)
+	public void setShip(Unit ship)
 	{
 		this.ship = ship;
 	}

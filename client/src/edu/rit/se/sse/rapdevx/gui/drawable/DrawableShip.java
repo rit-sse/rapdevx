@@ -14,17 +14,17 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import edu.rit.se.sse.rapdevx.api.dataclasses.MovementOrder;
+import edu.rit.se.sse.rapdevx.api.dataclasses.Unit;
 import edu.rit.se.sse.rapdevx.clientmodels.Path;
-import edu.rit.se.sse.rapdevx.clientmodels.Ship;
 import edu.rit.se.sse.rapdevx.gui.Art;
 import edu.rit.se.sse.rapdevx.gui.ImageColorizer;
 
-public class DrawableShip extends DrawableObject {
+public class DrawableShip extends DrawableObject implements Cloneable {
 
 	private static final String	SHIP_IMAGE			= "assets/ship.png";
 	private static final String	SHIP_CLEAR_IMAGE	= "assets/clear_ship.png";
 
-	private Ship				ship;
+	private Unit				unit;
 	private boolean				isSelected;
 	private Color				teamColor;
 
@@ -33,11 +33,15 @@ public class DrawableShip extends DrawableObject {
 
 	private DrawablePath		path;
 
-	public DrawableShip(Ship ship, Color teamColor) {
-		super(ship.getX() * 2, ship.getY() * 2, 64, 64);
+	public DrawableShip(Unit unit, Color teamColor) {
+		this(unit.getX(), unit.getY(), 64, 64, teamColor);
+		this.unit = unit;
+	}
+	
+	public DrawableShip(int x, int y, int width, int height, Color teamColor) {
+		super(x, y, width, height);
 		this.isSelected = false;
 		this.teamColor = teamColor;
-		this.ship = ship;
 
 		// Load the ship image
 		try {
@@ -71,6 +75,7 @@ public class DrawableShip extends DrawableObject {
 
 	@Override
 	public void draw(Graphics2D gPen, Rectangle2D bounds) {
+		//TODO remove bounds variable
 		if (isSelected) {
 			gPen.setColor(teamColor);
 			gPen.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
@@ -114,8 +119,8 @@ public class DrawableShip extends DrawableObject {
 		return new Ellipse2D.Double(x - 5, y + 3, 68, 68);
 	}
 
-	public Ship getShip() {
-		return ship;
+	public Unit getUnit() {
+		return unit;
 	}
 
 	public void setPath(DrawablePath thisPath) {
@@ -140,7 +145,7 @@ public class DrawableShip extends DrawableObject {
 		MovementOrder order = new MovementOrder();
 
 		order.setPATH(getPath().getMovementOrderPath());
-		order.setUnitid(ship.getgid());
+		order.setUnitid(unit.getgid());
 		order.setGid("garbage");
 
 		return order;

@@ -1,12 +1,16 @@
 package edu.rit.se.sse.rapdevx.api.dataclasses;
 
+import java.awt.Graphics2D;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 
-import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import edu.rit.se.sse.rapdevx.api.json.ShipClassIdConverter;
+import edu.rit.se.sse.rapdevx.clientmodels.AssetLibrary;
+import edu.rit.se.sse.rapdevx.gui.Sprite;
 
 /**
  * POJO representing the location of a ship on the server side of things. Will
@@ -15,13 +19,14 @@ import org.codehaus.jackson.map.ObjectMapper;
  * @author Ben Nicholas
  * @author Paul Cassidy
  */
-public class ShipPlacement {
-
-	private static ObjectMapper mapper = new ObjectMapper();
+public class ShipPlacement implements Cloneable {
 	
 	private int x;
 	private int y;
-	private String classid;
+	private ShipClass shipClass;
+	
+	//TODO actually get from asset library
+	private final transient Sprite image = new Sprite("assets/ship.png");
 	
 	public int getX() {
 		return x;
@@ -40,11 +45,24 @@ public class ShipPlacement {
 	}
 
 	public String getClassid() {
-		return classid;
+		return shipClass.getGid();
 	}
 
 	public void setClassid(String classid) {
-		this.classid = classid;
+		this.shipClass = null;
+		
+		for (ShipClass shipClass : AssetLibrary.getShipClasses()) {
+			if (shipClass.getGid().equals(classid)) {
+				this.shipClass = shipClass;
+				return;
+			}
+		}
+		
+		//TODO throw/print error
+	}
+	
+	public void draw(Graphics2D gPen) {
+		image.draw(gPen, x, y, 4);
 	}
 
 	/**
@@ -54,22 +72,12 @@ public class ShipPlacement {
 	 *         error.
 	 */
 	public static ShipPlacement fromJSON(String incomingJson) {
-
-		try {
-			ShipPlacement shipPlacement = mapper.readValue(incomingJson,
-					ShipPlacement.class);
-			return shipPlacement;
-		} catch (JsonParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
+		// Load the json by looking up a ship class by id in the asset library
+		GsonBuilder builder = new GsonBuilder();
+		builder.registerTypeAdapter(ShipClass.class, new ShipClassIdConverter());
+		
+		Gson gson = builder.create();
+		return gson.fromJson(incomingJson, ShipPlacement.class);
 	}
 
 	/**
@@ -78,18 +86,15 @@ public class ShipPlacement {
 	 * @param ShipPlacement
 	 */
 	public void toJSON(ShipPlacement shipPlacement) {
+		Gson gson = new Gson();
+		String json = gson.toJson(shipPlacement);
+
 		try {
-			mapper.writeValue(new File("ShipPlacementFromJava.json"),
-					shipPlacement);
-		} catch (JsonGenerationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			FileWriter file = new FileWriter(new File("ShipPlacementFromJava.json"));
+			file.write(json);
+			file.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.err.println("Unable to write units json to file");
 		}
 	}
 
@@ -97,9 +102,19 @@ public class ShipPlacement {
 
 	}
 	
+	public ShipPlacement(int x, int y, ShipClass shipClass) {
+		this.x = x;
+		this.y = y;
+		this.shipClass = shipClass;
+	}
+	
 	public boolean equals(Object other) {
 		ShipPlacement ot = (ShipPlacement) other;
-		return (x == ot.getX()) && (y == ot.getY()) && (classid.equals(ot.getClassid()));
+		return (x == ot.getX()) && (y == ot.getY()) && (shipClass.getGid().equals(ot.getClassid()));
+	}
+	
+	public ShipPlacement clone() {
+		return new ShipPlacement(x, y, shipClass);
 	}
 
 }

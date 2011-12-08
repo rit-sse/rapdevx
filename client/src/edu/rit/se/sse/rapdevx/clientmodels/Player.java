@@ -5,31 +5,33 @@ package edu.rit.se.sse.rapdevx.clientmodels;
 
 import java.util.Vector;
 
+import edu.rit.se.sse.rapdevx.api.dataclasses.Unit;
+
 /**
  * @author Cody Krieger
  * 
  */
 public class Player {
-	private Vector<Ship>	ships	= new Vector<Ship>();
+	private Vector<Unit>	units	= new Vector<Unit>();
 
 	/**
 	 * @return the ships
 	 */
-	public Vector<Ship> getShips() {
-		return ships;
+	public Vector<Unit> getUnits() {
+		return units;
 	}
 
 	/**
 	 * @param s
 	 */
-	public void addShip(Ship s) {
-		ships.add(s);
+	public void addUnit(Unit s) {
+		units.add(s);
 	}
 
 	/**
 	 * @param s
 	 */
-	public void removeShip(Ship s) {
-		ships.remove(s);
+	public void removeUnit(Unit s) {
+		units.remove(s);
 	}
 }
