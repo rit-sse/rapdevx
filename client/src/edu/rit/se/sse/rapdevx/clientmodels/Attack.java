@@ -1,26 +1,28 @@
 package edu.rit.se.sse.rapdevx.clientmodels;
 
+import edu.rit.se.sse.rapdevx.api.dataclasses.Unit;
+
 public class Attack {
 
 	//private Ability ability;
 	
-	private Ship sourceShip = null;
-	private Ship targetShip = null;
+	private Unit sourceUnit = null;
+	private Unit targetUnit = null;
 	
-	public void setSourceShip(Ship ship) {
-		this.sourceShip = ship;
+	public void setSourceUnit(Unit unit) {
+		this.sourceUnit = unit;
 	}
 	
-	public Ship getSourceShip() {
-		return sourceShip;
+	public Unit getSourceShip() {
+		return sourceUnit;
 	}
 	
-	public void setTargetShip(Ship ship) {
-		this.targetShip = ship;
+	public void setTargetUnit(Unit unit) {
+		this.targetUnit = unit;
 	}
 	
-	public Ship getTargetShip() {
-		return targetShip;
+	public Unit getTargetUnit() {
+		return targetUnit;
 	}
 	
 }

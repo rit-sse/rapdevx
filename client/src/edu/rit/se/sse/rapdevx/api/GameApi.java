@@ -6,7 +6,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.util.List;
 
 import edu.rit.se.sse.rapdevx.api.dataclasses.AbilityUseOrder;
@@ -21,6 +20,7 @@ import edu.rit.se.sse.rapdevx.api.dataclasses.ShipPlacements;
 import edu.rit.se.sse.rapdevx.api.dataclasses.Status;
 import edu.rit.se.sse.rapdevx.api.dataclasses.Statuses;
 import edu.rit.se.sse.rapdevx.api.dataclasses.Results;
+import edu.rit.se.sse.rapdevx.api.dataclasses.Units;
 
 /**
  * API access to the Status object on the server side
@@ -36,8 +36,7 @@ public class GameApi {
 		String incomingJson = "";
 
 		try {
-			URL url = new URL("http", SERVER_URL, 8080, URLEncoder.encode(
-					"/games", "UTF-8"));
+			URL url = new URL("http", SERVER_URL, 8080, "/games");
 
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setDoOutput(false);
@@ -73,11 +72,11 @@ public class GameApi {
 			String game_id = userSession.getgame_id();
 			String session_id = userSession.getsession_id();
 
-			URL url = new URL("http", SERVER_URL, 8080, URLEncoder.encode(
-					"/games/"
+			URL url = new URL("http", SERVER_URL, 8080,
+					"/game/"
 							+ game_id
 							+ "/assets?session_id="
-							+ session_id, "UTF-8"));
+							+ session_id);
 
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setDoOutput(false);
@@ -113,11 +112,11 @@ public class GameApi {
 			String game_id = userSession.getgame_id();
 			String session_id = userSession.getsession_id();
 
-			URL url = new URL("http", SERVER_URL, 8080, URLEncoder.encode(
-					"/games/"
+			URL url = new URL("http", SERVER_URL, 8080,
+					"/game/"
 							+ game_id
 							+ "?session_id="
-							+ session_id, "UTF-8"));
+							+ session_id);
 
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setDoOutput(false);
@@ -153,20 +152,20 @@ public class GameApi {
 		int respcode = 0;
 
 		try {
-			String shipsJsonString = readFileAsString("ShipPlacementFromJava.json");
+			String shipsJsonString = readFileAsString("ShipPlacementsFromJava.json");
 
-			String data = URLEncoder.encode("session_id", "UTF-8")
+			String data = "session_id"
 					+ "="
-					+ URLEncoder.encode(userSession.getsession_id())
+					+ userSession.getsession_id()
 					+ "&"
-					+ URLEncoder.encode("unit_layout", "UTF-8")
+					+ "unit_layout"
 					+ "="
-					+ URLEncoder.encode(shipsJsonString);
+					+ shipsJsonString;
 
-			URL url = new URL("http", SERVER_URL, 8080, URLEncoder.encode(
+			URL url = new URL("http", SERVER_URL, 8080,
 					"/game/"
 							+ userSession.getgame_id()
-							+ "/ships", "UTF-8"));
+							+ "/ships");
 
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setDoOutput(true);
@@ -191,6 +190,46 @@ public class GameApi {
 			return false;
 		}
 	}
+	
+	public static Units getUnits(Session userSession) throws Exception {
+		String incomingJson = "";
+
+		try {
+			String game_id = userSession.getgame_id();
+			String session_id = userSession.getsession_id();
+
+			URL url = new URL("http", SERVER_URL, 8080,
+					"/game/"
+							+ game_id
+							+ "/ships?session_id="
+							+ session_id);
+
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			conn.setDoOutput(false);
+			conn.setRequestMethod("GET");
+
+			conn.connect();
+
+			// Get response
+			BufferedReader rd = new BufferedReader(new InputStreamReader(
+					conn.getInputStream()));
+			String line;
+
+			while ((line = rd.readLine()) != null) {
+				incomingJson += line;
+			}
+			rd.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+
+		if (incomingJson.equals("")) {
+			throw new Exception("No data received");
+		} else {
+			return Units.fromJSON(incomingJson);
+		}
+	}
 
 	// Unit Move contents
 
@@ -202,20 +241,20 @@ public class GameApi {
 		try {
 			String movejsonstring = readFileAsString("MovementOrderFromJava.json");
 
-			String data = URLEncoder.encode("session_id", "UTF-8")
+			String data = "session_id"
 					+ "="
-					+ URLEncoder.encode(userSession.getsession_id())
+					+ userSession.getsession_id()
 					+ "&"
-					+ URLEncoder.encode("movement_order", "UTF-8")
+					+ "movement_order"
 					+ "="
-					+ URLEncoder.encode(movejsonstring);
+					+ movejsonstring;
 
-			URL url = new URL("http", SERVER_URL, 8080, URLEncoder.encode(
+			URL url = new URL("http", SERVER_URL, 8080,
 					"/game/"
 							+ userSession.getgame_id()
 							+ "/turns/"
 							+ currentTurn
-							+ "/moves", "UTF-8"));
+							+ "/moves");
 
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setDoOutput(true);
@@ -246,9 +285,9 @@ public class GameApi {
 		String incomingJson = "";
 
 		try {
-			URL url = new URL("http", SERVER_URL, 8080, URLEncoder.encode(
+			URL url = new URL("http", SERVER_URL, 8080,
 					"/game/" + userSession.getgame_id() + "/turns/" + 
-                    currentTurn + "/moves", "UTF-8"));
+                    currentTurn + "/moves");
 
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setDoOutput(false);
@@ -282,13 +321,13 @@ public class GameApi {
 		int respcode = 0;
 
 		try {
-			URL url = new URL("http", SERVER_URL, 8080, URLEncoder.encode(
+			URL url = new URL("http", SERVER_URL, 8080,
 					"/game/"
 							+ userSession.getgame_id()
 							+ "/turns/"
 							+ currentTurn
 							+ "/moves/"
-							+ move.getGid(), "UTF-8"));
+							+ move.getGid());
 
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setDoOutput(false);
@@ -319,20 +358,20 @@ public class GameApi {
 		try {
 			String movejsonstring = readFileAsString("AbilityUseOrderFromJava.json");
 
-			String data = URLEncoder.encode("session_id", "UTF-8")
+			String data = "session_id"
 					+ "="
-					+ URLEncoder.encode(userSession.getsession_id())
+					+ userSession.getsession_id()
 					+ "&"
-					+ URLEncoder.encode("attack_order", "UTF-8")
+					+ "attack_order"
 					+ "="
-					+ URLEncoder.encode(movejsonstring);
+					+ movejsonstring;
 
-			URL url = new URL("http", SERVER_URL, 8080, URLEncoder.encode(
+			URL url = new URL("http", SERVER_URL, 8080,
 					"/game/"
 							+ userSession.getgame_id()
 							+ "/turns/"
 							+ currentTurn
-							+ "/attacks", "UTF-8"));
+							+ "/attacks");
 
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setDoOutput(true);
@@ -363,9 +402,9 @@ public class GameApi {
 		String incomingJson = "";
 
 		try {
-			URL url = new URL("http", SERVER_URL, 8080, URLEncoder.encode(
+			URL url = new URL("http", SERVER_URL, 8080,
 					"/game/" + userSession.getgame_id() + "/turns/" + 
-                    currentTurn + "/attacks", "UTF-8"));
+                    currentTurn + "/attacks");
 
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setDoOutput(false);
@@ -399,13 +438,13 @@ public class GameApi {
 		int respcode = 0;
 
 		try {
-			URL url = new URL("http", SERVER_URL, 8080, URLEncoder.encode(
+			URL url = new URL("http", SERVER_URL, 8080,
 					"/game/"
 							+ userSession.getgame_id()
 							+ "/turns/"
 							+ currentTurn
 							+ "/moves/"
-							+ move.getGid(), "UTF-8"));
+							+ move.getGid());
 
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setDoOutput(false);
@@ -430,16 +469,16 @@ public class GameApi {
 		int respcode = 0;
 
 		try {
-			String data = URLEncoder.encode("session_id", "UTF-8")
+			String data = "session_id"
 					+ "="
-					+ URLEncoder.encode(userSession.getsession_id());
+					+ userSession.getsession_id();
 
-			URL url = new URL("http", SERVER_URL, 8080, URLEncoder.encode(
+			URL url = new URL("http", SERVER_URL, 8080,
                             "/game/"
 							+ userSession.getgame_id()
 							+ "/turns/"
 							+ currentTurn
-							+ "/ready", "UTF-8"));
+							+ "/ready");
 
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setDoOutput(true);
@@ -470,12 +509,12 @@ public class GameApi {
 		String incomingJson = "";
 
 		try {
-			URL url = new URL("http", SERVER_URL, 8080, URLEncoder.encode(
+			URL url = new URL("http", SERVER_URL, 8080,
 					"/game/" + 
                     userSession.getgame_id() + 
                     "/turns/" + 
                     currentTurn + 
-                    "/moves/results", "UTF-8"));
+                    "/moves/results");
 
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setDoOutput(false);
@@ -509,12 +548,12 @@ public class GameApi {
 		String incomingJson = "";
 
 		try {
-			URL url = new URL("http", SERVER_URL, 8080, URLEncoder.encode(
+			URL url = new URL("http", SERVER_URL, 8080,
 					"/game/" + 
                     userSession.getgame_id() + 
                     "/turns/" + 
                     currentTurn + 
-                    "/attacks/results", "UTF-8"));
+                    "/attacks/results");
 
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setDoOutput(false);
@@ -549,15 +588,15 @@ public class GameApi {
 		int respcode = 0;
 
 		try {
-			String data = URLEncoder.encode("session_id", "UTF-8")
+			String data = "session_id"
 					+ "="
-					+ URLEncoder.encode(userSession.getsession_id()
+					+ userSession.getsession_id()
                     + "&"
-                    + URLEncoder.encode("ready=true"));
+                    + "ready=true";
 
-			URL url = new URL("http", SERVER_URL, 8080, URLEncoder.encode(
+			URL url = new URL("http", SERVER_URL, 8080,
                             "/game/"
-							+ userSession.getgame_id(), "UTF-8"));
+							+ userSession.getgame_id());
 
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setDoOutput(true);

@@ -8,6 +8,7 @@ import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 
+import edu.rit.se.sse.rapdevx.api.dataclasses.AbilityUseOrder;
 import edu.rit.se.sse.rapdevx.clientmodels.Attack;
 
 public class DrawableAttack extends DrawableObject {
@@ -17,12 +18,12 @@ public class DrawableAttack extends DrawableObject {
 	private Attack attack;
 	private DrawableShip sourceShip;
 	private DrawableShip targetShip;
-	
+
 	private boolean snapped;
 
 	public DrawableAttack(DrawableShip sourceShip) {
 		attack = new Attack();
-		this.attack.setSourceShip(sourceShip.getShip());
+		this.attack.setSourceUnit(sourceShip.getUnit());
 
 		this.sourceShip = sourceShip;
 		this.targetLocation = null;
@@ -49,8 +50,9 @@ public class DrawableAttack extends DrawableObject {
 			gPen.setClip(outside);
 
 			// Draw the line and reticle
-			gPen.drawLine(sourceShip.getCenter().x, sourceShip.getCenter().y,
-					targetLocation.x, targetLocation.y);
+			gPen.drawLine(sourceShip.getCenter().x,
+					sourceShip.getCenter().y, targetLocation.x,
+					targetLocation.y);
 			drawRecticule(gPen, targetLocation.x, targetLocation.y);
 		}
 
@@ -61,10 +63,10 @@ public class DrawableAttack extends DrawableObject {
 	public void setMouseLocation(Point location) {
 		// Set the mouse location as the target location
 		// unless we are locked on to a ship
-		if (attack.getTargetShip() == null)
+		if (attack.getTargetUnit() == null)
 			this.targetLocation = location;
 	}
-	
+
 	public void setSnapped(boolean snapped) {
 		this.snapped = snapped;
 	}
@@ -74,9 +76,9 @@ public class DrawableAttack extends DrawableObject {
 	 * 
 	 * @param gPen
 	 * @param x
-	 *            x coordinate
+	 *              x coordinate
 	 * @param y
-	 *            y coordinate
+	 *              y coordinate
 	 */
 	private void drawRecticule(Graphics2D gPen, int x, int y) {
 		// Set the line thickness
@@ -96,8 +98,17 @@ public class DrawableAttack extends DrawableObject {
 
 	public void setTarget(DrawableShip target, Rectangle2D cameraBounds) {
 		this.targetShip = target;
-		this.attack.setTargetShip(target.getShip());
+		this.attack.setTargetUnit(target.getUnit());
 		this.targetLocation = target.getCenter();
 	}
-	
+
+	public AbilityUseOrder makeAbilityUseOrder() {
+		AbilityUseOrder order = new AbilityUseOrder();
+		order.setAbility("we don't have these yet");
+		order.setSrcid(sourceShip.getUnit().getgid());
+		order.setTargetid(targetShip.getUnit().getgid());
+		order.setgid("nothing here");
+		return order;
+	}
+
 }

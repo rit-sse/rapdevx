@@ -39,20 +39,20 @@ public class TestJSONFromServerToClient {
 
 		fromClient.setRadius(10);
 		fromClient.setName("name");
-		fromClient.setDefault_damage(5);
-		fromClient.setSpecial_damages(ab_spec_damage);
+		fromClient.setDefaultDamage(5);
+		fromClient.setSpecialDamages(ab_spec_damage);
 		fromClient.setGid("this is a gid");
 
 		Ability fromServer = Ability
 				.fromJSON(readFile("client/test/edu/rit/se/sse/rapdevx/json_sync/AbilityFromServer.json"));
 
-		assertEquals(fromClient.getDefault_damage(),
-				fromServer.getDefault_damage());
+		assertEquals(fromClient.getDefaultDamage(),
+				fromServer.getDefaultDamage());
 		assertEquals(fromClient.getGid(), fromServer.getGid());
 		assertEquals(fromClient.getName(), fromServer.getName());
 		assertEquals(fromClient.getRadius(), fromServer.getRadius());
-		assertEquals(fromClient.getSpecial_damages(),
-				fromServer.getSpecial_damages());
+		assertEquals(fromClient.getSpecialDamages(),
+				fromServer.getSpecialDamages());
 	}
 
 	@Test
@@ -80,8 +80,8 @@ public class TestJSONFromServerToClient {
 
 		ab.setRadius(10);
 		ab.setName("name");
-		ab.setDefault_damage(5);
-		ab.setSpecial_damages(ab_spec_damage);
+		ab.setDefaultDamage(5);
+		ab.setSpecialDamages(ab_spec_damage);
 		ab.setGid("this is a gid");
 		List<Ability> sc_ab_lst = new ArrayList<Ability>();
 		sc_ab_lst.add(ab);
@@ -115,8 +115,8 @@ public class TestJSONFromServerToClient {
 
 		ab.setRadius(10);
 		ab.setName("name");
-		ab.setDefault_damage(5);
-		ab.setSpecial_damages(ab_spec_damage);
+		ab.setDefaultDamage(5);
+		ab.setSpecialDamages(ab_spec_damage);
 		ab.setGid("this is a gid");
 		
 		ShipClass sc = new ShipClass();

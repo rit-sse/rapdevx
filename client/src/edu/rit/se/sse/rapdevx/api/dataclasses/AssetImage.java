@@ -1,11 +1,9 @@
 package edu.rit.se.sse.rapdevx.api.dataclasses;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 
-import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
+import com.google.gson.Gson;
 
 /**
  * POJO representing the asset image on the server side of 
@@ -15,8 +13,7 @@ import org.codehaus.jackson.map.ObjectMapper;
  * @author Paul Cassidy
  */
 public class AssetImage {
-
-	private static ObjectMapper mapper = new ObjectMapper();
+	
 	private String file;
 	private String gid;
 	
@@ -39,21 +36,8 @@ public class AssetImage {
 	 * @return The mapped AssetImage as an AssetImage object. or null if error.
 	 */
 	public static AssetImage fromJSON(String incomingJson){
-
-		try {
-			AssetImage assets = mapper.readValue(incomingJson, AssetImage.class);
-			return assets;
-		} catch (JsonParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
+		Gson gson = new Gson();
+		return gson.fromJson(incomingJson, AssetImage.class);
 	}
 	
 	/**
@@ -61,18 +45,16 @@ public class AssetImage {
 	 * 
 	 * @param assets
 	 */
-	public void toJSON(AssetImage assets){
+	public void toJSON(AssetImage assetImage){
+		Gson gson = new Gson();
+		String json = gson.toJson(assetImage);
+
 		try {
-			mapper.writeValue(new File("AssetImageFromJava.json"), assets);
-		} catch (JsonGenerationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			FileWriter file = new FileWriter(new File("AssetImageFromJava.json"));
+			file.write(json);
+			file.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.err.println("Unable to write units json to file");
 		}
 	}
 	
