@@ -27,14 +27,16 @@ public class WaitingScreen extends Screen implements ActionListener,
 
 		GameSession.get().addStateListener(this);
 
-		menu = new Menu(width / 2 - 100, height / 2 - 200);
+		menu = new Menu(width / 2 - 100, height / 2 - 50);
 		menu.addButton("Exit");
 		for(TextButton button: menu.getButtons()){
 			button.addActionListener(this);
 		}
 
-		waitingText = new Text("Wating for another player...", width / 2 - 300,
-				height / 2 - 300, 3.0, Color.LIGHT_GRAY);
+		waitingText = new Text("Waiting for another player...", 0,
+				height / 2 - 200, 3.0, Color.LIGHT_GRAY);
+		
+		waitingText.setX((width - waitingText.getSizeOnScreen())/2);
 	}
 
 	public void init() {
