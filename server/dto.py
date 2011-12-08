@@ -186,20 +186,21 @@ class DTO_Unit(DTO_ReprMixin):
     #player_num is an int
     #hp is an int
     #classid is a string
+    #location is a DTO_Location
     #gid is a string
     def __init__(self, player_num, hp, classid, location, gid):
         self.player_num = player_num
         self.hp = hp
         self.classid = classid
         self.gid = gid
-        self.location = location
+        self.location = DTO_Location(location[0], location[1])
     def encode(self):
         r = {}
         r['player_num'] = self.player_num
         r['hp'] = self.hp
         r['classid'] = self.classid
         r['gid'] = self.gid 
-        r['location'] = self.location
+        r['location'] = self.location.encode()
         return r
         
 class DTO_Status(DTO_ReprMixin):
@@ -222,6 +223,18 @@ class DTO_Status(DTO_ReprMixin):
         r['me'] = self.me
         return r
 
+class DTO_Location(DTO_ReprMixin):
+    #x is an int
+    #y is an int
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+    def encode(self):
+        r = {}
+        r['x'] = self.x
+        r['y'] = self.y
+        return r
         
 class DTO_Encoder(json.JSONEncoder):
     def default(self, o):
@@ -262,8 +275,14 @@ def JSON_Construct_DTO_Assets(jsonstring):
     return DTO_Assets(attribute_dictionary.pop('width'),attribute_dictionary.pop('height'),shipclasslist,imageslist,abilitieslist)
 
 def JSON_Construct_DTO_ShipPlacement(jsonstring):
-    attribute_dictionary = json.loads(jsonstring)    
-    return DTO_ShipPlacement(attribute_dictionary.pop('x'), attribute_dictionary.pop('y'), attribute_dictionary.pop('classid'))
+    attribute_dictionary = json.loads(jsonstring)
+    jsonlist = attribute_dictionary.pop('ships')
+
+    placementlist = []
+    for v in jsonlist:
+        placementlist.append(DTO_ShipPlacement(v.pop('x'), v.pop('y'), v.pop('classid')))
+
+    return placementlist
 
 def JSON_Construct_DTO_AttackResults(jsonstring):
     attribute_dictionary = json.loads(jsonstring)
@@ -299,4 +318,8 @@ def JSON_Construct_DTO_Unit(jsonstring):
 def JSON_Construct_DTO_Status(jsonstring):
     attribute_dictionary = json.loads(jsonstring)
     return DTO_Status(attribute_dictionary.pop('turn'), attribute_dictionary.pop('phase'), attribute_dictionary.pop('player_list'), attribute_dictionary.pop('me'))
+
+def JSON_Construct_DTO_Location(jsonstring):
+    attribute_dictionary = json.loads(jsonstring)
+    return DTO_Location(attribute_dictionary.pop('x'), attribute_dictionary.pop('y'))
 
