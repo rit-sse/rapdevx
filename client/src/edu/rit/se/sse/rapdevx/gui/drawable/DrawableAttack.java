@@ -23,7 +23,7 @@ public class DrawableAttack extends DrawableObject {
 
 	public DrawableAttack(DrawableShip sourceShip) {
 		attack = new Attack();
-		this.attack.setSourceShip(sourceShip.getShip());
+		this.attack.setSourceUnit(sourceShip.getUnit());
 
 		this.sourceShip = sourceShip;
 		this.targetLocation = null;
@@ -63,7 +63,7 @@ public class DrawableAttack extends DrawableObject {
 	public void setMouseLocation(Point location) {
 		// Set the mouse location as the target location
 		// unless we are locked on to a ship
-		if (attack.getTargetShip() == null)
+		if (attack.getTargetUnit() == null)
 			this.targetLocation = location;
 	}
 
@@ -98,15 +98,15 @@ public class DrawableAttack extends DrawableObject {
 
 	public void setTarget(DrawableShip target, Rectangle2D cameraBounds) {
 		this.targetShip = target;
-		this.attack.setTargetShip(target.getShip());
+		this.attack.setTargetUnit(target.getUnit());
 		this.targetLocation = target.getCenter();
 	}
 
 	public AbilityUseOrder makeAbilityUseOrder() {
 		AbilityUseOrder order = new AbilityUseOrder();
 		order.setAbility("we don't have these yet");
-		order.setSrcid(sourceShip.getShip().getgid());
-		order.setTargetid(targetShip.getShip().getgid());
+		order.setSrcid(sourceShip.getUnit().getgid());
+		order.setTargetid(targetShip.getUnit().getgid());
 		order.setgid("nothing here");
 		return order;
 	}

@@ -12,7 +12,6 @@ import edu.rit.se.sse.rapdevx.clientstate.AttackState;
 import edu.rit.se.sse.rapdevx.clientstate.DoneState;
 import edu.rit.se.sse.rapdevx.clientstate.GameSession;
 import edu.rit.se.sse.rapdevx.clientstate.MoveState;
-import edu.rit.se.sse.rapdevx.clientstate.StartingState;
 import edu.rit.se.sse.rapdevx.clientstate.StateBase;
 import edu.rit.se.sse.rapdevx.clientstate.UnitPlacementState;
 import edu.rit.se.sse.rapdevx.events.StateEvent;
@@ -99,7 +98,7 @@ public class OverlayScreen extends Screen implements StateListener
 
 		readyText = new Text("Ready", STARTING_X + READY_MODIFIER_X + 31,
 				STARTING_Y + 9, Color.BLACK);
-		stateText = new Text("Waiting : " + turn, STARTING_X + 100, 15, 2.5,
+		stateText = new Text("Placing : " + turn, STARTING_X + 100, 15, 2.5,
 				Color.WHITE);
 		
 		GameSession.get().addStateListener(this);
@@ -156,12 +155,7 @@ public class OverlayScreen extends Screen implements StateListener
 				isReady = true;
 				readyText.setColor(Color.DARK_GRAY);
 				
-				//StateBase state = GameSession.get().getCurrentState();
-				//if (state instanceof MoveState) {
-				//	notifyActionListeners("ready");
-				//} else {
-					GameSession.get().advanceState();
-				//}
+				notifyActionListeners("ready");
 			}
 			e.consume();
 		}
@@ -277,11 +271,7 @@ public class OverlayScreen extends Screen implements StateListener
 	{
 		isReady = false;
 
-		if (e.getNewState() instanceof StartingState)
-		{
-			stateText.setText("Waiting :" + turn);
-		}
-		else if (e.getNewState() instanceof UnitPlacementState)
+		if (e.getNewState() instanceof UnitPlacementState)
 		{
 			stateText.setText("Placing :" + turn);
 		}

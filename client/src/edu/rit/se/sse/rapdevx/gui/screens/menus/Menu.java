@@ -152,7 +152,6 @@ public class Menu extends Screen {
 			// TODO what about the last button? should it use spacing or
 			// border?
 		}
-		System.out.println(size.getWidth());
 
 		// TODO if we don't have focus, draw transparent, light gray myst
 		// over ourself

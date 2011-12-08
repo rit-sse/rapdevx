@@ -36,8 +36,8 @@ public class TestJSONSync {
 
 		ab.setRadius(10);
 		ab.setName("name");
-		ab.setDefault_damage(5);
-		ab.setSpecial_damages(ab_spec_damage);
+		ab.setDefaultDamage(5);
+		ab.setSpecialDamages(ab_spec_damage);
 		ab.setGid("this is a gid");
 
 		// DTO_AbilityUsoOrder:

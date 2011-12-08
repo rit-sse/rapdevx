@@ -214,20 +214,5 @@ public class SessionApi {
 
 		return null;
 	}
-
-	public static void main(String[] argv) {
-		Session session = null;
-
-		try {
-			session = createSession("Derp", null);
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.err.println("createSession is f'ed");
-		}
-
-		session = updateSession(session);
-		System.out.println(session);
-
-		System.out.println(destroySession(session));
-	}
+	
 }

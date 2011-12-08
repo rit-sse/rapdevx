@@ -1,126 +1,104 @@
 package edu.rit.se.sse.rapdevx.api.dataclasses;
+
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Hashtable;
 import java.util.Map;
 
-import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
+import com.google.gson.Gson;
+import com.google.gson.annotations.SerializedName;
 
 public class Ability {
 
-	private static ObjectMapper mapper = new ObjectMapper();
-	
-	private int radius;
-	private String name;
-	private int default_damage;
-	private Map<String,Integer> special_damages = new Hashtable<String,Integer>();
 	private String gid;
-	
+	private String name;
+	private int radius;
+
+	@SerializedName("default_damage")
+	private int defaultDamage;
+
+	@SerializedName("special_damages")
+	private Map<String, Integer> specialDamages = new Hashtable<String, Integer>();
+
 	public int getRadius() {
 		return radius;
 	}
+
 	public void setRadius(int radius) {
 		this.radius = radius;
 	}
+
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
-	public Map<String,Integer> getSpecial_damages() {
-		return special_damages;
+
+	public Map<String, Integer> getSpecialDamages() {
+		return specialDamages;
 	}
-	public void setSpecial_damages(Map<String,Integer> special_damages) {
-		this.special_damages = special_damages;
+
+	public void setSpecialDamages(Map<String, Integer> specialDamages) {
+		this.specialDamages = specialDamages;
 	}
-	public int getDefault_damage() {
-		return default_damage;
+
+	public int getDefaultDamage() {
+		return defaultDamage;
 	}
-	public void setDefault_damage(int default_damage) {
-		this.default_damage = default_damage;
+
+	public void setDefaultDamage(int defaultDamage) {
+		this.defaultDamage = defaultDamage;
 	}
+
 	public String getGid() {
 		return gid;
 	}
+
 	public void setGid(String gid) {
 		this.gid = gid;
 	}
-	
 
 	/**
 	 * Creates and maps to an Ability object.
 	 * 
 	 * @return The mapped Ability as an Ability object. or null if error.
 	 */
-	public static Ability fromJSON(String incomingJson){
-
-		try {
-			Ability ability = mapper.readValue(incomingJson, Ability.class);
-			return ability;
-		} catch (JsonParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
+	public static Ability fromJSON(String incomingJson) {
+		Gson gson = new Gson();
+		return gson.fromJson(incomingJson, Ability.class);
 	}
-	
+
 	/**
 	 * Creates a JSON file from an Ability object.
 	 * 
 	 * @param Ability
 	 */
-	public void toJSON(Ability ability){
+	public void toJSON(Ability ability) {
+		Gson gson = new Gson();
+		String json = gson.toJson(ability);
+
 		try {
-			mapper.writeValue(new File("AbilityFromJava.json"), ability);
-		} catch (JsonGenerationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			FileWriter file = new FileWriter(new File("AbilityFromJava.json"));
+			file.write(json);
+			file.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.err.println("Unable to write units json to file");
 		}
 	}
-	
-	public Ability(){
-		
+
+	public Ability() {
+
 	}
-	
-	public Ability(String incomingJson) {
-		try {
-			Ability ability = mapper.readValue(incomingJson, Ability.class);
-			this.radius = ability.getRadius();
-			this.name = ability.getName();
-			this.default_damage = ability.getDefault_damage();
-			this.special_damages = ability.getSpecial_damages();
-			this.gid = ability.getGid();
-		} catch (JsonParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
+
 	public boolean equals(Object other) {
 		Ability ot = (Ability) other;
-		return (radius == ot.getRadius()) && (name.equals(ot.getName())) && (default_damage == ot.getDefault_damage()) && (special_damages.equals(ot.getSpecial_damages())) && (gid.equals(ot.getGid()));	
+		return (radius == ot.getRadius()) && (name.equals(ot.getName()))
+				&& (defaultDamage == ot.getDefaultDamage())
+				&& (specialDamages.equals(ot.getSpecialDamages()))
+				&& (gid.equals(ot.getGid()));
 	}
-	
+
 }
