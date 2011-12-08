@@ -10,7 +10,7 @@ def genListOfAssets(reg):
     atk = Ability(1000,"attack", 10, {})
     reg.register(atk)
 
-    pntBlankMissile = Ability(10, "point_blank_missile", {})
+    pntBlankMissile = Ability(10, "point_blank_missile", 10, {})
     reg.register(pntBlankMissile)
 
     fwShot = Ability(5000, "firework_shot", 1, {})
