@@ -138,8 +138,8 @@ public class PlacementScreen extends Screen implements StateListener, ActionList
 			} else {
 				for (ShipSelectSquare square : shipSelectSquares) {
 					if (square.containsPoint(e.getPoint())) {
-						curPlacement = new ShipPlacement(e.getX() + camera.getX(),
-								e.getY() + camera.getY(), square.getShipClass());
+						curPlacement = new ShipPlacement(e.getX() - 32 + camera.getX(),
+								e.getY() + camera.getY() -32, square.getShipClass());
 						
 						square.setPressed(true);
 						break;
@@ -170,8 +170,8 @@ public class PlacementScreen extends Screen implements StateListener, ActionList
 		
 		drawSelectedUnit = !inToolbar;
 		if (curPlacement != null) {
-			curPlacement.setX(e.getX());
-			curPlacement.setY(e.getY());
+			curPlacement.setX(e.getX() - 32);
+			curPlacement.setY(e.getY() - 32);
 		}
 		
 		e.consume();
