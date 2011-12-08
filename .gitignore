@@ -15,3 +15,9 @@ cobertura.ser
 
 __pycache__/
 *.pyc
+
+assets/_test_shipBLA.png
+assets/_test_shipBLB.png
+assets/_test_shipChanged.png
+assets/_test_shipChangedAlpha.png
+assets/_test_shipChangedStrong.png
