@@ -122,9 +122,16 @@ def p_game_ships(game_id=None):
 @get('/game/:game_id/ships')
 def g_game_ships(game_id=None):
     game = get_game(game_id)
-    # TODO: waiting on mitch integration
 
-    return "GET /game/" + str(game_id) + "/ships"
+    session_id = request.query.session_id
+    session = get_session(session_id)
+
+    unit_list = game.getAllDTOShips(session.player_num)
+    unit_list = [x.encode() for x in unit_list]
+
+    units = {"units" : unit_list}
+
+    return json.dumps(units)
 
 # Create a new movement order from POST data
 @post('/game/:game_id/turns/:turn_id/moves')
