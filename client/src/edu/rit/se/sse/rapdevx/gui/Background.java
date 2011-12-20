@@ -11,8 +11,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-public class Background
-{
+public class Background {
 
 	private static int GRID_SIZE = 64;
 	public static final Color GRID_COLOR_1 = new Color(60, 60, 60);
@@ -20,31 +19,23 @@ public class Background
 
 	private BufferedImage background;
 
-	public Background()
-	{
-
-		try
-		{
+	public Background() {
+		try {
 			background = ImageIO.read(new File("assets/background.png"));
-		}
-		catch (IOException e)
-		{
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void update()
-	{
+	public void update() {
 	}
 
-	public void draw(Graphics2D gPen, Rectangle2D bounds)
-	{
+	public void draw(Graphics2D gPen, Rectangle2D bounds) {
 		drawImage(gPen, bounds);
 		drawGrid(gPen, bounds);
 	}
 
-	public void drawImage(Graphics2D gPen, Rectangle2D bounds)
-	{
+	public void drawImage(Graphics2D gPen, Rectangle2D bounds) {
 
 		int cameraX = (int) bounds.getX();
 		int cameraY = (int) bounds.getY();
@@ -62,12 +53,10 @@ public class Background
 
 		// if the camera is in the negative coordinate space
 		// on the map, adjust the draw positions.
-		if (cameraX < 0)
-		{
+		if (cameraX < 0) {
 			drawAtX = drawAtX - backgroundWidth;
 		}
-		if (cameraY < 0)
-		{
+		if (cameraY < 0) {
 			drawAtY = drawAtY - backgroundHeight;
 		}
 
@@ -78,10 +67,8 @@ public class Background
 
 		// draw backgrounds until they would be
 		// drawn totally off screen.
-		while (drawAtX < xPosThatCantBe)
-		{
-			while (drawAtY < yPosThatCantBe)
-			{
+		while (drawAtX < xPosThatCantBe) {
+			while (drawAtY < yPosThatCantBe) {
 				gPen.drawImage(background, drawAtX, drawAtY, backgroundWidth,
 						backgroundHeight, null);
 				drawAtY += backgroundHeight;
@@ -97,58 +84,50 @@ public class Background
 	 * @param gPen
 	 *            the graphics2D Pen
 	 */
-	public void drawGrid(Graphics2D gPen, Rectangle2D bounds)
-	{
+	public void drawGrid(Graphics2D gPen, Rectangle2D bounds) {
 		drawGridPart(gPen, bounds, GRID_COLOR_2, (GRID_SIZE));
 		drawGridPart(gPen, bounds, GRID_COLOR_1, (GRID_SIZE * 3));
 	}
 
 	/**
 	 * draws one layer of the grid
+	 * 
 	 * @param gPen
 	 * @param bounds
 	 * @param color
 	 * @param grid
 	 */
-	private void drawGridPart(Graphics2D gPen, Rectangle2D bounds, Color color, int grid)
-	{
+	private void drawGridPart(Graphics2D gPen, Rectangle2D bounds, Color color,
+			int grid) {
 		int x = (int) bounds.getX();
 		int y = (int) bounds.getY();
 		int width = (int) bounds.getWidth();
 		int height = (int) bounds.getHeight();
-		
+
 		gPen.setColor(color);
-		for (int x1 = x; x1 < x + width; x1++)
-		{
-			if (x1 % grid == 0)
-			{
+		for (int x1 = x; x1 < x + width; x1++) {
+			if (x1 % grid == 0) {
 				gPen.fill(new Rectangle(x1, y, 4, height));
 			}
 		}
 
-		for (int y1 = y; y1 < y + height; y1++)
-		{
-			if (y1 % grid == 0)
-			{
+		for (int y1 = y; y1 < y + height; y1++) {
+			if (y1 % grid == 0) {
 				gPen.fill(new Rectangle(x, y1, width, 4));
 			}
 		}
 	}
-	
+
 	/**
 	 * Swaps the color from gray to other gray
 	 * 
 	 * @param gPen
 	 *            the graphics2D Pen
 	 */
-	public Color getColor(int coordinate)
-	{
-		if ((coordinate / GRID_SIZE) % 3 == 0)
-		{
+	public Color getColor(int coordinate) {
+		if ((coordinate / GRID_SIZE) % 3 == 0) {
 			return GRID_COLOR_1;
-		}
-		else
-		{
+		} else {
 			return GRID_COLOR_2;
 		}
 	}

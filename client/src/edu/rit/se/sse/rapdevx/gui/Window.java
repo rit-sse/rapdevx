@@ -13,13 +13,13 @@ import javax.swing.JFrame;
 
 import javazoom.jl.player.Player;
 import edu.rit.se.sse.rapdevx.clientstate.GameSession;
+import edu.rit.se.sse.rapdevx.gui.drawable.Viewport;
 import edu.rit.se.sse.rapdevx.gui.screens.MapScreen;
 import edu.rit.se.sse.rapdevx.gui.screens.OverlayScreen;
 import edu.rit.se.sse.rapdevx.gui.screens.PlacementScreen;
 import edu.rit.se.sse.rapdevx.gui.screens.WaitingScreen;
 
-public class Window
-{
+public class Window {
 
 	private int insetLeft;
 	private int insetTop;
@@ -27,13 +27,13 @@ public class Window
 	private int insetBottom;
 
 	private JFrame window;
+	private Player player;
 
 	private GraphicsDevice graphics;
 	private GraphicsConfiguration graphicsConfig;
 	private BufferStrategy bufferStrategy;
 
-	public Window(String title, boolean fullscreen)
-	{
+	public Window(String title, boolean fullscreen) {
 		GraphicsEnvironment env = GraphicsEnvironment
 				.getLocalGraphicsEnvironment();
 		graphics = env.getDefaultScreenDevice();
@@ -43,13 +43,10 @@ public class Window
 		window = new JFrame(title, graphicsConfig);
 
 		// Set some window properties
-		if (fullscreen)
-		{
+		if (fullscreen) {
 			window.setExtendedState(JFrame.MAXIMIZED_BOTH);
 			window.setUndecorated(true);
-		}
-		else
-		{
+		} else {
 			window.setSize(1024, 768);
 		}
 
@@ -79,63 +76,58 @@ public class Window
 		window.createBufferStrategy(2);
 		bufferStrategy = window.getBufferStrategy();
 
+		Viewport viewport = new Viewport(insetLeft, insetTop, windowWidth,
+				windowHeight);
+
 		if (GameSession.get().getSession().getgame_id() != null) {
 			// Start with the move phase on the map
-			MapScreen mapScreen = new MapScreen(window.getWidth(), window.getHeight());
+			MapScreen mapScreen = new MapScreen(viewport, window.getWidth(),
+					window.getHeight());
 			ScreenStack.get().addScreen(mapScreen);
-	
-			OverlayScreen overlay = new OverlayScreen(window.getWidth(), window.getHeight());
-	
+
+			OverlayScreen overlay = new OverlayScreen(window.getWidth(),
+					window.getHeight());
+
 			// Start with a unit placement screen
-			PlacementScreen placement = new PlacementScreen(overlay,
-					mapScreen.getCamera(), window.getWidth(), window.getHeight());
+			PlacementScreen placement = new PlacementScreen(overlay, viewport,
+					window.getWidth(), window.getHeight());
 			ScreenStack.get().addScreen(placement);
-	
+
 			// Add the overlay last
 			ScreenStack.get().addScreen(overlay);
 		} else {
 			// Add a waiting screen to the window
-			WaitingScreen waitingScreen = new WaitingScreen(windowWidth, windowHeight);
+			WaitingScreen waitingScreen = new WaitingScreen(viewport,
+					windowWidth, windowHeight);
 			ScreenStack.get().addScreen(waitingScreen);
 			waitingScreen.init();
 		}
-		
+
 		window.requestFocusInWindow();
 
-		playBackground();
+		// playBackground();
 	}
 
-	private Player player;
-
-	public void playBackground()
-	{
+	public void playBackground() {
 		String filename = "assets/sounds/tardis.mp3";
 
-		try
-		{
+		try {
 			player = new Player(new BufferedInputStream(new FileInputStream(
 					filename)));
-		}
-		catch (Exception e)
-		{
+		} catch (Exception e) {
 			System.out.println("Problem playing file " + filename);
 			System.out.println(e);
 		}
 
 		// run in new thread to play in background
-		Thread musicThread = new Thread()
-		{
+		Thread musicThread = new Thread() {
 			String filename = "assets/sounds/tardis.mp3";
 
-			public void run()
-			{
-				try
-				{
+			public void run() {
+				try {
 					player.play();
-					while (true)
-					{
-						if (player.isComplete())
-						{
+					while (true) {
+						if (player.isComplete()) {
 							player.close();
 							player = new Player(new BufferedInputStream(
 									new FileInputStream(filename)));
@@ -143,9 +135,7 @@ public class Window
 						}
 					}
 
-				}
-				catch (Exception e)
-				{
+				} catch (Exception e) {
 					System.out.println(e);
 				}
 			}
@@ -153,31 +143,24 @@ public class Window
 		musicThread.start();
 	}
 
-	public void update()
-	{
+	public void update() {
 		ScreenStack.get().update();
 	}
 
-	public void render()
-	{
+	public void render() {
 		// Create a graphics object from the buffer strategy
 		// and draw the screens
 		Graphics gPen = null;
 
-		try
-		{
+		try {
 			gPen = bufferStrategy.getDrawGraphics();
-			if (!bufferStrategy.contentsLost())
-			{
+			if (!bufferStrategy.contentsLost()) {
 				gPen.translate(window.getInsets().left, window.getInsets().top);
 				ScreenStack.get().draw((Graphics2D) gPen);
 				bufferStrategy.show();
 			}
-		}
-		finally
-		{
-			if (gPen != null)
-			{
+		} finally {
+			if (gPen != null) {
 				gPen.dispose();
 			}
 		}

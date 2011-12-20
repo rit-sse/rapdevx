@@ -2,7 +2,6 @@ package edu.rit.se.sse.rapdevx.gui.screens;
 
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -19,14 +18,14 @@ import edu.rit.se.sse.rapdevx.events.StateEvent;
 import edu.rit.se.sse.rapdevx.events.StateListener;
 import edu.rit.se.sse.rapdevx.gui.Screen;
 import edu.rit.se.sse.rapdevx.gui.ScreenStack;
-import edu.rit.se.sse.rapdevx.gui.drawable.Camera;
+import edu.rit.se.sse.rapdevx.gui.drawable.Viewport;
 import edu.rit.se.sse.rapdevx.gui.drawable.DrawableMovePath;
 import edu.rit.se.sse.rapdevx.gui.drawable.DrawableShip;
 
 public class MoveScreen extends Screen implements StateListener, ActionListener {
 	
 	/** A reference to the map camera for positioning objects in world space */
-	private Camera camera;
+	private Viewport viewport;
 	
 	/** A list of ships currently on the field **/
 	private List<DrawableShip> shipList;
@@ -40,9 +39,9 @@ public class MoveScreen extends Screen implements StateListener, ActionListener 
 	
 	private OverlayScreen overlay;
 	
-	public MoveScreen(List<DrawableShip> ships, OverlayScreen overlay, Camera camera, int width, int height) {
+	public MoveScreen(List<DrawableShip> ships, OverlayScreen overlay, Viewport viewport, int width, int height) {
 		super(width, height);
-		this.camera = camera;
+		this.viewport = viewport;
 		this.overlay = overlay;
 		
 		overlay.addActionListener(this);
@@ -62,24 +61,21 @@ public class MoveScreen extends Screen implements StateListener, ActionListener 
 	}
 	
 	public void draw(Graphics2D gPen) {
-		// Translate the coordinates based on the camera
-		Rectangle cameraBounds = camera.getBounds();
-		gPen.translate(-cameraBounds.getX(), -cameraBounds.getY());
+		viewport.translateToWorldSpace(gPen);
 		
 		/** Draw things based on the camera here **/
 		
 		// draw the move path if there is one
 		if ( movePath != null ) {
-			movePath.draw( gPen, cameraBounds );
+			movePath.draw(gPen, viewport.getBounds());
 		}
 		
 		// Draw all the ships on the map
 		for (DrawableShip ship : shipList) {
-			ship.draw(gPen, cameraBounds);
+			ship.draw(gPen, viewport.getBounds());
 		}
 		
-		// Change the drawing back to screen based coordinates
-		gPen.translate(cameraBounds.getX(), cameraBounds.getY());
+		viewport.translateToScreenSpace(gPen);
 	}
 	
 	private void selectShip(DrawableShip ship) {
@@ -138,7 +134,7 @@ public class MoveScreen extends Screen implements StateListener, ActionListener 
 			
 			// Check to see if one of the ships was clicked
 			for (DrawableShip ship : shipList) {
-				if (new Area(ship.getBounds()).contains(e.getX() + camera.getX(), e.getY() + camera.getY())) {
+				if (new Area(ship.getBounds()).contains(e.getX() + viewport.getX(), e.getY() + viewport.getY())) {
 					// The ship is selected so deselect it
 					if (ship == selectedShip) {
 						deselectShip();
@@ -161,7 +157,7 @@ public class MoveScreen extends Screen implements StateListener, ActionListener 
 			if ( selectedShip != null && !selectedShipWasNull && movePath != null ) {
 				// selectedShip.setCenter(e.getX() + camera.getX(), e.getY() + camera.getY());
 				
-				Point point = new Point( e.getX() + camera.getX(), e.getY() + camera.getY() );
+				Point point = new Point( e.getX() + viewport.getX(), e.getY() + viewport.getY() );
 				
 				// if the user clicked the same spot twice, stop making the path
 				if ( movePath.hasPointCloseToPrevious( point, 32 /*the 'radius' of the ship*/ ) ) {
@@ -192,7 +188,7 @@ public class MoveScreen extends Screen implements StateListener, ActionListener 
 	public void mouseMoved(MouseEvent e) {
 		if ( movePath != null ) {
 			// update movePath to let know that the mouse has moved
-			movePath.setMouseLocation( new Point( e.getX() + camera.getX(), e.getY() + camera.getY()) );
+			movePath.setMouseLocation( new Point( e.getX() + viewport.getX(), e.getY() + viewport.getY()) );
 			setShipSelected( movePath.getDrawableShip(), true);
 			movePath.setMouseLocationValid();
 		}
@@ -200,7 +196,7 @@ public class MoveScreen extends Screen implements StateListener, ActionListener 
 		// Check all ships to see if the mouse is hovered over it
 		boolean found = false;
 		for (DrawableShip ship : shipList) {
-			if (!found && new Area(ship.getBounds()).contains(e.getX() + camera.getX(), e.getY() + camera.getY())) {
+			if (!found && new Area(ship.getBounds()).contains(e.getX() + viewport.getX(), e.getY() + viewport.getY())) {
 				setShipSelected(ship, true);
 				if ( movePath != null && selectedShip != ship )
 					movePath.setMouseLocationInvalid();
@@ -220,7 +216,7 @@ public class MoveScreen extends Screen implements StateListener, ActionListener 
 		if (e.getNewState() instanceof AttackState) {
 			overlay.removeActionListener(this);
 			
-			ScreenStack.get().addScreenAfter(this, new AttackScreen(shipList, overlay, camera, screenWidth, screenHeight));
+			ScreenStack.get().addScreenAfter(this, new AttackScreen(shipList, overlay, viewport, screenWidth, screenHeight));
 			ScreenStack.get().removeScreen(this);
 			GameSession.get().removeStateListener(this);
 			if(statsScreen != null)

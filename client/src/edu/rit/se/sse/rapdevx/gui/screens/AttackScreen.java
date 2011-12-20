@@ -16,7 +16,7 @@ import edu.rit.se.sse.rapdevx.events.StateEvent;
 import edu.rit.se.sse.rapdevx.events.StateListener;
 import edu.rit.se.sse.rapdevx.gui.Screen;
 import edu.rit.se.sse.rapdevx.gui.ScreenStack;
-import edu.rit.se.sse.rapdevx.gui.drawable.Camera;
+import edu.rit.se.sse.rapdevx.gui.drawable.Viewport;
 import edu.rit.se.sse.rapdevx.gui.drawable.DrawableAttack;
 import edu.rit.se.sse.rapdevx.gui.drawable.DrawableShip;
 import edu.rit.se.sse.rapdevx.gui.images.TextButton;
@@ -26,7 +26,7 @@ import edu.rit.se.sse.rapdevx.clientstate.AttackState;
 public class AttackScreen extends Screen implements StateListener,
 		ActionListener {
 	/** A reference to the map camera for positioning objects in world space */
-	private Camera camera;
+	private Viewport viewport;
 
 	/** A list of ships currently on the field */
 	private List<DrawableShip> shipList = new ArrayList<DrawableShip>();
@@ -43,10 +43,10 @@ public class AttackScreen extends Screen implements StateListener,
 
 	private OverlayScreen overlay;
 
-	public AttackScreen(List<DrawableShip> ships, OverlayScreen overlay, Camera camera, int width,
+	public AttackScreen(List<DrawableShip> ships, OverlayScreen overlay, Viewport viewport, int width,
 			int height) {
 		super(width, height);
-		this.camera = camera;
+		this.viewport = viewport;
 		this.overlay = overlay;
 
 		overlay.addActionListener(this);
@@ -69,34 +69,33 @@ public class AttackScreen extends Screen implements StateListener,
 
 	public void draw(Graphics2D gPen) {
 		// Translate the coordinates based on the camera
-		Rectangle cameraBounds = camera.getBounds();
-		gPen.translate(-cameraBounds.getX(), -cameraBounds.getY());
+		viewport.translateToWorldSpace(gPen);
 
 		/** Draw things based on the camera here **/
 
 		// Draw all the ships on the map
 		for (DrawableShip ship : shipList) {
-			ship.draw(gPen, cameraBounds);
+			ship.draw(gPen, viewport.getBounds());
 		}
 
 		// Draw all the attack targets
 		if (curAttack != null) {
-			curAttack.draw(gPen, cameraBounds);
+			curAttack.draw(gPen, viewport.getBounds());
 		}
 
 		for (DrawableAttack attack : attackList)
-			attack.draw(gPen, cameraBounds);
+			attack.draw(gPen, viewport.getBounds());
 
 		// Change the drawing back to screen based coordinates
-		gPen.translate(cameraBounds.getX(), cameraBounds.getY());
+		viewport.translateToScreenSpace(gPen);
 	}
 
 	public void mouseReleased(MouseEvent e) {
 		// Check to see if one of the ships was clicked
 		for (DrawableShip ship : shipList) {
 			if (new Area(ship.getBounds()).contains(
-					e.getX() + camera.getX(),
-					e.getY() + camera.getY())) {
+					e.getX() + viewport.getX(),
+					e.getY() + viewport.getY())) {
 				if (ship == selectedShip) {
 					// This ship was previously selected. Deselect it
 					// and stop the attack.
@@ -184,7 +183,7 @@ public class AttackScreen extends Screen implements StateListener,
 					continue;
 
 				if (new Area(ship.getBounds()).contains(e.getX()
-						+ camera.getX(), e.getY() + camera.getY())) {
+						+ viewport.getX(), e.getY() + viewport.getY())) {
 					setShipSelected(ship, true);
 
 					curAttack.setMouseLocation(ship.getCenter());
@@ -203,12 +202,12 @@ public class AttackScreen extends Screen implements StateListener,
 			// If there is an attack selection in progress, update the
 			// reticle
 			curAttack.setMouseLocation(new Point(
-					e.getX() + camera.getX(), e.getY()
-							+ camera.getY()));
+					e.getX() + viewport.getX(), e.getY()
+							+ viewport.getY()));
 		} else {
 			for (DrawableShip ship : shipList) {
 				if (new Area(ship.getBounds()).contains(e.getX()
-						+ camera.getX(), e.getY() + camera.getY())) {
+						+ viewport.getX(), e.getY() + viewport.getY())) {
 					setShipSelected(ship, true);
 				} else {
 					setShipSelected(ship, false);
@@ -224,7 +223,7 @@ public class AttackScreen extends Screen implements StateListener,
 
 			ScreenStack.get().addScreenAfter(
 					this,
-					new MoveScreen(shipList, overlay, camera, screenWidth,
+					new MoveScreen(shipList, overlay, viewport, screenWidth,
 							screenHeight));
 			ScreenStack.get().removeScreen(this);
 			GameSession.get().removeStateListener(this);

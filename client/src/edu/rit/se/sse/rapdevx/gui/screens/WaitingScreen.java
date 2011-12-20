@@ -12,19 +12,22 @@ import edu.rit.se.sse.rapdevx.events.StateListener;
 import edu.rit.se.sse.rapdevx.gui.Screen;
 import edu.rit.se.sse.rapdevx.gui.ScreenStack;
 import edu.rit.se.sse.rapdevx.gui.drawable.Text;
+import edu.rit.se.sse.rapdevx.gui.drawable.Viewport;
 import edu.rit.se.sse.rapdevx.gui.images.TextButton;
 import edu.rit.se.sse.rapdevx.gui.screens.menus.Menu;
 
 public class WaitingScreen extends Screen implements ActionListener,
 		StateListener {
 
+	private Viewport viewport;
+	
 	private Menu menu;
-
 	private Text waitingText;
 
-	public WaitingScreen(int width, int height) {
+	public WaitingScreen(Viewport viewport, int width, int height) {
 		super(width, height);
 
+		this.viewport = viewport;
 		GameSession.get().addStateListener(this);
 
 		menu = new Menu(width / 2 - 100, height / 2 - 50);
@@ -62,14 +65,14 @@ public class WaitingScreen extends Screen implements ActionListener,
 	public void stateChanged(StateEvent e) {
 		if (e.getNewState() instanceof UnitPlacementState) {
 			// Start with the move phase on the map
-			MapScreen mapScreen = new MapScreen(screenWidth, screenHeight);
+			MapScreen mapScreen = new MapScreen(viewport, screenWidth, screenHeight);
 			ScreenStack.get().addScreen(mapScreen);
 
 			OverlayScreen overlay = new OverlayScreen(screenWidth, screenHeight);
 
 			// Start with a unit placement screen
 			PlacementScreen placement = new PlacementScreen(overlay,
-					mapScreen.getCamera(), screenWidth, screenHeight);
+					viewport, screenWidth, screenHeight);
 			ScreenStack.get().addScreen(placement);
 
 			// Add the overlay last
