@@ -5,6 +5,7 @@
 
 package edu.rit.se.sse.rapdevx;
 
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -64,15 +65,12 @@ public class TestJSONSync {
 		// DTO_MovementOrder
 		MovementOrder mo = new MovementOrder();
 
-		LinkedList<Hashtable<Integer, Integer>> mo_res_lst = new LinkedList<Hashtable<Integer, Integer>>();
-		Hashtable<Integer, Integer> mo_res_lst_tpl = new Hashtable<Integer, Integer>();
-
-		mo_res_lst_tpl.put(23, 62);
-		mo_res_lst.add(mo_res_lst_tpl);
+		LinkedList<Point> mo_res_lst = new LinkedList<Point>();
+		mo_res_lst.add(new Point(23, 62));
 
 		mo.setUnitid("thisisagid");
 		mo.setGid("thisisagid");
-		mo.setPATH(mo_res_lst);
+		mo.setPath(mo_res_lst);
 
 		// DTO_Results
 		Results re = new Results();

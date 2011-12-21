@@ -144,7 +144,7 @@ public class DrawableShip extends DrawableObject implements Cloneable {
 	public MovementOrder getMovementOrder() {
 		MovementOrder order = new MovementOrder();
 
-		order.setPATH(getPath().getMovementOrderPath());
+		order.setPath(getPath().getMovementOrderPath());
 		order.setUnitid(unit.getgid());
 		order.setGid("garbage");
 

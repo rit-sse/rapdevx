@@ -304,7 +304,11 @@ def JSON_Construct_DTO_MovementOrder(jsonstring):
     pathlist = attribute_dictionary.pop('path')
     newpathlistoftuples = []
     for v in pathlist:
-        newpathlistoftuples.append(tuple(v))
+        point = []
+        point.append(v.pop('x'))
+        point.append(v.pop('y'))
+        print('point: ' + str(tuple(point)))
+        newpathlistoftuples.append(tuple(point))
     return DTO_MovementOrder(attribute_dictionary.pop('unitid'), newpathlistoftuples, attribute_dictionary.pop('gid'))
 
 def JSON_Construct_DTO_AbilityUseOrder(jsonstring):

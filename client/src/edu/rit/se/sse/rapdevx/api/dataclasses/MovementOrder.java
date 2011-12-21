@@ -1,98 +1,81 @@
 package edu.rit.se.sse.rapdevx.api.dataclasses;
 
+import java.awt.Point;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Hashtable;
 import java.util.LinkedList;
 
-import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
+import com.google.gson.Gson;
 
 /**
- * POJO representing a Unit's Move on the server side of things. Will
- * be annotate in order to have Jackson data bindings.
- *
+ * POJO representing a Unit's Move on the server side of things. Will be
+ * annotate in order to have Jackson data bindings.
+ * 
  * @author Ben Nicholas
  * @author Paul Cassidy
  */
 public class MovementOrder {
-	
-	private static ObjectMapper mapper = new ObjectMapper();
-	
+
 	private String unitid;
-	private LinkedList<Hashtable<Integer,Integer>> path = new LinkedList<Hashtable<Integer,Integer>>();
+	private LinkedList<Point> path = new LinkedList<Point>();
 	private String gid;
-	
+
 	public String getUnitid() {
 		return unitid;
 	}
+
 	public void setUnitid(String unitid) {
 		this.unitid = unitid;
 	}
-	public LinkedList<Hashtable<Integer,Integer>> getPATH() {
+
+	public LinkedList<Point> getPath() {
 		return path;
 	}
-	public void setPATH(LinkedList<Hashtable<Integer,Integer>> pATH) {
-		path = pATH;
+
+	public void setPath(LinkedList<Point> path) {
+		this.path = path;
 	}
+
 	public String getGid() {
 		return gid;
 	}
+
 	public void setGid(String gid) {
 		this.gid = gid;
 	}
-	
 
 	/**
 	 * Creates and maps to an MovementOrder object.
 	 * 
-	 * @return The mapped MovementOrder as an MovementOrder object. or null if error.
+	 * @return The mapped MovementOrder as an MovementOrder object. or null if
+	 *         error.
 	 */
-	public static MovementOrder fromJSON(String incomingJson){
-
-		try {
-			MovementOrder movementOrder = mapper.readValue(incomingJson, MovementOrder.class);
-			return movementOrder;
-		} catch (JsonParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
+	public static MovementOrder fromJSON(String incomingJson) {
+		Gson gson = new Gson();
+		return gson.fromJson(incomingJson, MovementOrder.class);
 	}
-	
+
 	/**
 	 * Creates a JSON file from an MovementOrder object.
 	 * 
 	 * @param MovementOrder
 	 */
-	public void toJSON(MovementOrder movementOrder){
+	public void toJSON(MovementOrder movementOrder) {
+		Gson gson = new Gson();
+		String json = gson.toJson(movementOrder);
+
 		try {
-			mapper.writeValue(new File("MovementOrderFromJava.json"), movementOrder);
-		} catch (JsonGenerationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			FileWriter file = new FileWriter(new File("MovementOrderFromJava.json"));
+			file.write(json);
+			file.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.err.println("Unable to write units json to file");
 		}
 	}
-	
-	public MovementOrder(){
-		
-	}
-	
-	
-	
-}
 
+	public MovementOrder() {
+
+	}
+
+}

@@ -157,10 +157,10 @@ public class MoveScreen extends Screen implements StateListener, ActionListener 
 			if ( selectedShip != null && !selectedShipWasNull && movePath != null ) {
 				// selectedShip.setCenter(e.getX() + camera.getX(), e.getY() + camera.getY());
 				
-				Point point = new Point( e.getX() + viewport.getX(), e.getY() + viewport.getY() );
+				Point point = viewport.convertToWorldSpace(e.getPoint());
 				
 				// if the user clicked the same spot twice, stop making the path
-				if ( movePath.hasPointCloseToPrevious( point, 32 /*the 'radius' of the ship*/ ) ) {
+				if (movePath.hasPointCloseToPrevious(point, 32 /*the 'radius' of the ship*/)) {
 					// stop accepting input
 					movePath.stopInput();
 					
@@ -176,7 +176,7 @@ public class MoveScreen extends Screen implements StateListener, ActionListener 
 					movePath = null;
 				} else {
 					// otherwise, add the move
-					movePath.addMove( point );
+					movePath.addMove(point);
 				}
 			}
 		
