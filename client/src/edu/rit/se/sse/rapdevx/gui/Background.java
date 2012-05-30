@@ -14,14 +14,14 @@ import javax.imageio.ImageIO;
 public class Background {
 
 	private static int GRID_SIZE = 64;
-	public static final Color GRID_COLOR_1 = new Color(60, 60, 60);
-	public static final Color GRID_COLOR_2 = new Color(40, 40, 40);
+	public static final Color GRID_COLOR_1 = new Color(40, 40, 40);
+	public static final Color GRID_COLOR_2 = new Color(30, 30, 30);
 
 	private BufferedImage background;
 
 	public Background() {
 		try {
-			background = ImageIO.read(new File("assets/background.png"));
+			background = ImageIO.read(new File("assets/background2.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -43,8 +43,8 @@ public class Background {
 		int cameraWidth = (int) bounds.getWidth();
 		int cameraHeight = (int) bounds.getHeight();
 
-		int backgroundWidth = background.getWidth();
-		int backgroundHeight = background.getHeight();
+		int backgroundWidth = background.getWidth() * 4;
+		int backgroundHeight = background.getHeight() * 4;
 
 		// backgrounds can only be drawn at integer multiples
 		// of the with and height.

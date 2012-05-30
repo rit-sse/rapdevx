@@ -165,7 +165,7 @@ public class MoveScreen extends Screen implements StateListener, ActionListener 
 					movePath.stopInput();
 					
 					// send move to the queue
-					((MoveState)GameSession.get().getCurrentState()).makeMove( selectedShip.getMovementOrder() );
+					//((MoveState)GameSession.get().getCurrentState()).makeMove( selectedShip.getMovementOrder() );
 					
 					// move the ship
 					selectedShip.setCenter( (int)movePath.getPath().getLastPoint().getX(), 

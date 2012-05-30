@@ -1,5 +1,7 @@
 package edu.rit.se.sse.rapdevx.gui.drawable;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.geom.Rectangle2D;
@@ -19,7 +21,6 @@ public class DrawableMovePath extends DrawableObject {
 	private Path path;
 
 	/** The Drawable Path and Ship */
-	private DrawablePath drawablePath;
 	private DrawableShip drawableShip;
 
 	/** Does the MovePath accept new input? */
@@ -38,8 +39,6 @@ public class DrawableMovePath extends DrawableObject {
 		drawableShip = givenShip;
 		path = new Path(new Point(drawableShip.getUnit().getX(), drawableShip
 				.getUnit().getY()));
-
-		drawablePath = new DrawablePath(path, drawableShip.getColor());
 
 		acceptInput = true;
 		mouseLocationValid = true;
@@ -86,7 +85,43 @@ public class DrawableMovePath extends DrawableObject {
 	 *            the 2D Graphics
 	 */
 	public void draw(Graphics2D gPen, Rectangle2D bounds) {
-		drawablePath.draw(gPen);
+		gPen.setColor(drawableShip.getColor());
+		
+		// Draw a line between the last coordinate and the mouse cursor
+		if (mouseLocation != null && path.getLastPoint() != null) {
+			Point lastLocation = path.getLastPoint();
+			
+			if ( !mouseLocationValid )
+				gPen.setColor( Color.RED );
+			
+			// Create a dashed line
+			float[] f1 = { 10.0f };
+			gPen.setStroke(new BasicStroke(2.0f, BasicStroke.CAP_BUTT,
+					BasicStroke.JOIN_MITER, 10.0f, f1, 0.0f));
+			
+			gPen.drawLine(lastLocation.x, lastLocation.y,
+					mouseLocation.x, mouseLocation.y);
+			
+			// Reset the line style
+			gPen.setStroke(new BasicStroke());
+			
+			if ( !mouseLocationValid )
+				gPen.setColor(drawableShip.getColor());
+		}
+		
+		// Draw all of the saved path segments
+		Point prevLocation = null;
+		for (Point location : path.getPath()) {
+			// Draw a square marking the point
+			gPen.fillRect(location.x - 4, location.y - 4, 8, 8);
+			
+			// Draw a line between the points
+			if (prevLocation != null)
+				gPen.drawLine(location.x, location.y, prevLocation.x, prevLocation.y);
+			
+			prevLocation = location;
+		}
+		
 		if (mouseLocation != null)
 			drawableShip.drawClear(gPen, bounds, mouseLocation);
 	}
@@ -102,10 +137,8 @@ public class DrawableMovePath extends DrawableObject {
 	 */
 	public void setMouseLocation(Point mouseLocation) {
 		if (acceptInput) {
-			drawablePath.setMouseLocation(mouseLocation);
 			this.mouseLocation = mouseLocation;
 		} else {
-			drawablePath.setMouseLocation(null);
 			this.mouseLocation = null;
 		}
 	}
@@ -139,7 +172,6 @@ public class DrawableMovePath extends DrawableObject {
 	 */
 	public void stopInput() {
 		acceptInput = false;
-		drawableShip.setPath(drawablePath);
 	}
 
 	/**
@@ -169,7 +201,6 @@ public class DrawableMovePath extends DrawableObject {
 	 */
 	public void setMouseLocationInvalid() {
 		mouseLocationValid = false;
-		drawablePath.setMouseLocationInvalid();
 	}
 
 	/**
@@ -178,7 +209,6 @@ public class DrawableMovePath extends DrawableObject {
 	 */
 	public void setMouseLocationValid() {
 		mouseLocationValid = true;
-		drawablePath.setMouseLocationValid();
 	}
 
 }
